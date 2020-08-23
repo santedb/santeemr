@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+ - Portions Copyright 2015-2019 Mohawk College of Applied Arts and Technology
+ - Portions Copyright 2019-2019 SanteSuite Contributors (See NOTICE)
+ - 
+ - 
+ - Licensed under the Apache License, Version 2.0 (the "License"); you 
+ - may not use this file except in compliance with the License. You may 
+ - obtain a copy of the License at 
+ - 
+ - http://www.apache.org/licenses/LICENSE-2.0 
+ - 
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ - License for the specific language governing permissions and limitations under 
+ - the License.
+ - 
+ - User: Justin Fyfe
+ - Date: 2019-8-8
+ -->
+<AppletManifest xmlns="http://santedb.org/applet">
+  <info id="org.santedb.emr" version="2.0.30.0">
+    <icon>/org.santedb.emr/img/icon.png</icon>
+    <name lang="en">SanteDB EMR Base Package</name>
+    <author>SanteSuite Community Partners (see: santesuite.org)</author>
+    <dependency id="org.santedb.core"/>
+    <dependency id="org.santedb.uicore"/>
+  </info>
+
+  <errors>
+    <add code="403" asset="/org.santedb.emr/views/error/elevate.html"/>
+  </errors>
+
+  <menuItem context="org.santedb.emr" launch="santedb-emr.dashboard"  asset="/org.santedb.emr/views/dashboard.html" order="-100">
+    <icon>fas fa-tachometer-alt</icon>
+    <text lang="en">Dashboard</text>
+  </menuItem>
+  <menuItem context="org.santedb.emr" launch="santedb-emr.adt" asset="/org.santedb.emr/views/adt/index.html" order="-100">
+    <icon>fas fa-hospital-user</icon>
+    <text lang="en">Patient Administration</text>
+    <menuItem context="org.santedb.emr" launch="santedb-emr.adt.search" asset="/org.santedb.emr/views/adt/search.html" order="-100">
+      <icon>fas fa-search</icon>
+      <text lang="en">Patient Search</text>
+    </menuItem>
+    <menuItem context="org.santedb.emr" launch="santedb-emr.adt.register" asset="/org.santedb.emr/views/adt/register.html" order="-100">
+      <icon>fas fa-user-plus</icon>
+      <text lang="en">Registration</text>
+    </menuItem>
+  </menuItem>
+
+  <!--
+  <viewModel key="relationship_full">
+    <definition>/org.santedb.emr/model/relationship_full.xml</definition>
+  </viewModel>
+  -->
+
+  <strings lang="en">
+    <string key="ui.directConnect">Direct Connect to Server</string>
+    <string key="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
+
+    <!-- Mail -->
+    <string key="ui.emr.mail.all">View All Mail</string>
+
+    <!-- Actions -->
+    <string key="ui.emr.profile">My Profile</string>
+  </strings>
+</AppletManifest>
