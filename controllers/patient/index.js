@@ -1,0 +1,78 @@
+/// <reference path="../../.ref/js/santedb.js" />
+
+angular.module('santedb').controller('EmrPatientIndexController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
+
+// Render address
+$scope.renderAddress = function(patient) {
+        
+    var retVal = "";
+    if(patient.address)
+        Object.keys(patient.address).forEach(function(n) 
+        {
+            retVal += `${SanteDB.display.renderEntityAddress(patient.address[n])} <span class="badge badge-info">${n}</span> ,`;
+        });
+    else 
+        retVal = "N/A ";
+    return retVal.substr(0, retVal.length - 1);
+}
+
+// Render the names
+$scope.renderName = function(patient) {
+    
+    var retVal = "";
+    if(patient.name)
+        Object.keys(patient.name).forEach(function(n) 
+        {
+            retVal += `${SanteDB.display.renderEntityName(patient.name[n])} <span class="badge badge-info">${n}</span> ,`;
+        });
+    else 
+        retVal = "N/A ";
+    return retVal.substr(0, retVal.length - 1);
+}
+
+// Render DOB
+$scope.renderDob = function(patient) {
+    if(patient.dateOfBirth)
+        return SanteDB.display.renderDate(patient.dateOfBirth, patient.dateOfBirthPrecision);
+    else
+        return "N/A";
+}
+
+// Render the patient's gender
+$scope.renderGender = function(patient) {
+    var retVal = "";
+    switch(patient.genderConcept) {
+        case "f4e3a6bb-612e-46b2-9f77-ff844d971198":
+            retVal += '<i class="fas fa-male"></i> ';
+            break;
+        case "094941e9-a3db-48b5-862c-bc289bd7f86c":
+            retVal += '<i class="fas fa-female"></i> ';
+            break;
+        default:
+            retVal += '<i class="fas fa-question-circle"></i> ';
+    }
+
+    if(patient.genderConceptModel.mnemonic) {
+        retVal += SanteDB.display.renderConcept(patient.genderConceptModel);
+    }
+    return retVal;
+}
+
+// Render identifiers
+$scope.renderIdentifier = function(patient) {
+
+    var preferred = $rootScope.system.config.application.setting['aa.preferred'];
+
+    var retVal = "";
+    if(patient.identifier) {
+        Object.keys(patient.identifier).forEach(function(id) {
+            if(preferred && id == preferred || !preferred)
+                retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${ patient.identifier[id].authority ? patient.identifier[id].authority.name : id }</span> ,`;
+        });
+    }
+
+    else retVal += "N/A ";
+    return retVal.substring(0, retVal.length - 1);
+}
+
+}]);

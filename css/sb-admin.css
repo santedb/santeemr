@@ -24,7 +24,7 @@
   
   body {
     overflow-x: hidden;
-    overflow-y: hidden;
+    overflow-y: auto;
   }
   
   body.sticky-footer {
@@ -317,7 +317,7 @@
   }
   
   .content-wrapper {
-    overflow-x: hidden;
+    /*overflow-x: hidden;*/
     background: white;
   }
   

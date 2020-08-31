@@ -1,0 +1,21 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
+    <sdb:script static="false">/org.santedb.uicore/js/santedb-ng-widget.js</sdb:script>
+    <sdb:script static="false">~/controllers/patient/view.js</sdb:script>
+    <sdb:state name="santedb-emr.patient.view">
+        <sdb:url>/{id}</sdb:url>
+        <sdb:view>
+            <sdb:controller>EmrPatientViewController</sdb:controller>
+            <sdb:title lang="en">View Patient</sdb:title>
+        </sdb:view>
+    </sdb:state>
+    <div class="row">
+        <div class="col">
+            <!-- #include virtual="/org.santedb.uicore/partials/patient/patientHeader.html" -->
+        </div>
+    </div>
+    <div class="row">
+        <div class="col p-0">
+            <widget-tabs context-name="'org.santedb.emr.patient'" scoped-object="patient"></widget-tabs>
+        </div>
+    </div>
+</div>

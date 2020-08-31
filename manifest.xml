@@ -36,14 +36,14 @@
     <icon>fas fa-tachometer-alt</icon>
     <text lang="en">Dashboard</text>
   </menuItem>
-  <menuItem context="org.santedb.emr" launch="santedb-emr.adt" asset="/org.santedb.emr/views/adt/index.html" order="-100">
+  <menuItem context="org.santedb.emr" launch="santedb-emr.patient.index" asset="/org.santedb.emr/views/patient/index.html" order="-100">
     <icon>fas fa-hospital-user</icon>
     <text lang="en">Patient Administration</text>
-    <menuItem context="org.santedb.emr" launch="santedb-emr.adt.search" asset="/org.santedb.emr/views/adt/search.html" order="-100">
+    <menuItem context="org.santedb.emr" launch="santedb-emr.patient.search" asset="/org.santedb.emr/views/patient/search.html" order="-100">
       <icon>fas fa-search</icon>
       <text lang="en">Patient Search</text>
     </menuItem>
-    <menuItem context="org.santedb.emr" launch="santedb-emr.adt.register" asset="/org.santedb.emr/views/adt/register.html" order="-100">
+    <menuItem context="org.santedb.emr" launch="santedb-emr.patient.register" asset="/org.santedb.emr/views/patient/register.html" order="-100">
       <icon>fas fa-user-plus</icon>
       <text lang="en">Registration</text>
     </menuItem>
@@ -64,5 +64,10 @@
 
     <!-- Actions -->
     <string key="ui.emr.profile">My Profile</string>
+
+
+    <!-- Patient View -->
+    <string key="org.santedb.emr.widget.patient.demographics">Demographics</string>
+    <string key="org.santedb.emr.widget.patient.dashboard">Dashboard</string>
   </strings>
 </AppletManifest>
