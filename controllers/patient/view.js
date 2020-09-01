@@ -28,10 +28,30 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
             $scope.$apply();
         }
         catch(e) {
+            // Remote patient perhaps?
+            if(e.$type == "FileNotFoundException" || e.cause && e.cause.$type == "FileNotFoundException")
+                {
+                    try {
+                        $scope.patient = await SanteDB.resources.patient.getAsync({ id: id, _upstream: true } , "full");
+                        $scope.patient._upstream = true;
+                        if($scope.patient.tag)
+                        {
+                            delete $scope.patient.tag["$mdm.type"];
+                            delete $scope.patient.tag["$altkeys"];
+                            delete $scope.patient.tag["$generated"];
+                        }
+                        $scope.$apply();
+                        return;
+                    }
+                    catch(e) {
+                        $rootScope.errorHandler(e);
+                    }
+                }
             $rootScope.errorHandler(e);
         }
     }
     loadPatient($stateParams.id);
 
+    
     
 }]);

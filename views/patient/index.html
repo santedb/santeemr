@@ -10,24 +10,40 @@
     </sdb:state>
 
 
-    <h2>{{ 'ui.emr.patient.index' | i18n }}</h2>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-3 col-sm-6">
+            <div class="col-12">
+                <div class="card shadow">
+                    <div class="card-header bg-light">
+                        <h2 class="m-0">{{ 'ui.emr.patient.recent' | i18n }}</h2>
+                    </div>
+                    <div class="card-body">
+                        <entity-table id="recentPatientTable" type="Patient" search-field="name.component.value"
+                            default-query="{ _orderBy: 'modifiedOn:desc' }" i18n-prefix="'ui.model.patient.'"
+                            render="{ 'name': renderName, 'address': renderAddress, 'dateOfBirth': renderDob, 'genderConcept': renderGender, 'summary' : renderSummary }"
+                            properties="[ 'name', 'dateOfBirth', 'genderConcept', 'address', 'summary' ]"
+                            item-class="{ 'address': 'd-none d-md-table-cell', 'summary': 'd-xs-table-cell d-sm-table-cell d-md-none', 'name' : 'd-none d-md-table-cell', 'dateOfBirth' : 'd-none  d-md-table-cell', 'genderConcept' : 'd-none  d-md-table-cell', 'identifier' : 'd-none  d-lg-table-cell', 'creationTime' : 'd-none  d-lg-table-cell' }"
+                            item-actions="[ { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' } ]"
+                            actions="[ { name: 'register', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.register', className: 'btn-primary', icon: 'fa fa-user-plus' } , { name: 'search', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.search', className: 'btn-info', icon: 'fa fa-search-plus' } ]">
+                        </entity-table>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12">
                 <div class="container-fluid">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-lg-6 col-md-12">
                             <report-view id="'org.santedb.bi.core.reports.patient.age'" view="'chart'" legend="true" parameters="{}"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-lg-6 col-md-12">
                             <report-view id="'org.santedb.bi.core.reports.patient.gender'" 
                                 view="'chart'" legend="true" parameters="{}"/>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-lg-6 col-md-12">
                             <report-view id="'org.santedb.bi.core.reports.patient.regDate'" 
                                 view="'chart'" legend="true" parameters="{}"/>
                         </div>
@@ -35,23 +51,6 @@
                     
                 </div>
             </div>
-            <div class="col-lg-9 col-sm-6">
-                <div class="card shadow">
-                    <div class="card-header bg-light">
-                        <h2 class="m-0">{{ 'ui.emr.dashboard.patients.recent' | i18n }}</h2>
-                    </div>
-                    <div class="card-body">
-                        <entity-table id="recentPatientTable" type="Patient" search-field="name.component.value"
-                            default-query="{ _orderBy: 'modifiedOn:desc' }" i18n-prefix="'ui.model.patient.'"
-                            render="{ 'name': renderName, 'dateOfBirth': renderDob, 'genderConcept': renderGender, 'identifier': renderIdentifier }"
-                            properties="[ 'name', 'dateOfBirth', 'genderConcept', 'identifier', 'creationTime' ]"
-                            item-actions="[ { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' } ]"
-                            actions="[ { name: 'register', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.register', className: 'btn-primary', icon: 'fa fa-user-plus' } , { name: 'search', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.search', className: 'btn-info', icon: 'fa fa-search-plus' } ]">
-                        </entity-table>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </div>

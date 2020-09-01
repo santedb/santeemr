@@ -20,7 +20,7 @@
  - Date: 2019-8-8
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr" version="2.0.30.0">
+  <info id="org.santedb.emr" version="2.0.31.0">
     <icon>/org.santedb.emr/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
@@ -65,7 +65,13 @@
     <!-- Actions -->
     <string key="ui.emr.profile">My Profile</string>
 
-
+    <!-- Search terms -->
+    <string key="ui.emr.patient.search.term">Search For</string>
+    <string key="ui.emr.patient.index">My Patients</string>
+    <string key="ui.emr.patient.recent">Recent Patients</string>
+    <string key="ui.emr.patient.search">Search Patients</string>
+    <string key="ui.emr.patient.search.results">Results</string>
+    <string key="ui.emr.patient.upstream.edit">You cannot edit the details of this patient as they exist only on the central server. Download a copy of the resource first</string>
     <!-- Patient View -->
     <string key="org.santedb.emr.widget.patient.demographics">Demographics</string>
     <string key="org.santedb.emr.widget.patient.dashboard">Dashboard</string>
