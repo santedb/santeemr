@@ -1,0 +1,30 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <name-edit is-required="scopedObject.relationship[rolType.mnemonic]._active" control-prefix="'nok' + rolType.mnemonic" owner-form="panel.editForm" no-add="true" readonly="readonly" no-type="true" simple-entry="true" name="scopedObject.relationship[rolType.mnemonic].targetModel.name" />
+    <div class="form-group row">
+        <label
+            class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.dateOfBirth' | i18n }}</label>
+        <div class="col-sm-12 col-md-9">
+            <div class="input-group m-0">
+                <input ng-required="scopedObject.relationship[rolType.mnemonic]._active"  class="form-control" ng-change="synchronizeAge(scopedObject.relationship[rolType.mnemonic].targetModel, false)" ng-model="scopedObject.relationship[rolType.mnemonic].targetModel.age" type="number" />
+                <div class="input-group-append" >
+                    <div class="input-group-text">
+                        {{ 'ui.emr.patient.ageOrDate' | i18n }}
+                    </div>
+                </div>
+                <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control"
+                    type="date" ng-model="scopedObject.relationship[rolType.mnemonic].targetModel.dateOfBirth"  
+                    ng-change="synchronizeAge(scopedObject.relationship[rolType.mnemonic].targetModel, true)" 
+                    ng-required="scopedObject.relationship[rolType.mnemonic]._active" />
+                <div class="input-group-append">
+                        <label class="input-group-text">
+                            <input type="checkbox" ng-model="scopedObject.relationship[rolType.mnemonic].targetModel.dateOfBirthPrecision"
+                                ng-true-value="1" ng-false-value="3" />
+                            {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                        </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <telecom-edit single-edit="'MobileContact'" telecom="scopedObject.relationship[rolType.mnemonic].targetModel.telecom"/>
+    <address-edit is-required="scopedObject.relationship[rolType.mnemonic]._active"  control-prefix="'nok' + rolType.mnemonic" owner-form="panel.editForm" no-add="true" no-type="true" simple-entry="true" address="scopedObject.relationship[rolType.mnemonic].targetModel.address"/>
+</div>

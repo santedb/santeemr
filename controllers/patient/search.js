@@ -33,8 +33,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         }
         if (patient.identifier) {
             retVal += "<span class='badge badge-secondary'>";
-            if (patient.identifier.MOHS_GEN_NHID)
-                retVal += `<i class="fas fa-id-card"></i> ${SanteDB.display.renderIdentifier(patient.identifier, 'MOHS_GEN_NHID')}`;
+            var preferred = SanteDB.configuration.getAppSetting("aa.preferred");
+            if (patient.identifier[preferred])
+                retVal += `<i class="fas fa-id-card"></i> ${SanteDB.display.renderIdentifier(patient.identifier, preferred)}`;
             else {
                 var key = Object.keys(patient.identifier)[0];
                 retVal += `<i class="far fa-id-card"></i> ${SanteDB.display.renderIdentifier(patient.identifier, key)}`;
@@ -66,9 +67,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 retVal += `<i class='fas fa-restroom' title="${SanteDB.display.renderConcept(patient.genderConceptModel)}"></i> ${SanteDB.display.renderConcept(patient.genderConceptModel)}`;
                 break;
         }
-        if (patient.address) {
-
-        }
+        
 
         return retVal;
     }

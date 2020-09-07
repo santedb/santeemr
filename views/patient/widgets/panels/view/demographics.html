@@ -39,16 +39,18 @@
             </ul>
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade" id="demoAddress">
-                    <div class="container-fluid m-2">
+                    <div class="container mt-2">
                     <address-edit address="editObject.address" no-add="true" simple-entry="true" no-type="true" />
                     </div>
 
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="demoTelecom">
+                    <div class="container mt-2">
                     <telecom-edit telecom="editObject.telecom" />
+                    </div>
                 </div>
                 <div role="tabpanel" class="tab-pane fade show active" id="demographics">
-                    <div class="container-fluid m-2">
+                    <div class="container mt-2">
                         <name-edit name="editObject.name" no-add="true" no-type="true" simple-entry="true" />
                         <div class="form-group row">
                             <label
@@ -58,13 +60,11 @@
                                     <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control"
                                         type="date" ng-model="editObject.dateOfBirth" required="required" />
                                     <div class="input-group-append">
-                                        <div class="input-group-text">
-                                            <label>
+                                        <label class="input-group-text">
                                                 <input type="checkbox" ng-model="editObject.dateOfBirthPrecision"
                                                     ng-true-value="1" ng-false-value="3" />
                                                 {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
                                             </label>
-                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -55,6 +55,11 @@
   </viewModel>
   -->
 
+  <template mnemonic="org.santedb.emr.patient" public="true">
+    <definition>/org.santedb.emr/templates/org.santedb.emr.patient.json</definition>
+    <scope>org.santedb.patient</scope>
+  </template>
+
   <strings lang="en">
     <string key="ui.directConnect">Direct Connect to Server</string>
     <string key="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
@@ -72,8 +77,18 @@
     <string key="ui.emr.patient.search">Search Patients</string>
     <string key="ui.emr.patient.search.results">Results</string>
     <string key="ui.emr.patient.upstream.edit">You cannot edit the details of this patient as they exist only on the central server. Download a copy of the resource first</string>
+    <string key="ui.emr.patient.ageOrDate">y.o. / date</string>
+    <string key="ui.emr.patient.relationship.activate">Patient has a</string>
+    <string key="ui.emr.patient.register.duplicates">Potential Duplicates</string>
+    <string key="ui.emr.patient.register.duplicates.instruction">The following patients are similar to the patient you have entered. Review the duplicates below to ensure you are not registering a duplicate</string>
+    <string key="ui.emr.patient.register.duplicates.verification">I have verified this patient is not a duplicate</string>
     <!-- Patient View -->
     <string key="org.santedb.emr.widget.patient.demographics">Demographics</string>
     <string key="org.santedb.emr.widget.patient.dashboard">Dashboard</string>
+    <string key="org.santedb.emr.widget.patient.register.demographics">Demographics</string>
+    <string key="org.santedb.emr.widget.patient.register.identifier">Identification</string>
+    <string key="org.santedb.emr.widget.patient.register.nok">Relatives / Relationships</string>
+    <string key="org.santedb.emr.widget.patient.register.address">Address / Primary Residence</string>
+    <string key="org.santedb.emr.widget.patient.register.telecom">Contact Information</string>
   </strings>
 </AppletManifest>

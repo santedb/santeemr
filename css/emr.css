@@ -30,3 +30,24 @@ div.logo-centered {
    width: 100%;
    overflow-y: auto;
 }
+
+input[type="checkbox"].checkbox-control:checked ~ span {
+    background-image:url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3E%3Cpath fill='%230378ff' d='M6.564.75l-3.59 3.612-1.538-1.55L0 4.26 2.974 7.25 8 2.193z'/%3E%3C/svg%3E");
+}
+input[type="checkbox"].checkbox-control {
+    z-index: -1;
+    opacity: 0;
+    position: absolute;
+}
+input[type="checkbox"].checkbox-control ~ span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    border: solid 1px #868e96;
+    border-radius: 5px;
+}
+label.checkbox-container {
+    padding-left: 18px
+}

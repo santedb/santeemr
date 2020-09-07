@@ -1,0 +1,16 @@
+<div class="card border-left-primary" xmlns="http://www.w3.org/1999/xhtml">
+    <div class="card-body">
+        <div class="row no-gutters align-items-center">
+            <div class="col ml-2">
+                <div class="col ml-2">
+                    <a ui-sref="santedb-emr.patient.view({id: result.id })"><h5>{{ result.name | name }} <small class="badge badge-secondary"><i class="fas fa-id-card"></i> {{ result.identifier | identifier }}</small></h5></a>
+                    <em><i class="fas fa-city"></i> {{ result.address | address }}</em><br/>
+                    <i class="fas fa-birthday-cake"></i> {{ result.dateOfBirth | extDate: result.dateOfBirthPrecision}} ( {{ result.dateOfBirth | age }}) 
+                    <span ng-if="result.deceasedDate" class="badge badge-dark">{{ 'ui.model.patient.deceased' | i18n }}</span> 
+                    <i class="fas" ng-class="{ 'fa-female' : result.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c', 'fa-male' : result.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-restroom' : null }"></i> 
+                    {{ result.genderConceptModel | concept }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

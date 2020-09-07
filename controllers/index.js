@@ -163,3 +163,4 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     if($state.$current == "santedb-emr") 
         $state.transitionTo("santedb-emr.dashboard");
 }]);
+
