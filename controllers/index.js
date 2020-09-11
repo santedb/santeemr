@@ -19,7 +19,7 @@
  * User: Justin Fyfe
  * Date: 2019-8-8
  */
-angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
+angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", "$transitions", function ($scope, $rootScope, $state, $templateCache, $interval, $transitions) {
 
     initializeSideNavTriggers();
     
@@ -157,6 +157,14 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     $scope.$on('$destroy',function(){
         if(refreshInterval)
             $interval.cancel(refreshInterval);   
+    });
+
+    
+    // Confirm navigation away in AngularJS route
+    $transitions.onStart({ exiting: "santedb-emr.patient.register" }, function (transition) {
+        var scope = angular.element("#editForm").scope();
+        if (!scope.editForm.$pristine && !scope.patient.id) return confirm(SanteDB.locale.getString("ui.emr.navigateConfirmation"));
+        return true;
     });
 
     // Is there no route? We should show the dashboard

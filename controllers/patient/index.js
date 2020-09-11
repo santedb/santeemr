@@ -2,6 +2,9 @@
 
 angular.module('santedb').controller('EmrPatientIndexController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
 
+    // Render demographic information
+    $scope.renderSummary = renderPatientSummary;
+    
     // Render address
     $scope.renderAddress = function (patient) {
 

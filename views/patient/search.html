@@ -20,37 +20,38 @@
                         <div class="input-group">
                             <input type="text" ng-model="search.val" class="form-control" />
                             <div class="input-group-append">
-                                <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i>
-                                    {{ 'ui.action.search' | i18n }}</button>
+                                <div class="btn-group">
+                                    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i>
+                                        {{ 'ui.action.search' | i18n }}</button> <button
+                                        class="btn btn-outline-secondary" type="button" ng-click="scanSearch()"><i
+                                            class="fas fa-qrcode"></i>
+                                        {{ 'ui.action.scan' | i18n }}</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row m-0 p-0">
                     <div class="col-xs-12 col-sm-10 offset-sm-2">
-                        <label>
-                            <input type="checkbox" ng-model="search._upstream" />
+                        <label class="checkbox-container">
+                            <input class="checkbox-control" ng-disabled="$root.session.method == 'LOCAL'"
+                                type="checkbox" ng-model="search._upstream" /><span></span>
                             {{ 'ui.action.search.upstream' | i18n }}
                         </label>
                     </div>
                 </div>
             </form>
         </div>
-       
+
     </div>
     <div class="row">
         <div class="col-12" ng-if="filter">
             <h2>{{ 'ui.emr.patient.search.results' | i18n }}</h2>
-            <entity-table 
-                    type="Patient"
-                    id="EmrPatientSearchResultsTable"
-                    no-buttons="true"
-                    can-filter="false"
-                    default-query="filter"
-                    i18n-prefix="'ui.model.patient.'"
-                    render="{ 'demographics': renderDemographics }"
-                    properties="[ 'demographics' ]"
-                    item-actions="[ { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' } ]"></entity-table>
+            <entity-table type="Patient" id="EmrPatientSearchResultsTable" no-buttons="true" can-filter="false"
+                default-query="filter" i18n-prefix="'ui.model.patient.'" render="{ 'demographics': renderDemographics }"
+                properties="[ 'demographics' ]"
+                item-actions="[ { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' } ]">
+            </entity-table>
         </div>
     </div>
 </div>

@@ -12,7 +12,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
             $scope.scopedObject.relationship[relationshipTarget] &&
             $scope.scopedObject.relationship[relationshipTarget].targetModel)
             {
-                $scope.scopedObject.relationship[relationshipTarget].targetModel.address = $scope.scopedObject.address;
+                $scope.scopedObject.relationship[relationshipTarget].targetModel.address = angular.copy($scope.scopedObject.address);
             }
     }
     // Determine if tab has error
