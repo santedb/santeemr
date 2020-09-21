@@ -7,48 +7,47 @@
     </sdb:widget>
     <div ng-controller="EmrPatientNextOfKinController">
         <ul class="nav nav-tabs" role="tablist" id="demographicEditTabs">
-            <li class="nav-item" ng-if="scopedObject.relationship[rolType.mnemonic]"
-                ng-repeat="rolType in familyMemberRelationships" role="presentation">
-                <a class="nav-link" ng-class="{'active': $index == 0}" data-target="#{{rolType.mnemonic}}relative"
+            <li class="nav-item" ng-repeat="rel in relationships track by $index" role="presentation">
+                <a class="nav-link" ng-class="{'active': $index == 0}" data-target="#{{rel.relationshipTypeModel.mnemonic}}relative"
                     data-toggle="tab">
-                    <i class="fa fa-user-friends"></i> {{ rolType | concept }}
-                    <i class="fa fa-exclamation-triangle text-danger" ng-if="tabHasError('nok' + rolType.mnemonic)"></i>
+                    <i class="fa fa-user-friends"></i> {{ rel.relationshipTypeModel | concept }}
+                    <i class="fa fa-exclamation-triangle text-danger" ng-if="tabHasError('nok' + rel.id)"></i>
                 </a>
             </li>
             <li class="active nav-item" role="presentation">
                 <a class="nav-link" data-target="#otherRelative" data-toggle="tab">
-                    <i class="fa fa-question"></i> {{ 'ui.other' | concept }}
+                    <i class="fa fa-question"></i> {{ 'ui.action.new' | i18n }}
                 </a>
             </li>
         </ul>
         <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade" id="{{rolType.mnemonic}}relative"
-                ng-repeat="rolType in familyMemberRelationships" ng-class="{'active show': $index == 0}">
+            <div role="tabpanel" class="tab-pane fade" id="{{rel.relationshipTypeModel.mnemonic}}relative"
+                ng-repeat="rel in relationships" ng-class="{'active show': $index == 0}">
                 <div class="container mt-2">
                     <div class="form-group row">
                         <label class="col-sm-12 col-md-9 offset-md-3 checkbox-container">
-                            <input type="checkbox" class="checkbox-control" ng-change="copyFields(rolType.mnemonic)" ng-model="scopedObject.relationship[rolType.mnemonic]._active" />
+                            <input type="checkbox" class="checkbox-control" ng-change="copyFields(rel.relationshipTypeModel.mnemonic)" ng-model="rel._active" />
                             <span></span>
-                            {{ 'ui.emr.patient.relationship.activate' | i18n }} {{ rolType | concept }}
+                            {{ 'ui.emr.patient.relationship.activate' | i18n }} {{ rel.relationshipTypeModel | concept }}
                         </label>
                     </div>
-                    <div ng-if="scopedObject.relationship[rolType.mnemonic]._active">
-                        <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinDetail.html" -->
+                    <div ng-if="rel._active">
+                        <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinEdit.html" -->
                     </div>
                 </div>
             </div>
-            <div role="tabpanel" class="tab-pane fade" id="otherRelative" ng-init="rolType = { mnemonic:  '$other' }">
+            <div role="tabpanel" class="tab-pane fade" id="otherRelative" ng-init="rel = scopedObject.relationship.$other">
                 <div class="container mt-2">
                     <div class="form-group row">
                         <label
                             class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.relationship.relationshipType' | i18n }}</label>
                         <div class="col-md-9 col-sm-12">
                             <concept-select concept-set="'FamilyMember'" 
-                                ng-model="scopedObject.relationship['$other'].relationshipType" ng-change="scopedObject.relationship['$other']._active = true" class="form-control" />
+                                ng-model="rel.relationshipTypeModel" ng-change="rel._active = true" class="form-control" />
                         </div>
                     </div>
-                    <div ng-if="scopedObject.relationship['$other']._active">
-                    <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinDetail.html" -->
+                    <div ng-if="rel._active">
+                    <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinEdit.html" -->
                     </div>
                 </div>
             </div>

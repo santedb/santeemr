@@ -1,7 +1,7 @@
 {
     "$type": "Patient",
     "templateModel": {
-        "mnemonic": "org.santedb.emr.patient"
+        "mnemonic": "ui.emr.patient"
     },
     "identifier": {
     },

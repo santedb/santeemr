@@ -51,7 +51,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
     // Load menus for the current user
     function loadMenus() {
-        SanteDB.application.getMenusAsync("org.santedb.emr")
+        SanteDB.application.getMenusAsync("ui.emr")
             .then(function (res) {
                 $scope.menuItems = res;
                 $scope.$applyAsync();

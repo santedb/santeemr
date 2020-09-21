@@ -1,5 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0"
-    oc-lazy-load="{ name: 'PatientDemographicsWidgetController', files: ['/org.santedb.uicore/controllers/widgets/patientWidget.js'] }">
+    oc-lazy-load="{ name: 'EmrDemographicsWidgetController', files: ['/org.santedb.emr/controllers/patient/widgets/demographics.js'] }">
     <sdb:widget order="0" name="org.santedb.emr.widget.patient.demographics" altViews="Edit" headerClass="alert-info"
         size="Large" type="Panel" context="org.santedb.patient.dashboard">
         <sdb:icon>fas fa-user-edit</sdb:icon>
@@ -10,13 +10,16 @@
             <p class="m-auto"><i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}</p>
         </div>
     </div>
-    <div ng-if="scopedObject" ng-controller="PatientDemographicsWidgetController">
+    <div ng-if="scopedObject" ng-controller="EmrDemographicsWidgetController">
         <div ng-if="panel.view != 'Edit'">
             <!-- #include virtual="/org.santedb.uicore/widgets/patient/partials/demographics/view.html" -->
         </div>
         <form class="form" ng-submit="update(panel.editForm)" name="panel.editForm" method="dialog"
             novalidate="novalidate" ng-if="panel.view == 'Edit'">
 
+            <div class="alert alert-warning" ng-if="editObject.determinerConcept == '6b1d6764-12be-42dc-a5dc-52fc275c4935'">
+                <i class="fas fa-exclamation-circle"></i> {{ 'ui.emr.patient.mdm.rotWarning' | i18n }}
+            </div>
             <ul class="nav nav-tabs" role="tablist" id="demographicEditTabs">
                 <li class="active nav-item active" role="presentation">
                     <a class="nav-link active" href="javascript:" data-target="#demographics" data-toggle="tab">

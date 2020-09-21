@@ -138,11 +138,41 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     // Scan 
     $scope.scanSearch = async function() {
         try {
-            var value = await SanteDB.application.scanBarcodeAsync();
-            
+
+            SanteDB.display.buttonWait("#btnScan", true);
+
+            var result = await searchByBarcode();
+            if(result.$type == "Bundle") 
+            {
+                $scope.search.val = result.$search;
+                $scope.searchMpi();
+            }
+            else {
+                // now we want to redirect the state change
+                // TODO: Have this change redirection based on type of the data
+                var stateResolve = SanteDB.display.getResourceDisplayState(result);
+                if (stateResolve) {
+                    if (result.$novalidate)
+                        toastr.warning(SanteDB.locale.getString(`ui.model.${result.$type}._code.validation`), null, {
+                            preventDuplicates: true,
+                            positionClass: "toast-bottom-center",
+                            showDuration: 500,
+                            hideDuration: 500,
+                            timeout: "0",
+                            extendedTimeout: "0"
+                        });
+                    stateResolve(result, $state);
+                }
+                else
+                    throw new Exception("Exception", `Cannot determine how to display ${result.$type}`);
+            }
+
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnScan", false);
         }
     }
 }]);
