@@ -20,7 +20,7 @@
  - Date: 2019-8-8
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr" version="2.0.38.0">
+  <info id="org.santedb.emr" version="2.0.39.0">
     <icon>/ui.emr/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
@@ -46,6 +46,18 @@
     <menuItem context="ui.emr" launch="santedb-emr.patient.register" asset="/ui.emr/views/patient/register.html" order="-100">
       <icon>fas fa-user-plus</icon>
       <text lang="en">Registration</text>
+    </menuItem>
+  </menuItem>
+  <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/ui.emr/views/system/index.html" order="1000">
+    <icon>fas fa-tablet</icon>
+    <text lang="en">System</text>
+    <menuItem context="ui.emr" launch="santedb-emr.system.logs.index" asset="/ui.emr/views/system/logs/index.html">
+      <icon>fas fa-tasks</icon>
+      <text lang="en">Logs</text>
+    </menuItem>
+    <menuItem context="ui.emr" launch="santedb-emr.system.jobs" asset="/ui.emr/views/system/jobs.html">
+      <icon>fas fa-cogs</icon>
+      <text lang="en">Background Jobs</text>
     </menuItem>
   </menuItem>
 
@@ -98,5 +110,23 @@
     <string key="ui.emr.mail">Mail</string>
     <string key="ui.emr.mail.new">New Messages</string>
     <string key="ui.emr.alerts">Alerts</string>
+
+    <!-- System Info View -->
+    <string key="ui.emr.system.info.coreInfo">System Information</string>
+    <string key="ui.emr.system.info.version">Version Code</string>
+    <string key="ui.emr.system.info.product">Product Name</string>
+    <string key="ui.emr.system.info.environment">Operating System</string>
+    <string key="ui.emr.system.info.cpuInfo"># CPU Threads</string>
+    <string key="ui.emr.system.info.memory">Used Memory</string>
+    <string key="ui.emr.system.info.uptime">Uptime / Running Time</string>
+    <string key="ui.emr.system.applets.title">Installed Applets</string>
+    <string key="ui.emr.system.applets.name">Name</string>
+    <string key="ui.emr.system.applets.version">Version</string>
+    <string key="ui.emr.system.applets.id">ID</string>
+    <string key="ui.emr.system.applets.author">Author/Vendor</string>
+    <string key="ui.emr.system.services.title">Application Services</string>
+    <string key="ui.emr.system.services.name">Service</string>
+    <string key="ui.emr.system.services.state">Status</string>
+    
   </strings>
 </AppletManifest>
