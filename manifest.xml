@@ -20,7 +20,7 @@
  - Date: 2019-8-8
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr" version="2.0.39.0">
+  <info id="org.santedb.emr" version="2.0.41.0">
     <icon>/ui.emr/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
@@ -29,35 +29,39 @@
   </info>
 
   <errors>
-    <add code="403" asset="/ui.emr/views/error/elevate.html"/>
+    <add code="403" asset="/org.santedb.emr/views/error/elevate.html"/>
   </errors>
 
-  <menuItem context="ui.emr" launch="santedb-emr.dashboard"  asset="/ui.emr/views/dashboard.html" order="-100">
+  <menuItem context="ui.emr" launch="santedb-emr.dashboard"  asset="/org.santedb.emr/views/dashboard.html" order="-100">
     <icon>fas fa-tachometer-alt</icon>
     <text lang="en">Dashboard</text>
   </menuItem>
-  <menuItem context="ui.emr" launch="santedb-emr.patient.index" asset="/ui.emr/views/patient/index.html" order="-100">
+  <menuItem context="ui.emr" launch="santedb-emr.patient.index" asset="/org.santedb.emr/views/patient/index.html" order="-100">
     <icon>fas fa-hospital-user</icon>
     <text lang="en">Patient Administration</text>
-    <menuItem context="ui.emr" launch="santedb-emr.patient.search" asset="/ui.emr/views/patient/search.html" order="-100">
+    <menuItem context="ui.emr" launch="santedb-emr.patient.search" asset="/org.santedb.emr/views/patient/search.html" order="-100">
       <icon>fas fa-search</icon>
       <text lang="en">Patient Search</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.patient.register" asset="/ui.emr/views/patient/register.html" order="-100">
+    <menuItem context="ui.emr" launch="santedb-emr.patient.register" asset="/org.santedb.emr/views/patient/register.html" order="-100">
       <icon>fas fa-user-plus</icon>
       <text lang="en">Registration</text>
     </menuItem>
   </menuItem>
-  <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/ui.emr/views/system/index.html" order="1000">
+  <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/org.santedb.emr/views/system/index.html" order="1000">
     <icon>fas fa-tablet</icon>
     <text lang="en">System</text>
-    <menuItem context="ui.emr" launch="santedb-emr.system.logs.index" asset="/ui.emr/views/system/logs/index.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.logs.index" asset="/org.santedb.emr/views/system/logs/index.html">
       <icon>fas fa-tasks</icon>
       <text lang="en">Logs</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.jobs" asset="/ui.emr/views/system/jobs.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.jobs" asset="/org.santedb.emr/views/system/jobs.html">
       <icon>fas fa-cogs</icon>
       <text lang="en">Background Jobs</text>
+    </menuItem>
+    <menuItem context="ui.emr" launch="santedb-emr.system.users.index" asset="/org.santedb.emr/views/system/users/index.html">
+      <icon>fas fa-users</icon>
+      <text lang="en">Local Users</text>
     </menuItem>
   </menuItem>
 
@@ -128,5 +132,12 @@
     <string key="ui.emr.system.services.name">Service</string>
     <string key="ui.emr.system.services.state">Status</string>
     
+    <!-- Local Users -->
+    <string key="ui.emr.users.edit">Create/Edit Local User</string>
+    <string key="ui.emr.users.userName">User Name</string>
+    <string key="ui.emr.users.lastLoginTime">Last Login</string>
+    <string key="ui.emr.users.lockout">Lockout</string>
+    <string key="ui.emr.users.updatedBy">Updated By</string>
+    <string key="ui.emr.users.isAdmin">Make User Administrator</string>
   </strings>
 </AppletManifest>

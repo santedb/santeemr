@@ -23,7 +23,7 @@
                             default-query="{ _orderBy: 'modifiedOn:desc' }" i18n-prefix="'ui.model.patient.'"
                             render="{ 'name': renderName, 'address': renderAddress, 'dateOfBirth': renderDob, 'genderConcept': renderGender, 'summary' : renderSummary }"
                             properties="[ 'name', 'dateOfBirth', 'genderConcept', 'address', 'summary' ]"
-                            item-class="{ 'address': 'd-none d-lg-table-cell', 'summary': 'd-xs-table-cell d-md-table-cell d-md-none', 'name' : 'd-none d-lg-table-cell', 'dateOfBirth' : 'd-none  d-lg-table-cell', 'genderConcept' : 'd-none  d-lg-table-cell', 'identifier' : 'd-none  d-lg-table-cell', 'creationTime' : 'd-none  d-lg-table-cell' }"
+                            item-class="{ 'address': 'd-none d-lg-table-cell', 'summary': 'd-xs-table-cell d-md-table-cell d-lg-none', 'name' : 'd-none d-lg-table-cell', 'dateOfBirth' : 'd-none  d-lg-table-cell', 'genderConcept' : 'd-none  d-lg-table-cell', 'identifier' : 'd-none  d-lg-table-cell', 'creationTime' : 'd-none  d-lg-table-cell' }"
                             item-actions="[ { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' } ]"
                             actions="[ { name: 'register', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.register', className: 'btn-primary', icon: 'fa fa-user-plus' } , { name: 'search', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.search', className: 'btn-info', icon: 'fa fa-search-plus' } ]">
                         </entity-table>

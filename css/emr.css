@@ -52,5 +52,6 @@ input[type="checkbox"].checkbox-control ~ span {
     border-radius: 5px;
 }
 label.checkbox-container {
-    padding-left: 18px
+    padding-left: 18px;
+    position:relative;
 }

@@ -1,0 +1,125 @@
+<form name="userForm" ng-submit="saveUser(userForm)" novalidate="novalidate" xmlns="http://www.w3.org/1999/xhtml">
+    <div class="modal-body">
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-3 control-label required"
+                for="username">{{ 'ui.model.securityUser.userName' | i18n }}</label>
+            <div class="col-sm-12 col-md-9">
+                <input name="username" ng-readonly="target.entity.id" type="text" class="form-control"
+                    pattern="^[A-Za-z0-9_\.\@]{3,}" minlength="3" maxlength="32" required="required"
+                    ng-model="target.entity.userName" />
+
+                <span ng-show="userForm.username.$error['duplicate']" class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    {{ 'ui.error.duplicate' | i18n }}
+                </span>
+                <span ng-show="userForm.username.$error['required'] "
+                    class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </span>
+                <span ng-show="userForm.username.$error['pattern'] "
+                    class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
+                </span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="roles"
+                class="col-sm-12 col-md-3 control-label required">{{ 'ui.model.securityRole.title' | i18n }}</label>
+            <div class="col-sm-12 col-md-9">
+                <input readonly="readonly" name="roles" ng-model="target.role" class="form-control"
+                    multiple="multiple" required="required" />
+                <span ng-show="userForm.roles.$error['required'] "
+                    class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </span>
+            </div>
+            <div class="col-sm-12 col-md-9 offset-md-3">
+                <div>
+                    <label class="checkbox-container">
+                        <input type="checkbox" ng-model="target.isAdmin" class="checkbox-control"/>
+                        <span></span>
+                        {{ 'ui.emr.users.isAdmin' | i18n }}
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" ng-if="!target.entity.id">
+            <label for="newPassword"
+                class="col-sm-12 col-md-3 control-label required">{{ 'ui.password.new.label' | i18n }}</label>
+            <div class="col-sm-12 col-md-9">
+                <input type="password" name="newPassword" ng-model="target.entity.password"
+                    class="form-control" ng-required="!target.entity.id"
+                    pattern="[A-Za-z0-9@!#\$\%\^\&amp;\*\(\)\~\`\,\.\?\/\;\'\[\]\{\}\s_]+"
+                    ng-class="{'is-invalid': userForm.newPassword.$invalid }"
+                    ng-change="userForm.newPassword.$error['err.password.complexity'] ? userForm.newPassword.$error['err.password.complexity']=false : null" />
+                <span ng-show="userForm.newPassword.$error['required'] "
+                    class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </span>
+                <span ng-show="userForm.newPassword.$error['err.password.complexity'] "
+                    class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    {{ 'ui.password.error.complexity' | i18n }}
+                </span>
+            </div>
+        </div>
+        <div class="form-group row" ng-if="!target.entity.id">
+            <label for="confirmPassword"
+                class="col-sm-12 col-md-3 control-label required">{{ 'ui.password.confirm.label' | i18n }}</label>
+            <div class="col-sm-12 col-md-9">
+                <input type="password" name="confirmPassword" ng-model="target.entity.confirmPassword"
+                    class="form-control" ng-required="target.entity.password != null" match-validator="newPassword"
+                    ng-class="{'is-invalid': userForm.confirmPassword.$invalid }" />
+                <span ng-show="userForm.confirmPassword.$error['required']"
+                    class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </span>
+                <span ng-show="userForm.confirmPassword.$error['match']" class="text-danger">
+                    <i class="fa fa-exclamation-triangle"></i> {{ 'ui.password.error.mismatch' | i18n }}
+                </span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-12 offset-md-3 col-md-9">
+                <!-- #include virtual="/org.santedb.uicore/partials/security/password.strength.html" -->
+            </div>
+        </div>
+        <hr />
+        <div class="form-group row">
+            <label for="email"
+                class="col-sm-12 col-md-3 control-label">{{ 'ui.model.securityUser.email' | i18n }}</label>
+            <div class="col-sm-12 col-md-9">
+                <input name="email" type="email" class="form-control"
+                    ng-model="target.entity.email" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="phoneNumber"
+                class="col-sm-12 col-md-3 control-label">{{ 'ui.model.securityUser.phoneNumber' | i18n }}</label>
+            <div class="col-sm-12 col-md-9">
+                <input name="phoneNumber" type="tel" class="form-control"
+                    ng-model="target.entity.phoneNumber" />
+            </div>
+        </div>
+        <name-edit name="target.userEntity.name" simple-entry="true" no-add="true"  />
+        <div class="form-group row">
+            <label for="language"
+                class="col-xs-12 col-md-3 control-label">{{ 'ui.model.userEntity.language' | i18n }}</label>
+            <div class="col-xs-12 col-md-9">
+                <select 
+                    name="language"
+                    class="form-control"
+                    ng-model="target.preferredLanguage">
+                    <option ng-repeat="lang in $root.system.locales" value="{{lang}}">{{ 'ui.locale.' + lang | i18n }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a class="btn btn-secondary" ui-sref="santedb-emr.system.users.index" data-dismiss="modal">
+            <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</a>
+        <button type="submit" id="saveUserButton" class="btn btn-primary">
+            <i class="fa fa-check"></i> {{ 'ui.action.save' | i18n }}</button>
+    </div>
+
+</form>
