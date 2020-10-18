@@ -296,3 +296,5 @@ Help/
 
 bicore/bi/org/santedb/bi/dataSource/*
 dist/*
+.bin/*
+.dist/*
