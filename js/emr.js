@@ -88,8 +88,10 @@ async function searchByBarcode(qrCodeData, noValidate, upstream) {
         }
     }
     catch (e) {
+        if(!e) // No error
+            return null;
         // Error was with validating the code
-        if (e.rules && e.rules.length > 0 && e.rules.filter(o => o.id == "jws.verification" || o.id == "jws.app" || o.id == "jws.key").length == e.rules.length) {
+        else if (e.rules && e.rules.length > 0 && e.rules.filter(o => o.id == "jws.verification" || o.id == "jws.app" || o.id == "jws.key").length == e.rules.length) {
             return await searchByBarcode(qrCodeData, true, upstream);
         }
         else if(!upstream && (e.$type == "KeyNotFoundException" || e.cause && e.cause.$type == "KeyNotFoundException")  && confirm(SanteDB.locale.getString("ui.emr.search.online"))) {

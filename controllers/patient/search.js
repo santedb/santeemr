@@ -142,7 +142,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             SanteDB.display.buttonWait("#btnScan", true);
 
             var result = await searchByBarcode();
-            if(result.$type == "Bundle") 
+            if(!result)
+                return;
+            else if(result.$type == "Bundle") 
             {
                 $scope.search.val = result.$search;
                 $scope.searchMpi();
