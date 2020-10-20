@@ -136,11 +136,18 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                                 rel.id = SanteDB.application.newGuid();
 
                             if (rel.source && rel.source != n.id || rel.holder && !rel.holder == n.id) {
-                                rel.sourceModel = await SanteDB.resources.entity.getAsync(rel.source || rel.holder, "full");
+                                if(n._upstream)
+                                    rel.sourceModel = await SanteDB.resources.entity.getAsync({ id: rel.source || rel.holder, _upstream: true }, "full");
+                                else 
+                                    rel.sourceModel = await SanteDB.resources.entity.getAsync(rel.source || rel.holder, "full");
                                 rel.inverse = true;
                             }
                             else if (!rel.targetModel && rel.target) {
-                                rel.targetModel = await SanteDB.resources.entity.getAsync(rel.target, "full");
+                                if(n._upstream)
+                                    rel.targetModel = await SanteDB.resources.entity.getAsync({ id: rel.target, _upstream: true }, "full");
+                                else 
+                                    rel.targetModel = await SanteDB.resources.entity.getAsync(rel.target, "full");
+
                                 rel.targetModel.relationship = rel.targetModel.relationship || {};
                             }
                             if (!rel.relationshipTypeModel)

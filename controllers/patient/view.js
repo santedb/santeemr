@@ -27,31 +27,43 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
             $scope.patient = await SanteDB.resources.patient.getAsync(id, "full");
             $scope.$apply();
         }
-        catch(e) {
+        catch (e) {
             // Remote patient perhaps?
-            if(e.$type == "FileNotFoundException" || e.cause && e.cause.$type == "FileNotFoundException")
-                {
-                    try {
-                        $scope.patient = await SanteDB.resources.patient.getAsync({ id: id, _upstream: true } , "full");
-                        $scope.patient._upstream = true;
-                        if($scope.patient.tag)
-                        {
-                            delete $scope.patient.tag["$mdm.type"];
-                            delete $scope.patient.tag["$altkeys"];
-                            delete $scope.patient.tag["$generated"];
-                        }
-                        $scope.$apply();
-                        return;
+            if (e.$type == "FileNotFoundException" || e.cause && e.cause.$type == "FileNotFoundException") {
+                try {
+                    $scope.patient = await SanteDB.resources.patient.getAsync({ id: id, _upstream: true }, "full");
+                    $scope.patient._upstream = true;
+                    if ($scope.patient.tag) {
+                        delete $scope.patient.tag["$mdm.type"];
+                        delete $scope.patient.tag["$altkeys"];
+                        delete $scope.patient.tag["$generated"];
                     }
-                    catch(e) {
-                        $rootScope.errorHandler(e);
-                    }
+                    $scope.$apply();
+                    return;
                 }
+                catch (e) {
+                    $rootScope.errorHandler(e);
+                }
+            }
             $rootScope.errorHandler(e);
         }
     }
     loadPatient($stateParams.id);
 
-    
-    
+
+    // Download the specified record by touching it
+    $scope.downloadRecord = async function () {
+        try {
+            toastr.info(SanteDB.locale.getString("ui.emr.patient.downloading"));
+            var localPatient = await SanteDB.resources.patient.copyAsync($stateParams.id);
+            localPatient = await SanteDB.resources.patient.getAsync($stateParams.id);
+            await SanteDB.resources.patient.updateAsync($stateParams.id, localPatient);
+            toastr.info(SanteDB.locale.getString("ui.model.patient.saveSuccess"));
+            $state.reload();
+
+        }
+        catch (e) {
+            $rootScope.errorHandler(e);
+        }
+    }
 }]);

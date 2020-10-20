@@ -156,7 +156,7 @@ angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootS
                 userEntity = await SanteDB.resources.userEntity.updateAsync($scope.target.userEntity.id, $scope.target.userEntity);
             else 
                 userEntity = await SanteDB.resources.userEntity.insertAsync($scope.target.userEntity);
-            toastr.success(SanteDB.locale.getString("ui.admin.users.saveConfirm"));
+            toastr.success(SanteDB.locale.getString("ui.model.securityUser.saveSuccess"));
 
             $state.transitionTo("santedb-emr.system.users.index");
         }

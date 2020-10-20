@@ -99,6 +99,8 @@
     <string key="ui.emr.patient.register.duplicates">Potential Duplicates</string>
     <string key="ui.emr.patient.register.duplicates.instruction">The following patients are similar to the patient you have entered. Review the duplicates below to ensure you are not registering a duplicate</string>
     <string key="ui.emr.patient.register.duplicates.verification">I have verified this patient is not a duplicate</string>
+    <string key="ui.emr.patient.register.requiredFieldMissing">Required Fields Missing</string>
+    <string key="ui.emr.patient.downloading">Downloading patient data from central</string>
     <!-- Patient View -->
     <string key="org.santedb.emr.widget.patient.demographics">Demographics</string>
     <string key="org.santedb.emr.widget.patient.dashboard">Dashboard</string>
@@ -114,7 +116,7 @@
     <string key="ui.emr.mail">Mail</string>
     <string key="ui.emr.mail.new">New Messages</string>
     <string key="ui.emr.alerts">Alerts</string>
-
+    <string key="ui.emr.navigateConfirmation">Are you sure you want to leave this page? Any changes will be lost</string>
     <!-- System Info View -->
     <string key="ui.emr.system.info.coreInfo">System Information</string>
     <string key="ui.emr.system.info.version">Version Code</string>
@@ -139,5 +141,8 @@
     <string key="ui.emr.users.lockout">Lockout</string>
     <string key="ui.emr.users.updatedBy">Updated By</string>
     <string key="ui.emr.users.isAdmin">Make User Administrator</string>
+    <string key="ui.emr.mailError">Error retrieving mail</string>
+    <string key="ui.emr.tickleError">Error fetching alerts</string>
+    <string key="ui.emr.queueError">Error reading queue</string>
   </strings>
 </AppletManifest>
