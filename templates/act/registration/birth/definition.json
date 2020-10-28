@@ -1,0 +1,87 @@
+{
+    "$type": "Act",
+    "templateModel": {
+        "mnemonic": "org.santedb.emr.act.registration.birth"
+    },
+    "classConcept": "6be8d358-f591-4a3a-9a57-1889b0147c7e",
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+    "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+    "typeConcept": "f562e322-17ca-11eb-adc1-0242ac120002",
+    "actTime": "{{ $now }}",
+    "relationship": {
+        "HasComponent": [
+            {
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthWeight"
+                    }
+                }
+            },
+            {
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.heightLying"
+                    }
+                }
+            },
+            {
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthDeliveryLocation"
+                    }
+                }
+            },
+            {
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthDeliveryMethod"
+                    }
+                }
+            },
+            {
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthDeliveryOutcome"
+                    }
+                }
+            },
+            {
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.liveBirths"
+                    }
+                }
+            }
+        ]
+    },
+    "participation": {
+        "Location": {
+            "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+            "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+            "player": "{{ $facilityId }}"
+        },
+        "Authororiginator": {
+            "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+            "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+            "player": "{{ $userEntityId }}"
+        },
+        "RecordTarget": {
+            "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+            "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+            "player": "{{ $recordTargetId }}"
+        },
+        "Baby": {
+            "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+            "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+            "playerModel": {
+                "templateModel": {
+                    "mnemonic": "org.santedb.emr.patient.baby"
+                }
+            }
+        }
+    },
+    "tag": {
+        "$cascade:HasComponent:org.santedb.emr.observation.birthWeight" : "RecordTarget=Baby;Authororiginator;Location",
+        "$cascade:HasComponent:org.santedb.emr.observation.heightLying" : "RecordTarget=Baby;Authororiginator;Location"
+    }
+}

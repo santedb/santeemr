@@ -1,0 +1,11 @@
+{
+  "$type": "CodedObservation",
+  "templateModel": {
+    "mnemonic": "org.santedb.emr.observation.verification"
+  },
+  "classConcept": "28D022C6-8A8B-47C4-9E6A-2BC67308739E",
+  "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+  "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+  "typeConcept": "97513cbe-188f-11eb-adc1-0242ac120002",
+  "value": "97513b10-188f-11eb-adc1-0242ac120002"
+}

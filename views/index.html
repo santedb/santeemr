@@ -32,18 +32,18 @@
                         <a class="nav-link" href="javascript:"><i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}</a>
                     </li>
                     <li ng-repeat="m in menuItems track by $index" class="nav-item">
-                        <a class="nav-link" ng-if="!m.menu" ui-sref="{{ ::m.action }}" data-toggle="collapse"
+                        <a class="nav-link" ng-if="!m.menu" ui-sref="{{ ::m.action }}"
                             data-target=".navbar-collapse-small"  title="{{::c.text ||c.action | i18n}}">
                             <i class="{{m.icon}}"></i>
                             <span class="nav-link-text"> {{::m.text || m.action | i18n }}</span>
                         </a>
                         <a ng-if="m.menu" class="nav-link nav-link-collapse" ui-sref="{{ ::m.action }}"
-                            data-toggle="collapse" data-target="#Collapse{{$index}}" role="button" aria-haspopup="true"
+                            data-toggle="collapse" data-target="#MenuCollapse{{$index}}" role="button" aria-haspopup="true"
                             aria-expanded="false"  title="{{::c.text ||c.action | i18n}}">
                             <i class="{{m.icon}}"></i>
                             <span class="nav-link-text"> {{::m.text || m.action | i18n}}</span>
                         </a>
-                        <ul ng-if="m.menu" class="sidenav-second-level collapse" id="Collapse{{$index}}"  data-parent="#menuAccordian">
+                        <ul ng-if="m.menu" class="sidenav-second-level collapse" id="MenuCollapse{{$index}}"  data-parent="#menuAccordian">
                             <li ng-repeat="c in ::m.menu" title="{{c.text}}">
                                 <a ui-sref="{{ ::c.action }}" data-toggle="collapse"
                                     data-target=".navbar-collapse-small" title="{{::c.text ||c.action | i18n}}">

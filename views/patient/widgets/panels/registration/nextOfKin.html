@@ -43,7 +43,7 @@
                             class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.relationship.relationshipType' | i18n }}</label>
                         <div class="col-md-9 col-sm-12">
                             <concept-select concept-set="'FamilyMember'" 
-                                ng-model="rel.relationshipTypeModel" ng-change="rel._active = true" class="form-control" />
+                                ng-model="rel.relationshipTypeModel" exclude-concepts="[ '40d18ecc-8ff8-4e03-8e58-97a980f04060', '29ff64e5-b564-411a-92c7-6818c02a9e48' ]" ng-change="rel._active = true" class="form-control" />
                         </div>
                     </div>
                     <div ng-if="rel._active">

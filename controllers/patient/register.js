@@ -14,7 +14,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     // No template use the default
     var templateId = $state.templateId;
     if (!templateId) {
-        templateId = SanteDB.configuration.getAppSetting("template.patient") || "ui.emr.patient";
+        templateId = SanteDB.configuration.getAppSetting("template.patient") || "org.santedb.emr.patient";
     }
 
     // Synchronize ages of object

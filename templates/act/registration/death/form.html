@@ -1,0 +1,59 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <fieldset>
+        <legend><i class="fas fa-procedures"></i> {{ 'ui.emr.act.registration.death.person' | i18n }}</legend>
+        <div class="container-fluid">
+            <div class="form-group row">
+                <label
+                    class="col-sm-12 col-md-3 control-label">{{ 'ui.emr.act.registration.death.deceased' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    {{ act.participation.RecordTarget.playerModel.name | name }} ({{ act.participation.RecordTarget.playerModel.dateOfBirth | age }})
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                    class="col-sm-12 col-md-3 control-label required">{{ 'ui.model.patient.deceased' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    <div class="input-group m-0">
+                        <input class="form-control" type="date"
+                            ng-model="act.participation.RecordTarget.playerModel.deceasedDate"
+                            max="{{ $root.page.maxEventTime.tomorrow() | date: 'yyyy-MM-dd' }}"
+                            min="{{ act.participation.RecordTarget.playerModel.dateOfBirth | date: 'yyyy-MM-dd'}}" name="patientDeath"
+                            required="required" />
+                        <div class="input-group-append">
+                            <label class="input-group-text">
+                                <input type="checkbox"
+                                    ng-model="act.participation.RecordTarget.playerModel.deceasedDatePrecision" ng-true-value="1"
+                                    ng-false-value="3" />
+                                {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                            </label>
+                        </div>
+                    </div>
+                    <em input-help="true">{{ 'ui.emr.templates.registration.death.deceasedDate.help' | i18n }}</em>
+
+                    <div class="text-danger" ng-if="panel.editForm['patientDeath'].$invalid">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}</div>
+                </div>
+            </div>
+            <div class="form-group row" >
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.placeOfDeath' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    <entity-search type="'Place'" group-by="'address.Direct.component.State'"
+                        ng-model="act.participation.RecordTarget.playerModel.relationship.PlaceOfDeath.target"
+                        search-field="'name.component.value'"
+                        filter="{ 'statusConcept': 'c8064cbd-fa06-4530-b430-1a52f1530c27' }" />
+                    <em input-help="true">{{ 'ui.emr.templates.registration.death.placeOfDeath.help' | i18n }}</em>
+
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend><i class="fas fa-hospital"></i> {{ 'ui.emr.act.registration.death.event' | i18n }}</legend>
+        <div class="container-fluid">
+            <div ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
+                <ng-include src="resolveTemplateForm(act.templateModel.mnemonic)" />
+            </div>
+        </div>
+    </fieldset>
+
+</div>

@@ -1,0 +1,24 @@
+{
+    "$type": "Patient",
+    "templateModel": {
+        "mnemonic": "org.santedb.emr.patient"
+    },
+    "identifier": {
+    },
+    "name" : {
+        "OfficialRecord": {
+            "component": {
+                "Given":""
+            }
+        }
+    },
+    "address": {
+        "HomeAddress": {
+            "component": {
+                "CensusTract": ""
+            }
+        }
+    },
+    "dateOfBirth": "{{ $today }}",
+    "dateOfBirthPrecision": 3
+}

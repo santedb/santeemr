@@ -1,0 +1,17 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <div class="form-group row">
+        <label class="control-label col-md-3 col-sm-12">{{ act.typeConceptModel | concept }}</label>
+        <div class="col-md-9 col-sm-12">
+            <div class="input-group  mb-0">
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" ng-model="act._active"/>
+                    </div>
+                </div>
+                <concept-select ng-model="act.valueModel" ng-disabled="!act._active" concept-set="'DeliveryOutcome'" class="form-control"/>
+            </div>
+            <em input-help="true">{{ 'ui.emr.templates.observation.birthDeliveryOutcome.help' | i18n }}</em>
+
+        </div>
+    </div>
+</div>

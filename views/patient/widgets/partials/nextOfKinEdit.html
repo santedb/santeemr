@@ -1,34 +1,53 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    <name-edit is-required="rel._active" control-prefix="'nok' + rel.id" owner-form="panel.editForm" no-add="true" readonly="readonly" no-type="true" simple-entry="true" name="rel.targetModel.name" />
-    <div class="form-group row">
-        <label
-            class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.dateOfBirth' | i18n }}</label>
-        <div class="col-sm-12 col-md-9">
-            <div class="input-group m-0">
-                <input  class="form-control" ng-change="synchronizeAge(rel.targetModel, false)" ng-model="rel.targetModel.age" type="number" />
-                <div class="input-group-append" >
-                    <div class="input-group-text">
-                        {{ 'ui.emr.patient.ageOrDate' | i18n }}
+
+    <div ng-switch="rel.targetModel.$type">
+        <div ng-switch-when="Patient">
+                <!-- Give information related to the patient or person we're editing -->
+                <div class="alert alert-info d-flex justify-content-between">
+                    <span class="p-2">
+                        {{ 'ui.model.entity.relationship.structured' | i18n }}
+                    </span>
+                    <a class="btn btn-info" ui-sref="{ id: rel.targetModel.id }"><i
+                            class="fas fa-arrow-right"></i> {{ 'ui.action.view' | i18n }}</a>
+
+                </div>
+            <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinView.html" -->
+
+        </div>
+        <div ng-switch-default="">
+            <name-edit is-required="rel._active" control-prefix="'nok' + rel.id" owner-form="panel.editForm"
+                no-add="true" readonly="readonly" no-type="true" simple-entry="true" name="rel.targetModel.name" />
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.dateOfBirth' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    <div class="input-group m-0">
+                        <input class="form-control" ng-change="synchronizeAge(rel.targetModel, false)"
+                            ng-model="rel.targetModel.age" type="number" />
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                {{ 'ui.emr.patient.ageOrDate' | i18n }}
+                            </div>
+                        </div>
+                        <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control" type="date"
+                            ng-model="rel.targetModel.dateOfBirth" name="nok{{rel.id}}dob"
+                            ng-change="synchronizeAge(rel.targetModel, true)" ng-required="rel._active" />
+                        <div class="input-group-append">
+                            <label class="input-group-text">
+                                <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision" ng-true-value="1"
+                                    ng-false-value="3" />
+                                {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'dob'].$invalid">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n}}
                     </div>
                 </div>
-                <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control"
-                    type="date" ng-model="rel.targetModel.dateOfBirth"  
-                    name="nok{{rel.id}}dob"
-                    ng-change="synchronizeAge(rel.targetModel, true)" 
-                    ng-required="rel._active" />
-                <div class="input-group-append">
-                        <label class="input-group-text">
-                            <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision"
-                                ng-true-value="1" ng-false-value="3" />
-                            {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
-                        </label>
-                </div>
             </div>
-            <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'dob'].$invalid">
-                <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n}}
-            </div>
+            <telecom-edit single-edit="'MobileContact'" telecom="rel.targetModel.telecom" />
+            <address-edit is-required="rel._active" control-prefix="'nok' + rel.id" owner-form="panel.editForm"
+                no-add="true" no-type="true" simple-entry="true" address="rel.targetModel.address" />
+
         </div>
     </div>
-    <telecom-edit single-edit="'MobileContact'" telecom="rel.targetModel.telecom"/>
-    <address-edit is-required="rel._active"  control-prefix="'nok' + rel.id" owner-form="panel.editForm" no-add="true" no-type="true" simple-entry="true" address="rel.targetModel.address"/>
 </div>

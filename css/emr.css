@@ -55,3 +55,24 @@ label.checkbox-container {
     padding-left: 18px;
     position:relative;
 }
+
+
+div.vertical-tab-box > ul {
+    transform-origin: bottom right;
+    transform: rotate(-90deg);
+    margin-top: -24px;
+    width: 400px;
+    float:right
+}
+
+div.vertical-tab-box > div.tab-content {
+    border-right: 1px solid #0275d8;
+    width: calc(100% - 40px);
+    min-height: 400px
+}
+
+div.vertical-tab-box > ul > li.nav-item .active {
+    border-left: 1px solid #0275d8;
+    border-right: 1px solid #0275d8;
+}
+

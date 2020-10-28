@@ -5,7 +5,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
     $scope.synchronizeAge = synchronizeAge;
     $scope.tabHasError = tabHasError;
     $scope.copyFields = copyFields;
-
+    $scope.excludeRelationshipTypes = [];
     // Copy fields
     function copyFields(relationshipTarget) {
         if ($scope.scopedObject.relationship &&
@@ -152,6 +152,10 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                             }
                             if (!rel.relationshipTypeModel)
                                 rel.relationshipTypeModel = await SanteDB.resources.concept.getAsync(rel.relationshipType);
+
+                            if(rel.relationshipType == '40d18ecc-8ff8-4e03-8e58-97a980f04060' || 
+                                rel.relationshipType == '29ff64e5-b564-411a-92c7-6818c02a9e48')
+                                $scope.excludeRelationshipTypes.push(rel.relationshipType);
                         });
 
                         await Promise.all(promises);

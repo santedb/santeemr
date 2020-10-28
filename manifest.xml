@@ -71,10 +71,113 @@
   </viewModel>
   -->
 
-  <template mnemonic="ui.emr.patient" public="true">
-    <definition>/ui.emr/templates/ui.emr.patient.json</definition>
+  <!-- SanteEMR Templates are in the Fyfe Software Community OID (1.3.6.1.4.1.52820.5) in SanteEMR  (.2)  -->
+
+  <!-- Patient Templates -->
+  <template mnemonic="org.santedb.emr.patient" public="true">
+    <definition>/org.santedb.emr/templates/patient/adt/definition.json</definition>
     <scope>org.santedb.patient</scope>
+    <oid>1.3.6.1.4.1.52820.5.2.0.1</oid>
   </template>
+  <template mnemonic="org.santedb.emr.patient.baby" public="false">
+    <definition>/org.santedb.emr/templates/patient/baby/definition.json</definition>
+    <oid>1.3.6.1.4.1.52820.5.2.0.2</oid>
+    <description>Newborn Information</description>
+  </template>
+
+  <!-- Observation Templates -->
+  <template mnemonic="org.santedb.emr.observation.cod" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/cod/definition.json</definition>
+    <scope>org.santedb.emr.observation.death</scope>
+    <form>/org.santedb.emr/templates/act/observation/cod/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/cod/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.1</oid>
+    <description>Cause Of Death</description>
+  </template>
+  <template mnemonic="org.santedb.emr.observation.birthDeliveryLocation" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/birthDeliveryLocation/definition.json</definition>
+    <scope>org.santedb.emr.act.registration.birth</scope>
+    <form>/org.santedb.emr/templates/act/observation/birthDeliveryLocation/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/birthDeliveryLocation/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.2</oid>
+    <description>Birth Location</description>
+  </template>
+  <template mnemonic="org.santedb.emr.observation.birthDeliveryMethod" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/birthDeliveryMethod/definition.json</definition>
+    <scope>org.santedb.emr.act.registration.birth</scope>
+    <form>/org.santedb.emr/templates/act/observation/birthDeliveryMethod/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/birthDeliveryMethod/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.3</oid>
+    <description>Birth Delivery Method</description>
+  </template>
+  <template mnemonic="org.santedb.emr.observation.birthDeliveryOutcome" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/birthDeliveryOutcome/definition.json</definition>
+    <scope>org.santedb.emr.act.registration.birth</scope>
+    <form>/org.santedb.emr/templates/act/observation/birthDeliveryOutcome/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/birthDeliveryOutcome/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.4</oid>
+    <description>Birth Delivery Outcome</description>
+  </template>
+  <template mnemonic="org.santedb.emr.observation.birthWeight" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/birthWeight/definition.json</definition>
+    <scope>org.santedb.emr.act.registration.birth</scope>
+    <form>/org.santedb.emr/templates/act/observation/birthWeight/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/birthWeight/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.5</oid>
+    <description>Birth Weight</description>
+  </template>
+  <template mnemonic="org.santedb.emr.observation.heightLying" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/heightLying/definition.json</definition>
+    <scope>org.santedb.emr.act.registration.birth</scope>
+    <scope>org.santedb.model.patientEncounter</scope>
+    <form>/org.santedb.emr/templates/act/observation/heightLying/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/heightLying/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.6</oid>
+    <description>Body Height (Lying Down)</description>
+  </template>
+  <template mnemonic="org.santedb.emr.observation.liveBirths" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/liveBirths/definition.json</definition>
+    <scope>org.santedb.emr.act.registration.birth</scope>
+    <form>/org.santedb.emr/templates/act/observation/liveBirths/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/liveBirths/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.7</oid>
+    <description># of Live Births</description>
+  </template>
+  <template mnemonic="org.santedb.emr.observation.death" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/death/definition.json</definition>
+    <scope>org.santedb.emr.act.registration.death</scope>
+    <form>/org.santedb.emr/templates/act/observation/death/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/death/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.8</oid>
+    <description>Clinical Death</description>
+  </template>
+  <template mnemonic="org.santedb.emr.observation.verification" public="true">
+    <definition>/org.santedb.emr/templates/act/observation/verification/definition.json</definition>
+    <form>/org.santedb.emr/templates/act/observation/verification/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/verification/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.1.8</oid>
+    <description>Verification Status</description>
+  </template>
+
+  <!-- Registration Templates -->
+  <template mnemonic="org.santedb.emr.act.registration.birth" public="true">
+    <definition>/org.santedb.emr/templates/act/registration/birth/definition.json</definition>
+    <scope>org.santedb.model.act</scope>
+    <form>/org.santedb.emr/templates/act/registration/birth/form.html</form>
+    <view>/org.santedb.emr/templates/act/registration/birth/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.2.1</oid>
+    <description>Birth Registration</description>
+  </template>
+  <template mnemonic="org.santedb.emr.act.registration.death" public="true">
+    <definition>/org.santedb.emr/templates/act/registration/death/definition.json</definition>
+    <scope>org.santedb.model.act</scope>
+    <form>/org.santedb.emr/templates/act/registration/death/form.html</form>
+    <view>/org.santedb.emr/templates/act/registration/death/view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.2.2</oid>
+    <description>Death Registration</description>
+  </template>
+  
+
 
   <strings lang="en">
     <string key="ui.directConnect">Direct Connect to Server</string>
@@ -144,5 +247,46 @@
     <string key="ui.emr.mailError">Error retrieving mail</string>
     <string key="ui.emr.tickleError">Error fetching alerts</string>
     <string key="ui.emr.queueError">Error reading queue</string>
+
+    <!-- Clinical History -->
+    <string key="org.santedb.emr.widget.patient.act">Clinical History</string>
+    
+    <!-- Encounters -->
+    <string key="org.santedb.emr.widget.patient.act.qentry">New Entry</string>
+    <string key="org.santedb.emr.widget.patient.encounter">Visits &amp; Encounters</string>
+    <string key="org.santedb.emr.widget.patient.encounter.qvisit">Encounter / Visit</string>
+    <string key="ui.emr.patient.encounter.cover.title">Cover Page</string>
+    <string key="ui.emr.patient.encounter.detail.title">Details</string>
+    <string key="ui.emr.patient.encounter.notes.title">Notes</string>
+
+    <!-- Birth Template -->
+    <string key="ui.emr.act.registration.birth.baby">Newborn Demographics</string>
+    <string key="ui.emr.act.registration.birth.event">Birth Event Information</string>
+
+    <!-- Deceased Date -->
+    <string key="ui.emr.act.registration.death.person">Deceased Person</string>
+    <string key="ui.emr.act.registration.death.event">Death Details</string>
+    <string key="ui.emr.act.registration.death.time">Official Date/Time Death</string>
+    <string key="ui.emr.act.registration.death.deceased">Name of Deceased</string>
+    <string key="ui.emr.act.registration.death.officialDeath">Official declaration of death</string>
+    <!-- Template Translations -->
+    <string key="org.santedb.emr.patient">Patient</string>
+    <string key="org.santedb.emr.act.observation.cod">Cause of Death</string>
+    <string key="org.santedb.emr.act.registration.birth">Birth Registration</string>
+    <string key="org.santedb.emr.act.registration.death">Death Registration</string>
+    
+    <!-- Help Text -->
+    <string key="ui.emr.templates.observation.birthWeight.help">The measured weight at time of birth (if known)</string>
+    <string key="ui.emr.templates.observation.heightLying.help">The length of the patient when lying down</string>
+    <string key="ui.emr.templates.observation.birthDeliveryLocation.help">The location of the birth (hospital, home, etc.)</string>
+    <string key="ui.emr.templates.observation.birthDeliveryMethod.help">The method of delivery (vaginal, caesarean, etc.)</string>
+    <string key="ui.emr.templates.observation.birthDeliveryOutcome.help">The outcome of the the birth</string>
+    <string key="ui.emr.templates.observation.liveBirths.help">The number of live births of the mother</string>
+    <string key="ui.emr.templates.registration.death.deceasedDate.help">The date of death of the patient</string>
+    <string key="ui.emr.templates.registration.death.placeOfDeath.help">The location (township, hospital, etc.) where the death occurred</string>
+    <string key="ui.emr.templates.observation.cod.help">The official cause of death (if known)</string>
+    <string key="ui.emr.templates.observation.verification.help">The verification status of the death (if known)</string>
+    <string key="ui.emr.templates.observation.death.help">The official date and time of the patient's death (when the patient was declared dead)</string>
+
   </strings>
 </AppletManifest>
