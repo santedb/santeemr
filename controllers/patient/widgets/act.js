@@ -1,11 +1,20 @@
 /// <reference path="../../../.ref/js/santedb.js"/>
-angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$rootScope', '$stateParams', function ($scope, $rootScope, $stateParams) {
+angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$rootScope', '$stateParams', '$state', function ($scope, $rootScope, $stateParams, $state) {
 
     var _templates = [];
 
     // The act which is being constructed 
     $scope.act = {};
 
+    $scope.copyAddress = function(fromAddress) {
+
+        if(fromAddress) {
+            var addr = angular.copy(fromAddress);
+            addr.id = null;
+            return addr;
+        }
+        return null;
+    }
     $scope.$watch("act.$templateContext", function (n, o) {
         if (n == "org.santedb.model.act" && $stateParams.templateId) {
             $scope.act.$noTemplate = true;
@@ -17,7 +26,7 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
                 $('html,body').animate({
                     scrollTop: $("#actEntryDiv").offset().top - 230
                 },
-                    'slow');
+                    'fast');
             }, 500);
 
         }
@@ -30,45 +39,52 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
     function cascadeProperties(source) {
 
         source.tag = source.tag || {};
-        var cascadeInstructions = Object.keys(source.tag).filter(o=>o.indexOf("$cascade:") == 0);
-        cascadeInstructions.forEach(function(instruction) {
+        source.tag["$cascade:*:*"] = "Location;Authororiginator";
+
+        var cascadeInstructions = Object.keys(source.tag).filter(o => o.indexOf("$cascade:") == 0);
+
+        cascadeInstructions.forEach(function (instruction) {
             var targetTemplate = instruction.split(':');
             var cascadeInstructions = source.tag[instruction].split(';');
 
-            if(targetTemplate.length != 3)
-                {
-                    console.error("Cascade control tag should be in format: $cascade:RelationshipType:template-id");
+            if (targetTemplate.length != 3) {
+                console.error("Cascade control tag should be in format: $cascade:RelationshipType:template-id");
+                return;
+            }
+            // Find the participation with that template
+            if (targetTemplate[1] == "*") {
+                searchRelationship = Object.keys(source.relationship).map(key => source.relationship[key]).flat();
+            }
+            else {
+                var searchRelationship = source.relationship[targetTemplate[1]];
+                if (searchRelationship == null) {
+                    console.warn("Cannot find indicated path", targetTemplate[1]);
                     return;
                 }
-            // Find the participation with that template
-            var searchRelationship = source.relationship[targetTemplate[1]];
-            if(searchRelationship == null) {
-                console.warn("Cannot find indicated path", targetTemplate[1]);
-                return;
             }
 
             // Find the object with the specified template
-            if(!Array.isArray(searchRelationship))
+            if (!Array.isArray(searchRelationship))
                 searchRelationship = [searchRelationship];
-            
-            searchRelationship
-                .filter(o=>o.targetModel != null && o.targetModel.templateModel != null && o.targetModel.templateModel.mnemonic == targetTemplate[2])
-                .forEach(function(relationship) {
 
-                    if(!relationship.targetModel.participation)
+            searchRelationship
+                .filter(o => o.targetModel != null && o.targetModel.templateModel != null && (o.targetModel.templateModel.mnemonic == targetTemplate[2] || targetTemplate[2] == "*"))
+                .forEach(function (relationship) {
+
+                    if (!relationship.targetModel.participation)
                         relationship.targetModel.participation = {};
 
-                    cascadeInstructions.map(function(instruction) {
-                            var data = instruction.split('=');
-                            if(data.length == 1)
-                                return { sourceRole : data[0], targetRole: data[0] };
-                            else if(data.length == 2)
-                                return { sourceRole : data[1], targetRole: data[0] };
-                        })
-                        .forEach(function(instruction) {
-                            if(!relationship.targetModel.participation[instruction.targetRole]) // Only cascade if not specified
+                    cascadeInstructions.map(function (instruction) {
+                        var data = instruction.split('=');
+                        if (data.length == 1)
+                            return { sourceRole: data[0], targetRole: data[0] };
+                        else if (data.length == 2)
+                            return { sourceRole: data[1], targetRole: data[0] };
+                    })
+                        .forEach(function (instruction) {
+                            if (!relationship.targetModel.participation[instruction.targetRole]) // Only cascade if not specified
                                 relationship.targetModel.participation[instruction.targetRole] = source.participation[instruction.sourceRole];
-                    });
+                        });
 
                 });
         });
@@ -87,20 +103,39 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
         var retVal = new Bundle({ resource: [] });
         retVal.resource.unshift(source);
 
-        // Participations need to be added
-        if(source.participation) {
-            Object.keys(source.participation)
-                .forEach(function(role) {
-                    var participations = source.participation[role];
-                    if(!Array.isArray(participations))
-                        participations = [participations];
-                    
-                    // Now we want to add player model to the bundle and generate a key if needed
-                    participations.filter(o=>o.playerModel || o.actModel).forEach(function(ptcpt) {
+         // Attach any additional information?
+         if(source.tag && source.tag.$attach) {
+            source.tag.$attach.split(';').forEach(function(att) {
+                var attResource = source.participation[att];
+                if(!Array.isArray(attResource))
+                    attResource = [ attResource ];
+                
+                attResource.forEach(function(ptcpt) {
+                    if(ptcpt && ptcpt.playerModel) {
+                        retVal.resource.unshift(ptcpt.playerModel);
+                        ptcpt.player = ptcpt.playerModel.id;
+                        delete(ptcpt.playerModel);
+                    }
+                })
+                
+            });
+        }
 
-                        if(ptcpt.playerModel) // Generate ID 
+
+        // Participations need to be added
+        if (source.participation) {
+            Object.keys(source.participation)
+                .forEach(function (role) {
+                    var participations = source.participation[role];
+                    if (!Array.isArray(participations))
+                        participations = [participations];
+
+                    // Now we want to add player model to the bundle and generate a key if needed
+                    participations.filter(o => o.playerModel || o.actModel).forEach(function (ptcpt) {
+
+                        if (ptcpt.playerModel) // Generate ID 
                         {
-                            if(!ptcpt.playerModel.id || ptcpt.player != ptcpt.playerModel.id) // can submit
+                            if (!ptcpt.playerModel.id || ptcpt.player != ptcpt.playerModel.id) // can submit
                             {
                                 ptcpt.playerModel.id = ptcpt.playerModel.id || SanteDB.application.newGuid();
                                 ptcpt.player = ptcpt.playerModel.id;
@@ -114,42 +149,42 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
                             createSubmissionBundle(ptcpt.actModel).resource.forEach((o) => retVal.resource.unshift(o));
                         }
 
-                        delete(ptcpt.playerModel); 
-                        delete(ptcpt.actModel); 
+                        delete (ptcpt.playerModel);
+                        delete (ptcpt.actModel);
                     });
                 });
         }
 
         // Relationships if active and if they have targetModel
-        if(source.relationship) {
+        if (source.relationship) {
             Object.keys(source.relationship)
-            .forEach(function(role) {
-                var relationships = source.relationship[role];
-                if(!Array.isArray(relationships))
-                    relationships = [relationships];
-                
-                // Now we want to add player model to the bundle and generate a key if needed
-                source.relationship[role] = relationships.filter(o=>o._active || o.targetModel && o.targetModel._active || o.holderModel && o.holderModel._active).map(function(rel) {
-                    if(rel.targetModel) // Generate ID
-                    {
-                        rel.targetModel.id = rel.targetModel.id || SanteDB.application.newGuid();
-                        rel.target = rel.targetModel.id;
-                        createSubmissionBundle(rel.targetModel).resource.forEach((o) => retVal.resource.unshift(o));
-                    }
-                    else {
-                        rel.holderModel.id = rel.holderModel.id || SanteDB.application.newGuid();
-                        rel.holder = rel.holderModel.id;
-                        createSubmissionBundle(rel.holderModel).resource.forEach((o) => retVal.resource.unshift(o));
-                    }
-                    // Set ID and add to bundle
-                    delete(rel.targetModel); 
-                    delete(rel.holderModel); 
+                .forEach(function (role) {
+                    var relationships = source.relationship[role];
+                    if (!Array.isArray(relationships))
+                        relationships = [relationships];
 
-                    return rel;
+                    // Now we want to add player model to the bundle and generate a key if needed
+                    source.relationship[role] = relationships.filter(o => o._active || o.targetModel && o.targetModel._active || o.holderModel && o.holderModel._active).map(function (rel) {
+                        if (rel.targetModel) // Generate ID
+                        {
+                            rel.targetModel.id = rel.targetModel.id || SanteDB.application.newGuid();
+                            rel.target = rel.targetModel.id;
+                            createSubmissionBundle(rel.targetModel).resource.forEach((o) => retVal.resource.unshift(o));
+                        }
+                        else {
+                            rel.holderModel.id = rel.holderModel.id || SanteDB.application.newGuid();
+                            rel.holder = rel.holderModel.id;
+                            createSubmissionBundle(rel.holderModel).resource.forEach((o) => retVal.resource.unshift(o));
+                        }
+                        // Set ID and add to bundle
+                        delete (rel.targetModel);
+                        delete (rel.holderModel);
+
+                        return rel;
+                    });
                 });
-            });
         }
-        
+
         return retVal;
     }
 
@@ -172,8 +207,8 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
 
                 rawValue.forEach(function (value) {
                     if (value && key.endsWith("Model")) {
-                        
-                        
+
+
                         // Get the key property
                         var keyProperty = key.substring(0, key.length - 5);
                         var keyValue = object[keyProperty];
@@ -206,7 +241,7 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
             var noTpl = $scope.act.$noTemplate;
             if (_templates.length == 0)
                 _templates = await SanteDB.application.getTemplateDefinitionsAsync();
-            $scope.act = await SanteDB.application.getTemplateContentAsync(templateId, { 
+            $scope.act = await SanteDB.application.getTemplateContentAsync(templateId, {
                 "recordTargetId": $stateParams.patientId || $stateParams.id
             });
             $scope.act.$templateUrl = _templates.find(o => o.mnemonic == templateId).form;
@@ -215,7 +250,7 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
             $scope.act.$noTemplate = noTpl;
 
             if ($scope.act.participation.RecordTarget) {
-                $scope.act.participation.RecordTarget.playerModel = $scope.editObject = angular.copy($scope.scopedObject);
+                $scope.act.participation.RecordTarget[0].playerModel = $scope.editObject = angular.copy($scope.scopedObject);
             }
         }
         catch (e) {
@@ -260,13 +295,22 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
 
             var act = angular.copy($scope.act);
             act = cascadeProperties(act);
-            console.info(act);
             // First, we want to scrub the model of any Model objects 
             var submission = createSubmissionBundle(act);
-            console.info(submission);
-            submission.resource = scrubModelProperties(submission.resource);
-            console.info(submission);
 
+            
+            submission.resource = scrubModelProperties(submission.resource);
+            submission.resource.forEach(o=>!o.actTime || o.actTime.getYear()  == -1900 ? act.actTime : o.actTime);
+
+           
+            submission = await SanteDB.resources.bundle.insertAsync(submission);
+            var pscope = $scope;
+            while (pscope.$parent.scopedObject)
+                pscope = pscope.$parent;
+            pscope.scopedObject = await SanteDB.resources.patient.getAsync($scope.scopedObject.id, "full"); // re-fetch the patient
+            pscope.editObject = angular.copy(pscope.scopedObject);
+            toastr.success(SanteDB.locale.getString("ui.model.act.saveSuccess"));
+            $state.transitionTo("santedb-emr.patient.view", { id: $stateParams.id });
         }
         catch (e) {
             $rootScope.errorHandler(e);

@@ -35,5 +35,8 @@
       "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
       "player": "{{ $recordTargetId }}"
     }
+  },
+  "tag": {
+    "$cascade:HasComponent:*" : "RecordTarget;Authororiginator;Location"
   }
 }

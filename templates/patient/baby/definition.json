@@ -1,7 +1,7 @@
 {
     "$type": "Patient",
     "templateModel": {
-        "mnemonic": "org.santedb.emr.baby"
+        "mnemonic": "org.santedb.emr.patient.baby"
     },
     "identifier": {
     },
@@ -9,13 +9,6 @@
         "OfficialRecord": {
             "component": {
                 "Given":""
-            }
-        }
-    },
-    "address": {
-        "HomeAddress": {
-            "component": {
-                "CensusTract": ""
             }
         }
     },

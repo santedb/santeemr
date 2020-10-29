@@ -1,18 +1,12 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
 
-    <div ng-switch="rel.targetModel.$type">
+    <div ng-if="rel._inverse">
+        <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinView.html" -->
+    </div>
+
+    <div ng-if="!rel._inverse" ng-switch="rel.targetModel.$type">
         <div ng-switch-when="Patient">
-                <!-- Give information related to the patient or person we're editing -->
-                <div class="alert alert-info d-flex justify-content-between">
-                    <span class="p-2">
-                        {{ 'ui.model.entity.relationship.structured' | i18n }}
-                    </span>
-                    <a class="btn btn-info" ui-sref="{ id: rel.targetModel.id }"><i
-                            class="fas fa-arrow-right"></i> {{ 'ui.action.view' | i18n }}</a>
-
-                </div>
             <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinView.html" -->
-
         </div>
         <div ng-switch-default="">
             <name-edit is-required="rel._active" control-prefix="'nok' + rel.id" owner-form="panel.editForm"

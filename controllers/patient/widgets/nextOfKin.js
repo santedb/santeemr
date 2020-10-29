@@ -8,11 +8,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
     $scope.excludeRelationshipTypes = [];
     // Copy fields
     function copyFields(relationshipTarget) {
-        if ($scope.scopedObject.relationship &&
-            $scope.scopedObject.relationship[relationshipTarget] &&
-            $scope.scopedObject.relationship[relationshipTarget].targetModel) {
-            $scope.scopedObject.relationship[relationshipTarget].targetModel.address = angular.copy($scope.scopedObject.address);
-        }
+        relationshipTarget.address = angular.copy($scope.scopedObject.address);
     }
     // Determine if tab has error
     function tabHasError(tabInputPrefix) {
@@ -50,6 +46,8 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
 
             if ($scope.newRelationship._active)
                 relationships.push(angular.copy($scope.newRelationship));
+
+            relationships = relationships.filter(o => !o._inverse);
             var submissionBundle = new Bundle({ resource: [patient] });
 
             // Process relationships
@@ -124,7 +122,31 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                         $scope.familyMemberRelationships = rels.resource.map(o => o.mnemonic);
 
                         if (n.id) // existing patient => we are in edit mode
+                        {
                             $scope.relationships = Object.keys(n.relationship).filter(o => $scope.familyMemberRelationships.indexOf(o) > -1).map(o => angular.copy(n.relationship[o])).flat();
+
+                            // Find the reverse relationships
+                            var filter = {
+                                "target": n.id,
+                                "relationshipType.conceptSet.mnemonic": "FamilyMember"
+                            };
+                            var reverseRelationships = await SanteDB.resources.entityRelationship.findAsync(filter, "reverseRelationship");
+                            if (reverseRelationships.resource) {
+                                for (var i in reverseRelationships.resource) {
+                                    try {
+                                        var rel = reverseRelationships.resource[i];
+                                        rel._inverse = true;
+
+                                        if (!rel.holderModel)
+                                            rel.targetModel = await SanteDB.resources.entity.getAsync(rel.holder, "full");
+                                        $scope.relationships.push(rel);
+                                    }
+                                    catch(e) {
+                                        console.warn("Ignoring relationship");
+                                    }
+                                }
+                            }
+                        }
                         else  // new patient => registration mode
                             $scope.relationships = Object.keys(n.relationship).filter(o => $scope.familyMemberRelationships.indexOf(o) > -1).map(o => n.relationship[o]).flat();
 
@@ -136,16 +158,16 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                                 rel.id = SanteDB.application.newGuid();
 
                             if (rel.source && rel.source != n.id || rel.holder && !rel.holder == n.id) {
-                                if(n._upstream)
+                                if (n._upstream)
                                     rel.sourceModel = await SanteDB.resources.entity.getAsync({ id: rel.source || rel.holder, _upstream: true }, "full");
-                                else 
+                                else
                                     rel.sourceModel = await SanteDB.resources.entity.getAsync(rel.source || rel.holder, "full");
                                 rel.inverse = true;
                             }
                             else if (!rel.targetModel && rel.target) {
-                                if(n._upstream)
+                                if (n._upstream)
                                     rel.targetModel = await SanteDB.resources.entity.getAsync({ id: rel.target, _upstream: true }, "full");
-                                else 
+                                else
                                     rel.targetModel = await SanteDB.resources.entity.getAsync(rel.target, "full");
 
                                 rel.targetModel.relationship = rel.targetModel.relationship || {};
@@ -153,7 +175,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                             if (!rel.relationshipTypeModel)
                                 rel.relationshipTypeModel = await SanteDB.resources.concept.getAsync(rel.relationshipType);
 
-                            if(rel.relationshipType == '40d18ecc-8ff8-4e03-8e58-97a980f04060' || 
+                            if (rel.relationshipType == '40d18ecc-8ff8-4e03-8e58-97a980f04060' ||
                                 rel.relationshipType == '29ff64e5-b564-411a-92c7-6818c02a9e48')
                                 $scope.excludeRelationshipTypes.push(rel.relationshipType);
                         });

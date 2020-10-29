@@ -12,7 +12,10 @@
                 <a class="nav-link" ng-class="{'active': $index == 0}" data-target="#{{rel.relationshipTypeModel.mnemonic}}{{$index}}relative"
                     data-toggle="tab">
                     <span ng-if="rel.relationshipTypeModel">
-                        <i class="fa fa-user-friends"></i> {{ rel.relationshipTypeModel | concept }}
+                        <i class="fa fa-user-friends"></i> 
+                        <span ng-if="rel._inverse"> {{ 'ui.model.entityRelationship.inverse.prefix' | i18n }}</span>
+                        {{ rel.relationshipTypeModel | concept }}
+                        <span ng-if="rel._inverse"> {{ 'ui.model.entityRelationship.inverse.suffix' | i18n }}</span>
                         <i class="fa fa-exclamation-triangle text-danger" ng-if="tabHasError('nok' + rel.id)"></i>
                     </span>
                 </a>

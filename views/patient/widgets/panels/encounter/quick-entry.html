@@ -4,7 +4,7 @@
         type="Panel" context="org.santedb.patient.act" >
         <sdb:icon>fas fa-notes-medical</sdb:icon>
         <sdb:description lang="en">New Entry</sdb:description>
-        <sdb:guard>!scopedObject._upstream</sdb:guard>
+        <sdb:guard>!scopedObject._upstream &amp;&amp; !scopedObject.deceasedDate</sdb:guard>
     </sdb:widget>
 
     <div id="actEntryDiv" ng-controller="EmrActWidgetController">

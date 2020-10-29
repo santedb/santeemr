@@ -88,6 +88,31 @@
                     {{ act.participation.Baby[0].playerModel.relationship.Mother[0].targetModel.name | name }} ({{ act.participation.Baby[0].playerModel.relationship.Mother[0].targetModel.dateOfBirth | age }})
                 </div>
             </div>
+            <div class="form-group row">
+                <label
+                    class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.address' | i18n }}</label>
+                <div class="col-sm-12 col-md-9" ng-init="act.participation.Baby[0].playerModel.address = copyAddress(scopedObject.address.HomeAddress)">
+                    {{ act.participation.Baby[0].playerModel.address | address }}
+                </div>
+            </div>
+            <div class="form-group row" ng-if="act.participation.Baby[0].playerModel.deceasedDate">
+                <label
+                    class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.deceased' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    {{ act.participation.Baby[0].playerModel.deceasedDate | extDate: act.participation.Baby[0].playerModel.deceasedDatePrecision }}
+                    <span class="badge badge-dark">{{ 'ui.model.patient.deceasedIndicator' | i18n }}</span>
+                </div>
+            </div>
+            <div ng-if=" act.participation.Baby[0].playerModel.relationship.PlaceOfDeath[0].target" class="row">
+                <label class="col-sm-3 col-xs-12 control-label">{{ 'ui.model.patient.placeOfDeath' | i18n }}</label>
+                <div class="col-sm-9 col-xs-12">
+                    <entity-search type="'Place'" group-by="'address.Direct.component.State'"
+                        ng-model="act.participation.Baby[0].playerModel.relationship.PlaceOfDeath[0].target"
+                        disabled="disabled"
+                        search-field="'name.component.value'"
+                        filter="{ 'statusConcept': 'c8064cbd-fa06-4530-b430-1a52f1530c27' }" />
+                </div>
+            </div>
         </div>
     </fieldset>
     <fieldset>

@@ -31,8 +31,8 @@ function renderPatientSummary(patient) {
     retVal += `<i class='fas fa-birthday-cake'></i> ${SanteDB.display.renderDate(patient.dateOfBirth, patient.dateOfBirthPrecision)} `;
 
     // Deceased?
-    if (retVal.deceasedDate)
-        retVal += `<span class='badge badge-dark'>${SanteDB.locale.getString("ui.model.patient.deceased")}</span>`;
+    if (patient.deceasedDate)
+        retVal += `<span class='badge badge-dark'>${SanteDB.locale.getString("ui.model.patient.deceasedIndicator")}</span>`;
 
     // Gender
     switch (patient.genderConceptModel.mnemonic) {

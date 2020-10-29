@@ -1,17 +1,51 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    <div class="form-group row">
+
+    <script nonce="{{ $csp_nonce }}" type="text/javascript">
+    ///<![CDATA[
+        var scope = angular.element('#deliveryOutcomeHandler').scope();
+        scope.$watch("act.valueModel", function (n, o) {
+            console.info(n);
+            if (n && n.id) {
+                if (n.id == '023859e6-1867-11eb-adc1-0242ac120002') {
+                    var scp = scope;
+                    while (!scp.act || !scp.act.participation || !scp.act.participation.Baby)
+                        scp = scp.$parent;
+                    console.info(scp.act);
+                    var baby = scp.act.participation.Baby[0].playerModel;
+                    baby.deceasedDate = baby.dateOfBirth;
+                    baby.deceasedDatePrecision = baby.dateOfBirthPrecision;
+                    if(baby.relationship && baby.relationship.Birthplace)
+                        baby.relationship.PlaceOfDeath = angular.copy(baby.relationship.Birthplace);
+                }
+                else {
+                    var scp = scope;
+                    while (!scp.act || !scp.act.participation || !scp.act.participation.Baby)
+                        scp = scp.$parent;
+                    console.info(scp.act);
+                    var baby = scp.act.participation.Baby[0].playerModel;
+                    delete (baby.deceasedDate);
+                    delete (baby.deceasedDatePrecision);
+                    if(baby.relationship)
+                        delete(baby.relationship.PlaceOfDeath);
+                }
+            }
+        });
+        ///]]>
+    </script>
+
+    <div class="form-group row" id="deliveryOutcomeHandler">
         <label class="control-label col-md-3 col-sm-12">{{ act.typeConceptModel | concept }}</label>
         <div class="col-md-9 col-sm-12">
             <div class="input-group  mb-0">
                 <div class="input-group-prepend">
                     <div class="input-group-text">
-                        <input type="checkbox" ng-model="act._active"/>
+                        <input type="checkbox" ng-model="act._active" />
                     </div>
                 </div>
-                <concept-select ng-model="act.valueModel" ng-disabled="!act._active" concept-set="'DeliveryOutcome'" class="form-control"/>
+                <concept-select ng-model="act.valueModel" ng-disabled="!act._active" concept-set="'DeliveryOutcome'"
+                    class="form-control" />
             </div>
             <em input-help="true">{{ 'ui.emr.templates.observation.birthDeliveryOutcome.help' | i18n }}</em>
-
         </div>
     </div>
 </div>

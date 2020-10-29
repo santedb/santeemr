@@ -10,7 +10,8 @@
             <li class="nav-item" ng-repeat="rel in relationships track by $index" role="presentation">
                 <a class="nav-link" ng-class="{'active': $index == 0}" data-target="#{{rel.relationshipTypeModel.mnemonic}}relative"
                     data-toggle="tab">
-                    <i class="fa fa-user-friends"></i> {{ rel.relationshipTypeModel | concept }}
+                    <i class="fa fa-user-friends"></i>
+                    {{ rel.relationshipTypeModel | concept }}
                     <i class="fa fa-exclamation-triangle text-danger" ng-if="tabHasError('nok' + rel.id)"></i>
                 </a>
             </li>
@@ -26,7 +27,7 @@
                 <div class="container mt-2">
                     <div class="form-group row">
                         <label class="col-sm-12 col-md-9 offset-md-3 checkbox-container">
-                            <input type="checkbox" class="checkbox-control" ng-change="copyFields(rel.relationshipTypeModel.mnemonic)" ng-model="rel._active" />
+                            <input type="checkbox" class="checkbox-control" ng-change="copyFields(rel.targetModel)" ng-model="rel._active" />
                             <span></span>
                             {{ 'ui.emr.patient.relationship.activate' | i18n }} {{ rel.relationshipTypeModel | concept }}
                         </label>
