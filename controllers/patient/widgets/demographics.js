@@ -16,7 +16,7 @@ angular.module('santedb').controller('EmrDemographicsWidgetController', ['$scope
             await correctEntityInformation(submissionObject);
 
             // Bundle to be submitted
-            var bundle = new Bundle({ resource: [submissionObject] });
+            var bundle = new Bundle({ id:SanteDB.application.newGuid(),  resource: [submissionObject] });
 
             // Now have any of our relationships changed?
             if (submissionObject.relationship) {
@@ -27,7 +27,7 @@ angular.module('santedb').controller('EmrDemographicsWidgetController', ['$scope
                 })
             }
 
-            await SanteDB.resources.bundle.insertAsync(bundle);
+            await SanteDB.resources.bundle.updateAsync(bundle.id,  bundle);
 
             var pscope = $scope;
             while (pscope.$parent.scopedObject)

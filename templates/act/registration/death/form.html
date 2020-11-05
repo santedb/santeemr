@@ -47,7 +47,7 @@
             </div>
         </div>
     </fieldset>
-    <fieldset>
+    <fieldset ng-if="act.relationship.HasComponent">
         <legend><i class="fas fa-hospital"></i> {{ 'ui.emr.act.registration.death.event' | i18n }}</legend>
         <div class="container-fluid">
             <div ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
