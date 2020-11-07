@@ -74,17 +74,36 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                         if (name.component) {
                             Object.keys(name.component).forEach(function (componentType) {
                                 if (nameType == "$other")
-                                    duplicateQuery[`name.component[${componentType}].value`] = `~${name.component[componentType]}`; //`:(approx|"${name.component[componentType]}")`;
+                                    duplicateQuery[`name.component[${componentType}].value`] = `:(approx|${name.component[componentType]})`; //`:(approx|"${name.component[componentType]}")`;
                                 else
                                     duplicateQuery[`name[${nameType}].component[${componentType}].value`] = `:(approx|"${name.component[componentType]}")`;
                             });
                         }
                     });
                 });
+            if($scope.patient.address) 
+                Object.keys($scope.patient.address).forEach(function (addressType) {
 
+                    if(addressType != "County" && addressType != "State")
+                        return; 
+                        
+                    if (!Array.isArray($scope.patient.address[addressType]))
+                        $scope.patient.address[addressType] = [$scope.patient.address[addressType]];
+
+                    $scope.patient.address[addressType].forEach(function (address) {
+                        if (address.component) {
+                            Object.keys(address.component).forEach(function (componentType) {
+                                if (addressType == "$other")
+                                    duplicateQuery[`address.component[${componentType}].value`] = `:(approx|${address.component[componentType]})`; //`:(approx|"${name.component[componentType]}")`;
+                                else
+                                    duplicateQuery[`address[${addressType}].component[${componentType}].value`] = `:(approx|"${address.component[componentType]}")`;
+                            });
+                        }
+                    });
+                });
             // Set gender and age on duplicate query
             duplicateQuery["genderConcept"] = $scope.patient.genderConceptModel.id;
-            duplicateQuery["dateOfBirth"] = SanteDB.display.renderDate($scope.patient.dateOfBirth, $scope.patient.dateOfBirthPrecision);
+            duplicateQuery["dateOfBirth"] = `:(date_diff|${SanteDB.display.renderDate($scope.patient.dateOfBirth, $scope.patient.dateOfBirthPrecision)})<1y`;
             duplicateQuery["_offset"] = (page || 0) * 3;
             duplicateQuery["_count"] = 3;
             // Check for duplicates 
