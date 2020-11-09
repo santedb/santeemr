@@ -47,6 +47,10 @@ function renderPatientSummary(patient) {
             break;
     }
     
+    if(patient.tag && patient.tag["$upstream"] == "true")
+    {
+        retVal += `<span class='badge badge-info'><i class='fas fa-cloud'></i> ${SanteDB.locale.getString("ui.emr.search.onlineResult")} </span>`;
+    }
 
     return retVal;
 }

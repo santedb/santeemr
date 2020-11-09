@@ -219,6 +219,7 @@
     <string key="org.santedb.emr.widget.patient.identity">Identification</string>
     <string key="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
     <string key="ui.emr.search.online">Could not locate this data on the local environment, do you want to search the central server?</string>
+    <string key="ui.emr.search.onlineResult">Online Result</string>
     <!-- Mail View -->
     <string key="ui.emr.mail">Mail</string>
     <string key="ui.emr.mail.new">New Messages</string>
@@ -307,6 +308,17 @@
     <string key="ui.emr.bug.attach.log">Attach log files from my mobile device</string>
     <string key="ui.emr.bug.attach.config">Attach my configuration files</string>
     <string key="ui.emr.bug.requiredFieldMissing">Ensure you have included a description and steps to reproduce</string>
-    <string key="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet</string>
+    <string key="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet and the central server is available</string>
+
+    <!-- Menu Items -->
+    <string key="santedb-emr.dashboard">Dashboard</string>
+    <string key="santedb-emr.patient.index">Patient Administration</string>
+    <string key="santedb-emr.patient.search">Search Patients</string>
+    <string key="santedb-emr.patient.register">Register Patient</string>
+    <string key="santedb-emr.system.info">System</string>
+    <string key="santedb-emr.system.logs.index">Logs</string>
+    <string key="santedb-emr.system.jobs">Jobs</string>
+    <string key="santedb-emr.system.users.index">Local Users</string>
+    <string key="santedb-emr.system.bug">Submit Bug</string>
   </strings>
 </AppletManifest>

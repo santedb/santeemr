@@ -31,24 +31,29 @@ angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootSco
         if(!form.$valid) return;
 
         try{
+            SanteDB.display.buttonWait("#btnSubmitBug", true);
             var noteText = `## Note \r\n ${$scope.report.description} \r\n ## Steps to Reproduce\r\n ${$scope.report.reproduction}`;
             
             var submission = {
                 $type: "DiagnosticReport",
                 note: noteText,
-                attachments: []
+                attach: []
             };
             if($scope.report.attachConfig)
-                submission.attachments.push({ file: "SanteDB.config" });
+                submission.attach.push({ file: "SanteDB.config" });
             if($scope.report.attachLog)
-                submission.attachments.push({ file: "SanteDB.log" });
+                submission.attach.push({ file: "SanteDB.log" });
                 
             var result = await SanteDB.application.submitBugReportAsync(submission);
-            toastr.info(`${SanteDB.locale.getString("ui.emr.bug.success")} #${result.id}`, null, { preventDuplicates: true });
+            toastr.info(`${SanteDB.locale.getString("ui.emr.bug.success")} #${result.ticketId}`, null, { preventDuplicates: true });
             $state.transitionTo("santedb-emr.dashboard");
         }
         catch(e) {
             $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnSubmitBug", false);
+
         }
 
     }   
