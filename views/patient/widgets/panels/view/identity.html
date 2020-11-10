@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <form ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)" method="dialog"
+        <form autocomplete="off"  ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)" method="dialog"
             novalidate="novalidate">
             <div ng-repeat="(domain, idgrp) in editObject.identifier">
                 <div class="card border-info m-0" ng-repeat="id in idgrp">

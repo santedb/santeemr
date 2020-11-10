@@ -8,7 +8,7 @@
     </sdb:widget>
 
     <div id="actEntryDiv" ng-controller="EmrActWidgetController">
-        <form ng-submit="saveAct(panel.editForm)" novalidate="novalidate"
+        <form ng-submit="saveAct(panel.editForm)" novalidate="novalidate" autocomplete="off" 
             ng-init="act.$templateContext = 'org.santedb.model.act'" name="panel.editForm">
             <!-- #include virtual="~/views/patient/widgets/partials/act/entry/cover-page.html" -->
             <div class="container-fluid">

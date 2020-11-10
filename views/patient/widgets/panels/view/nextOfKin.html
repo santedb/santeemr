@@ -38,7 +38,7 @@
                 </div>
             </div>
         </div>
-        <form ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)" method="dialog"
+        <form autocomplete="off"  ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)" method="dialog"
             novalidate="novalidate">
             <div class="tab-content">
                 <div role="tabpanel" class="tab-pane fade" id="{{rel.relationshipTypeModel.mnemonic}}{{$index}}relative"

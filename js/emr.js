@@ -55,13 +55,6 @@ function renderPatientSummary(patient) {
     return retVal;
 }
 
-// Register view handlers
-$(document).ready(function() {
-    SanteDB.display.registerResourceDisplayState("Patient", null, function(resource, $state) {
-        $state.transitionTo("santedb-emr.patient.view", { "id" : resource.id });
-    });
-});
-
 
 // JWS Pattern
 var jwsDataPattern = /^(.*?)\.(.*?)\.(.*?)$/;

@@ -20,7 +20,7 @@
  - Date: 2019-8-8
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr" version="2.0.45.0">
+  <info id="org.santedb.emr" version="2.0.47.0">
     <icon>/ui.emr/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
@@ -252,7 +252,7 @@
     <string key="ui.emr.mailError">Error retrieving mail</string>
     <string key="ui.emr.tickleError">Error fetching alerts</string>
     <string key="ui.emr.queueError">Error reading queue</string>
-
+    <string key="ui.emr.system.applets.signed">Digitally Signed</string>
     <!-- Next of Kin -->
     <string key="ui.emr.nok.structured">This record points to another patient. You should view/edit additional details on that patient's page</string>
 

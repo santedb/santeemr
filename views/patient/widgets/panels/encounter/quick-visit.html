@@ -9,7 +9,7 @@
 
     <div ng-controller="EmrActWidgetController">
 
-        <form ng-submit="saveEncounter(encounterForm)" novalidate="novalidate"  name="panel.editForm"
+        <form ng-submit="saveEncounter(encounterForm)" novalidate="novalidate" autocomplete="off"   name="panel.editForm"
             ng-init="act.$templateContext = 'org.santedb.model.patientEncounter'">
             <div class="vertical-tab-box">
                 <ul class="nav nav-pills justify-content-end" id="enc-page-tab" role="tablist"
