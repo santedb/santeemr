@@ -56,6 +56,14 @@
                                 {{ 'ui.emr.bug.attach.config' | i18n }} (~5 KB)
                             </label>
                         </div>
+                        <div class="list-group-item list-group-item-action" ng-if="$root.error">
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="checkbox-control" id="attachLog"
+                                    ng-model="report.attachDetail" />
+                                <span></span>
+                                {{ 'ui.emr.bug.attach.detail' | i18n }} (~{{ info.errorDataSize }} KB)
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>

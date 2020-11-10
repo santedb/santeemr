@@ -309,7 +309,7 @@
     <string key="ui.emr.bug.attach.config">Attach my configuration files</string>
     <string key="ui.emr.bug.requiredFieldMissing">Ensure you have included a description and steps to reproduce</string>
     <string key="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet and the central server is available</string>
-
+    <string key="ui.emr.bug.attach.detail">Attach last shown error message contents</string>
     <!-- Menu Items -->
     <string key="santedb-emr.dashboard">Dashboard</string>
     <string key="santedb-emr.patient.index">Patient Administration</string>

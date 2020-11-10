@@ -2,11 +2,15 @@
 /// <reference path="../../.ref/js/santedb-model.js"/>
 angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootScope", "$state", function($scope, $rootScope, $state) {
 
-    $scope.info = {};
+    $scope.info = {
+        errorDataSize: $rootScope.error ? Math.round(JSON.stringify($rootScope.error).length / 1024) : 0
+    };
     $scope.report = {
         attachLog: true,
-        attachConfig: true
+        attachConfig: true,
+        attachDetail: $rootScope.error !== null
     };
+
 
     // Initialize the view
     async function initialize() {
@@ -31,8 +35,16 @@ angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootSco
         if(!form.$valid) return;
 
         try{
+            // IS this user a LOCAL user?
+            if($rootScope.session.method == "LOCAL") // Local session so elevate to use the principal elevator
+            {
+                var elevator = new ApplicationPrincipalElevator();
+                await elevator.elevate($rootScope.session);
+                SanteDB.authentication.setElevator(elevator);
+            }
+
             SanteDB.display.buttonWait("#btnSubmitBug", true);
-            var noteText = `## Note \r\n ${$scope.report.description} \r\n ## Steps to Reproduce\r\n ${$scope.report.reproduction}`;
+            var noteText = `## Note \r\n\r\n ${$scope.report.description} \r\n\r\n ## Steps to Reproduce \r\n\r\n ${$scope.report.reproduction}\r\n\r\n\r\nEnvironment: ${navigator.userAgent}`;
             
             var submission = {
                 $type: "DiagnosticReport",
@@ -43,7 +55,15 @@ angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootSco
                 submission.attach.push({ file: "SanteDB.config" });
             if($scope.report.attachLog)
                 submission.attach.push({ file: "SanteDB.log" });
-                
+            if($scope.report.attachDetail) {
+                submission.attach.push({
+                    "$type" : "SanteDB.Core.Model.AMI.Diagnostics.DiagnosticBinaryAttachment, SanteDB.Core.Model.AMI",
+                    "file" : "last-error.json",
+                    "description":"Last Error Message Contents",
+                    "data": btoa(JSON.stringify($rootScope.error)),
+                    "contentType": "application/json"
+                });
+            }                
             var result = await SanteDB.application.submitBugReportAsync(submission);
             toastr.info(`${SanteDB.locale.getString("ui.emr.bug.success")} #${result.ticketId}`, null, { preventDuplicates: true });
             $state.transitionTo("santedb-emr.dashboard");
