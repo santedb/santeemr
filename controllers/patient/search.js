@@ -152,8 +152,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             else {
                 // now we want to redirect the state change
                 // TODO: Have this change redirection based on type of the data
-                var stateResolve = SanteDB.display.getResourceDisplayState(result);
-                if (stateResolve) {
+                if (SanteDB.application.callResourceViewer(result.$type, { id: result.id })) {
                     if (result.$novalidate)
                         toastr.warning(SanteDB.locale.getString(`ui.model.${result.$type}._code.validation`), null, {
                             preventDuplicates: true,
@@ -163,7 +162,6 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                             timeout: "0",
                             extendedTimeout: "0"
                         });
-                    stateResolve(result, $state);
                 }
                 else
                     throw new Exception("Exception", `Cannot determine how to display ${result.$type}`);
