@@ -47,16 +47,13 @@ function renderPatientSummary(patient) {
             break;
     }
     
+    if(patient.tag && patient.tag["$upstream"] == "true")
+    {
+        retVal += `<span class='badge badge-info'><i class='fas fa-cloud'></i> ${SanteDB.locale.getString("ui.emr.search.onlineResult")} </span>`;
+    }
 
     return retVal;
 }
-
-// Register view handlers
-$(document).ready(function() {
-    SanteDB.display.registerResourceDisplayState("Patient", null, function(resource, $state) {
-        $state.transitionTo("santedb-emr.patient.view", { "id" : resource.id });
-    });
-});
 
 
 // JWS Pattern

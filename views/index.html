@@ -35,7 +35,7 @@
                         <a class="nav-link" ng-if="!m.menu" ui-sref="{{ ::m.action }}"
                             data-target=".navbar-collapse-small"  title="{{::c.text ||c.action | i18n}}">
                             <i class="{{m.icon}}"></i>
-                            <span class="nav-link-text"> {{::m.text || m.action | i18n }}</span>
+                            <span class="nav-link-text"> {{ ::m.text || m.action | i18n }}</span>
                         </a>
                         <a ng-if="m.menu" class="nav-link nav-link-collapse" ui-sref="{{ ::m.action }}"
                             data-toggle="collapse" data-target="#MenuCollapse{{$index}}" role="button" aria-haspopup="true"

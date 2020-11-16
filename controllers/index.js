@@ -167,6 +167,14 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         return true;
     });
 
+    // Set the view handlers
+    SanteDB.application.addResourceViewer("Patient", function(parms) { $state.transitionTo("santedb-emr.patient.view", parms); return true; });
+    SanteDB.application.addResourceViewer("DiagnosticReport", function(parms) {
+         $state.transitionTo("santedb-emr.system.bug"); 
+         return true; 
+    });
+
+
     // Is there no route? We should show the dashboard
     if($state.$current == "santedb-emr") 
         $state.transitionTo("santedb-emr.dashboard");

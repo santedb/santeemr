@@ -118,9 +118,9 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
 
                 if (n.relationship) {
                     var rels = (await SanteDB.resources.concept.findAsync({ "conceptSet.mnemonic": "FamilyMember", "mnemonic": Object.keys(n.relationship) }));
-                    if (rels.resource) {
+                    if (!rels.resource) 
+                        rels.resource = [];
                         $scope.familyMemberRelationships = rels.resource.map(o => o.mnemonic);
-
                         if (n.id) // existing patient => we are in edit mode
                         {
                             $scope.relationships = Object.keys(n.relationship).filter(o => $scope.familyMemberRelationships.indexOf(o) > -1).map(o => angular.copy(n.relationship[o])).flat();
@@ -181,7 +181,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                         });
 
                         await Promise.all(promises);
-                    }
+                    
                 }
                 $scope.newRelationship = new EntityRelationship({ id: SanteDB.application.newGuid(), targetModel: new Person({ id: SanteDB.application.newGuid() }) });
 

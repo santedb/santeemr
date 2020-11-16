@@ -40,7 +40,8 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
 
         source.tag = source.tag || {};
         source.tag["$cascade:*:*"] = "Location;Authororiginator";
-
+        source.relationship = source.relationship || {};
+        
         var cascadeInstructions = Object.keys(source.tag).filter(o => o.indexOf("$cascade:") == 0);
 
         cascadeInstructions.forEach(function (instruction) {

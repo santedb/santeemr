@@ -20,7 +20,7 @@
  - Date: 2019-8-8
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr" version="2.0.45.0">
+  <info id="org.santedb.emr" version="2.0.47.0">
     <icon>/ui.emr/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
@@ -219,6 +219,7 @@
     <string key="org.santedb.emr.widget.patient.identity">Identification</string>
     <string key="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
     <string key="ui.emr.search.online">Could not locate this data on the local environment, do you want to search the central server?</string>
+    <string key="ui.emr.search.onlineResult">Online Result</string>
     <!-- Mail View -->
     <string key="ui.emr.mail">Mail</string>
     <string key="ui.emr.mail.new">New Messages</string>
@@ -251,7 +252,7 @@
     <string key="ui.emr.mailError">Error retrieving mail</string>
     <string key="ui.emr.tickleError">Error fetching alerts</string>
     <string key="ui.emr.queueError">Error reading queue</string>
-
+    <string key="ui.emr.system.applets.signed">Digitally Signed</string>
     <!-- Next of Kin -->
     <string key="ui.emr.nok.structured">This record points to another patient. You should view/edit additional details on that patient's page</string>
 
@@ -309,5 +310,17 @@
     <string key="ui.emr.bug.requiredFieldMissing">Ensure you have included a description and steps to reproduce</string>
     <string key="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet</string>
     <string key="ui.admin.users.edit.security.neverLoggedIn">Never Logged In</string>
+    <string key="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet and the central server is available</string>
+    <string key="ui.emr.bug.attach.detail">Attach last shown error message contents</string>
+    <!-- Menu Items -->
+    <string key="santedb-emr.dashboard">Dashboard</string>
+    <string key="santedb-emr.patient.index">Patient Administration</string>
+    <string key="santedb-emr.patient.search">Search Patients</string>
+    <string key="santedb-emr.patient.register">Register Patient</string>
+    <string key="santedb-emr.system.info">System</string>
+    <string key="santedb-emr.system.logs.index">Logs</string>
+    <string key="santedb-emr.system.jobs">Jobs</string>
+    <string key="santedb-emr.system.users.index">Local Users</string>
+    <string key="santedb-emr.system.bug">Submit Bug</string>
   </strings>
 </AppletManifest>

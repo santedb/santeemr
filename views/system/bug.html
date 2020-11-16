@@ -2,7 +2,7 @@
     <sdb:script static="false">~/controllers/system/bug.js</sdb:script>
     <sdb:state name="santedb-emr.system.bug" abstract="false">
         <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.1</sdb:demand>
-        <sdb:url>bug</sdb:url>
+        <sdb:url>/bug</sdb:url>
         <sdb:view>
             <sdb:controller>SubmitBugController</sdb:controller>
             <sdb:title lang="en">Submit Bug</sdb:title>
@@ -11,7 +11,7 @@
 
 
     <div class="container">
-        <form novalidate="novalidate" class="form" ng-submit="submitBug(bugForm)" name="bugForm">
+        <form autocomplete="off"  novalidate="novalidate" class="form" ng-submit="submitBug(bugForm)" name="bugForm">
             <div class="form-group row">
                 <label class="col-md-3 col-sm-12 control-label">{{ 'ui.emr.bug.user' | i18n }}</label>
                 <div class="col-md-9 col-sm-12">
@@ -56,6 +56,14 @@
                                 {{ 'ui.emr.bug.attach.config' | i18n }} (~5 KB)
                             </label>
                         </div>
+                        <div class="list-group-item list-group-item-action" ng-if="$root.error">
+                            <label class="checkbox-container">
+                                <input type="checkbox" class="checkbox-control" id="attachLog"
+                                    ng-model="report.attachDetail" />
+                                <span></span>
+                                {{ 'ui.emr.bug.attach.detail' | i18n }} (~{{ info.errorDataSize }} KB)
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -65,16 +73,17 @@
                         {{ 'ui.emr.bug.requiredFieldMissing' | i18n }}</span>
                 </div>
             </div>
-            <div class="row" ng-if="!$root.system.online">
+            <div class="row" ng-if="!$root.system.online || !$root.system.serviceState.ami">
                 <div class="col">
                     <span class="text-warning float-right"><i class="fas fa-exclamation-circle"></i>
                         {{ 'ui.emr.bug.onlineOnly' | i18n }}</span>
                 </div>
             </div>
+            
             <div class="form-group row">
                 <div class="col">
                     <div class="btn-group float-right">
-                        <button ng-disabled="!$root.system.online || bugForm.$invalid " class="btn btn-primary"><i class="fas fa-check"></i>
+                        <button id="btnSubmitBug" ng-disabled="!$root.system.online || bugForm.$invalid " class="btn btn-primary"><i class="fas fa-check"></i>
                             {{ 'ui.action.submit' | i18n }}</button>
                     </div>
                 </div>
