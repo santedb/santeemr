@@ -24,6 +24,17 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
     // Loads the specified patient
     async function loadPatient(id) {
         try {
+            var er = await SanteDB.resources.entityRelationship.findAsync({ 
+                "relationshipType": "97730a52-7e30-4dcd-94cd-fd532d111578", // MDM
+                "source" : id // Where this is the holder
+            }, "reverseRelationship");
+
+            if(er.resource && er.resource.length > 0 && er.resource[0].target != id) {
+                var params = angular.copy($stateParams);
+                params.id = er.resource[0].target;
+                $state.transitionTo($state.$current.name, params);
+                return;
+            }
             $scope.patient = await SanteDB.resources.patient.getAsync(id, "full");
             $scope.$apply();
         }
