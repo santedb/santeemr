@@ -310,6 +310,7 @@
     <string key="ui.emr.bug.requiredFieldMissing">Ensure you have included a description and steps to reproduce</string>
     <string key="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet</string>
     <string key="ui.admin.users.edit.security.neverLoggedIn">Never Logged In</string>
+    <string key="ui.admin.users.saveConfirm">User profile settings updated successfully</string>
     <string key="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet and the central server is available</string>
     <string key="ui.emr.bug.attach.detail">Attach last shown error message contents</string>
     <!-- Menu Items -->
