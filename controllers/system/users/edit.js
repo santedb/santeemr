@@ -21,7 +21,7 @@ angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootS
                                     mnemonic: "OfficialRecord"
                                 }),
                                 component: {
-                                    Given: "Foo"
+                                    Given: ""
                                 }
                             })
                         }

@@ -308,5 +308,6 @@
     <string key="ui.emr.bug.attach.config">Attach my configuration files</string>
     <string key="ui.emr.bug.requiredFieldMissing">Ensure you have included a description and steps to reproduce</string>
     <string key="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet</string>
+    <string key="ui.admin.users.edit.security.neverLoggedIn">Never Logged In</string>
   </strings>
 </AppletManifest>
