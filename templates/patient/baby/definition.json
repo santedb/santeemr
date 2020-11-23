@@ -21,5 +21,8 @@
         "Mother" : {
             "target" : "{{ $recordTargetId }}"
         }
+    },
+    "tag" : {
+        "$copy:address" : "relationship.Mother.targetModel.address"
     }
 }

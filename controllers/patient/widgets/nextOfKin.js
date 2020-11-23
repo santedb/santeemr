@@ -114,8 +114,6 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
 
         if (n) {
             try {
-
-
                 if (n.relationship) {
                     var rels = (await SanteDB.resources.concept.findAsync({ "conceptSet.mnemonic": "FamilyMember", "mnemonic": Object.keys(n.relationship) }));
                     if (!rels.resource) 

@@ -21,7 +21,7 @@
                             <input type="text" ng-model="search.val" class="form-control" />
                             <div class="input-group-append">
                                 <div class="btn-group">
-                                    <button class="btn btn-outline-primary" type="submit"><i class="fas fa-search"></i>
+                                    <button class="btn btn-outline-primary" id="btnSearchSubmit" type="submit"><i class="fas fa-search"></i>
                                         {{ 'ui.action.search' | i18n }}</button> <button
                                         class="btn btn-outline-secondary" type="button" ng-click="scanSearch()"><i
                                             class="fas fa-qrcode"></i>
@@ -34,7 +34,7 @@
                 <div class="form-group row m-0 p-0">
                     <div class="col-xs-12 col-sm-10 offset-sm-2">
                         <label class="checkbox-container">
-                            <input class="checkbox-control" ng-disabled="$root.session.method == 'LOCAL'"
+                            <input class="checkbox-control" ng-disabled="!$root.system.online || !$root.system.serviceState.hdsi"
                                 type="checkbox" ng-model="search._upstream" /><span></span>
                             {{ 'ui.action.search.upstream' | i18n }}
                         </label>

@@ -42,6 +42,16 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
             // Remote patient perhaps?
             if (e.$type == "FileNotFoundException" || e.cause && e.cause.$type == "FileNotFoundException") {
                 try {
+
+                    // Is this a local session? If so, we need to use the application elevator
+                    var session = await SanteDB.authentication.getSessionInfoAsync();
+                    if (session.method == "LOCAL") // Local session so elevate to use the principal elevator
+                    {
+                        var elevator = new ApplicationPrincipalElevator(true);
+                        await elevator.elevate(session);
+                        SanteDB.authentication.setElevator(elevator);
+                    }
+
                     $scope.patient = await SanteDB.resources.patient.getAsync({ id: id, _upstream: true }, "full");
                     $scope.patient._upstream = true;
                     if ($scope.patient.tag) {
@@ -49,6 +59,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                         delete $scope.patient.tag["$altkeys"];
                         delete $scope.patient.tag["$generated"];
                     }
+                    
                     $scope.$apply();
                     return;
                 }

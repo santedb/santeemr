@@ -20,7 +20,7 @@
  - Date: 2019-8-8
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr" version="2.0.48.0">
+  <info id="org.santedb.emr" version="2.0.49.0">
     <icon>/ui.emr/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
@@ -95,6 +95,7 @@
     <scope>org.santedb.emr.observation.death</scope>
     <form>/org.santedb.emr/templates/act/observation/cod/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/cod/view.html</view>
+    <icon>fas fa-file-medical</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.1</oid>
     <description>Cause Of Death</description>
   </template>
@@ -104,6 +105,7 @@
     <form>/org.santedb.emr/templates/act/observation/birthDeliveryLocation/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/birthDeliveryLocation/view.html</view>
     <oid>1.3.6.1.4.1.52820.5.2.1.2</oid>
+    <icon>fas fa-file-medical</icon>
     <description>Birth Location</description>
   </template>
   <template mnemonic="org.santedb.emr.observation.birthDeliveryMethod" public="true">
@@ -111,6 +113,7 @@
     <scope>org.santedb.emr.act.registration.birth</scope>
     <form>/org.santedb.emr/templates/act/observation/birthDeliveryMethod/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/birthDeliveryMethod/view.html</view>
+    <icon>fas fa-file-medical</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.3</oid>
     <description>Birth Delivery Method</description>
   </template>
@@ -119,6 +122,7 @@
     <scope>org.santedb.emr.act.registration.birth</scope>
     <form>/org.santedb.emr/templates/act/observation/birthDeliveryOutcome/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/birthDeliveryOutcome/view.html</view>
+    <icon>fas fa-file-medical</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.4</oid>
     <description>Birth Delivery Outcome</description>
   </template>
@@ -127,6 +131,7 @@
     <scope>org.santedb.emr.act.registration.birth</scope>
     <form>/org.santedb.emr/templates/act/observation/birthWeight/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/birthWeight/view.html</view>
+    <icon>fas fa-file-medical</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.5</oid>
     <description>Birth Weight</description>
   </template>
@@ -136,6 +141,7 @@
     <scope>org.santedb.model.patientEncounter</scope>
     <form>/org.santedb.emr/templates/act/observation/heightLying/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/heightLying/view.html</view>
+    <icon>fas fa-file-medical</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.6</oid>
     <description>Body Height (Lying Down)</description>
   </template>
@@ -143,6 +149,7 @@
     <definition>/org.santedb.emr/templates/act/observation/liveBirths/definition.json</definition>
     <scope>org.santedb.emr.act.registration.birth</scope>
     <form>/org.santedb.emr/templates/act/observation/liveBirths/form.html</form>
+    <icon>fas fa-file-medical</icon>
     <view>/org.santedb.emr/templates/act/observation/liveBirths/view.html</view>
     <oid>1.3.6.1.4.1.52820.5.2.1.7</oid>
     <description># of Live Births</description>
@@ -151,6 +158,7 @@
     <definition>/org.santedb.emr/templates/act/observation/death/definition.json</definition>
     <scope>org.santedb.emr.act.registration.death</scope>
     <form>/org.santedb.emr/templates/act/observation/death/form.html</form>
+    <icon>fas fa-file-medical</icon>
     <view>/org.santedb.emr/templates/act/observation/death/view.html</view>
     <oid>1.3.6.1.4.1.52820.5.2.1.8</oid>
     <description>Clinical Death</description>
@@ -159,6 +167,7 @@
     <definition>/org.santedb.emr/templates/act/observation/verification/definition.json</definition>
     <form>/org.santedb.emr/templates/act/observation/verification/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/verification/view.html</view>
+    <icon>fas fa-file-medical</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.9</oid>
     <description>Verification Status</description>
   </template>
@@ -169,6 +178,7 @@
     <scope>org.santedb.model.act</scope>
     <form>/org.santedb.emr/templates/act/registration/birth/form.html</form>
     <view>/org.santedb.emr/templates/act/registration/birth/view.html</view>
+    <icon>fas fa-file-medical</icon>
     <oid>1.3.6.1.4.1.52820.5.2.2.1</oid>
     <description>Birth Registration</description>
   </template>
@@ -178,6 +188,7 @@
     <form>/org.santedb.emr/templates/act/registration/death/form.html</form>
     <view>/org.santedb.emr/templates/act/registration/death/view.html</view>
     <oid>1.3.6.1.4.1.52820.5.2.2.2</oid>
+    <icon>fas fa-file-medical</icon>
     <description>Death Registration</description>
   </template>
   
@@ -262,6 +273,7 @@
     <!-- Encounters -->
     <string key="org.santedb.emr.widget.patient.act.qentry">New Entry</string>
     <string key="org.santedb.emr.widget.patient.encounter">Visits &amp; Encounters</string>
+    <string key="org.santedb.emr.widget.patient.act.history">History</string>
     <string key="org.santedb.emr.widget.patient.encounter.qvisit">Encounter / Visit</string>
     <string key="ui.emr.patient.encounter.cover.title">Cover Page</string>
     <string key="ui.emr.patient.encounter.detail.title">Details</string>

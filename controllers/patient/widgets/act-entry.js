@@ -1,20 +1,11 @@
 /// <reference path="../../../.ref/js/santedb.js"/>
-angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$rootScope', '$stateParams', '$state', function ($scope, $rootScope, $stateParams, $state) {
+angular.module('santedb').controller('EmrActEntryWidgetController', ['$scope', '$rootScope', '$stateParams', '$state', function ($scope, $rootScope, $stateParams, $state) {
 
     var _templates = [];
 
     // The act which is being constructed 
     $scope.act = {};
 
-    $scope.copyAddress = function(fromAddress) {
-
-        if(fromAddress) {
-            var addr = angular.copy(fromAddress);
-            addr.id = null;
-            return addr;
-        }
-        return null;
-    }
     $scope.$watch("act.$templateContext", function (n, o) {
         if (n == "org.santedb.model.act" && $stateParams.templateId) {
             $scope.act.$noTemplate = true;
@@ -249,7 +240,6 @@ angular.module('santedb').controller('EmrActWidgetController', ['$scope', '$root
             $scope.act.$templateRef = templateId;
             $scope.act.$templateContext = tplContext;
             $scope.act.$noTemplate = noTpl;
-
             if ($scope.act.participation.RecordTarget) {
                 $scope.act.participation.RecordTarget[0].playerModel = $scope.editObject = angular.copy($scope.scopedObject);
             }

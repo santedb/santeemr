@@ -21,51 +21,49 @@
  */
 angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$rootScope", "$state", "$templateCache", "$stateParams", function ($scope, $rootScope, $state, $templateCache, $stateParams) {
 
-    
-    
+
+
     // Render demographic information
     $scope.renderDemographics = renderPatientSummary;
 
     // Render address
-    $scope.renderAddress = function(patient) {
-        
+    $scope.renderAddress = function (patient) {
+
         var retVal = "";
-        if(patient.address)
-            Object.keys(patient.address).forEach(function(n) 
-            {
+        if (patient.address)
+            Object.keys(patient.address).forEach(function (n) {
                 retVal += `${SanteDB.display.renderEntityAddress(patient.address[n])} ,`;
             });
-        else 
+        else
             retVal = "N/A ";
         return retVal.substr(0, retVal.length - 1);
     }
 
     // Render the names
-    $scope.renderName = function(patient) {
-        
+    $scope.renderName = function (patient) {
+
         var retVal = "";
-        if(patient.name)
-            Object.keys(patient.name).forEach(function(n) 
-            {
+        if (patient.name)
+            Object.keys(patient.name).forEach(function (n) {
                 retVal += `${SanteDB.display.renderEntityName(patient.name[n])}  ,`;
             });
-        else 
+        else
             retVal = "N/A ";
         return retVal.substr(0, retVal.length - 1);
     }
 
     // Render DOB
-    $scope.renderDob = function(patient) {
-        if(patient.dateOfBirth)
+    $scope.renderDob = function (patient) {
+        if (patient.dateOfBirth)
             return SanteDB.display.renderDate(patient.dateOfBirth, patient.dateOfBirthPrecision);
         else
             return "N/A";
     }
 
     // Render the patient's gender
-    $scope.renderGender = function(patient) {
+    $scope.renderGender = function (patient) {
         var retVal = "";
-        switch(patient.genderConcept) {
+        switch (patient.genderConcept) {
             case "f4e3a6bb-612e-46b2-9f77-ff844d971198":
                 retVal += '<i class="fas fa-male"></i> ';
                 break;
@@ -76,22 +74,22 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 retVal += '<i class="fas fa-question-circle"></i> ';
         }
 
-        if(patient.genderConceptModel.mnemonic) {
+        if (patient.genderConceptModel.mnemonic) {
             retVal += SanteDB.display.renderConcept(patient.genderConceptModel);
         }
         return retVal;
     }
 
     // Render identifiers
-    $scope.renderIdentifier = function(patient) {
+    $scope.renderIdentifier = function (patient) {
 
         var preferred = $rootScope.system.config.application.setting['aa.preferred'];
 
         var retVal = "";
-        if(patient.identifier) {
-            Object.keys(patient.identifier).forEach(function(id) {
-                if(preferred && id == preferred || !preferred)
-                    retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${ patient.identifier[id].authority ? patient.identifier[id].authority.name : id }</span> ,`;
+        if (patient.identifier) {
+            Object.keys(patient.identifier).forEach(function (id) {
+                if (preferred && id == preferred || !preferred)
+                    retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
             });
         }
 
@@ -100,79 +98,99 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
     // Search MPI
-    $scope.searchMpi = function(formData) {
-        if(formData != null && formData.$invalid)
+    $scope.searchMpi = async function (formData) {
+        if (formData != null && formData.$invalid)
             return;
-        
-        // Build query and bind query to the search table
-        var queryObject = {
-            "_e" : Math.random(), 
-            "_orderBy" : "creationTime:desc",
-            "_any" : $scope.search.val,
-            "_upstream": $scope.search._upstream
-        };
 
-        $scope.$parent.lastSearch = {
-            search: $scope.search
-        };
-        $scope.$parent.lastSearch.filter = $scope.filter = queryObject;
-        
+        try {
+            SanteDB.display.buttonWait("#btnSearchSubmit", true);
+            // Ask the user if they want to search upstream, only if they are allowed
+            var session = await SanteDB.authentication.getSessionInfoAsync();
+
+            if (session.method == "LOCAL" && $scope.search._upstream) // Local session so elevate to use the principal elevator
+            {
+                var elevator = new ApplicationPrincipalElevator(true);
+                await elevator.elevate(session);
+                SanteDB.authentication.setElevator(elevator);
+            }
+
+            // Build query and bind query to the search table
+            var queryObject = {
+                "_e": Math.random(),
+                "_orderBy": "creationTime:desc",
+                "_any": $scope.search.val,
+                "_upstream": $scope.search._upstream
+            };
+
+            $scope.$parent.lastSearch = {
+                search: $scope.search
+            };
+            $scope.$parent.lastSearch.filter = $scope.filter = queryObject;
+
+
+            try {
+                $scope.$apply();
+            } catch (e) { }
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnSearchSubmit", false);
+
+        }
     }
 
     // Search if needed
-    if($scope.$parent.lastSearch) {
-        $scope.filter = $scope.$parent.lastSearch.filter;
-        $scope.search = $scope.$parent.lastSearch.search;
-    }
-    else {
-        // Current search 
-        $scope.search = {
+    if ($scope.$parent.lastSearch) {
+            $scope.filter = $scope.$parent.lastSearch.filter;
+            $scope.search = $scope.$parent.lastSearch.search;
+        }
+        else {
+            // Current search 
+            $scope.search = {
                 val: $stateParams.q
             };
 
-        if($stateParams.q)
-            $scope.searchMpi();
-    }
-    
-
-    // Scan 
-    $scope.scanSearch = async function() {
-        try {
-
-            SanteDB.display.buttonWait("#btnScan", true);
-
-            var result = await searchByBarcode();
-            if(!result)
-                return;
-            else if(result.$type == "Bundle") 
-            {
-                $scope.search.val = result.$search;
+            if ($stateParams.q)
                 $scope.searchMpi();
-            }
-            else {
-                // now we want to redirect the state change
-                // TODO: Have this change redirection based on type of the data
-                if (SanteDB.application.callResourceViewer(result.$type, { id: result.id })) {
-                    if (result.$novalidate)
-                        toastr.warning(SanteDB.locale.getString(`ui.model.${result.$type}._code.validation`), null, {
-                            preventDuplicates: true,
-                            positionClass: "toast-bottom-center",
-                            showDuration: 500,
-                            hideDuration: 500,
-                            timeout: "0",
-                            extendedTimeout: "0"
-                        });
-                }
-                else
-                    throw new Exception("Exception", `Cannot determine how to display ${result.$type}`);
-            }
+        }
 
+
+        // Scan 
+        $scope.scanSearch = async function () {
+            try {
+
+                SanteDB.display.buttonWait("#btnScan", true);
+
+                var result = await searchByBarcode();
+                if (!result)
+                    return;
+                else if (result.$type == "Bundle") {
+                    $scope.search.val = result.$search;
+                    $scope.searchMpi();
+                }
+                else {
+                    // now we want to redirect the state change
+                    // TODO: Have this change redirection based on type of the data
+                    if (SanteDB.application.callResourceViewer(result.$type, { id: result.id })) {
+                        if (result.$novalidate)
+                            toastr.warning(SanteDB.locale.getString(`ui.model.${result.$type}._code.validation`), null, {
+                                preventDuplicates: true,
+                                positionClass: "toast-bottom-center",
+                                showDuration: 500,
+                                hideDuration: 500,
+                                timeout: "0",
+                                extendedTimeout: "0"
+                            });
+                    }
+                    else
+                        throw new Exception("Exception", `Cannot determine how to display ${result.$type}`);
+                }
+
+            }
+            catch (e) {
+                $rootScope.errorHandler(e);
+            }
+            finally {
+                SanteDB.display.buttonWait("#btnScan", false);
+            }
         }
-        catch (e) {
-            $rootScope.errorHandler(e);
-        }
-        finally {
-            SanteDB.display.buttonWait("#btnScan", false);
-        }
-    }
-}]);
+    }]);

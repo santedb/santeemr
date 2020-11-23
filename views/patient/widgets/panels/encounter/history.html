@@ -1,0 +1,34 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet"
+    oc-lazy-load="{ name: 'EmrActHistoryWidgetController', files: ['/org.santedb.emr/controllers/patient/widgets/act-history.js'] }">
+    <sdb:widget order="0" name="org.santedb.emr.widget.patient.act.history" headerClass="alert-success" size="Large"
+        type="Panel" context="org.santedb.emr.patient.act">
+        <sdb:icon>fas fa-hospital-alt</sdb:icon>
+        <sdb:description lang="en">Clinical History</sdb:description>
+        <sdb:guard>!scopedObject._upstream</sdb:guard>
+    </sdb:widget>
+
+    <div ng-controller="EmrActHistoryWidgetController">
+
+        <div class="card m-0 text-dark"
+            ng-class="{ 'border-success' : act.statusConcept == $root.StatusKeys.Completed , 'border-info' : act.statusConcept == $root.StatusKeys.Active, 'border-danger' : act.statusConcept == $root.StatusKeys.Nullified || act.statusConcept == $root.StatusKeys.Cancelled, 'border-dark' : act.statusConcept == $root.StatusKeys.Obsolete }"
+            ng-repeat="act in history">
+            <div class="card-header"
+                ng-class="{ 'bg-success' : act.statusConcept == $root.StatusKeys.Completed , 'bg-info' : act.statusConcept == $root.StatusKeys.Active, 'bg-danger' : act.statusConcept == $root.StatusKeys.Nullified || act.statusConcept == $root.StatusKeys.Cancelled, 'bg-dark' : act.statusConcept == $root.StatusKeys.Obsolete }">
+                <h5 class="card-title"><i
+                        ng-class="templateIcon[act.templateModel.mnemonic] || 'fas fa-file-medical'"></i>
+                    {{ act.typeConceptModel | concept }}</h5>
+            </div>
+            <div class="card-body" ng-if="act.$templateUrl">
+                <ng-include src="act.$templateUrl" />
+            </div>
+            <div class="card-footer bg-light text-right text-dark">
+                <span class="label" ng-class="{ 'label-success' : act.statusConcept == $root.StatusKeys.Completed , 'label-info' : act.statusConcept == $root.StatusKeys.Active, 'label-danger' : act.statusConcept == $root.StatusKeys.Nullified || act.statusConcept == $root.StatusKeys.Cancelled, 'label-dark' : act.statusConcept == $root.StatusKeys.Obsolete }">
+                    {{ act.statusConceptModel | concept }}
+                </span>
+                <i class="fas fa-user"></i> {{ act.participation.Authororiginator.playerModel.name | name }} <i
+                    class="fas fa-hospital"></i> {{ act.participation.Location.playerModel.name | name }} <i
+                    class="fas fa-clock"></i> {{ act.creationTime | extDate: 'F'}}
+            </div>
+        </div>
+    </div>
+</div>

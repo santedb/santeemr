@@ -19,6 +19,7 @@
  * User: Justin Fyfe
  * Date: 2019-8-8
  */
+var _boundTransitionStart = false;
 angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", "$transitions", function ($scope, $rootScope, $state, $templateCache, $interval, $transitions) {
 
     initializeSideNavTriggers();
@@ -64,6 +65,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         if (nv && nv.user) {
             // Add menu items
             loadMenus();
+
         }
         else
             $scope.menuItems = null;
@@ -161,12 +163,13 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
     
     // Confirm navigation away in AngularJS route
-    $transitions.onStart({ exiting: "santedb-emr.patient.register" }, function (transition) {
-        var scope = angular.element("#editForm").scope();
-        if (!scope.editForm.$pristine && !scope.patient.id) return confirm(SanteDB.locale.getString("ui.emr.navigateConfirmation"));
-        return true;
-    });
-
+    if(!_boundTransitionStart) {
+        $transitions.onStart({ exiting: "santedb-emr.patient.register" }, function (transition) {
+            var scope = angular.element("#editForm").scope();
+            if (!scope.editForm.$pristine && !scope.patient.id) return confirm(SanteDB.locale.getString("ui.emr.navigateConfirmation"));
+            return true;
+        });
+    }
     // Set the view handlers
     SanteDB.application.addResourceViewer("Patient", function(parms) { $state.transitionTo("santedb-emr.patient.view", parms); return true; });
     SanteDB.application.addResourceViewer("DiagnosticReport", function(parms) {
