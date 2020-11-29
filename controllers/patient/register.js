@@ -137,6 +137,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     return ;
                 }
             }
+            else 
+                $("#duplicateModal").modal('hide');
+
 
             // Submission object
             var patient = new Patient(angular.copy($scope.patient));

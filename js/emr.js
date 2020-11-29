@@ -79,6 +79,13 @@ async function searchByBarcode(qrCodeData, noValidate, upstream) {
             return result;
         }
         else {
+
+            var idDomain = SanteDB.application.classifyIdentifier(qrCodeData);
+            if(idDomain.length == 1)
+            {
+                var parser = SanteDB.application.getIdentifierParser(idDomain[0]);
+                if(parser) qrCodeData = parser(qrCodeData);
+            }
             var result = await SanteDB.resources.entity.findAsync({ "identifier.value" : qrCodeData});
             result.$search = qrCodeData;
             return result;
