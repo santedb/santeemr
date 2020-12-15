@@ -16,7 +16,7 @@
     "dateOfBirthPrecision": 3,
     "relationship" : {
         "Birthplace" : {
-            "target" : "{{ $facilityId }}"
+            
         },
         "Mother" : {
             "target" : "{{ $recordTargetId }}"
