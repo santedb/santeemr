@@ -88,8 +88,12 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         var retVal = "";
         if (patient.identifier) {
             Object.keys(patient.identifier).forEach(function (id) {
-                if (preferred && id == preferred || !preferred)
-                    retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
+                if (preferred && id == preferred || !preferred) {
+                    if(Array.isArray(patient.identifier[id]))
+                        retVal += `${patient.identifier[id].map(function(d) { return d.value }).join(' or ')} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
+                    else
+                        retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
+                }
             });
         }
 
