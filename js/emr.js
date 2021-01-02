@@ -8,10 +8,10 @@ function renderPatientSummary(patient) {
     var retVal = "";
     if (patient.name) {
         var key = Object.keys(patient.name)[0];
-        retVal += `<strong>${SanteDB.display.renderEntityName(patient.name[key])}</strong>`;
+        retVal += `<a class="primary-result-link" ui-sref='santedb-emr.patient.view({ id: "${patient.id}" })'>${SanteDB.display.renderEntityName(patient.name[key])}</a>`;
     }
     if (patient.identifier) {
-        retVal += "<span class='badge badge-secondary'>";
+        retVal += "<div class='d-none d-sm-inline badge badge-secondary'>";
         var preferred = SanteDB.configuration.getAppSetting("aa.preferred");
         if (patient.identifier[preferred])
             retVal += `<i class="fas fa-id-card"></i> ${SanteDB.display.renderIdentifier(patient.identifier, preferred)}`;
@@ -19,7 +19,7 @@ function renderPatientSummary(patient) {
             var key = Object.keys(patient.identifier)[0];
             retVal += `<i class="far fa-id-card"></i> ${SanteDB.display.renderIdentifier(patient.identifier, key)}`;
         }
-        retVal += `</span><br/>`;
+        retVal += `</div><br/>`;
     }
 
     

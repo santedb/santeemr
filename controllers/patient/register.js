@@ -144,10 +144,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             // Submission object
             var patient = new Patient(angular.copy($scope.patient));
             patient.id = SanteDB.application.newGuid();
-            patient.genderConcept = patient.genderConceptModel.id;
-            delete(patient.genderConceptModel);
 
             await correctEntityInformation(patient);
+            scrubModelProperties(patient);
 
             // Create a submission bundle with related entities
             var bundle = new Bundle({ resource: [ patient ]})
