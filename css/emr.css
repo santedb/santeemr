@@ -82,3 +82,7 @@ a.primary-result-link {
     color:  #0275d8;
     text-decoration: underline;
 }
+
+label.required {
+    color: #0aa;
+}

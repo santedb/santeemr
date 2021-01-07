@@ -20,8 +20,8 @@
  - Date: 2019-8-8
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr" version="2.0.59.0">
-    <icon>/ui.emr/img/icon.png</icon>
+  <info id="org.santedb.emr" version="2.0.60.0">
+    <icon>/org.santedb.core/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
     <dependency id="org.santedb.core"/>
@@ -335,5 +335,10 @@
     <string key="santedb-emr.system.jobs">Jobs</string>
     <string key="santedb-emr.system.users.index">Local Users</string>
     <string key="santedb-emr.system.bug">Submit Bug</string>
+
+    <!-- Advanced Search -->
+    <string key="ui.emr.patient.search.dob">Date of Birth</string>
+    <string key="ui.emr.patient.search.gender">Gender</string>
+    <string key="ui.emr.patient.search.id">ID #</string>
   </strings>
 </AppletManifest>

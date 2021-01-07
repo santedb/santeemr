@@ -52,6 +52,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         return retVal.substr(0, retVal.length - 1);
     }
 
+
     // Render DOB
     $scope.renderDob = function (patient) {
         if (patient.dateOfBirth)
@@ -89,8 +90,8 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         if (patient.identifier) {
             Object.keys(patient.identifier).forEach(function (id) {
                 if (preferred && id == preferred || !preferred) {
-                    if(Array.isArray(patient.identifier[id]))
-                        retVal += `${patient.identifier[id].map(function(d) { return d.value }).join(' or ')} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
+                    if (Array.isArray(patient.identifier[id]))
+                        retVal += `${patient.identifier[id].map(function (d) { return d.value }).join(' or ')} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
                     else
                         retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
                 }
@@ -99,6 +100,23 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
         else retVal += "N/A ";
         return retVal.substring(0, retVal.length - 1);
+    }
+
+    // Validate the advanced search 
+    // At least 3 fuzzy fields must be filled OR an identifier
+    $scope.validateAdvancedSearch = function() {
+        if(!$scope.search._advanced) return false;
+
+        var fields = 0, advanced = $scope.search.advanced;
+        var address= (advanced.address.$other[0].component || {});
+        var name = (advanced.name.$other[0].component || {});
+        if(name.Given || name.Family) fields++;
+        if(advanced.identifier) fields += 3; // identifier= pass
+        if(address.City || address.State || address.StreetAddressLine || address.County) fields++;
+        if(advanced.genderConcept) fields++;
+        if(advanced.dateOfBirth.from || advanced.dateOfBirth.to) fields++;
+
+        return fields >= 3;
     }
 
     // Search MPI
@@ -118,14 +136,54 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 SanteDB.authentication.setElevator(elevator);
             }
 
-            // Build query and bind query to the search table
-            var queryObject = {
-                "_e": Math.random(),
-                "_orderBy": "creationTime:desc",
-                "_any": $scope.search.val,
-                "_upstream": $scope.search._upstream
-            };
+            if ($scope.search._advanced) {
 
+                var advanced = $scope.search.advanced;
+
+                var queryObject = {
+                    "_e": Math.random(),
+                    "_orderBy": "creationTime:desc",
+                    "_upstream": $scope.search._upstream
+                };
+
+                // Query 
+                if(advanced.name.$other[0].component){
+                    if(advanced.name.$other[0].component.Given)
+                        queryObject["name.component[Given].value"] = `:(approx|"${advanced.name.$other[0].component.Given}")`;
+                    if(advanced.name.$other[0].component.Family)
+                        queryObject["name.component[Family].value"] = `:(approx|"${advanced.name.$other[0].component.Family}")`;
+                }
+                if(advanced.address.$other[0].component)
+                {
+                    if(advanced.address.$other[0].component.City)
+                        queryObject["address.component[City].value"] = advanced.address.$other[0].component.City;
+                    if(advanced.address.$other[0].component.County)
+                        queryObject["address.component[County].value"] = advanced.address.$other[0].component.County;
+                    if(advanced.address.$other[0].component.State)
+                        queryObject["address.component[State].value"] = advanced.address.$other[0].component.State;
+                    if(advanced.address.$other[0].component.Country)
+                        queryObject["address.component[Country].value"] = advanced.address.$other[0].component.Country;
+                    if(advanced.address.$other[0].component.StreetAddressLine)
+                        queryObject["address.component[StreetAddressLine].value"] = advanced.address.$other[0].component.StreetAddressLine;
+                }
+                if(advanced.identifier)
+                    queryObject["identifier.value"] = advanced.identifier;
+                if(advanced.dateOfBirth.from)
+                    queryObject["dateOfBirth"] = `>=${moment(advanced.dateOfBirth.from).format('YYYY-MM-DD')}`;
+                if(advanced.dateOfBirth.to)
+                    queryObject["dateOfBirth"] = `<=${moment(advanced.dateOfBirth.to).format('YYYY-MM-DD')}`;
+
+
+            }
+            else {
+                // Build query and bind query to the search table
+                var queryObject = {
+                    "_e": Math.random(),
+                    "_orderBy": "creationTime:desc",
+                    "_any": $scope.search.val,
+                    "_upstream": $scope.search._upstream
+                };
+            }
             $scope.$parent.lastSearch = {
                 search: $scope.search
             };
@@ -142,59 +200,99 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         }
     }
 
+    $scope.resetSearch = function() {
+        $scope.search.advanced = {
+            address: [new EntityAddress()],
+            name: [new EntityName()],
+            dateOfBirth : {}
+        };
+    }
+
     // Search if needed
     if ($scope.$parent.lastSearch) {
-            $scope.filter = $scope.$parent.lastSearch.filter;
-            $scope.search = $scope.$parent.lastSearch.search;
-        }
-        else {
-            // Current search 
-            $scope.search = {
-                val: $stateParams.q
-            };
+        $scope.filter = $scope.$parent.lastSearch.filter;
+        $scope.search = $scope.$parent.lastSearch.search;
 
-            if ($stateParams.q)
+        if($scope.search._advanced)
+            $('#searchCarousel').carousel(1);
+    }
+    else {
+        // Current search 
+        $scope.search = {
+            val: $stateParams.q
+        };
+
+        $scope.resetSearch();
+        $scope.search._advanced = false;
+
+        if ($stateParams.q)
+            $scope.searchMpi();
+    }
+
+    
+
+    // Scan identifier but don't search
+    $scope.scanIdentifier = async function() {
+        
+        SanteDB.display.buttonWait("#btnScanSecondary", true);
+        try {
+            $scope.search.advanced.identifier = await SanteDB.application.scanIdentifierAsync();
+            try { $scope.$apply(); }
+            catch(e) {}
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnScanSecondary", false);
+        }
+    }
+    // Scan 
+    $scope.scanSearch = async function () {
+        try {
+
+
+            var result = await SanteDB.application.searchByBarcodeAsync();
+            if (!result)
+                return;
+            else if (result.$type == "Bundle") {
+                $scope.search.val = result.$search;
                 $scope.searchMpi();
-        }
-
-
-        // Scan 
-        $scope.scanSearch = async function () {
-            try {
-
-                SanteDB.display.buttonWait("#btnScan", true);
-
-                var result = await searchByBarcode();
-                if (!result)
-                    return;
-                else if (result.$type == "Bundle") {
-                    $scope.search.val = result.$search;
-                    $scope.searchMpi();
+            }
+            else {
+                // now we want to redirect the state change
+                // TODO: Have this change redirection based on type of the data
+                if (SanteDB.application.callResourceViewer(result.$type, { id: result.id })) {
+                    if (result.$novalidate)
+                        toastr.warning(SanteDB.locale.getString(`ui.model.${result.$type}._code.validation`), null, {
+                            preventDuplicates: true,
+                            positionClass: "toast-bottom-center",
+                            showDuration: 500,
+                            hideDuration: 500,
+                            timeout: "0",
+                            extendedTimeout: "0"
+                        });
                 }
-                else {
-                    // now we want to redirect the state change
-                    // TODO: Have this change redirection based on type of the data
-                    if (SanteDB.application.callResourceViewer(result.$type, { id: result.id })) {
-                        if (result.$novalidate)
-                            toastr.warning(SanteDB.locale.getString(`ui.model.${result.$type}._code.validation`), null, {
-                                preventDuplicates: true,
-                                positionClass: "toast-bottom-center",
-                                showDuration: 500,
-                                hideDuration: 500,
-                                timeout: "0",
-                                extendedTimeout: "0"
-                            });
-                    }
-                    else
-                        throw new Exception("Exception", `Cannot determine how to display ${result.$type}`);
-                }
+                else
+                    throw new Exception("Exception", `Cannot determine how to display ${result.$type}`);
+            }
 
-            }
-            catch (e) {
-                $rootScope.errorHandler(e);
-            }
-            finally {
-                SanteDB.display.buttonWait("#btnScan", false);
-            }
         }
-    }]);
+        catch (e) {
+            $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnScan", false);
+        }
+    }
+
+    
+    $('#searchCarousel').on('slide.bs.carousel', function () {
+        $scope.search._advanced = !$scope.search._advanced;
+        //delete($scope.search.advanced);
+
+        try {
+            $scope.$apply();
+        } catch (e) { }
+    });
+}]);
