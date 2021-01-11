@@ -15,7 +15,7 @@
             <sdb:controller>EmrLayoutController</sdb:controller>
         </sdb:view>
     </sdb:state>
-    <div class="fixed-nav sticky-footer bg-dark">
+    <div class="fixed-nav bg-dark">
         <nav class="navbar navbar-expand-lg navbar-light bg-light bg-c-blue fixed-top" id="mainNav">
             <a class="navbar-brand" ui-shref="santedb-emr">
                 {{ 'ui.emr.brand.title' | i18n }}
@@ -261,10 +261,33 @@
             </div>
             <!-- /.container-fluid-->
             <!-- /.content-wrapper-->
-            
         </div>
     </div>
-
+    <footer class="sticky-footer">
+        <div class="container">
+            <div class="text-center">
+                <small> 
+                    v.{{ $root.system.version }} |
+                    <button type="button" class="d-inline btn btn-link p-0 m-0 text-secondary" ng-repeat="locale in $root.system.locales" ng-if="locale.indexOf('-') == -1" ng-click="$root.system.locale = locale" 
+                        ng-class="{ 'text-primary' : $root.system.locale == locale }">
+                        {{ locale | i18n }} | 
+                    </button>
+                    <span class="badge badge-pill badge-success" ng-if="$root.system.online &amp;&amp; $root.system.serviceState.hdsi &amp;&amp; $root.system.serviceState.ami">
+                        {{ 'ui.state.online' | i18n }}
+                    </span>
+                    <span class="badge badge-pill badge-danger" ng-if="!$root.system.online">
+                        {{ 'ui.state.offline' | i18n }}
+                    </span> |
+                    <span class="badge badge-pill badge-success" ng-show="queue.dead == 0">
+                        <i class="fas fa-check-circle"></i> {{ 'ui.sync.clear' | i18n }}
+                    </span>
+                    <span class="badge badge-pill badge-danger" ng-show="queue.dead > 0">
+                            <i class="fas fa-exclamation-circle"></i> {{ 'ui.sync.conflict' | i18n }}
+                    </span>
+                </small>
+            </div>
+        </div>
+    </footer>
     <div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalTitle"
         aria-hidden="true">
         <div class="modal-dialog modal-sm" role="document">

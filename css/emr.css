@@ -76,7 +76,7 @@ div.vertical-tab-box > ul > li.nav-item .active {
     border-right: 1px solid #0275d8;
 }
 
-a.primary-result-link {
+.primary-result-link {
     font-weight: bold;
     font-size: 1.0em;
     color:  #0275d8;

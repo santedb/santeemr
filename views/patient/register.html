@@ -1,4 +1,4 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid">
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" >
     <sdb:script static="false">~/controllers/patient/register.js</sdb:script>
     <sdb:state name="santedb-emr.patient.register">
         <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.1</sdb:demand>
@@ -26,7 +26,7 @@
         <div class="form-group row">
             <div class="col">
                 <div class="btn-group float-right">
-                    <button type="button" class="btn btn-danger" ng-action="cancelEdit()"><i class="fas fa-times"></i>
+                    <button type="button" class="btn btn-danger" ng-click="cancelEdit()"><i class="fas fa-times"></i>
                         {{ 'ui.action.cancel' | i18n }}</button>
                     <button type="submit" ng-disabled="!editForm.$valid" id="btnSubmit" class="btn btn-primary"><i
                             class="fas fa-check"></i> {{ 'ui.action.save' | i18n }}</button>

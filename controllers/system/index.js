@@ -33,6 +33,19 @@ angular.module('santedb').controller('SystemInfoController', ["$scope", "$rootSc
         .catch($rootScope.errorHandler);
 
    
+    $scope.doUpdate = async function() {
+        try {
+            SanteDB.display.buttonWait("#btnUpdate", true);
+            await SanteDB.application.doUpdateAsync();
+        } catch(e) {
+            $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnUpdate", false);
+
+        }
+    }
+
     $scope.enableService = async function(serviceId) {
         if(confirm(SanteDB.locale.getString("ui.emr.system.confirm.enableService"))) {
             try {

@@ -22,9 +22,26 @@
                                 {{ 'ui.emr.patient.ageOrDate' | i18n }}
                             </div>
                         </div>
+                        <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control d-none d-sm-block" type="date"
+                            ng-model="rel.targetModel.dateOfBirth" name="nok{{rel.id}}dob"
+                            ng-change="synchronizeAge(rel.targetModel, true)" />
+                        <div class="input-group-append d-none d-sm-block">
+                            <label class="input-group-text">
+                                <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision" ng-true-value="1"
+                                    ng-false-value="3" />
+                                {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                            </label>
+                        </div>
+                    </div>
+                    <div class="text-danger d-none d-sm-block" ng-if="panel.editForm['nok' + rel.id + 'dob'].$invalid">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n}}
+                    </div>
+                </div>
+                <div class="col-sm-12 d-block d-sm-none offset-md-3">
+                    <div class="input-group m-0">
                         <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control" type="date"
                             ng-model="rel.targetModel.dateOfBirth" name="nok{{rel.id}}dob"
-                            ng-change="synchronizeAge(rel.targetModel, true)" ng-required="rel._active" />
+                            ng-change="synchronizeAge(rel.targetModel, true)" />
                         <div class="input-group-append">
                             <label class="input-group-text">
                                 <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision" ng-true-value="1"

@@ -5,10 +5,10 @@
  */
 function renderPatientSummary(patient) {
 
-    var retVal = "";
+    var retVal = `<a style="width:100%" ui-sref='santedb-emr.patient.view({ id: "${patient.id}" })'>`;
     if (patient.name) {
         var key = Object.keys(patient.name)[0];
-        retVal += `<a class="primary-result-link" ui-sref='santedb-emr.patient.view({ id: "${patient.id}" })'>${SanteDB.display.renderEntityName(patient.name[key])}</a>`;
+        retVal += `<span class="primary-result-link">${SanteDB.display.renderEntityName(patient.name[key])}</span>`;
     }
     if (patient.identifier) {
         retVal += "<div class='d-none d-sm-inline badge badge-secondary'>";
@@ -52,6 +52,7 @@ function renderPatientSummary(patient) {
         retVal += `<span class='badge badge-info'><i class='fas fa-cloud'></i> ${SanteDB.locale.getString("ui.emr.search.onlineResult")} </span>`;
     }
 
+    retVal += "</a>";
     return retVal;
 }
 
