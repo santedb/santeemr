@@ -1,6 +1,7 @@
 /// <reference path="../../../.ref/js/santedb.js"/>
 angular.module('santedb').controller('EmrDemographicsWidgetController', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
+
     // Actually pull 
     $scope.update = async function (form) {
 

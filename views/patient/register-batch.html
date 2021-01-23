@@ -1,0 +1,54 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="false">~/controllers/patient/register.js</sdb:script>
+    <sdb:state name="santedb-emr.patient.register-batch">
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.1</sdb:demand>
+        <sdb:url>/register-batch?{:templateId}</sdb:url>
+        <sdb:view>
+            <sdb:controller>EmrPatientRegisterController</sdb:controller>
+            <sdb:title lang="en">Batch Registration</sdb:title>
+        </sdb:view>
+    </sdb:state>
+
+    <div class="row" ng-if="!entity">
+        <div class="col">
+            <p class="m-auto"><i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header alert-success">
+            <h5 class="card-heading mb-0"><i class="fas fa-users"></i> {{ 'ui.emr.patient.registered' | i18n }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="list-group" ng-if="!registerHistory.length">
+                {{ 'ui.emr.patient.registered.none' | i18n }}
+            </div>
+            <div class="list-group" ng-if="registerHistory.length > 0">
+                <div class="list-group-item" ng-repeat="entity in registerHistory">
+                    <ng-include 
+                        src="'/app/Template/' + (entity.templateModel ? entity.templateModel.mnemonic : 'org.santedb.emr.patient') + '/ui/view.html'" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header alert-primary">
+            <h5 class="card-heading mb-0"><i class="fas fa-user-plus"></i> {{ 'ui.emr.patient.register' | i18n }}
+            </h5>
+        </div>
+        <div class="card-body">
+            <form id="editForm" ng-submit="registerPatient(editForm, true)" name="editForm" novalidate="novalidate"
+                autocomplete="__away">
+                <ng-include ng-if="entity.templateModel"
+                    src="'/app/Template/' + entity.templateModel.mnemonic + '/ui/form.html'" />
+                <div class="btn-group float-right">
+                            <div  class="text-danger" ng-if="editForm.$invalid"><i class="fas fa-exclamation-triangle"></i>
+                                {{ 'ui.emr.patient.register.requiredFieldMissing' | i18n }}</div>
+                    <button type="button" class="btn btn-danger" ng-click="resetView()"><i class="fas fa-sync-alt"></i>
+                        {{ 'ui.action.reset' | i18n }}</button>
+                    <button ng-disabled="editForm.$invalid" type="submit" id="btnSubmit" class="btn btn-primary"><i class="fas fa-check"></i> {{
+                        'ui.action.save' | i18n }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

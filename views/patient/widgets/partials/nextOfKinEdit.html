@@ -15,7 +15,7 @@
                 <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.dateOfBirth' | i18n }}</label>
                 <div class="col-sm-12 col-md-9">
                     <div class="input-group m-0">
-                        <input class="form-control" ng-change="synchronizeAge(rel.targetModel, false)"
+                        <input class="form-control" ng-change="$root.synchronizeAge(rel.targetModel, false)"
                             ng-model="rel.targetModel.age" type="number" />
                         <div class="input-group-append">
                             <div class="input-group-text">
@@ -24,7 +24,7 @@
                         </div>
                         <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control d-none d-sm-block" type="date"
                             ng-model="rel.targetModel.dateOfBirth" name="nok{{rel.id}}dob"
-                            ng-change="synchronizeAge(rel.targetModel, true)" />
+                            ng-change="$root.synchronizeAge(rel.targetModel, true)" />
                         <div class="input-group-append d-none d-sm-block">
                             <label class="input-group-text">
                                 <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision" ng-true-value="1"
@@ -41,7 +41,7 @@
                     <div class="input-group m-0">
                         <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control" type="date"
                             ng-model="rel.targetModel.dateOfBirth" name="nok{{rel.id}}dob"
-                            ng-change="synchronizeAge(rel.targetModel, true)" />
+                            ng-change="$root.synchronizeAge(rel.targetModel, true)" />
                         <div class="input-group-append">
                             <label class="input-group-text">
                                 <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision" ng-true-value="1"

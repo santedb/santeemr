@@ -5,11 +5,18 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     // Assign the scope functions
     $scope.cancelEdit = cancelEdit;
     $scope.registerPatient = registerPatient;
-    $scope.checkDuplicates = async function(page) {
+    $scope.checkDuplicates = async function (page) {
         $scope.duplicates = await checkDuplicates(page);
         $scope.$apply();
     }
+    $scope.resetView = async function () {
+        await initializeView();
+        try {
+            $scope.$apply();
+        } catch (e) { }
+    }
 
+    $scope.registerHistory = [];
 
     // No template use the default
     var templateId = $state.templateId;
@@ -17,33 +24,14 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         templateId = SanteDB.configuration.getAppSetting("template.patient") || "org.santedb.emr.patient";
     }
 
-    // Synchronize ages of object
-    function synchronizeAge(modelObject, fromDate) {
-
-        if (modelObject.dateOfBirth && fromDate)
-            modelObject.age = moment().diff(modelObject.dateOfBirth, 'years', false);
-        else {
-            modelObject.dateOfBirth = moment().subtract({ years: modelObject.age }).toDate();
-            modelObject.dateOfBirthPrecision = 1;
-        }
-    }
-
+   
+    
     // Initialize the view
     async function initializeView() {
 
         try {
             $scope.templates = await SanteDB.application.getTemplateDefinitionsAsync({ "scope": "org.santedb.patient" });
-            $scope.patient = await SanteDB.application.getTemplateContentAsync(templateId);
-            // Watchers
-            $scope.$watch("patient.dateOfBirth", function (n, o) {
-                if (n && n != o)
-                    synchronizeAge($scope.patient, true);
-            });
-            $scope.$watch("patient.age", function (n, o) {
-                if (n && n != o)
-                    synchronizeAge($scope.patient);
-            });
-
+            $scope.entity = await SanteDB.application.getTemplateContentAsync(templateId);
         }
         catch (e) {
             $rootScope.errorHandler(e);
@@ -59,18 +47,18 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             // First, are there duplicates that need to be considered? 
             // We will search by an identifier if possible
             var duplicateQuery = {};
-            if ($scope.patient.identifier)
-                Object.keys($scope.patient.identifier).forEach(function (key) {
-                    if ($scope.patient.identifier[key].value)
-                        duplicateQuery[`identifier[${key}].value`] = $scope.patient.identifier[key].value;
+            if ($scope.entity.identifier)
+                Object.keys($scope.entity.identifier).forEach(function (key) {
+                    if ($scope.entity.identifier[key].value)
+                        duplicateQuery[`identifier[${key}].value`] = $scope.entity.identifier[key].value;
                 });
-            if ($scope.patient.name)
-                Object.keys($scope.patient.name).forEach(function (nameType) {
+            if ($scope.entity.name)
+                Object.keys($scope.entity.name).forEach(function (nameType) {
 
-                    if (!Array.isArray($scope.patient.name[nameType]))
-                        $scope.patient.name[nameType] = [$scope.patient.name[nameType]];
+                    if (!Array.isArray($scope.entity.name[nameType]))
+                        $scope.entity.name[nameType] = [$scope.entity.name[nameType]];
 
-                    $scope.patient.name[nameType].forEach(function (name) {
+                    $scope.entity.name[nameType].forEach(function (name) {
                         if (name.component) {
                             Object.keys(name.component).forEach(function (componentType) {
                                 if (nameType == "$other")
@@ -81,16 +69,16 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                         }
                     });
                 });
-            if($scope.patient.address) 
-                Object.keys($scope.patient.address).forEach(function (addressType) {
+            if ($scope.entity.address)
+                Object.keys($scope.entity.address).forEach(function (addressType) {
 
-                    if(addressType != "County" && addressType != "State")
-                        return; 
-                        
-                    if (!Array.isArray($scope.patient.address[addressType]))
-                        $scope.patient.address[addressType] = [$scope.patient.address[addressType]];
+                    if (addressType != "County" && addressType != "State")
+                        return;
 
-                    $scope.patient.address[addressType].forEach(function (address) {
+                    if (!Array.isArray($scope.entity.address[addressType]))
+                        $scope.entity.address[addressType] = [$scope.entity.address[addressType]];
+
+                    $scope.entity.address[addressType].forEach(function (address) {
                         if (address.component) {
                             Object.keys(address.component).forEach(function (componentType) {
                                 if (addressType == "$other")
@@ -102,90 +90,95 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     });
                 });
             // Set gender and age on duplicate query
-            duplicateQuery["genderConcept"] = $scope.patient.genderConceptModel.id;
-            duplicateQuery["dateOfBirth"] = `:(date_diff|${SanteDB.display.renderDate($scope.patient.dateOfBirth, $scope.patient.dateOfBirthPrecision)})<1y`;
+            duplicateQuery["genderConcept"] = $scope.entity.genderConceptModel.id;
+            duplicateQuery["dateOfBirth"] = `:(date_diff|${SanteDB.display.renderDate($scope.entity.dateOfBirth, $scope.entity.dateOfBirthPrecision)})<1y`;
             duplicateQuery["_offset"] = (page || 0) * 3;
             duplicateQuery["_count"] = 3;
             // Check for duplicates 
             var duplicates = await SanteDB.resources.patient.findAsync(duplicateQuery);
             duplicates.pages = Math.round(duplicates.totalResults / 3);
-            if(duplicates.pages * 3 < duplicates.totalResults)
+            if (duplicates.pages * 3 < duplicates.totalResults)
                 duplicates.pages++;
             duplicates.page = page;
             return duplicates;
-        
+
         }
         catch (e) {
             $rootScope.errorHandler(e);
         }
     }
 
-    
+
     // Submit the form
-    async function registerPatient(patientForm) {
+    async function registerPatient(patientForm, bulkEntry) {
         if (!patientForm.$valid) return;
 
         try {
             SanteDB.display.buttonWait("#btnSubmit", true);
 
-            if (!$scope.patient.ignoreDuplicates)
-            {
+            if (!$scope.entity.ignoreDuplicates && !bulkEntry) {
                 var duplicates = await checkDuplicates();
-                if(duplicates.totalResults > 0) {
+                if (duplicates.totalResults > 0) {
                     $scope.duplicates = duplicates;
                     $("#duplicateModal").modal();
-                    return ;
+                    return;
                 }
             }
-            else 
+            else
                 $("#duplicateModal").modal('hide');
 
 
             // Submission object
-            var patient = new Patient(angular.copy($scope.patient));
+            var patient = new Patient(angular.copy($scope.entity));
             patient.id = SanteDB.application.newGuid();
 
             await correctEntityInformation(patient);
             scrubModelProperties(patient);
 
             // Create a submission bundle with related entities
-            var bundle = new Bundle({ resource: [ patient ]})
+            var bundle = new Bundle({ resource: [patient] })
 
-            if(patient.relationship) {
+            if (patient.relationship) {
 
                 // Iterate over relationship types
                 var correctedRelationship = {};
-                Object.keys(patient.relationship).map(function(relationshipType) {
+                Object.keys(patient.relationship).map(function (relationshipType) {
 
                     // Fetch and correct
                     var relationships = patient.relationship[relationshipType];
-                    if(!Array.isArray(relationships))
+                    if (!Array.isArray(relationships))
                         relationships = [relationships];
 
                     var value = relationships
-                        .filter(o=>o && (o._active && o.targetModel || !o.targetModel))
-                        .map(function(rel) {
-                            if(rel.targetModel) {
+                        .filter(o => o && (o._active && o.targetModel || !o.targetModel))
+                        .map(function (rel) {
+                            if (rel.targetModel) {
                                 var entity = angular.copy(rel.targetModel);
                                 rel.target = entity.id = SanteDB.application.newGuid();
                                 correctEntityInformation(entity);
                                 bundle.resource.push(entity);
-                                delete(rel.targetModel);
+                                delete (rel.targetModel);
                             }
                             rel.holder = patient.id;
                             return rel;
                         });
-                    
-                    if(value.length > 0)
+
+                    if (value.length > 0)
                         correctedRelationship[relationshipType] = value;
                 });
                 patient.relationship = correctedRelationship;
             }
 
             var bundleResult = await SanteDB.resources.bundle.insertAsync(bundle);
-            $scope.patient.id = patient.id;
-            // Navigate
-            $state.transitionTo("santedb-emr.patient.view", {id: patient.id});
+            $scope.entity.id = patient.id;
+
+            if (!bulkEntry)
+                $state.transitionTo("santedb-emr.patient.view", { id: patient.id });
+            else {
+                $scope.registerHistory.push(await SanteDB.resources.patient.getAsync(patient.id, "full"));
+                await initializeView();
+                $($(".form-control", "#editForm")[0]).focus();
+            }
         }
         catch (e) {
             $rootScope.errorHandler(e);
@@ -195,7 +188,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             try {
                 $scope.$apply();
             }
-            catch(e2) {} // Ignore scope apply updates
+            catch (e2) { } // Ignore scope apply updates
         }
     }
 

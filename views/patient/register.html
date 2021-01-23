@@ -9,14 +9,15 @@
         </sdb:view>
     </sdb:state>
 
-    <div class="row" ng-if="!patient">
+    <div class="row" ng-if="!entity">
         <div class="col">
             <p class="m-auto"><i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}</p>
         </div>
     </div>
     <form class="form" ng-submit="registerPatient(editForm)" name="editForm" id="editForm" novalidate="novalidate" autocomplete="__away" 
-        ng-if="patient">
-        <widget-panels scoped-object="patient" context-name="'org.santedb.emr.patient.register'" edit-form="editForm" />
+        ng-if="entity">
+        
+        <widget-panels scoped-object="entity" context-name="'org.santedb.emr.patient.register'" edit-form="editForm" />
         <div class="form-group row" ng-if="!editForm.$valid">
             <div class="col">
                 <span class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i>
@@ -84,7 +85,7 @@
                     <div class="modal-footer">
                         <div class="col">
                             <label>
-                                <input type="checkbox" ng-model="patient.ignoreDuplicates"
+                                <input type="checkbox" ng-model="entity.ignoreDuplicates"
                                     class="checkbox-control" /><span></span>
                                 {{ 'ui.emr.patient.register.duplicates.verification' | i18n}}
                             </label>
@@ -93,7 +94,7 @@
                             <div class="btn-group float-right">
                                 <button class="btn btn-secondary" type="button" data-dismiss="modal">
                                     <i class="fa fa-chevron-right"></i> {{ 'ui.action.back' | i18n }}</button>
-                                <button class="btn btn-primary" ng-disabled="!patient.ignoreDuplicates" type="submit">
+                                <button class="btn btn-primary" ng-disabled="!entity.ignoreDuplicates" type="submit">
                                     <i class="fa fa-check"></i> {{ 'ui.action.register' | i18n }}</button>
                             </div>
                         </div>

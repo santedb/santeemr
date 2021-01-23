@@ -23,8 +23,10 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
     // Synchronize ages of object
     function synchronizeAge(modelObject, fromDate) {
 
-        if (modelObject.dateOfBirth && fromDate)
+        if (modelObject.dateOfBirth && fromDate) {
             modelObject.age = moment().diff(modelObject.dateOfBirth, 'years', false);
+            modelObject.dateOfBirthPrecision = 3;
+        }
         else {
             modelObject.dateOfBirth = moment().subtract({ years: modelObject.age }).toDate();
             modelObject.dateOfBirthPrecision = 1;

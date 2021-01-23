@@ -24,6 +24,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
     initializeSideNavTriggers();
     
+    $rootScope.synchronizeAge = synchronizeAge;
     // Shows the elevation dialog, elevates and then refreshes the state
     $scope.overrideRefresh = function() {
         new SanteDBElevator(
@@ -164,11 +165,12 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     
     // Confirm navigation away in AngularJS route
     if(!_boundTransitionStart) {
-        $transitions.onStart({ exiting: "santedb-emr.patient.register" }, function (transition) {
+        $transitions.onStart({ exiting: [ "santedb-emr.patient.register",  "santedb-emr.patient.register-batch"] }, function (transition) {
             var scope = angular.element("#editForm").scope();
-            if (!scope.editForm.$pristine && !scope.patient.id) return confirm(SanteDB.locale.getString("ui.emr.navigateConfirmation"));
+            if (!scope.editForm.$pristine && (scope.entity && !scope.entity.id || scope.act && !scope.act.id)) return confirm(SanteDB.locale.getString("ui.emr.navigateConfirmation"));
             return true;
         });
+        _boundTransitionStart = true;
     }
     // Set the view handlers
     SanteDB.application.addResourceViewer("Patient", function(parms) { $state.transitionTo("santedb-emr.patient.view", parms); return true; });
