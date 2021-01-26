@@ -99,7 +99,7 @@
                     <div class="col-md-6 col-sm-6 offset-md-2">
                         <label class="checkbox-container">
                             <input class="checkbox-control"
-                                ng-disabled="!$root.system.online || !$root.system.serviceState.hdsi" type="checkbox"
+                                ng-disabled="!$root.system.online || !$root.system.serviceState.hdsi || $root.system.config.sync.mode != 'Sync'" type="checkbox"
                                 ng-model="search._upstream" /><span></span>
                             {{ 'ui.action.search.upstream' | i18n }}
                         </label>

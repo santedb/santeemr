@@ -35,17 +35,18 @@ function renderPatientSummary(patient) {
         retVal += `<span class='badge badge-dark'>${SanteDB.locale.getString("ui.model.patient.deceasedIndicator")}</span>`;
 
     // Gender
-    switch (patient.genderConceptModel.mnemonic) {
-        case 'Male':
-            retVal += `<i class='fas fa-male' title="${SanteDB.display.renderConcept(patient.genderConceptModel)}"></i> ${SanteDB.display.renderConcept(patient.genderConceptModel)}`;
-            break;
-        case 'Female':
-            retVal += `<i class='fas fa-female' title="${SanteDB.display.renderConcept(patient.genderConceptModel)}"></i> ${SanteDB.display.renderConcept(patient.genderConceptModel)}`;
-            break;
-        default:
-            retVal += `<i class='fas fa-restroom' title="${SanteDB.display.renderConcept(patient.genderConceptModel)}"></i> ${SanteDB.display.renderConcept(patient.genderConceptModel)}`;
-            break;
-    }
+    if(patient.genderConceptModel)
+        switch (patient.genderConceptModel.mnemonic) {
+            case 'Male':
+                retVal += `<i class='fas fa-male' title="${SanteDB.display.renderConcept(patient.genderConceptModel)}"></i> ${SanteDB.display.renderConcept(patient.genderConceptModel)}`;
+                break;
+            case 'Female':
+                retVal += `<i class='fas fa-female' title="${SanteDB.display.renderConcept(patient.genderConceptModel)}"></i> ${SanteDB.display.renderConcept(patient.genderConceptModel)}`;
+                break;
+            default:
+                retVal += `<i class='fas fa-restroom' title="${SanteDB.display.renderConcept(patient.genderConceptModel)}"></i> ${SanteDB.display.renderConcept(patient.genderConceptModel)}`;
+                break;
+        }
     
     if(patient.tag && patient.tag["$upstream"] == "true")
     {

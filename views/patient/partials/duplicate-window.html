@@ -1,0 +1,72 @@
+
+
+    <div class="modal" id="duplicateModal" tabindex="-1" role="dialog" aria-labelledby="duplicateModalTitle"
+        aria-hidden="true" xmlns="http://www.w3.org/1999/xhtml">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="duplicateModalTitle">
+                        <i class="fa fa-fw fa-user-plus"></i> {{ 'ui.emr.patient.register.duplicates' | i18n }}
+                    </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col">{{ 'ui.emr.patient.register.duplicates.instruction' | i18n }}</div>
+                    </div>
+                    <div class="row" ng-repeat="result in duplicates.resource">
+                        <div class="col">
+                            <!-- #include virtual="~/views/patient/partials/search-result.html" -->
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            {{ duplicates.offset + 1}} .. {{ duplicates.offset + duplicates.resource.length}} of
+                            {{ duplicates.totalResults }}
+                        </div>
+                        <div class="col">
+                            <ul class="pagination float-right">
+                                <li class="page-item" ng-class="{'disabled': duplicates.page == 0 }"><button
+                                        type="button" class="page-link"
+                                        ng-click="checkDuplicates(duplicates.page - 1)">{{ 'ui.action.prev' | i18n
+                                        }}</button>
+                                </li>
+                                <li class="page-item" ng-class="{'active' : $index == duplicates.page}"
+                                    ng-repeat="o in [].constructor(duplicates.pages) track by $index"><button
+                                        type="button" href="javascript:" class="page-link"
+                                        ng-click="checkDuplicates($index)">{{ $index + 1 }}</button></li>
+                                <li class="page-item" ng-class="{'disabled' : duplicates.page + 1 >= duplicates.pages}">
+                                    <button type="button" href="javascript:" class="page-link"
+                                        ng-click="checkDuplicates(duplicates.page + 1)">{{ 'ui.action.next' | i18n
+                                        }}</button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <div class="col">
+                        <label>
+                            <input type="checkbox" ng-model="entity.ignoreDuplicates"
+                                class="checkbox-control" /><span></span>
+                            {{ 'ui.emr.patient.register.duplicates.verification' | i18n}}
+                        </label>
+                    </div>
+                    <div class="col">
+                        <div class="btn-group float-right">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                                <i class="fa fa-chevron-right"></i> {{ 'ui.action.back' | i18n }}</button>
+                            <button class="btn btn-primary" ng-disabled="!entity.ignoreDuplicates" type="submit">
+                                <i class="fa fa-check"></i> {{ 'ui.action.register' | i18n }}</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>

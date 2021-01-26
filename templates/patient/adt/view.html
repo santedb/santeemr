@@ -1,14 +1,18 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
     <div class="row no-gutters align-items-center">
         <div class="col-6 ml-2">
-            <a ui-sref="santedb-emr.patient.view({id: entity.id })"><h5>{{ entity.name | name }} <span class="badge badge-light" ng-repeat="(k,id) in entity.identifier">
+            <a  ui-sref="santedb-emr.patient.view({id: entity.id })"><h5>                
+                <!-- <i class="fas fa-fw" ng-class="{ 'fa-circle-notch fa-spin' : entity._batchState === 0, 'fa-check text-success' : entity._batchState === 1, 'fa-exclamation-triangle text-danger': entity._batchState === 2, 'fa-shield-alt text-warning' : entity._batchState === 3 }"></i> -->
+                {{ entity.name | name }} <span class="badge badge-light" ng-repeat="(k,id) in entity.identifier">
                 <span ng-if="id.value">
                     <i class="fas fa-id-card"></i> {{ id.value }} <small>{{id.authority.name}} </small>
                 </span>
                 <span ng-if="id.length" ng-repeat="idd in id">
                     <i class="fas fa-id-card"></i> {{ idd.value }} <small>{{idd.authority.name}} </small></span>
                 </span>
-            </h5></a>
+
+            </h5> 
+        </a>
             <em><i class="fas fa-city"></i> {{ entity.address | address }}</em><br/>
             <i class="fas fa-birthday-cake"></i> {{ entity.dateOfBirth | extDate: entity.dateOfBirthPrecision}} ( {{ entity.dateOfBirth | age }}) 
             <span ng-if="entity.deceasedDate" class="badge badge-dark">{{ 'ui.model.patient.deceased' | i18n }}</span> 

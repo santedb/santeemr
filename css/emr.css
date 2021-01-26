@@ -86,3 +86,7 @@ div.vertical-tab-box > ul > li.nav-item .active {
 label.required {
     color: #0aa;
 }
+
+div.scroll-container {
+    overflow: auto;
+}

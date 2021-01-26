@@ -52,46 +52,48 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     if ($scope.entity.identifier[key].value)
                         duplicateQuery[`identifier[${key}].value`] = $scope.entity.identifier[key].value;
                 });
-            if ($scope.entity.name)
-                Object.keys($scope.entity.name).forEach(function (nameType) {
+            if(Object.keys(duplicateQuery).length == 0) {
+                if ($scope.entity.name)
+                    Object.keys($scope.entity.name).forEach(function (nameType) {
 
-                    if (!Array.isArray($scope.entity.name[nameType]))
-                        $scope.entity.name[nameType] = [$scope.entity.name[nameType]];
+                        if (!Array.isArray($scope.entity.name[nameType]))
+                            $scope.entity.name[nameType] = [$scope.entity.name[nameType]];
 
-                    $scope.entity.name[nameType].forEach(function (name) {
-                        if (name.component) {
-                            Object.keys(name.component).forEach(function (componentType) {
-                                if (nameType == "$other")
-                                    duplicateQuery[`name.component[${componentType}].value`] = `:(approx|${name.component[componentType]})`; //`:(approx|"${name.component[componentType]}")`;
-                                else
-                                    duplicateQuery[`name[${nameType}].component[${componentType}].value`] = `:(approx|"${name.component[componentType]}")`;
-                            });
-                        }
+                        $scope.entity.name[nameType].forEach(function (name) {
+                            if (name.component) {
+                                Object.keys(name.component).forEach(function (componentType) {
+                                    if (nameType == "$other")
+                                        duplicateQuery[`name.component[${componentType}].value`] = `:(approx|${name.component[componentType]})`; //`:(approx|"${name.component[componentType]}")`;
+                                    else
+                                        duplicateQuery[`name[${nameType}].component[${componentType}].value`] = `:(approx|"${name.component[componentType]}")`;
+                                });
+                            }
+                        });
                     });
-                });
-            if ($scope.entity.address)
-                Object.keys($scope.entity.address).forEach(function (addressType) {
+                if ($scope.entity.address)
+                    Object.keys($scope.entity.address).forEach(function (addressType) {
 
-                    if (addressType != "County" && addressType != "State")
-                        return;
+                        if (addressType != "County" && addressType != "State" && addressType != "City")
+                            return;
 
-                    if (!Array.isArray($scope.entity.address[addressType]))
-                        $scope.entity.address[addressType] = [$scope.entity.address[addressType]];
+                        if (!Array.isArray($scope.entity.address[addressType]))
+                            $scope.entity.address[addressType] = [$scope.entity.address[addressType]];
 
-                    $scope.entity.address[addressType].forEach(function (address) {
-                        if (address.component) {
-                            Object.keys(address.component).forEach(function (componentType) {
-                                if (addressType == "$other")
-                                    duplicateQuery[`address.component[${componentType}].value`] = `:(approx|${address.component[componentType]})`; //`:(approx|"${name.component[componentType]}")`;
-                                else
-                                    duplicateQuery[`address[${addressType}].component[${componentType}].value`] = `:(approx|"${address.component[componentType]}")`;
-                            });
-                        }
+                        $scope.entity.address[addressType].forEach(function (address) {
+                            if (address.component) {
+                                Object.keys(address.component).forEach(function (componentType) {
+                                    if (addressType == "$other")
+                                        duplicateQuery[`address.component[${componentType}].value`] = `${address.component[componentType]}`; //`:(approx|"${name.component[componentType]}")`;
+                                    else
+                                        duplicateQuery[`address[${addressType}].component[${componentType}].value`] = `${address.component[componentType]})`;
+                                });
+                            }
+                        });
                     });
-                });
-            // Set gender and age on duplicate query
-            duplicateQuery["genderConcept"] = $scope.entity.genderConceptModel.id;
-            duplicateQuery["dateOfBirth"] = `:(date_diff|${SanteDB.display.renderDate($scope.entity.dateOfBirth, $scope.entity.dateOfBirthPrecision)})<1y`;
+                // Set gender and age on duplicate query
+                duplicateQuery["genderConcept"] = $scope.entity.genderConceptModel.id;
+                duplicateQuery["dateOfBirth"] = `:(date_diff|${SanteDB.display.renderDate($scope.entity.dateOfBirth, $scope.entity.dateOfBirthPrecision)})<1y`;
+            }
             duplicateQuery["_offset"] = (page || 0) * 3;
             duplicateQuery["_count"] = 3;
             // Check for duplicates 
@@ -99,6 +101,8 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             duplicates.pages = Math.round(duplicates.totalResults / 3);
             if (duplicates.pages * 3 < duplicates.totalResults)
                 duplicates.pages++;
+            if(duplicates.pages > 5)
+                duplicates.pages = 5;
             duplicates.page = page;
             return duplicates;
 
@@ -116,7 +120,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         try {
             SanteDB.display.buttonWait("#btnSubmit", true);
 
-            if (!$scope.entity.ignoreDuplicates && !bulkEntry) {
+            if (!$scope.entity.ignoreDuplicates) {
                 var duplicates = await checkDuplicates();
                 if (duplicates.totalResults > 0) {
                     $scope.duplicates = duplicates;
@@ -176,6 +180,36 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 $state.transitionTo("santedb-emr.patient.view", { id: patient.id });
             else {
                 $scope.registerHistory.push(await SanteDB.resources.patient.getAsync(patient.id, "full"));
+
+            // if (!bulkEntry) {
+            //     var bundleResult = await SanteDB.resources.bundle.insertAsync(bundle);
+            //     $scope.entity.id = patient.id;
+            //     $state.transitionTo("santedb-emr.patient.view", { id: patient.id });
+            // }
+            // else {
+                
+                // patient._batchState = 0;
+                // SanteDB.resources.bundle.insertAsync(bundle).then(async function(b) {
+                //     var pat = $scope.registerHistory.find(o=>o.id == patient.id);
+                //     pat._batchState = 1;
+                    
+                //     try {
+                //         var rpid = await SanteDB.resources.patient.getAsync(pat.id);
+                //     }
+                //     catch(e) {
+                //         if(e.$type == "FileNotFoundException")
+                //             pat._batchState = 3;
+                //         else {
+                //             pat._batchError = e.message;
+                //         }
+                //     }
+
+                // }).catch(function(e) {
+                //     var pat = $scope.registerHistory.find(o=>o.id == patient.id);
+                //     pat._batchState = 2;
+                // })
+                // $scope.registerHistory.push(patient);
+
                 await initializeView();
                 $($(".form-control", "#editForm")[0]).focus();
             }

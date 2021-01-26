@@ -2,7 +2,6 @@
 
 angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
 
-    $scope.synchronizeAge = synchronizeAge;
     $scope.tabHasError = tabHasError;
     $scope.copyFields = copyFields;
     $scope.excludeRelationshipTypes = [];
@@ -20,18 +19,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
         }) != -1;
     }
 
-    // Synchronize ages of object
-    function synchronizeAge(modelObject, fromDate) {
-
-        if (modelObject.dateOfBirth && fromDate) {
-            modelObject.age = moment().diff(modelObject.dateOfBirth, 'years', false);
-            modelObject.dateOfBirthPrecision = 3;
-        }
-        else {
-            modelObject.dateOfBirth = moment().subtract({ years: modelObject.age }).toDate();
-            modelObject.dateOfBirthPrecision = 1;
-        }
-    }
+    
 
 
     // Update the specified objects
@@ -52,6 +40,9 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
             relationships = relationships.filter(o => !o._inverse);
             var submissionBundle = new Bundle({ resource: [patient] });
 
+            if(!patient.relationship)
+                patient.relationship = {};
+                
             // Process relationships
             relationships.forEach(function (rel) {
 

@@ -116,7 +116,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         if(advanced.genderConcept) fields++;
         if(advanced.dateOfBirth.from || advanced.dateOfBirth.to) fields++;
 
-        return fields >= 3;
+        return fields >= 1;
     }
 
     // Search MPI
@@ -149,9 +149,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 // Query 
                 if(advanced.name.$other[0].component){
                     if(advanced.name.$other[0].component.Given)
-                        queryObject["name.component[Given].value"] = `:(approx|"${advanced.name.$other[0].component.Given}")`;
+                        queryObject["name.component[Given].value"] = `~${advanced.name.$other[0].component.Given}`;
                     if(advanced.name.$other[0].component.Family)
-                        queryObject["name.component[Family].value"] = `:(approx|"${advanced.name.$other[0].component.Family}")`;
+                        queryObject["name.component[Family].value"] = `~${advanced.name.$other[0].component.Family}`;
                 }
                 if(advanced.address.$other[0].component)
                 {
@@ -172,7 +172,8 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                     queryObject["dateOfBirth"] = `>=${moment(advanced.dateOfBirth.from).format('YYYY-MM-DD')}`;
                 if(advanced.dateOfBirth.to)
                     queryObject["dateOfBirth"] = `<=${moment(advanced.dateOfBirth.to).format('YYYY-MM-DD')}`;
-
+                if(advanced.genderConcept)
+                    queryObject["genderConcept"] = advanced.genderConcept;
 
             }
             else {

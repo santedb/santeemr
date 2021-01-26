@@ -24,7 +24,7 @@
             </div>
             <div class="list-group" ng-if="registerHistory.length > 0">
                 <div class="list-group-item" ng-repeat="entity in registerHistory">
-                    <ng-include 
+                    <ng-include
                         src="'/app/Template/' + (entity.templateModel ? entity.templateModel.mnemonic : 'org.santedb.emr.patient') + '/ui/view.html'" />
                 </div>
             </div>
@@ -41,14 +41,17 @@
                 <ng-include ng-if="entity.templateModel"
                     src="'/app/Template/' + entity.templateModel.mnemonic + '/ui/form.html'" />
                 <div class="btn-group float-right">
-                            <div  class="text-danger" ng-if="editForm.$invalid"><i class="fas fa-exclamation-triangle"></i>
-                                {{ 'ui.emr.patient.register.requiredFieldMissing' | i18n }}</div>
+                    <div class="text-danger" ng-if="editForm.$invalid"><i class="fas fa-exclamation-triangle"></i>
+                        {{ 'ui.emr.patient.register.requiredFieldMissing' | i18n }}</div>
                     <button type="button" class="btn btn-danger" ng-click="resetView()"><i class="fas fa-sync-alt"></i>
                         {{ 'ui.action.reset' | i18n }}</button>
-                    <button ng-disabled="editForm.$invalid" type="submit" id="btnSubmit" class="btn btn-primary"><i class="fas fa-check"></i> {{
+                    <button ng-disabled="editForm.$invalid" type="submit" id="btnSubmit" class="btn btn-primary"><i
+                            class="fas fa-check"></i> {{
                         'ui.action.save' | i18n }}</button>
                 </div>
+                <!-- #include virtual="~/views/patient/partials/duplicate-window.html" -->
             </form>
         </div>
     </div>
+
 </div>
