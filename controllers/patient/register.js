@@ -31,7 +31,8 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
         try {
             $scope.templates = await SanteDB.application.getTemplateDefinitionsAsync({ "scope": "org.santedb.patient" });
-            $scope.entity = await SanteDB.application.getTemplateContentAsync(templateId);
+            $scope._entityTemplate = await SanteDB.application.getTemplateContentAsync(templateId);
+            $scope.entity = angular.copy($scope._entityTemplate);
         }
         catch (e) {
             $rootScope.errorHandler(e);
@@ -173,44 +174,19 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 patient.relationship = correctedRelationship;
             }
 
-            var bundleResult = await SanteDB.resources.bundle.insertAsync(bundle);
-            $scope.entity.id = patient.id;
 
-            if (!bulkEntry)
+            if (!bulkEntry) {
+                var bundleResult = await SanteDB.resources.bundle.insertAsync(bundle);
+                $scope.entity.id = patient.id;
                 $state.transitionTo("santedb-emr.patient.view", { id: patient.id });
+            }
             else {
-                $scope.registerHistory.push(await SanteDB.resources.patient.getAsync(patient.id, "full"));
-
-            // if (!bulkEntry) {
-            //     var bundleResult = await SanteDB.resources.bundle.insertAsync(bundle);
-            //     $scope.entity.id = patient.id;
-            //     $state.transitionTo("santedb-emr.patient.view", { id: patient.id });
-            // }
-            // else {
                 
-                // patient._batchState = 0;
-                // SanteDB.resources.bundle.insertAsync(bundle).then(async function(b) {
-                //     var pat = $scope.registerHistory.find(o=>o.id == patient.id);
-                //     pat._batchState = 1;
-                    
-                //     try {
-                //         var rpid = await SanteDB.resources.patient.getAsync(pat.id);
-                //     }
-                //     catch(e) {
-                //         if(e.$type == "FileNotFoundException")
-                //             pat._batchState = 3;
-                //         else {
-                //             pat._batchError = e.message;
-                //         }
-                //     }
+                var hist = { entity: patient, bundle: bundle };
+                $scope.submitBatch(hist);
+                $scope.registerHistory.push(hist);
 
-                // }).catch(function(e) {
-                //     var pat = $scope.registerHistory.find(o=>o.id == patient.id);
-                //     pat._batchState = 2;
-                // })
-                // $scope.registerHistory.push(patient);
-
-                await initializeView();
+                $scope.entity = angular.copy($scope._entityTemplate);
                 $($(".form-control", "#editForm")[0]).focus();
             }
         }
@@ -224,6 +200,33 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             }
             catch (e2) { } // Ignore scope apply updates
         }
+    }
+
+    $scope.submitBatch = function(hist) {
+
+        hist._batchState = 0;
+        hist._batchStateText = SanteDB.locale.getString("ui.wait");
+        SanteDB.resources.bundle.insertAsync(hist.bundle).then(async function(b) {
+            hist._batchStateText = SanteDB.locale.getString("ui.model.patient.saveSuccess");
+            
+            delete hist.bundle;
+            hist._batchState = 1;
+            
+            try {
+                var rpid = await SanteDB.resources.patient.getAsync(hist.entity.id);
+            }
+            catch(e) {
+                if(e.$type == "FileNotFoundException")
+                hist._batchState = 3;
+                else {
+                    hist._batchStateText = e.message;
+                }
+            }
+
+        }).catch(function(e) {
+            hist._batchState = 2;
+            hist._batchStateText = e.message;
+        });
     }
 
     // Cancel submission

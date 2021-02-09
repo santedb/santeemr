@@ -36,7 +36,6 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                 return;
             }
             $scope.patient = await SanteDB.resources.patient.getAsync(id, "full");
-            $scope.$apply();
         }
         catch (e) {
             // Remote patient perhaps?
@@ -60,14 +59,18 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                         delete $scope.patient.tag["$generated"];
                     }
                     
-                    $scope.$apply();
                     return;
                 }
                 catch (e) {
-                    $rootScope.errorHandler(e);
+                    $scope.error = $rootScope.prepareErrorForDisplay(e);
                 }
             }
-            $rootScope.errorHandler(e);
+            $scope.error = $rootScope.prepareErrorForDisplay(e);
+
+        }
+        finally {
+            try { $scope.$apply(); }
+            catch(e) {}
         }
     }
     loadPatient($stateParams.id);

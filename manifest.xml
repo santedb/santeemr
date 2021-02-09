@@ -20,7 +20,7 @@
  - Date: 2019-8-8
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr" version="2.0.74.4">
+  <info id="org.santedb.emr" version="2.0.76.0">
     <icon>/org.santedb.core/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
@@ -226,7 +226,7 @@
     <string key="ui.emr.patient.register.requiredFieldMissing">Required Fields Missing</string>
     <string key="ui.emr.patient.downloading">Downloading patient data from central</string>
     <string key="ui.emr.patient.register">Register Patient</string>
-    <string key="ui.emr.patient.registered">Successfully Registered</string>
+    <string key="ui.emr.patient.registered">Submitted Data</string>
     <string key="ui.emr.patient.registered.none">No Patients Registered</string>
     <string key="ui.emr.directDisable.localUser">This service is connected directly to the remote server. Local user functions are disabled</string>
     <!-- Patient View -->

@@ -8,14 +8,26 @@
             <sdb:title lang="en">View Patient</sdb:title>
         </sdb:view>
     </sdb:state>
-    <div class="row">
-        <div class="col">
-            <!-- #include virtual="/org.santedb.uicore/partials/patient/patientHeader.html" -->
+
+    <div ng-if="!patient &amp;&amp; !error">
+        <i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+    </div>
+    <div ng-if="patient">
+        <div class="row">
+            <div class="col">
+                <!-- #include virtual="/org.santedb.uicore/partials/patient/patientHeader.html" -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col p-0">
+                <widget-tabs context-name="'org.santedb.emr.patient'" scoped-object="patient"></widget-tabs>
+            </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col p-0">
-            <widget-tabs context-name="'org.santedb.emr.patient'" scoped-object="patient"></widget-tabs>
+    <div ng-if="error">
+        <div class="alert alert-danger">
+            <h5><i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'error.type.' + (error.$type || 'Exception') | i18n }}</h5>
+            <!-- #include virtual="/org.santedb.uicore/partials/error/error.html" -->
         </div>
     </div>
 </div>

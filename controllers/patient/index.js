@@ -42,6 +42,9 @@ angular.module('santedb').controller('EmrPatientIndexController', ["$scope", "$r
     // Render the patient's gender
     $scope.renderGender = function (patient) {
         var retVal = "";
+        if(!patient.genderConcept)
+            retVal += '<i class="fas fa-question-circle"></i> ';
+        else 
         switch (patient.genderConcept) {
             case "f4e3a6bb-612e-46b2-9f77-ff844d971198":
                 retVal += '<i class="fas fa-male"></i> ';
@@ -53,7 +56,7 @@ angular.module('santedb').controller('EmrPatientIndexController', ["$scope", "$r
                 retVal += '<i class="fas fa-question-circle"></i> ';
         }
 
-        if (patient.genderConceptModel.mnemonic) {
+        if (patient.genderConceptModel && patient.genderConceptModel.mnemonic) {
             retVal += SanteDB.display.renderConcept(patient.genderConceptModel);
         }
         return retVal;
