@@ -73,7 +73,7 @@ angular.module('santedb').controller('EmrPatientIndexController', ["$scope", "$r
         if (patient.identifier) {
             Object.keys(patient.identifier).forEach(function (id) {
                 if( retVal == "" && (preferred && id == preferred || !preferred))
-                    retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
+                    retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${patient.identifier[id].domainModel ? patient.identifier[id].domainModel.name : id}</span> ,`;
             });
         }
 

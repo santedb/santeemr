@@ -53,7 +53,7 @@ angular.module('santedb').controller('EmrDemographicsWidgetController', ['$scope
     $scope.addIdentifier = function (id) {
         if (!$scope.panel.editForm.$valid) return;
         else {
-            var authority = id.authority.domainName;
+            var authority = id.domainModel.domainName;
             var existing = $scope.editObject.identifier[authority];
             if (!existing) // no identifiers in this domain
                 $scope.editObject.identifier[authority] = existing = [];
@@ -61,7 +61,7 @@ angular.module('santedb').controller('EmrDemographicsWidgetController', ['$scope
                 $scope.editObject.identifier[authority] = existing = [existing];
             id.id = SanteDB.application.newGuid();
             existing.push(angular.copy(id));
-            delete (id.authority);
+            delete (id.domainModel);
             delete (id.value);
             delete (id.id);
         }
@@ -100,7 +100,7 @@ angular.module('santedb').controller('EmrDemographicsWidgetController', ['$scope
                         n.identifier[key] = [n.identifier[key]];
 
                     n.identifier[key].forEach(function (id) {
-                        id._codeUrl = `/hdsi/Patient/${n.id}/_code/${id.authority.id}?_sessionId=${window.sessionStorage.getItem("token")}`;
+                        id._codeUrl = `/hdsi/Patient/${n.id}/_code?_format=santedb-vrp`;
                     })
                 });
 

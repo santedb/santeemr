@@ -3,7 +3,7 @@ angular.module('santedb').controller("EmrUserIndexController", ["$scope", "$root
     /**
     * @summary Delete the specified user
     */
-    $scope.delete = function (id, index) {
+    $scope.delete = async function (id, index) {
         if (id === SanteDB.authentication.SYSTEM_USER || id === SanteDB.authentication.ANONYMOUS_USER)
             alert(SanteDB.locale.getString("ui.admin.users.systemUser"));
         else {

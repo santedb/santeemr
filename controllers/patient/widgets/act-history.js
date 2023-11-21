@@ -2,27 +2,26 @@
 // Template icons
 var _templateIcons = {};
 
-angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope', '$rootScope', '$state', function ($scope, $rootScope, $state) {
+angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope', '$rootScope', '$state', "$timeout", function ($scope, $rootScope, $state, $timeout) {
 
-    $scope.templateIcon = _templateIcons;
+
+    var _templateIcons = {};
 
     // Initialize the view
     async function initialize() {
         try {
+            
             if(Object.keys(_templateIcons).length == 0) {
                 var templates = await SanteDB.application.getTemplateDefinitionsAsync();
                 templates.forEach(function(tpl) {
                     _templateIcons[tpl.mnemonic] = tpl.icon; 
                 });
-                try {
-                    $scope.$apply();
-                }
-                catch(e){}
-
+                
+                $timeout(() => $scope.templateIcon = _templateIcons);
             }
         }
         catch(e) {
-            console.warn("Cannot fet template icons", e);
+            console.warn("Cannot fetch template icons", e);
         }
     }
 
@@ -46,18 +45,17 @@ angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope',
      * @summary Ensure the specified player object 
      * @param {*} participation The ActParticipation to load player for
      */
-    $scope.loadPlayer = function(participation) {
+    $scope.loadPlayer = async function(participation) {
         if(participation.playerModel) return; // already loaded
-        loadObject("Entity", participation.player).then(function(e) { 
-            participation.playerModel = e;
-        }).catch(console.warn);
+        var loadedPlayer = await loadObject("Entity", participation.player);
+        $timeout(() => participation.playerModel = loadedPlayer);
     }
 
     // Watch for scoped object
     $scope.$watch("scopedObject", async function(n, o) {
         if(n && n.id) {
             try {
-                $scope.history = [];
+                var history = [];
                 var offset = 0, count = 1;
 
                 // Lookup MDM links
@@ -81,17 +79,13 @@ angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope',
                     count = results.totalResults;
                     offset += results.count;
                     if(results.resource)
+                    {
                         await Promise.all(results.resource.map(async function(r) { 
-                            $scope.history.push(r); 
+                            history.push(r); 
                         }));
-
-                    // Apply the reuslt
-                    try {
-                        $scope.$applyAsync();
-                    } catch(e) {}
+                    }
+                    $timeout(() => $scope.history = history);
                 }
-
-               
             }
             catch(e) {
                 $rootScope.errorHandler(e);

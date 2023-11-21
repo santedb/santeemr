@@ -20,45 +20,107 @@
  * Date: 2019-8-8
  */
 var _boundTransitionStart = false;
-angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", "$transitions", function ($scope, $rootScope, $state, $templateCache, $interval, $transitions) {
+angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", "$transitions", "$timeout", function ($scope, $rootScope, $state, $templateCache, $interval, $transitions, $timeout) {
+
+    // Check for new mail
+    async function checkMail() {
+
+        try {
+            var mailMessages = await SanteDB.resources.mail.findAssociatedAsync("Inbox", "Message", { flags: 0 });
+            await Promise.all(mailMessages.resource.map(async function (mb) {
+                mb.targetModel = await SanteDB.resources.mail.getAssociatedAsync("Inbox", "Message", mb.target);
+            }));
+            $timeout(() => $scope.mailbox = mailMessages.resource);
+        }
+        catch (e) {
+            toastr.warning(SanteDB.locale.getString("ui.admin.mailError"));
+            console.error(e);
+        }
+    };
+
+    // Check for new tickles
+    async function checkTickles() {
+        try {
+            var tickles = await SanteDB.resources.tickle.findAsync({});
+            var hasAlert = false;
+            tickles.forEach(function (t) {
+
+                if (!t.type) return;
+
+                if (t.type.indexOf && t.type.indexOf("Danger") > -1 || t.type & 2)
+                    hasAlert = true;
+
+                if (t.type.indexOf && t.type.indexOf("Toast") > -1 || t.type & 4) {
+                    if (t.type.indexOf && t.type.indexOf("Danger") > -1 || t.type & 2)
+                        toastr.error(t.text, null, { preventDuplicates: true });
+                    else
+                        toastr.info(t.text, null, { preventDuplicates: true });
+
+                    SanteDB.resources.tickle.deleteAsync(t.id);
+                }
+            });
+            $timeout(() => $scope.tickles = tickles);
+        }
+        catch (e) {
+            toastr.warning(SanteDB.locale.getString("ui.admin.tickleError"));
+            console.error(e);
+        }
+    }
+
+    // Check for conflict status
+    async function checkConflicts() {
+        if ($rootScope.system && $rootScope.system.config && $rootScope.system.config.sync && $rootScope.system.config.sync.mode == 'Sync') {
+            try {
+                await SanteDB.resources.queue.findAsync();
+                $timeout(() => $scope.queue = queue);
+            }
+            catch (e) {
+                toastr.warning(SanteDB.locale.getString("ui.admin.queueError"));
+                console.error(e);
+            }
+        }
+    }
+
+    // Load menus for the current user
+    async function loadMenus() {
+        try {
+            var menus = await SanteDB.application.getMenusAsync("ui.emr");
+            $timeout(() => $scope.menuItems = menus);
+        }
+        catch (e) {
+            $rootScope.errorHandler(e);
+        }
+    }
 
     initializeSideNavTriggers();
-    
-    $rootScope.synchronizeAge = synchronizeAge;
+
     // Shows the elevation dialog, elevates and then refreshes the state
-    $scope.overrideRefresh = function() {
+    $scope.overrideRefresh = function () {
         new SanteDBElevator(
-            function() {
+            function () {
                 $templateCache.removeAll();
                 $state.reload();
             }
         ).elevate($rootScope.session);
     }
-    
+
     // On logout transition to the login state
-    $("#logoutModal").on("hidden.bs.modal", function() {
-        if(!window.sessionStorage.getItem("token"))
-        {
+    $("#logoutModal").on("hidden.bs.modal", function () {
+        if (!window.sessionStorage.getItem("token")) {
             $templateCache.removeAll();
-            $state.transitionTo('login'); 
+            $state.transitionTo('login');
         }
     });
 
     // abandon session
-    $scope.abandonSession = function() {
-        SanteDB.authentication.logoutAsync().then(function() { 
+    $scope.abandonSession = async function () {
+        try {
+            await SanteDB.authentication.logoutAsync();
             $("#logoutModal").modal('hide');
-        });
-    }
-
-    // Load menus for the current user
-    function loadMenus() {
-        SanteDB.application.getMenusAsync("ui.emr")
-            .then(function (res) {
-                $scope.menuItems = res;
-                $scope.$applyAsync();
-            })
-            .catch($rootScope.errorHandler);
+        }
+        catch (e) {
+            $rootScope.errorHandler(e);
+        }
     }
 
     // Watch the session and load menus accordingly (in case user elevates)
@@ -66,83 +128,28 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         if (nv && nv.user) {
             // Add menu items
             loadMenus();
-
         }
         else
             $scope.menuItems = null;
     });
 
-    if($rootScope.session)
+    if ($rootScope.session) {
         loadMenus();
-
-    // Check for new mail
-    var checkMail = function() {
-
-        SanteDB.resources.mail.findAsync({ flags: ["0", "1", "4", "8"], _count: 10, _orderBy: "creationTime:desc" })
-            .then(function(d) {
-                $scope.mailbox = d.resource;
-                $scope.$apply();
-            })
-            .catch(function(e) { 
-                toastr.warning(SanteDB.locale.getString("ui.emr.mailError"));
-                console.error(e) 
-            });
-    };
-
-    // Check for new tickles
-    var checkTickles = function() {
-        SanteDB.resources.tickle.findAsync({})
-            .then(function(d) {
-                $scope.tickles = d;
-
-                // Any tickles that need toast?
-                d.forEach(function(t) {
-
-                    if(!t.type) return;
-
-                    if(t.type.indexOf && t.type.indexOf("Danger") > -1 || t.type & 2)
-                        $scope.tickles.alert = true;
-                    else 
-                        $scope.tickles.alert = false;
-                        
-                    if(t.type.indexOf && t.type.indexOf("Toast") > -1 || t.type & 4) {
-                        if(t.type.indexOf && t.type.indexOf("Danger") > -1 || t.type & 2)
-                            toastr.error(t.text, null, { preventDuplicates: true });
-                        else 
-                            toastr.info(t.text, null, { preventDuplicates: true });
-                        
-                        SanteDB.resources.tickle.deleteAsync(t.id);
-                    }
-                });
-                $scope.$apply();
-            })
-            .catch(function(e) { 
-                toastr.warning(SanteDB.locale.getString("ui.emr.tickleError"));
-                console.error(e); });
-    }
-
-    // Check for conflict status
-    var checkConflicts = function() {
-        if($rootScope.system && $rootScope.system.config && $rootScope.system.config.sync && $rootScope.system.config.sync.mode == 'Sync')
-            SanteDB.resources.queue.findAsync()
-                .then(function(queue) {
-                    $scope.queue = queue;
-                    $scope.$apply();
-                })
-                .catch(function(e) {
-                    toastr.warning(SanteDB.locale.getString("ui.emr.queueError"));
-                    console.error(e);
-                });
     }
 
     // Clear all tickles
-    $scope.clearTickles = function() {
-        if($scope.tickles) {
-            $scope.tickles.forEach(function(t) {
-                SanteDB.resources.tickle.deleteAsync(t.id);
-            });
-            $scope.tickles = [];
-        
+    $scope.clearTickles = async function () {
+        if ($scope.tickles) {
+
+            await Promise.all($scope.tickles.map(async function (t) {
+                try {
+                    await SanteDB.resources.tickle.deleteAsync(t.id);
+                }
+                catch (e) {
+                    toastr.warning(SanteDB.locale.getString("ui.admin.tickleError"));
+                }
+            }));
+
         }
     }
 
@@ -151,37 +158,51 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     checkConflicts();
 
     // Mailbox
-    var refreshInterval = $interval(function() {
+    var refreshInterval = $interval(function () {
         checkTickles();
-        checkMail();
         checkConflicts();
-    } , 60000);
+    }, 60000);
 
-    $scope.$on('$destroy',function(){
-        if(refreshInterval)
-            $interval.cancel(refreshInterval);   
+    var mailInterval = $interval(checkMail, 600000);
+
+    $scope.$on('$destroy', function () {
+        if (refreshInterval) {
+            $interval.cancel(refreshInterval);
+        }
+        if(mailInterval) {
+            $interval.cancel(mailInterval);
+        }
     });
 
-    
+
     // Confirm navigation away in AngularJS route
-    if(!_boundTransitionStart) {
-        $transitions.onStart({ exiting: [ "santedb-emr.patient.register",  "santedb-emr.patient.register-batch"] }, function (transition) {
+    if (!_boundTransitionStart) {
+        $transitions.onStart({ exiting: ["santedb-emr.patient.register", "santedb-emr.patient.register-batch"] }, function (transition) {
             var scope = angular.element("#editForm").scope();
             if (!scope.editForm.$pristine && (scope.entity && !scope.entity.id || scope.act && !scope.act.id)) return confirm(SanteDB.locale.getString("ui.emr.navigateConfirmation"));
             return true;
         });
         _boundTransitionStart = true;
     }
+
     // Set the view handlers
-    SanteDB.application.addResourceViewer("Patient", function(parms) { $state.transitionTo("santedb-emr.patient.view", parms); return true; });
-    SanteDB.application.addResourceViewer("DiagnosticReport", function(parms) {
-         $state.transitionTo("santedb-emr.system.bug"); 
-         return true; 
+    SanteDB.application.addResourceViewer("Patient", function (parms) { $state.transitionTo("santedb-emr.patient.view", parms); return true; });
+    SanteDB.application.addResourceViewer("DiagnosticReport", function (parms) {
+        $state.transitionTo("santedb-emr.system.bug");
+        return true;
+    });
+    
+    // Is there no route? We should show the dashboard
+    $rootScope.$watch("system.config", function(n, o) {
+        if(n) {
+            if(n._isConfigured === false) {
+                $state.go("santedb-config.initial");
+            }
+            else if ($state.$current == "santedb-emr") {
+                $state.go("santedb-emr.dashboard");
+            }
+        }
     });
 
-
-    // Is there no route? We should show the dashboard
-    if($state.$current == "santedb-emr") 
-        $state.transitionTo("santedb-emr.dashboard");
 }]);
 

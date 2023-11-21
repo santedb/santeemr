@@ -25,7 +25,7 @@
             <ul class="list-group">
                 <li class="d-flex align-items-center"
                     ng-repeat="(n, id) in rel.targetModel.identifier">
-                    {{ id.value }} <span class="badge badge-info">{{ id.authority.name }}</span></li>
+                    {{ id.value }} <span class="badge badge-info">{{ id.domainModel.name }}</span></li>
             </ul>
         </div>
         <label class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.dateOfBirth' | i18n }}</label>

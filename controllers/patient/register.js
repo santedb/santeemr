@@ -1,30 +1,10 @@
 /// <reference path="../../.ref/js/santedb.js" />
 
-angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", "$rootScope", "$state", "$transitions", "$interval", function ($scope, $rootScope, $state, $transitions, $interval) {
+angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", "$rootScope", "$state", "$transitions", "$interval", "$timeout", function ($scope, $rootScope, $state, $transitions, $interval, $timeout) {
 
     // Assign the scope functions
     $scope.cancelEdit = cancelEdit;
     $scope.registerPatient = registerPatient;
-    $scope.checkDuplicates = async function (page) {
-        $scope.duplicates = await checkDuplicates(page);
-        $scope.$apply();
-    }
-    $scope.resetView = async function () {
-        await initializeView();
-        try {
-            $scope.$apply();
-        } catch (e) { }
-    }
-
-    $scope.registerHistory = [];
-
-    // No template use the default
-    var templateId = $state.templateId;
-    if (!templateId) {
-        templateId = SanteDB.configuration.getAppSetting("template.patient") || "org.santedb.emr.patient";
-    }
-
-   
     
     // Initialize the view
     async function initializeView() {
@@ -38,7 +18,6 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             $rootScope.errorHandler(e);
         }
     }
-    initializeView().then(function () { $scope.$apply(); });
 
     // Check for duplicates
     async function checkDuplicates(page) {
@@ -113,7 +92,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         }
     }
 
-
+    
     // Submit the form
     async function registerPatient(patientForm, bulkEntry) {
         if (!patientForm.$valid) return;
@@ -132,12 +111,11 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             else
                 $("#duplicateModal").modal('hide');
 
-
             // Submission object
             var patient = new Patient(angular.copy($scope.entity));
             patient.id = SanteDB.application.newGuid();
 
-            await correctEntityInformation(patient);
+            patient = await prepareEntityForSubmission(patient);
             scrubModelProperties(patient);
 
             // Create a submission bundle with related entities
@@ -147,30 +125,30 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
                 // Iterate over relationship types
                 var correctedRelationship = {};
-                Object.keys(patient.relationship).map(function (relationshipType) {
+                await Promise.all(Object.keys(patient.relationship).map(async function (relationshipType) {
 
                     // Fetch and correct
                     var relationships = patient.relationship[relationshipType];
                     if (!Array.isArray(relationships))
                         relationships = [relationships];
 
-                    var value = relationships
+                    value = await Promise.all(relationships
                         .filter(o => o && (o._active && o.targetModel || !o.targetModel))
-                        .map(function (rel) {
+                        .map(async function (rel) {
                             if (rel.targetModel) {
                                 var entity = angular.copy(rel.targetModel);
                                 rel.target = entity.id = SanteDB.application.newGuid();
-                                correctEntityInformation(entity);
+                                entity = await prepareEntityForSubmission(entity);
                                 bundle.resource.push(entity);
                                 delete (rel.targetModel);
                             }
                             rel.holder = patient.id;
                             return rel;
-                        });
+                        }));
 
                     if (value.length > 0)
                         correctedRelationship[relationshipType] = value;
-                });
+                }));
                 patient.relationship = correctedRelationship;
             }
 
@@ -202,16 +180,48 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         }
     }
 
-    $scope.submitBatch = function(hist) {
 
-        hist._batchState = 0;
-        hist._batchStateText = SanteDB.locale.getString("ui.wait");
-        SanteDB.resources.bundle.insertAsync(hist.bundle).then(async function(b) {
-            hist._batchStateText = SanteDB.locale.getString("ui.model.patient.saveSuccess");
+    // Check for duplicates bound onto the scope
+    $scope.checkDuplicates = async function (page) {
+        try {
+         var duplicates = await checkDuplicates(page);
+         $timeout(()=>$scope.duplicates = duplicates);
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+    }
+
+    $scope.resetView = async function () {
+        await initializeView();
+        try {
+            $scope.$apply();
+        } catch (e) { }
+    }
+
+    $scope.registerHistory = [];
+
+    // No template use the default
+    var templateId = $state.templateId;
+    if (!templateId) {
+        templateId = SanteDB.configuration.getAppSetting("template.patient") || "org.santedb.emr.patient";
+    }
+    
+    initializeView().then(function () { $scope.$apply(); });
+
+    $scope.submitBatch = async function(hist) {
+
+        try {
+            hist._batchState = 0;
+            hist._batchStateText = SanteDB.locale.getString("ui.wait");
             
+            await SanteDB.resources.bundle.insertAsync(hist.bundle);
+
+            hist._batchStateText = SanteDB.locale.getString("ui.model.patient.saveSuccess");
+
             delete hist.bundle;
             hist._batchState = 1;
-            
+                
             try {
                 var rpid = await SanteDB.resources.patient.getAsync(hist.entity.id);
             }
@@ -222,11 +232,11 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     hist._batchStateText = e.message;
                 }
             }
-
-        }).catch(function(e) {
+        }
+        catch(e) {
             hist._batchState = 2;
             hist._batchStateText = e.message;
-        });
+        }
     }
 
     // Cancel submission

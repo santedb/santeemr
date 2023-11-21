@@ -1,11 +1,12 @@
-angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootScope", "$stateParams", "$state", function ($scope, $rootScope, $stateParams, $state) {
+angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootScope", "$stateParams", "$state", "$timeout", function ($scope, $rootScope, $stateParams, $state, $timeout) {
 
     /** Select a user for editing */
-    async function initView (id) {
+    async function initializeView (id) {
 
         try {
+            var target = null;
             if (!id) {
-                $scope.target = {
+                target = {
                     entity: new SecurityUser(),
                     userEntity: new UserEntity({
                         language: [
@@ -31,11 +32,11 @@ angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootS
                 };
             }
             else {
-                $scope.target = await SanteDB.resources.securityUser.getAsync(id);
-                $scope.target.isAdmin = $scope.target.role.indexOf("LOCAL_ADMINISTRATORS") > -1;
+                target = await SanteDB.resources.securityUser.getAsync(id);
+                target.isAdmin = $scope.target.role.indexOf("LOCAL_ADMINISTRATORS") > -1;
                 var userMatch = await SanteDB.resources.userEntity.findAsync({ securityUser: id, _viewModel: "full" });
                 if (!userMatch.resource)
-                    $scope.target.userEntity = new UserEntity({
+                    target.userEntity = new UserEntity({
                         language: [
                             {
                                 "languageCode": SanteDB.locale.getLanguage(),
@@ -45,25 +46,23 @@ angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootS
                         securityUser: id
                     });
                 else
-                    $scope.target.userEntity = userMatch.resource[0];
+                    target.userEntity = userMatch.resource[0];
 
                 // Set language
-                if (!$scope.target.userEntity.language)
-                    $scope.target.preferredLanguage = SanteDB.locale.getLanguage();
+                if (!target.userEntity.language)
+                    target.preferredLanguage = SanteDB.locale.getLanguage();
                 else if (!Array.isArray($scope.target.userEntity.language))
-                    $scope.target.preferredLanguage = $scope.target.userEntity.language.languageCode;
+                    target.preferredLanguage = $scope.target.userEntity.language.languageCode;
                 else {
-                    var lng = $scope.target.userEntity.language.find(function (l) { return l.isPreferred; });
+                    var lng = target.userEntity.language.find(function (l) { return l.isPreferred; });
                     if (!lng)
                         lng = { "languageCode": SanteDB.locale.getLanguage() };
-                    $scope.target.preferredLanguage = lng.languageCode;
+                    target.preferredLanguage = lng.languageCode;
                 }
 
             }
-            try {
-                $scope.$apply();
-            }
-            catch (e) { }
+
+            $timeout(() => $scope.target = target);
             $("#userModal").modal();
         }
         catch (e) {
@@ -71,12 +70,7 @@ angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootS
         }
     }
 
-    initView($stateParams.id).then(function() {
-        try {
-            $scope.$apply();
-        }
-        catch(e) {}
-    });
+    initializeView($stateParams.id);
 
    
     /** Watch for changes in the password and calculate strength  */
@@ -99,10 +93,13 @@ angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootS
         if (n != o && n && n.length >= 3) {
             try {
                 var userMatch = await SanteDB.resources.securityUser.findAsync({ userName: n, _count: 0 });
-                if (userMatch.size > 0 && !$scope.target.entity.id) 
-                    $scope.userForm.username.$setValidity('duplicate', false);
-                else
-                    $scope.userForm.username.$setValidity('duplicate', true);
+
+                $timeout(() => {
+                    if (userMatch.size > 0 && !$scope.target.entity.id)  
+                        $scope.userForm.username.$setValidity('duplicate', false);
+                    else
+                        $scope.userForm.username.$setValidity('duplicate', true);
+                });
             }
             catch (e) {
 

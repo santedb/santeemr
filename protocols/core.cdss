@@ -1,0 +1,88 @@
+// SanteDB EMR Core Clinical Decision Support Rules
+
+define library "SanteDB Core CDSS Fact Library"
+    id <org.santedb.cdss.core>
+    status active
+    uuid {401997F5-731D-4E46-8C4C-3C5BD7B2B58B}
+    metadata
+        version 3.0-alpha1
+        author SanteSuite Inc. and the SanteSuite Contributors
+        doc This library contains core logic to extract common facts related to objects in SanteDB. It defines
+        doc no rules, protocols, or models, rather is intended to provide common facts about data to allow
+        doc users to more easily derive their own rules
+    end
+    as
+
+    logic "SanteDB Core CDSS Patient Facts"
+        id <org.santedb.cdss.core.patient>
+        status active
+        context Patient
+        metadata
+            version 3.0-alpha
+            doc Core CDSS facts for Patients
+        end metadata
+    as 
+
+        fact "Patient Is Deceased" type bool as
+            hdsi("deceasedDate=!null")
+        end 
+
+        fact "Patient is not Deceased" type bool as 
+            none("Patient Is Deceased")
+        end
+
+        fact "Patient Gender" type string as
+            hdsi("genderConcept.mnemonic")
+        end 
+
+        fact "Patient is Female" type bool as 
+            hdsi("genderConcept=094941e9-a3db-48b5-862c-bc289bd7f86c")
+        end
+
+        fact "Patient is Male" type bool as 
+            hdsi("genderConcept=f4e3a6bb-612e-46b2-9f77-ff844d971198")
+        end
+
+        fact "Patient Age In Years" type real 
+            metadata 
+                doc Expresses the patient's age in years (including partial years expressed as a decimal)
+            end 
+            as
+            csharp("DateTime.Now.Subtract(context.Target.DateOfBirth.Value.Date).TotalDays / 365.25f")
+        end
+
+        fact "Patient Date of Birth" type date as 
+            hdsi("dateOfBirth")
+        end
+
+    end logic // Patient
+
+    logic "SanteDB Core CDSS for Acts" 
+        id <org.santedb.cdss.core.act>
+        status active
+        context Act
+        metadata 
+            version 3.0-alpha
+            doc Core CDSS facts for all Acts 
+        end metadata
+        as
+
+        fact "Record Target for Act" as
+            hdsi("participation[RecordTarget].player@Entity")
+        end 
+
+        fact "Record Target Gender" type string as 
+            hdsi("participation[RecordTarget].player@Person.genderConcept.mnemonic")
+        end 
+
+        fact "Record Target Date of Birth" type date as 
+            hdsi("participation[RecordTarget].player@Person.dateOfBirth")
+        end 
+
+        fact "Record Target Age in Years" type real as 
+            csharp($$
+                (float)DateTime.Now.Subtract(((DateTime?)context["Record Target Date Of Birth"]).Value).TotalDays / 365.25f
+            $$)
+        end 
+    end logic // acts
+end library

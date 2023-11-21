@@ -1,0 +1,153 @@
+// SanteDB EMR Child-Care CDSS Facts
+
+include <org.santedb.cdss.core>
+
+library "SanteDB Core CDSS Fact Library for Children"
+    id <org.santedb.cdss.core.childcare>
+    uuid {876FFFAD-FC37-4666-B949-4A96AE2A4FB9}
+    status active
+    metadata 
+        author SanteSuite Inc. and the SanteSuite Contributors
+        version 3.0-alpha
+        doc Contains core CDSS facts which are useful for protocols and rules involving children 
+    end metadata
+    as 
+
+    logic "Core Childhood Facts for Patient"
+        id <org.santedb.cdss.core.childcare.patient>
+        status active 
+        context Patient
+        metadata 
+            version 3.0-alpha
+        end metadata
+        as
+
+        fact "Patient is Infant" type bool 
+            metadata 
+                doc Identifies a patient as an infant (defined as a patient whose age is under 18 months old)
+            end metadata
+            as 
+            hdsi("dateOfBirth=:(age)<P18M")
+        end fact
+
+        fact "Patient Is a Child" type bool 
+            metadata 
+                doc Identifies if a patient is a "child" (defined as a patient being under 12 years old - includes infants)
+            end metadata
+            as 
+            hdsi("dateOfBirth=:(age)<P12Y")
+        end fact
+
+        fact "Patient is Adolescent" type bool 
+            metadata 
+                doc Identifies whether a patient is an adolescent (defined as a patient being between 12 and 19 years old)
+            end metadata
+            as 
+            all(
+                none("Patient Is a Child"),
+                hdsi("dateOfBirth=:(age)<P20Y")
+            )
+        end fact
+
+        fact "Patient Age in Days" type int
+            metadata 
+                doc Provides the patient's current age expressed as a whole number of days
+            end metadata
+            as 
+            csharp($$ (long)DateTime.Now.Subtract(context.Target.DateOfBirth.Value).TotalDays $$)
+        end fact
+
+        fact "Patient Age in Months" type int
+            metadata
+                doc Provides the patient's current age expressed as a whole number of months 
+            end metadata
+            as
+            csharp(
+                $$
+                (DateTime.Now.Year * 12 + DateTime.Now.Month) - (context.Target.DateOfBirth.Value.Year * 12 + context.Target.DateOfBirth.Value.Month)
+                $$
+            )
+        end fact
+
+        fact "Patient Age in Weeks" type int 
+            metadata 
+                doc Provides the patient's current age expressed as a whole number of weeks
+            end metadata
+            as 
+            csharp($$
+                (int)(DateTime.Now.Subtract(context.Target.DateOfBirth.Value).TotalDays / 7)
+            $$)
+        end fact 
+
+    end logic // patient
+    
+    logic "Core Childhood Facts for Acts"
+        id <org.santedb.cdss.core.childcare.act>
+        status active 
+        context Act
+        metadata 
+            version 3.0-alpha
+        end metadata
+        as
+
+        fact "Record Target is Infant" type bool 
+            metadata 
+                doc Identifies whether the patient of the act as an infant (defined as a patient whose age is under 18 months old)
+            end metadata
+            as 
+            hdsi("participationp[RecordTarget].player@Person.dateOfBirth=:(age)<P18M")
+        end fact
+
+        fact "Record Target Is a Child" type bool 
+            metadata 
+                doc Identifies whether the patient of the act is a "child" (defined as a patient being under 12 years old - includes infants)
+            end metadata
+            as 
+            hdsi("participationp[RecordTarget].player@Person.dateOfBirth=:(age)<P12Y")
+        end fact
+
+        fact "Record Target is Adolescent" type bool 
+            metadata 
+                doc Identifies whether the patient of the act is an adolescent (defined as a patient being between 12 and 19 years old)
+            end metadata
+            as 
+            all(
+                none("Record Target Is a Child"),
+                hdsi("participationp[RecordTarget].player@Person.dateOfBirth=:(age)<P20Y")
+            )
+        end fact
+
+        fact "Record Target Age in Days" type int
+            metadata 
+                doc Provides the patient of this act's current age expressed as a whole number of days
+            end metadata
+            as 
+            csharp($$ 
+                (long)DateTime.Now.Subtract((DateTime)context["Record Target Date of Birth"]).TotalDays 
+            $$)
+        end fact
+
+        fact "Record Target Age in Months" type int
+            metadata
+                doc Provides the patient of this act's current age expressed as a whole number of months 
+            end metadata
+            as
+            csharp(
+                $$
+                (DateTime.Now.Year * 12 + DateTime.Now.Month) - (((DateTime)context["Record Target Date of Birth"].Year) * 12 + ((DateTime)context["Record Target Date of Birth"]).Month)
+                $$
+            )
+        end fact
+
+        fact "Record Target Age in Weeks" type int 
+            metadata 
+                doc Provides the record target's current age expressed as a whole number of weeks
+            end metadata
+            as 
+            csharp($$
+                (int)(DateTime.Now.Subtract((DateTime)context["Record Target Date of Birth"]).TotalDays / 7)
+            $$)
+        end fact 
+
+    end logic // act
+end library

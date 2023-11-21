@@ -91,9 +91,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             Object.keys(patient.identifier).forEach(function (id) {
                 if (preferred && id == preferred || !preferred) {
                     if (Array.isArray(patient.identifier[id]))
-                        retVal += `${patient.identifier[id].map(function (d) { return d.value }).join(' or ')} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
+                        retVal += `${patient.identifier[id].map(function (d) { return d.value }).join(' or ')} <span class="badge badge-dark">${patient.identifier[id].domainModel ? patient.identifier[id].domainModel.name : id}</span> ,`;
                     else
-                        retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${patient.identifier[id].authority ? patient.identifier[id].authority.name : id}</span> ,`;
+                        retVal += `${patient.identifier[id].value} <span class="badge badge-dark">${patient.identifier[id].domainModel ? patient.identifier[id].domainModel.name : id}</span> ,`;
                 }
             });
         }
