@@ -1,6 +1,5 @@
-/// <reference path="../../../core/js/santedb.js"/>
+/// <reference path="../../.ref/js/santedb.js"/>
 angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScope", "$timeout", "$state", "$stateParams", function ($scope, $rootScope, $timeout, $state, $stateParams) {
-
     
     async function checkDuplicate(query) {
         try {
@@ -18,7 +17,7 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
 
     async function initializeView(id) {
         try {
-            var cdssLibrary = await SanteDB.resources.cdssLibraryDefinition.getAsync(id);
+            var cdssLibrary = await SanteDB.resources.cdssLibraryDefinition.getAsync(id, 'full', null, true);
             $timeout(() => $scope.cdssLibrary = cdssLibrary);
         }
         catch (e) {
@@ -43,17 +42,17 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
         var failedValidation = false;
         if($scope.cdssLibrary.library.oid) {
             var valid = await checkDuplicate({oid: $scope.cdssLibrary.library.oid});
-            $timeout(() => $scope.panel.editForm.libraryOid.$setValidity('duplicate', valid));
+            $timeout(() => $scope.saveCdssLibraryForm.libraryOid.$setValidity('duplicate', valid));
             failedValidation = valid;
         }
         if($scope.cdssLibrary.library.id) {
             var valid = await checkDuplicate({id: $scope.cdssLibrary.library.id});
-            $timeout(() => $scope.panel.editForm.libraryId.$setValidity('duplicate', valid));
+            $timeout(() => $scope.saveCdssLibraryForm.libraryId.$setValidity('duplicate', valid));
             failedValidation = valid;
         }
         if($scope.cdssLibrary.library.name) {
             var valid = await checkDuplicate({name: $scope.cdssLibrary.library.name});
-            $timeout(() => $scope.panel.editForm.libraryName.$setValidity('duplicate', valid));
+            $timeout(() => $scope.saveCdssLibraryForm.libraryName.$setValidity('duplicate', valid));
             failedValidation = valid;
         }
 
@@ -80,7 +79,7 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
                     }
 
                     toastr.success(SanteDB.locale.getString("ui.admin.cdss.create.success"));
-                    $state.go("santedb-admin.cdss.view", { id: library.id });
+                    $state.go("santedb-admin.emr.cdss.view", { id: library.id });
 
                 }
                 catch (e) {
@@ -112,7 +111,7 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
                 try {
                     if (!data.issue || data.issue.length == 0) {
                         toastr.success(SanteDB.locale.getString('ui.admin.cdss.upload.success'));
-                        $state.go('santedb-admin.cdss.view', { id: data.id });
+                        $state.go('santedb-admin.emr.cdss.view', { id: data.id });
                     }
                     else {
                         toastr.success(SanteDB.locale.getString('ui.admin.cdss.upload.error', { error: data.message }));

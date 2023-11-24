@@ -1,0 +1,91 @@
+<!--
+ - Copyright (C) 2021-2023 SanteSuite Inc and the SanteSuite Contributors (see NOTICES)
+Portions Copyright (C) 2019-2021 Fyfe Software Inc.
+Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ - 
+ - 
+ - Licensed under the Apache License, Version 2.0 (the "License"); you 
+ - may not use this file except in compliance with the License. You may 
+ - obtain a copy of the License at 
+ - 
+ - http://www.apache.org/licenses/LICENSE-2.0 
+ - 
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ - License for the specific language governing permissions and limitations under 
+ - the License.
+ - 
+ - User: justin
+ - Date: 2018-11-14
+ -->
+ <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="false">~/controllers/cdss/edit.js</sdb:script>
+    <sdb:state name="santedb-admin.emr.cdss.view" >
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.0.15</sdb:demand>
+        <sdb:url>/rule/:id</sdb:url>
+        <sdb:view>
+            <sdb:title lang="en">View Library</sdb:title>
+            <sdb:controller>CdssEditController</sdb:controller>
+        </sdb:view>
+    </sdb:state>
+
+    
+    <div ng-if="!cdssLibrary">
+        <div class="card shadow">
+            <div class="card-body">
+                <i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="cdssLibrary">
+        <div class="scroll-sticky">
+            <div class="card shadow mb-2">
+                <div class="card-body container-fluid p-2">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h2 class="mr-2 d-inline"><i class="far fa-lightbulb fa-fw"></i> {{ cdssLibrary.library.name }} 
+                                <div class="d-inline"><button id="btnSetState" type="button" data-toggle="dropdown"
+                                    class="p-2 btn btn-sm"
+                                    ng-class="{ 'btn-primary' : cdssLibrary.library.status == 'Active' , 'btn-info' : cdssLibrary.library.status == 'TrialUse' , 'btn-warning': cdssLibrary.library.status == 'Retired',  'btn-dark' : cdssLibrary.library.status == 'DontUse' }">
+                                    {{ cdssLibrary.library.status }}
+                                    <div class="dropdown-menu">
+                                        <a class="btn btn-link dropdown-item" title="{{ 'ui.model.cdssLibraryDefinition.status.active.hint' | i18n }}"
+                                            ng-if="cdssLibrary.library.status != 'Active'"
+                                            ng-click="setState('Active')"><i
+                                                class="fas fa-circle text-primary"></i> Activate</a>
+                                        <a class="btn btn-link dropdown-item"  title="{{ 'ui.model.cdssLibraryDefinition.status.trialUse.hint' | i18n }}"
+                                            ng-if="concept.statusConcept != 'TrialUse'"
+                                            ng-click="setState('TrialUse')"><i
+                                                class="fas fa-circle text-info"></i> Trial Use</a>
+                                        <a class="btn btn-link dropdown-item"
+                                            ng-if="concept.statusConcept != 'Retired'"  title="{{ 'ui.model.cdssLibraryDefinition.status.retired.hint' | i18n }}"
+                                            ng-click="setState('Retired')"><i
+                                                class="fas fa-circle text-warning"></i> Retire</a>
+                                        <a class="btn btn-link dropdown-item"
+                                            ng-if="concept.statusConcept != 'DontUse'"  title="{{ 'ui.model.cdssLibraryDefinition.status.dontUse.hint' | i18n }}"
+                                            ng-click="setState('DontUse')"><i
+                                                class="fas fa-circle text-dark"></i> Don't Use</a>
+                                    </div>
+                                </button>
+                            </div>
+                            </h2>
+                            <small class="d-block text-muted">{{ cdssLibrary.library.id }}</small>
+
+                        </div>
+                        <div class="col-sm-12 col-md-6">
+                            <button type="button" demand="1.3.6.1.4.1.33349.3.1.5.9.2.0.15.2.1" ng-click="downloadCdssLibrary(cdssLibrary.id)" class="float-right m-auto btn btn-sm btn-info"><i class="fas fa-download"></i> {{ 'ui.action.download' | i18n }}</button>
+                        </div>
+                        <div class="col-sm-12 offset-md-6 col-md-6 text-right" ng-if="cdssLibrary.library.meta.version">
+                            <span class="badge badge-info"><i class="fas fa-tag"></i> {{ 'ui.common.version' | i18n }} {{ cdssLibrary.library.meta.version }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <widget-tabs context-name="'org.santedb.emr.cdssLibrary'" scoped-object="cdssLibrary.library" class="mb-2" />
+
+    </div>
+</div>

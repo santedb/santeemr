@@ -31,7 +31,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
     </sdb:state>
 
     <h3><i class="fas fa-lightbulb fa-fw"></i> {{ 'ui.admin.cdss.create.title' | i18n }}</h3>
-    <form name="panel.editForm" ng-submit="saveCdssLibrary(panel.editForm)" novalidate="novalidate">
+    <form name="saveCdssLibraryForm" ng-submit="saveCdssLibrary(saveCdssLibraryForm)" novalidate="novalidate">
     <ul class="list-group">
         <li class="list-group-item">
             <label class="w-100 d-block">
@@ -48,7 +48,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                         <input id="source-file" type="file" ng-model="cdssLibrary._sourceFile"
                             class="form-control" name="source" valid-file="valid-file"
                             required="required" accept=".cdss,.xml" />
-                        <div class="text-danger" ng-if="panel.editForm.source.$error['required']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.source.$error['required']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                         </div>
                     </div>
@@ -69,10 +69,10 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                     <div class="col-sm-12 col-md-9">
                         <input class="form-control" type="text" autocomplete="_away" maxlength="128" ng-model="cdssLibrary.library.name"
                             required="required" name="libraryName" />
-                        <div class="text-danger" ng-if="panel.editForm.libraryName.$error['required']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.libraryName.$error['required']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                         </div>
-                        <div class="text-danger" ng-if="panel.editForm.libraryName.$error['duplicate']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.libraryName.$error['duplicate']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
                         </div>
                     </div>
@@ -86,13 +86,13 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                         <input class="form-control" type="text" autocomplete="_away" 
                             maxlength="256" ng-model="cdssLibrary.library.id"
                             required="required" name="libraryId" pattern="[\w\d]+(\.[\w\d]+)*" />
-                        <div class="text-danger" ng-if="panel.editForm.libraryId.$error['required']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.libraryId.$error['required']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                         </div>
-                        <div class="text-danger" ng-if="panel.editForm.libraryId.$error['pattern']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.libraryId.$error['pattern']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
                         </div>
-                        <div class="text-danger" ng-if="panel.editForm.libraryId.$error['duplicate']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.libraryId.$error['duplicate']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
                         </div>
                     </div>
@@ -105,10 +105,10 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                     <div class="col-sm-12 col-md-9">
                         <input class="form-control" type="text" autocomplete="_away" maxlength="256" ng-model="cdssLibrary.library.oid"
                             name="libraryOid" pattern="^[0-9]*?[0-9\.]*$" />
-                        <div class="text-danger" ng-if="panel.editForm.libraryOid.$error['pattern']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.libraryOid.$error['pattern']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
                         </div>
-                        <div class="text-danger" ng-if="panel.editForm.libraryOid.$error['duplicate']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.libraryOid.$error['duplicate']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
                         </div>
                     </div>
@@ -121,7 +121,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                     <div class="col-sm-12 col-md-9">
                         <input class="form-control" type="text" autocomplete="_away" maxlength="256" ng-model="cdssLibrary.library.metadata.version"
                              name="libraryVersion" pattern="^[0-9]+?(\.[0-9]+){0,3}(-\w+)?$" />
-                        <div class="text-danger" ng-if="panel.editForm.libraryVersion.$error['pattern']">
+                        <div class="text-danger" ng-if="saveCdssLibraryForm.libraryVersion.$error['pattern']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
                         </div>
                     </div>
