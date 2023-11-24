@@ -12,10 +12,20 @@
     <string name="ui.admin.cdss.create.upload.file">CDSS Library File</string>
     <string name="ui.admin.cdss.create.upload.file.hint"><![CDATA[Select a CDSS library definition file from your hard drive to import into the SanteDB instance. If you upload a file with an identifier or UUID matching an existing library, this will 
     update the existing file, otherwise the library will be imported]]></string>
+    <string name="ui.admin.cdss.edit.upload">Upload Library</string>
+    <string name="ui.admin.cdss.edit.upload.help">New Version of CDSS Library</string>
+    <string name="ui.admin.cdss.edit.upload.help.text">
+            <![CDATA[ 
+            This tool is used to upload a new version of this CDSS library using a raw definition file. This option is useful if you are authoring your CDSS rules using the CDSS XML library format or the CDSS text format. This method of maintaining
+            a CDSS library is preferred, since it provides complete access to the CDSS engine's functionality. Before continuing, please consult the 
+            <a href="https://help.santesuite.org/developers/applets/cdss-protocols" target="_blank">CDSS Documentation on the SanteSuite Wiki</a> for more information about these formats.
+            ]]>
+    </string>
     <string name="org.santedb.widget.emr.cdssLibrary.logic">Logic</string>
     <string name="org.santedb.widget.emr.cdssLibrary.data">Reference Data</string>
     <string name="org.santedb.widget.emr.cdssLibrary.main">Library</string>
     <string name="org.santedb.widget.emr.cdssLibrary.main.attribute">Library Properties</string>
     <string name="org.santedb.widget.emr.cdssLibrary.logic.define">Logic Definitions</string>
     <string name="org.santedb.widget.emr.cdssLibrary.data.define">Reference Sets</string>
+    <string name="org.santedb.widget.emr.cdssLibrary.main.history">Version History</string>
 </resources>
