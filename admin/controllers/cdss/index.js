@@ -1,4 +1,4 @@
-/// <reference path="../../../core/js/santedb.js"/>
+/// <reference path="../../.ref/js/santedb.js"/>
 angular.module('santedb').controller('CdssDashboardController', ["$scope", "$rootScope", "$timeout", function ($scope, $rootScope, $timeout) {
 
     /**

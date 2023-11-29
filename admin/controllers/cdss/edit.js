@@ -145,8 +145,8 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
         });
     }
 
-    $scope.downloadCdssLibrary = function (id) {
-        var win = window.open(`/ami/CdssLibraryDefinition/${$scope.cdssLibrary.id}?_format=xml&_upstream=true`, '_blank');
+    $scope.downloadCdssLibrary = function (format) {
+        var win = window.open(`/ami/CdssLibraryDefinition/${$scope.cdssLibrary.id}?_format=${format}&_upstream=true`, '_blank');
         win.onload = function (e) {
             win.close();
         };
