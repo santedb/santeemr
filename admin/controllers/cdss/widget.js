@@ -4,37 +4,6 @@ angular.module('santedb').controller('CdssWidgetController', ["$scope", "$rootSc
     $scope.filterDatasets = (r) => r.$type == "SanteDB.Cdss.Xml.Model.CdssDatasetDefinition, SanteDB.Cdss.Xml" || r.data && r.compress;
     $scope.filterLogicBlocks = (r) => r.$type == "SanteDB.Cdss.Xml.Model.CdssDecisionLogicBlockDefinition, SanteDB.Cdss.Xml" || r.context;
 
-    $scope.$watch("scopedObject.id", async function(n, o) {
-        if(!$scope.panel && n) {
-            var cdssXmlSource = await SanteDB.api.ami.getAsync({
-                resource: `CdssLibraryDefinition/${n}`,
-                dataType: 'text',
-                headers: {
-                    'X-SanteDB-Upstream' : true
-                },
-                query: {
-                    _format: 'xml'
-                }
-            }), cdssTxtSource = await SanteDB.api.ami.getAsync({
-                resource: `CdssLibraryDefinition/${n}`,
-                dataType: 'text',
-                headers: {
-                    'X-SanteDB-Upstream' : true
-                },
-                query: {
-                    _format: 'txt'
-                }
-            });
-
-            $timeout(() => {
-                $scope.source = {
-                    xml: cdssXmlSource,
-                    txt: cdssTxtSource
-                };
-            });
-        }
-    });
-
     $scope.$watch("source", function(n,o) {
 
         if(n && !o) {

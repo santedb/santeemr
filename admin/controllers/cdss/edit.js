@@ -17,14 +17,37 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
 
     async function initializeView(id) {
         try {
-            var libraryDefinition = await SanteDB.resources.cdssLibraryDefinition.getAsync(id, null, null, true);
-            $timeout(() => {
-                $scope.cdssLibrary = libraryDefinition;
-            });
-            var libraryHistory = await SanteDB.resources.cdssLibraryDefinition.findAssociatedAsync(id, "_history", null, null, true);
-            $timeout(() =>{
-                $scope.cdssLibrary._history = libraryHistory.resource;
-            });
+           
+            if(ace && $("#cdssEditor").length == 1) {
+            
+                var cdssTxtSource = await SanteDB.api.ami.getAsync({
+                    resource: `CdssLibraryDefinition/${id}`,
+                    dataType: 'text',
+                    headers: {
+                        'X-SanteDB-Upstream' : true
+                    },
+                    query: {
+                        _format: 'txt'
+                    }
+                });
+
+                $timeout(() => {
+                    $("#cdssEditor pre").html(cdssTxtSource.replaceAll("<", "&lt;").replaceAll(">","&gt;"));
+                    var editor = ace.edit("cdssEditor");
+                    editor.setTheme("ace/theme/sqlserver");
+                    editor.session.setMode("ace/mode/cdss");
+                });
+            }
+            else {
+                var libraryDefinition = await SanteDB.resources.cdssLibraryDefinition.getAsync(id, null, null, true);
+                $timeout(() => {
+                    $scope.cdssLibrary = libraryDefinition;
+                });
+                var libraryHistory = await SanteDB.resources.cdssLibraryDefinition.findAssociatedAsync(id, "_history", null, null, true);
+                $timeout(() =>{
+                    $scope.cdssLibrary._history = libraryHistory.resource;
+                });
+            }
         }
         catch (e) {
             $rootScope.errorHandler(e);
