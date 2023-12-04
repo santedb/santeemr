@@ -48,33 +48,11 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <h2 class="mr-2 d-inline"><i class="far fa-lightbulb fa-fw"></i> {{ cdssLibrary.library.name }}
-                                <div class="d-inline"><button id="btnSetState" type="button" data-toggle="dropdown"
-                                        class="p-2 btn btn-sm"
-                                        ng-class="{ 'btn-primary' : cdssLibrary.library.status == 'Active' , 'btn-info' : cdssLibrary.library.status == 'TrialUse' , 'btn-warning': cdssLibrary.library.status == 'Retired',  'btn-dark' : cdssLibrary.library.status == 'DontUse' }">
+                                <div class="d-inline"><div 
+                                        class="p-2 text-white"
+                                        ng-class="{ 'bg-primary' : cdssLibrary.library.status == 'Active' , 'bg-info' : cdssLibrary.library.status == 'TrialUse' , 'bg-warning': cdssLibrary.library.status == 'Retired',  'bg-dark' : cdssLibrary.library.status == 'DontUse' }">
                                         {{ cdssLibrary.library.status }}
-                                        <div class="dropdown-menu">
-                                            <a class="btn btn-link dropdown-item"
-                                                title="{{ 'ui.model.cdssLibraryDefinition.status.active.hint' | i18n }}"
-                                                ng-if="cdssLibrary.library.status != 'Active'"
-                                                ng-click="setState('Active')"><i class="fas fa-circle text-primary"></i>
-                                                Activate</a>
-                                            <a class="btn btn-link dropdown-item"
-                                                title="{{ 'ui.model.cdssLibraryDefinition.status.trialUse.hint' | i18n }}"
-                                                ng-if="concept.statusConcept != 'TrialUse'"
-                                                ng-click="setState('TrialUse')"><i class="fas fa-circle text-info"></i>
-                                                Trial Use</a>
-                                            <a class="btn btn-link dropdown-item"
-                                                ng-if="concept.statusConcept != 'Retired'"
-                                                title="{{ 'ui.model.cdssLibraryDefinition.status.retired.hint' | i18n }}"
-                                                ng-click="setState('Retired')"><i
-                                                    class="fas fa-circle text-warning"></i> Retire</a>
-                                            <a class="btn btn-link dropdown-item"
-                                                ng-if="concept.statusConcept != 'DontUse'"
-                                                title="{{ 'ui.model.cdssLibraryDefinition.status.dontUse.hint' | i18n }}"
-                                                ng-click="setState('DontUse')"><i class="fas fa-circle text-dark"></i>
-                                                Don't Use</a>
-                                        </div>
-                                    </button>
+                                </div>
                                 </div>
                             </h2>
                             <small class="d-block text-muted">{{ cdssLibrary.library.id }}</small>
@@ -96,6 +74,9 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                                 ng-click="uploadReplacementLibrary()"
                                 class="float-right m-auto btn btn-sm btn-success"><i class="fas fa-upload"></i> {{
                                 'ui.action.upload' | i18n }}</button>
+                                <a ui-sref="santedb-admin.emr.cdss.edit({id: cdssLibrary.id})" class="btn btn-info btn-sm">
+                                    <i class="fas fa-fw fa-pencil"></i> {{ 'ui.action.edit' | i18n}}
+                                </a>
                             </div>
                         </div>
                         <div class="col-sm-12 offset-md-6 col-md-6 text-right" ng-if="cdssLibrary.library.meta.version">

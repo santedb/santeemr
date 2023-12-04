@@ -21,6 +21,13 @@
             <a href="https://help.santesuite.org/developers/applets/cdss-protocols" target="_blank">CDSS Documentation on the SanteSuite Wiki</a> for more information about these formats.
             ]]>
     </string>
+
+    <string name="ui.admin.cdss.publish.invalid">Cannot publish an invalid CDSS file. Please ensure all validation errors are corrected</string>
+    <string name="ui.admin.cdss.publish.confirm">Are you sure you want to publish this CDSS definition? Note: If your CDSS definition lists a state of ACTIVE it will apply to all patient encounters on this system</string>
+    <string name="ui.admin.cdss.publish.success">CDSS definition has been published successfully to the server</string>
+    <string name="ui.admin.cdss.edit.source">Source</string>
+    <string name="ui.admin.cdss.edit.test">Test Rules</string>
+    <string name="ui.admin.cdss.edit.errorList">Errors/Issues</string>
     <string name="org.santedb.widget.emr.cdssLibrary.logic">Logic</string>
     <string name="org.santedb.widget.emr.cdssLibrary.data">Reference Data</string>
     <string name="org.santedb.widget.emr.cdssLibrary.main">Library</string>

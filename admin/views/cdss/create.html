@@ -119,7 +119,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                         <hint-popover hint-title="ui.model.cdssLibraryDefinition.metadata.version" />
                     </label>
                     <div class="col-sm-12 col-md-9">
-                        <input class="form-control" type="text" autocomplete="_away" maxlength="256" ng-model="cdssLibrary.library.metadata.version"
+                        <input class="form-control" type="text" autocomplete="_away" maxlength="256" ng-model="cdssLibrary.library.meta.version"
                              name="libraryVersion" pattern="^[0-9]+?(\.[0-9]+){0,3}(-\w+)?$" />
                         <div class="text-danger" ng-if="saveCdssLibraryForm.libraryVersion.$error['pattern']">
                             <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
@@ -132,7 +132,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                         <hint-popover hint-title="ui.model.cdssLibraryDefinition.metadata.author" />
                     </label>
                     <div class="col-sm-12 col-md-9">
-                        <input class="form-control" type="text" autocomplete="_away" maxlength="256" ng-model="cdssLibrary.library.metadata.author"
+                        <input class="form-control" type="text" autocomplete="_away" maxlength="256" ng-model="cdssLibrary.library.meta.author"
                             name="libraryAuthor" />
                     </div>
                 </div>
@@ -142,7 +142,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                         <hint-popover hint-title="ui.model.cdssLibraryDefinition.metadata.documentation" />
                     </label>
                     <div class="col-sm-12 col-md-9">
-                        <textarea class="form-control" maxlength="4096" ng-model="cdssLibrary.library.metadata.documentation" 
+                        <textarea class="form-control" maxlength="4096" ng-model="cdssLibrary.library.meta.documentation" 
                             name="libraryDocumentation"></textarea>
                             <span class="float-right">{{ 4096 - cdssLibrary.library.metadata.documentation.length }} {{ 'ui.common.charsRemain' | i18n
                             }}</span>

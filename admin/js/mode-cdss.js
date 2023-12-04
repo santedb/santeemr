@@ -18,40 +18,42 @@ ace.define("ace/mode/cdss_highlight_rules", ["require", "exports", "module", "ac
 
         var keywordMapper = this.createKeywordMapper({
             "variable.language": "this",
-            "keyword":
-                "define include library having with define end as fact protocol rule data to raise const logic metadata model propose assign repeat apply normalize",
-            "constant.language":
-                "true false hdsi none all any query csharp active dont-use trial-use retired warn danger info",
-            "support.type":
-                "string bool int real long",
-            "keyword.operator":
-                "id uuid status oid context when then type for iterations computed",
-            "storage.type": "Patient Act SubstanceAdministration Procedure QuantityObservation CodedObservation TextObservation PatientEncounter Narrative"
+            "keyword.control": "define include as end having repeat when then with propose apply assign",
+            "keyword.other" : "fact data logic rule protocol library model metadata type",
+            "constant.language": "true false iterations until for",
+            "storage.type" : "Patient Act SubstanceAdministration Procedure QuantityObservation CodedObservation TextObservation PatientEncounter Narrative",
+            "storage.modifier" : "negation track-by normalize computed scoped-to",
+            "support.function" : "hdsi csharp all none any query",
+            "support.constant" : "active dont-use trial-use retired json xml error danger warn info context proposal",
+            "suppoort.variable" : "uuid id status format type",
+            "support.type": "string bool int real long",
+         
         }, "text", true, " ");
 
         this.$rules = {
             "start": [
                 { token: "string", regex: /\"(?:.|\"\")*\"/ },
-                { token: "qstring", regex: /\$\$/, next: "qstring" },
+                { token: "markup.raw", regex: /\$\$/, next: "markup.raw" },
                 { token: "string", regex: /\{.*?\}/ },
                 { token: "string", regex: /\<.*?\>/ },
                 { token: "doc.comment", regex: /(doc|version|author).*$/ },
                 { token: "doc.comment", regex: /\/\/.+$/ },
                 { token: "comment", regex: /\/\/.+$/ },
-                { token: "invalid", regex: "\\.{2,}" },
-                { token: "keyword.operator", regex: /\W[\-+%=<>*]\W|\*\*|[~:,\.&$]|->*?|=>/ },
                 { token: "paren.lparen", regex: "[\\[({]" },
                 { token: "paren.rparen", regex: "[\\])}]" },
                 { token: "constant.numeric", regex: "[+-]?\\d+\\b" },
-                { token: "variable.parameter", regex: /sy|pa?\d\d\d\d\|t\d\d\d\.|innnn/ },
+                { token: "keyword.control", regex: /(track\-by|for|to)\s/, next: "parameter"},
                 { token: "variable.parameter", regex: /\w+-\w[\-\w]*/ },
                 { token: keywordMapper, regex: "\\b\\w+\\b" },
                 { caseInsensitive: true }
             ],
-            "qstring": [
+            "parameter" : [
+                { token: "variable.parameter", regex:/\w(\w|\d|\[|\])*/, next: "start" }
+            ],
+            "markup.raw": [
                 { token: "constant.language.escape", regex: /\\\$\\\$/ },
-                { token: "qstring", regex: /\$\$/, next: "start" },
-                { defaultToken: "qstring" }
+                { token: "markup.raw", regex: /\$\$/, next: "start" },
+                { defaultToken: "markup.raw" }
             ]
         };
     };
