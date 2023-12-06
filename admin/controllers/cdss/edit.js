@@ -155,13 +155,14 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
                 _editor.getSession().on('change', () => _validationDirty = _editorDirty = true);
                 validateInterval = $interval(validateEditor, 5000);
                 window.onbeforeunload = (e) =>  _editorDirty ? SanteDB.locale.getString("ui.action.abandon.confirm") : null;
-                $transitions.onBefore({ from: "santedb-admin.emr.cdss.edit", to: "*" },
+                $transitions.onBefore({ from: "santedb-admin.emr.cdss.*", to: "santedb-admin.*" },
                     (transition) => {
                         if(_editorDirty && !confirm(SanteDB.locale.getString("ui.action.abandon.confirm"))) {
+                            $("#pageTransitioner").hide();
                             transition.abort();
                         }
                     });
-                validateEditor();
+                validateEditor(true);
                 $scope.$on('$destroy', function (s) {
                     $interval.cancel(validateInterval);
                     SanteDB.resources.cdssLibraryDefinition.checkinAsync(s.currentScope.cdssLibrary.id, true);
