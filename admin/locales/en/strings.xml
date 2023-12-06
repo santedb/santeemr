@@ -26,7 +26,22 @@
     <string name="ui.admin.cdss.publish.confirm">Are you sure you want to publish this CDSS definition? Note: If your CDSS definition lists a state of ACTIVE it will apply to all patient encounters on this system</string>
     <string name="ui.admin.cdss.publish.success">CDSS definition has been published successfully to the server</string>
     <string name="ui.admin.cdss.edit.source">Source</string>
+    <string name="ui.admin.cdss.edit.source.hint"><![CDATA[
+        <p>Use the source editor to change the CDSS definition. Shortcuts:</p>
+        <ul class="list-unstyled">
+            <li><code>CTRL+F</code>: Find</li>
+            <li><code>CTRL+H</code>: Find/Replace</li>
+            <li><code>CTRL+S</code>: Save/Publish</li>
+            <li><code>CTRL+R</code>: Run/Test Library</li>
+        </ul>
+        ]]></string>
     <string name="ui.admin.cdss.edit.test">Test Rules</string>
+    <string name="ui.admin.cdss.edit.test.object">Object Type</string>
+    <string name="ui.admin.cdss.edit.test.object.hint">Select the type of object against which the rules will tested</string>
+    <string name="ui.admin.cdss.edit.test.source">Object Source</string>
+    <string name="ui.admin.cdss.edit.test.source.hint">Select whether the test object will be an arbitrary object (specified by you) or an existing record from the database</string>
+    <string name="ui.admin.cdss.edit.test.source.new">Specify An Object</string>
+    <string name="ui.admin.cdss.edit.test.source.db">Find from Database</string>
     <string name="ui.admin.cdss.edit.errorList">Errors/Issues</string>
     <string name="org.santedb.widget.emr.cdssLibrary.logic">Logic</string>
     <string name="org.santedb.widget.emr.cdssLibrary.data">Reference Data</string>

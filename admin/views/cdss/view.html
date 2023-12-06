@@ -48,12 +48,11 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                     <div class="row">
                         <div class="col-sm-12 col-md-6">
                             <h2 class="mr-2 d-inline"><i class="far fa-lightbulb fa-fw"></i> {{ cdssLibrary.library.name }}
-                                <div class="d-inline"><div 
-                                        class="p-2 text-white"
-                                        ng-class="{ 'bg-primary' : cdssLibrary.library.status == 'Active' , 'bg-info' : cdssLibrary.library.status == 'TrialUse' , 'bg-warning': cdssLibrary.library.status == 'Retired',  'bg-dark' : cdssLibrary.library.status == 'DontUse' }">
+                                <span 
+                                        class="badge"
+                                        ng-class="{ 'badge-primary' : cdssLibrary.library.status == 'Active' , 'badge-info' : cdssLibrary.library.status == 'TrialUse' , 'badge-warning': cdssLibrary.library.status == 'Retired',  'badge-dark' : cdssLibrary.library.status == 'DontUse' }">
                                         {{ cdssLibrary.library.status }}
-                                </div>
-                                </div>
+                                </span>
                             </h2>
                             <small class="d-block text-muted">{{ cdssLibrary.library.id }}</small>
 

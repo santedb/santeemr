@@ -25,7 +25,7 @@ ace.define("ace/mode/cdss_highlight_rules", ["require", "exports", "module", "ac
             "storage.modifier" : "negation track-by normalize computed scoped-to",
             "support.function" : "hdsi csharp all none any query",
             "support.constant" : "active dont-use trial-use retired json xml error danger warn info context proposal",
-            "suppoort.variable" : "uuid id status format type",
+            "suppoort.variable" : "uuid id status format type scope oid const",
             "support.type": "string bool int real long",
          
         }, "text", true, " ");
