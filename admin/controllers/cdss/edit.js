@@ -105,7 +105,7 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
 
                 _editor.commands.addCommand({
                     name: 'test',
-                    bindKey: { win: 'CTRL+R', mac: 'CTRL+R' },
+                    bindKey: { win: 'F9', mac: 'F9' },
                     exec: function(editor) {
                         $("#test-tab").tab('show');
                     }

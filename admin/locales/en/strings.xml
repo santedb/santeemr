@@ -32,7 +32,9 @@
             <li><code>CTRL+F</code>: Find</li>
             <li><code>CTRL+H</code>: Find/Replace</li>
             <li><code>CTRL+S</code>: Save/Publish</li>
-            <li><code>CTRL+R</code>: Run/Test Library</li>
+            <li><code>F9</code>: Run/Test Library</li>
+            <li><code>CTRL+U</code>: Convert text to upper case</li>
+            <li><code>CTRL+SHIFT+U</code>: Convert text to lower case</li>
         </ul>
         ]]></string>
     <string name="ui.admin.cdss.edit.test">Test Rules</string>

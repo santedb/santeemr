@@ -43,10 +43,13 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <button class="nav-link active" data-toggle="tab" data-target="#source" type="button"><i
-                    class="fas fa-file-code"></i> {{ 'ui.admin.cdss.edit.source' | i18n }} <hint-popover hint-title="ui.admin.cdss.edit.source"/> <sup ng-if="dirty()"><i class="fas fa-asterisk"></i></sup></button>
+                    class="fas fa-file-code"></i> {{ 'ui.admin.cdss.edit.source' | i18n }} <hint-popover
+                    hint-title="ui.admin.cdss.edit.source" /> <sup ng-if="dirty()"><i
+                        class="fas fa-asterisk"></i></sup></button>
         </li>
         <li class="nav-item">
-            <button class="nav-link" id="test-tab" data-toggle="tab" data-target="#test" type="button"><i class="fas fa-play"></i> {{
+            <button class="nav-link" id="test-tab" data-toggle="tab" data-target="#test" type="button"><i
+                    class="fas fa-play"></i> {{
                 'ui.admin.cdss.edit.test' | i18n }}</button>
         </li>
     </ul>
@@ -58,7 +61,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
             <div id="cdssEditor" style="max-height:calc(100vh - 300px)">
             </div>
             <div class="w-100 alert-info">
-                <h5 class="p-1 m-0"><i class="fas fa-tasks fa-fw"></i> {{ 'ui.admin.cdss.edit.errorList' | i18n  }}</h5>
+                <h5 class="p-1 m-0"><i class="fas fa-tasks fa-fw"></i> {{ 'ui.admin.cdss.edit.errorList' | i18n }}</h5>
             </div>
             <ul class="list-unstyled" style="max-height:10vh; overflow-y: scroll; height:10vh">
                 <li ng-click="gotoIssue(iss)" ng-repeat="iss in validationIssues"><i class="fas"
@@ -67,17 +70,17 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
             </ul>
         </div>
         <div class="tab-pane fade" id="test">
-            
+
             <form class="form" name="testForm" ng-submit="performTest(testForm)" novalidate="novalidate">
 
                 <div class="container-fluid">
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-12">
-                            {{ 'ui.admin.cdss.edit.test.object' | i18n }} 
+                            {{ 'ui.admin.cdss.edit.test.object' | i18n }}
                             <hint-popover hint-title="ui.admin.cdss.edit.test.object" />
                         </label>
                         <div class="col-md-9 col-sm-12">
-                            <select ng-model="test.type" class="form-control" required="required">
+                            <select ng-model="test.type" name="testTypeInput" class="form-control" required="required">
                                 <option value="Patient">Patient</option>
                                 <option value="Act">Act</option>
                                 <option value="QuantityObservation">QuantityObservation</option>
@@ -87,11 +90,14 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                                 <option value="PatientEncounter">PatientEncounter</option>
                                 <option value="SubstanceAdministration">SubstanceAdministration</option>
                             </select>
+                            <div class="text-danger" ng-if="testForm.testTypeInput.$error['required']">
+                                <i class="fas fa-exclamation-triangle fs-fw"></i> {{ 'ui.error.required' | i18n }}
+                            </div>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-12">
-                            {{ 'ui.admin.cdss.edit.test.source' | i18n }} 
+                            {{ 'ui.admin.cdss.edit.test.source' | i18n }}
                             <hint-popover hint-title="ui.admin.cdss.edit.test.source" />
                         </label>
                         <div class="col-md-9 col-sm-12">
@@ -101,21 +107,34 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                                         <input type="radio" name="newObject" ng-model="test.source" value="new" />
                                         {{ 'ui.admin.cdss.edit.test.source.new' | i18n }}
                                     </label>
-                                    <textarea ng-required="test.source == 'new'" class="form-control" ng-model="test.new" name="newObjectSource" ng-if="test.source == 'new'">{}</textarea>
+                                    <textarea ng-required="test.source == 'new'" class="form-control"
+                                        ng-model="test.new" name="newObjectSource"
+                                        ng-if="test.source == 'new'">{}</textarea>
+                                    <div class="text-danger" ng-if="testForm.newObjectSource.$error['required']">
+                                        <i class="fas fa-exclamation-triangle fs-fw"></i> {{ 'ui.error.required' | i18n }}
+                                    </div>
                                 </li>
                                 <li class="list-group-item">
                                     <label>
                                         <input type="radio" name="newObject" ng-model="test.source" value="db" />
                                         {{ 'ui.admin.cdss.edit.test.source.db' | i18n }}
                                     </label>
-                                    <entity-search is-required="test.source == 'db'" ng-if="test.source == 'db'" class="form-control" type="test.type" filter="{ statusConcept : [ 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'afc33800-8225-4061-b168-bacc09cdbae3', 'c34fcbf1-e0fe-4989-90fd-0dc49e1b9685' ] }"
-                                        ng-model="test.dbReacord"  search-field="'identifier.value'" />
-                                </li>
-
+                                    <entity-search is-required="true" ng-if="test.source == 'db'"
+                                        class="form-control" type="test.type"
+                                        filter="{ statusConcept : [ 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'afc33800-8225-4061-b168-bacc09cdbae3', 'c34fcbf1-e0fe-4989-90fd-0dc49e1b9685' ] }"
+                                        ng-model="test.dbReacord" search-field="'identifier.value'" name="existingRecord"></entity-search>
+                                        <div class="text-danger" ng-if="testForm.existingRecord.$error['required']">
+                                            <i class="fas fa-exclamation-triangle fs-fw"></i> {{ 'ui.error.required' | i18n }}
+                                        </div>
+                                    </li>
                             </ul>
                         </div>
                     </div>
-
+                </div>
+                <div class="float-right btn-group">
+                    <button class="btn btn-primary" id="btnRunTest" type="submit" ng-disabled="testForm.$invalid">
+                        <i class="fas fa-fw fa-play"></i> {{ 'ui.action.run' | i18n }}
+                    </button>
                 </div>
             </form>
 
