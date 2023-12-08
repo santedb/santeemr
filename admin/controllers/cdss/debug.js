@@ -27,4 +27,4 @@ angular.module('santedb-lib')
                 scope.depth = scope.depth || 0;
             }
         }
-    }])();
+    }]);
