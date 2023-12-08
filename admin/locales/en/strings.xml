@@ -53,6 +53,13 @@
     <string name="ui.admin.cdss.edit.test.result.debug">Debug Trace</string>
     <string name="ui.admin.cdss.edit.test.result.proposal">Proposals</string>
     <string name="ui.admin.cdss.edit.test.result.proposal.computed">computed proposals shown below. Please reduce the output of your library, or include more restrictive inputs</string>
+    <string name="ui.admin.cdss.edit.test.debug.set">Set Variable</string>
+    <string name="ui.admin.cdss.edit.test.debug.read">Read Variable</string>
+    <string name="ui.admin.cdss.edit.test.debug.assign">Assign Property</string>
+    <string name="ui.admin.cdss.edit.test.debug.fact">Compute Fact</string>
+    <string name="ui.admin.cdss.edit.test.debug.propose">Propose Action</string>
+    <string name="ui.admin.cdss.edit.test.debug.raise">Raise Issue</string>
+    <string name="ui.admin.cdss.edit.test.debug.exception">Fault Thrown</string>
     <string name="ui.admin.cdss.edit.errorList">Errors/Issues</string>
     <string name="org.santedb.widget.emr.cdssLibrary.logic">Logic</string>
     <string name="org.santedb.widget.emr.cdssLibrary.data">Reference Data</string>

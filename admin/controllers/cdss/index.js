@@ -5,6 +5,7 @@ angular.module('santedb').controller('CdssDashboardController', ["$scope", "$roo
      * @summary Render updated by
      */
     $scope.renderModifiedOn = function (library) {
+        console.info(library.createdBy);
         if (library.obsoletedBy != null)
             return `<provenance provenance-id="'${library.obsoletedBy}'" sessionfn="$parent.sessionFunction" provenance-time="'${library.obsoletedBy}'"></provenance>`;
         else if (library.updatedBy != null)
