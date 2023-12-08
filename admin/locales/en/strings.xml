@@ -37,6 +37,7 @@
             <li><code>CTRL+SHIFT+U</code>: Convert text to lower case</li>
         </ul>
         ]]></string>
+        
     <string name="ui.admin.cdss.edit.test">Test Rules</string>
     <string name="ui.admin.cdss.edit.test.object">Object Type</string>
     <string name="ui.admin.cdss.edit.test.object.hint">Select the type of object against which the rules will tested</string>
@@ -44,6 +45,14 @@
     <string name="ui.admin.cdss.edit.test.source.hint">Select whether the test object will be an arbitrary object (specified by you) or an existing record from the database</string>
     <string name="ui.admin.cdss.edit.test.source.new">Specify An Object</string>
     <string name="ui.admin.cdss.edit.test.source.db">Find from Database</string>
+    <string name="ui.admin.cdss.edit.test.parms">Parameters</string>
+    <string name="ui.admin.cdss.edit.test.parms.hint">CDSS libraries, rules and protocols can obtain interactive data from the evaludation session via parameters. Use this area to input any parameters that your CDSS library may use.</string>
+    <string name="ui.admin.cdss.edit.test.result.target">Output Target (with modification)</string>
+    <string name="ui.admin.cdss.edit.test.results">Outputs</string>
+    <string name="ui.admin.cdss.edit.test.result.issue">Raised Issues</string>
+    <string name="ui.admin.cdss.edit.test.result.debug">Debug Trace</string>
+    <string name="ui.admin.cdss.edit.test.result.proposal">Proposals</string>
+    <string name="ui.admin.cdss.edit.test.result.proposal.computed">computed proposals shown below. Please reduce the output of your library, or include more restrictive inputs</string>
     <string name="ui.admin.cdss.edit.errorList">Errors/Issues</string>
     <string name="org.santedb.widget.emr.cdssLibrary.logic">Logic</string>
     <string name="org.santedb.widget.emr.cdssLibrary.data">Reference Data</string>

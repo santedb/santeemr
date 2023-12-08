@@ -7,6 +7,29 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
 
     $scope.dirty = () => _editorDirty;
 
+    // Clean the object so the JSON.Stringify works
+    function cleanObject(object) {
+
+        if(object.$type == "Concept") {
+            return {
+                $type: "Concept",
+                mnemonic: object.mnemonic,
+                id: object.id,
+                name: object.name
+            };
+        }
+        else if(Array.isArray(object)) {
+            for(var idx in object) {
+                object[idx] = cleanObject(object[idx]);
+            }
+        }
+        else if(typeof object !== "string" && typeof object !== "number" && !(object instanceof Date) && typeof object !== "boolean" )
+        {
+            Object.keys(object).forEach(k=>object[k] = cleanObject(object[k]));
+        }
+
+        return object;
+    }
     async function checkDuplicate(query) {
         try {
             query._includeTotal = true;
@@ -106,7 +129,7 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
                 _editor.commands.addCommand({
                     name: 'test',
                     bindKey: { win: 'F9', mac: 'F9' },
-                    exec: function(editor) {
+                    exec: function (editor) {
                         $("#test-tab").tab('show');
                     }
                 })
@@ -154,10 +177,10 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
 
                 _editor.getSession().on('change', () => _validationDirty = _editorDirty = true);
                 validateInterval = $interval(validateEditor, 5000);
-                window.onbeforeunload = (e) =>  _editorDirty ? SanteDB.locale.getString("ui.action.abandon.confirm") : null;
+                window.onbeforeunload = (e) => _editorDirty ? SanteDB.locale.getString("ui.action.abandon.confirm") : null;
                 $transitions.onBefore({ from: "santedb-admin.emr.cdss.*", to: "santedb-admin.*" },
                     (transition) => {
-                        if(_editorDirty && !confirm(SanteDB.locale.getString("ui.action.abandon.confirm"))) {
+                        if (_editorDirty && !confirm(SanteDB.locale.getString("ui.action.abandon.confirm"))) {
                             $("#pageTransitioner").hide();
                             transition.abort();
                         }
@@ -196,10 +219,13 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
         $scope.test = {
             type: 'Patient',
             source: 'db',
-            new: '{ "$type": "Patient" }'
+            new: '{ "$type": "Patient" }',
+            parameters: [
+                { name: "debug", value: "true" }
+            ]
         }
-        $scope.$watch("test.type", function(n, o) {
-            if(n && n != o) {
+        $scope.$watch("test.type", function (n, o) {
+            if (n && n != o) {
 
                 $scope.test.new = `{ "$type" : "${$scope.test.type}" }`;
             }
@@ -334,5 +360,59 @@ angular.module('santedb').controller('CdssEditController', ["$scope", "$rootScop
             return;
         }
         uploadCdssLibraryDefinition(form, $scope.cdssLibrary.id);
+    }
+
+    $scope.performTest = async function (form) {
+        if (form.$invalid) {
+            return;
+        }
+
+        $timeout(() => {
+            $scope.test.result = null;
+        })
+
+        try {
+
+            SanteDB.display.buttonWait("#btnRunTest", true);
+
+            var parms = { 
+                "isTesting": true,
+                "debug": true,
+                "definition" : _editor.getValue(),
+                "targetType" : $scope.test.type
+            };
+
+            if($scope.test.source == "db") {
+                parms.targetId = $scope.test.db;
+            }
+            else {
+                parms.target = $scope.test.new;
+            }
+
+            $scope.test.parameters.forEach(p => parms[p.name] = p.value);
+            var executionResult = await SanteDB.resources.cdssLibraryDefinition.invokeOperationAsync($stateParams.id, "execute", parms, true);
+            if(executionResult.target) {
+                executionResult.target = await SanteDB.resources[executionResult.target.$type.toCamelCase()].invokeOperationAsync(null, "expand", { "object" : executionResult.target }, false);
+            }
+            var loadedResults = await Promise.all(executionResult.propose.map(async function(p, i) {
+                if(i <= 20)
+                    return await SanteDB.resources[p.$type.toCamelCase()].invokeOperationAsync(null, "expand", { "object" : p }, false);
+                else 
+                    return p;
+            }));
+
+            for(var idx in executionResult.propose) {
+                executionResult.propose[idx] = cleanObject(loadedResults.find(o=>o.id == executionResult.propose[idx].id));
+            }
+            $timeout(() => {
+                $scope.test.result = executionResult;
+            })
+        }
+        catch (e) {
+            $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnRunTest", false);
+        }
     }
 }]);

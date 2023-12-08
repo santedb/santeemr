@@ -71,6 +71,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
         </div>
         <div class="tab-pane fade" id="test">
 
+            <div class="d-block">
             <form class="form" name="testForm" ng-submit="performTest(testForm)" novalidate="novalidate">
 
                 <div class="container-fluid">
@@ -120,14 +121,45 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                                         {{ 'ui.admin.cdss.edit.test.source.db' | i18n }}
                                     </label>
                                     <entity-search is-required="true" ng-if="test.source == 'db'"
-                                        class="form-control" type="test.type"
+                                        class="form-control" type="test.type" required="required"
                                         filter="{ statusConcept : [ 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'afc33800-8225-4061-b168-bacc09cdbae3', 'c34fcbf1-e0fe-4989-90fd-0dc49e1b9685' ] }"
-                                        ng-model="test.dbReacord" search-field="'identifier.value'" name="existingRecord"></entity-search>
+                                        ng-model="test.db" search-field="'identifier.value'" name="existingRecord"></entity-search>
                                         <div class="text-danger" ng-if="testForm.existingRecord.$error['required']">
                                             <i class="fas fa-exclamation-triangle fs-fw"></i> {{ 'ui.error.required' | i18n }}
                                         </div>
                                     </li>
                             </ul>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-3 col-sm-12">{{ 'ui.admin.cdss.edit.test.parms' | i18n }} 
+                            <hint-popover hint-title="ui.admin.cdss.edit.test.parms" />
+                        </label>
+                        <div class="col-md-9 col-sm-12">
+                            <table class="table table-striped">
+                                <tbody>
+                                <tr ng-repeat="parm in test.parameters track by $index">
+                                    <td>{{ parm.name }}</td>
+                                    <td><input class="form-control" type="text" ng-model="parm.value" ng-required="true"/></td>
+                                    <td>
+                                        <button type="button" ng-click="test.parameters.splice($index, 1)" class="btn btn-danger"><i class="fas fa-fw fa-times-circle"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td><input class="form-control" ng-model="newParm.name" name="newParmName" type="text" />
+                                    </td>    
+                                    <td><input class="form-control" ng-required="newParm.name" ng-model="newParm.value" name="newParmValue" type="text" />
+                                        <div class="text-danger" ng-if="testForm.newParmValue.$error['required']">
+                                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                        </div></td>    
+                                        <td>
+                                            <button type="button" ng-click="test.parameters.push(newParm); newParm = {}" class="btn btn-success" ng-disabled="!newParm.name || !newParm.value"><i class="fas fa-plus-circle fa-fw"></i></button>
+                                        </td>
+                                    </tr>
+                            </tfoot>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -137,6 +169,76 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
                     </button>
                 </div>
             </form>
+        </div>
+            <!-- results -->
+            <div ng-if="test.result" class="d-block float-clear">
+                <div class="w-100 alert-primary">
+                    <h5 class="p-1 m-0"><i class="fas fa-play fa-fw"></i> {{ 'ui.admin.cdss.edit.test.results' | i18n }}</h5>
+                </div>
+                <ul class="nav nav-tabs">
+                    <li class="nav-item" ng-if="test.result.target">
+                        <button class="nav-link active" data-toggle="tab" data-target="#resultTarget">
+                            <i class="fas fa-fw fa-person"></i> {{ 'ui.admin.cdss.edit.test.result.target' | i18n }}
+                        </button>
+                    </li>
+                    <li class="nav-item" ng-if="test.result.propose.length > 0">
+                        <button class="nav-link" data-toggle="tab" data-target="#resultPropose">
+                            <i class="fas fa-fw fa-tasks"></i> {{ 'ui.admin.cdss.edit.test.result.proposal' | i18n }} 
+                            (                        {{test.result.propose.length}}
+                            )
+                        </button>
+                    </li>
+                    <li class="nav-item" ng-if="test.result.issue.length > 0">
+                        <button class="nav-link" data-toggle="tab" data-target="#resultIssue">
+                            <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.admin.cdss.edit.test.result.issue' | i18n }}
+                        </button>
+                    </li>
+                    <li class="nav-item" ng-if="test.result.debug">
+                        <button class="nav-link" data-toggle="tab" data-target="#resultDebug">
+                            <i class="fas fa-fw fa-bug"></i> {{ 'ui.admin.cdss.edit.test.result.debug' | i18n }}
+                        </button>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane fade active show" id="resultTarget">
+                        <object-tree object="test.result.target" />
+                    </div>
+                    <div class="tab-pane fade" id="resultPropose">
+                        <ol class="list-group">
+                            <li class="list-group-item" ng-if="test.result.propose.length &gt; 20">
+                                1 .. 20 of {{ test.result.propose.length }} {{ 'ui.admin.cdss.edit.test.result.proposal.computed' | i18n}}
+                            </li>
+                            <li class="list-group-item" ng-repeat="prop in test.result.propose track by $index" ng-if="$index &lt;= 20">
+                                <object-tree object="prop" scoper="'proposal' + $index"/>
+                            </li>
+                            
+                        </ol>
+
+                    </div>
+                    <div class="tab-pane fade" id="resultIssue">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <td>{{ 'ui.dq.priority' | i18n }}</td>
+                                    <td>{{ 'ui.dq.text' | i18n }}</td>
+                                    <td>{{ 'ui.dq.type' | i18n }}</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="iss in test.result.issue">
+                                    <td>{{ iss.priority }}</td>
+                                    <td>{{ iss.text }}</td>
+                                    <td>{{ iss.type }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="tab-pane fade" id="resultPropose"></div>
+                </div>
+
+            </div>
 
         </div>
     </div>
