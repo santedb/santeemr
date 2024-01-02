@@ -32,7 +32,7 @@
                         <a class="nav-link" href="javascript:"><i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}</a>
                     </li>
                     <li ng-repeat="m in menuItems track by $index" class="nav-item">
-                        <a class="nav-link" ng-if="!m.menu" ui-sref="{{ ::m.action }}"
+                        <a class="nav-link" ng-if="!m.menu || m.menu.length == 0" ui-sref="{{ ::m.action }}"
                             data-target=".navbar-collapse-small"  title="{{::c.text ||c.action | i18n}}">
                             <i class="{{m.icon}}"></i>
                             <span class="nav-link-text"> {{ ::m.text || m.action | i18n }}</span>
@@ -63,13 +63,13 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto" id="topMenu">
-                    <li ng-if="$root.system.config.sync.mode != 'Sync'">
+                    <li ng-if="$root.system.config.integration.mode != 'synchronize'">
                         <span class="nav-link m-0 p-1 alert alert-primary"><i class="fas fa-server"></i> {{ 'ui.directConnect' | i18n }}</span>
                     </li>
-                    <!--<li ng-if="'{{ $env_type }}' == 'debug'">
+                    <li ng-if="'{{ $env_type }}' == 'debug'">
                         <span class="nav-link m-0 p-1 alert alert-info"><i class="fas fa-bug"></i> {{ 'ui.debug' | i18n }}</span>
-                    </li>-->
-                    <li class="nav-item dropdown">
+                    </li>
+                    <!-- <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle mr-lg-2" id="messagesDropdown" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-envelope"></i>
@@ -106,24 +106,29 @@
                             <button class="btn btn-link" type="button"
                                 ui-sref="santedb-emr.user.mail">{{ 'ui.emr.mail.all' | i18n }}</button>
                         </div>
-                    </li>
+                    </li> -->
                     <li class="nav-item dropdown ">
                         <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-bell"></i>
-                            <span class="d-lg-none" ng-if="tickles.length > 0">{{ 'ui.emr.alerts' | i18n}}
-                                <span class="badge badge-pill" ng-class="{ 'badge-warning' : tickles.alert, 'badge-success' : !tickles.alert }">{{ tickles.length }}</span>
+                            <span class="d-lg-none" ng-if="tickles.length > 0">{{ 'ui.admin.alerts' | i18n}}
+                                <span class="badge badge-pill"
+                                    ng-class="{ 'badge-warning' : tickles.alert, 'badge-success' : !tickles.alert }">{{
+                                    tickles.length }}</span>
                             </span>
-                            <span class="indicator d-none d-lg-block"  ng-class="{ 'text-warning' : tickles.alert, 'text-success' : !tickles.alert }" ng-if="tickles.length > 0">
+                            <span class="indicator d-none d-lg-block"
+                                ng-class="{ 'text-warning' : tickles.alert, 'text-success' : !tickles.alert }"
+                                ng-if="tickles.length > 0">
                                 <i class="fa fa-fw fa-circle"></i>
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header">{{ 'ui.emr.alerts' | i18n }}:</h6>
+                            <h6 class="dropdown-header">{{ 'ui.admin.alerts' | i18n }}:</h6>
                             <div ng-repeat="t in tickles">
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">
-                                    <span ng-class="{'text-danger' : t.type == 'Danger' , ' text-success' : t.type != 'Danger' }">
+                                    <span
+                                        ng-class="{'text-danger' : t.type == 'Danger' , ' text-success' : t.type != 'Danger' }">
                                         <strong ng-if="t.type == 'Danger'">
                                             <i class="fa fa-exclamation-triangle fa-fw"></i>
                                             {{ 'ui.priority.error' | i18n }}
@@ -132,17 +137,18 @@
                                             <i class="fa fa-info-circle fa-fw"></i> {{ 'ui.priority.info' | i18n }}
                                         </strong>
                                     </span>
-                                    <span
-                                        class="small float-right text-muted">{{ t.creationTime | date: 'HH:mm' }}</span>
+                                    <span class="small float-right text-muted">{{ t.creationTime | date: 'HH:mm'
+                                        }}</span>
                                     <div class="dropdown-message small">{{ t.text }}</div>
                                 </a>
                             </div>
                             <div ng-if="tickles.length == 0">
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">{{ 'ui.emr.alerts.none' | i18n }}</a>
+                                <a class="dropdown-item" href="#">{{ 'ui.admin.alerts.none' | i18n }}</a>
                             </div>
                             <div class="dropdown-divider"></div>
-                            <button class="btn btn-link" type="button" ng-click="clearTickles()">{{ 'ui.action.dismiss' | i18n }}</button>
+                            <button class="btn btn-link" type="button" ng-click="clearTickles()">{{ 'ui.action.dismiss'
+                                | i18n }}</button>
                         </div>
                     </li>
                     <li class="nav-item indicator-container">
@@ -165,7 +171,7 @@
                                 </span>
                             </a>
                         </li>
-                        <li class="nav-item indicator-container" ng-if="$root.system.config.sync.mode == 'Sync'">
+                        <li class="nav-item indicator-container" ng-if="$root.system.config.integration.mode == 'synchronize'">
                                 <a ui-sref="santedb-emr.sync" class="nav-link mr-lg-2" ng-disabled="!$root.system.online">
                                     <i class="fa fa-fw fa-sync-alt"></i>
                                     <span class="d-lg-none">{{ 'ui.sync' | i18n }} 
