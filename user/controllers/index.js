@@ -33,7 +33,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             $timeout(() => $scope.mailbox = mailMessages.resource);
         }
         catch (e) {
-            toastr.warning(SanteDB.locale.getString("ui.admin.mailError"));
+            toastr.warning(SanteDB.locale.getString("ui.emr.mailError"));
             console.error(e);
         }
     };
@@ -62,20 +62,20 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             $timeout(() => $scope.tickles = tickles);
         }
         catch (e) {
-            toastr.warning(SanteDB.locale.getString("ui.admin.tickleError"));
+            toastr.warning(SanteDB.locale.getString("ui.emr.tickleError"));
             console.error(e);
         }
     }
 
     // Check for conflict status
     async function checkConflicts() {
-        if ($rootScope.system && $rootScope.system.config && $rootScope.system.config.sync && $rootScope.system.config.sync.mode == 'Sync') {
+        if ($rootScope.system && $rootScope.system.config && $rootScope.system.config.integration && $rootScope.system.config.integration.mode == 'synchronize') {
             try {
-                await SanteDB.resources.queue.findAsync();
+                var queue = await SanteDB.resources.queue.findAsync();
                 $timeout(() => $scope.queue = queue);
             }
             catch (e) {
-                toastr.warning(SanteDB.locale.getString("ui.admin.queueError"));
+                toastr.warning(SanteDB.locale.getString("ui.emr.queueError"));
                 console.error(e);
             }
         }
@@ -128,6 +128,9 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         if (nv && nv.user) {
             // Add menu items
             loadMenus();
+            checkTickles();
+            checkConflicts();
+            checkMail();
         }
         else
             $scope.menuItems = null;
@@ -146,7 +149,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
                     await SanteDB.resources.tickle.deleteAsync(t.id);
                 }
                 catch (e) {
-                    toastr.warning(SanteDB.locale.getString("ui.admin.tickleError"));
+                    toastr.warning(SanteDB.locale.getString("ui.emr.tickleError"));
                 }
             }));
 

@@ -5,10 +5,10 @@ angular.module('santedb').controller("EmrUserIndexController", ["$scope", "$root
     */
     $scope.delete = async function (id, index) {
         if (id === SanteDB.authentication.SYSTEM_USER || id === SanteDB.authentication.ANONYMOUS_USER)
-            alert(SanteDB.locale.getString("ui.admin.users.systemUser"));
+            alert(SanteDB.locale.getString("ui.emr.users.systemUser"));
         else {
             var data = $("#SecurityUserTable table").DataTable().row(index).data();
-            if (!data.obsoletionTime && confirm(SanteDB.locale.getString("ui.admin.users.confirmDelete"))) {
+            if (!data.obsoletionTime && confirm(SanteDB.locale.getString("ui.emr.users.confirmDelete"))) {
                 $("#action_grp_" + index + " a").addClass("disabled");
                 $("#action_grp_" + index + " a i.fa-trash").removeClass("fa-trash").addClass("fa-circle-notch fa-spin");
                 SanteDB.resources.securityUser.deleteAsync(id)
@@ -18,7 +18,7 @@ angular.module('santedb').controller("EmrUserIndexController", ["$scope", "$root
                     })
                     .catch($rootScope.errorHandler);
             }
-            else if (data.obsoletionTime && confirm(SanteDB.locale.getString("ui.admin.users.confirmUnDelete"))) {
+            else if (data.obsoletionTime && confirm(SanteDB.locale.getString("ui.emr.users.confirmUnDelete"))) {
                 $("#action_grp_" + index + " a").addClass("disabled");
                 $("#action_grp_" + index + " a i.fa-trash-restore").removeClass("fa-trash-restore").addClass("fa-circle-notch fa-spin");
 
@@ -57,10 +57,10 @@ angular.module('santedb').controller("EmrUserIndexController", ["$scope", "$root
      */
     $scope.lock = function (id, index) {
         if (id === SanteDB.authentication.SYSTEM_USER || id === SanteDB.authentication.ANONYMOUS_USER)
-            alert(SanteDB.locale.getString("ui.admin.users.systemUser"));
+            alert(SanteDB.locale.getString("ui.emr.users.systemUser"));
         else {
             var data = $("#SecurityUserTable table").DataTable().row(index).data();
-            if (confirm(SanteDB.locale.getString(data.lockout ? "ui.admin.users.confirmUnlock" : "ui.admin.users.confirmLock"))) {
+            if (confirm(SanteDB.locale.getString(data.lockout ? "ui.emr.users.confirmUnlock" : "ui.emr.users.confirmLock"))) {
                 $("#action_grp_" + index + " a").addClass("disabled");
                 $("#action_grp_" + index + " a i.fa-lock").removeClass("fa-lock").addClass("fa-circle-notch fa-spin");
                 $("#action_grp_" + index + " a i.fa-unlock").removeClass("fa-unlock").addClass("fa-circle-notch fa-spin");
@@ -87,7 +87,7 @@ angular.module('santedb').controller("EmrUserIndexController", ["$scope", "$root
      */
     $scope.resetPassword = function (id, index) {
         if (id === SanteDB.authentication.SYSTEM_USER || id === SanteDB.authentication.ANONYMOUS_USER)
-            alert(SanteDB.locale.getString("ui.admin.users.systemUser"));
+            alert(SanteDB.locale.getString("ui.emr.users.systemUser"));
         else {
             // Show wait
             $("#action_grp_" + index + " a").addClass("disabled");

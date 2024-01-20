@@ -111,7 +111,7 @@
                         <a class="nav-link dropdown-toggle mr-lg-2" id="alertsDropdown" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-fw fa-bell"></i>
-                            <span class="d-lg-none" ng-if="tickles.length > 0">{{ 'ui.admin.alerts' | i18n}}
+                            <span class="d-lg-none" ng-if="tickles.length > 0">{{ 'ui.emr.alerts' | i18n}}
                                 <span class="badge badge-pill"
                                     ng-class="{ 'badge-warning' : tickles.alert, 'badge-success' : !tickles.alert }">{{
                                     tickles.length }}</span>
@@ -123,7 +123,7 @@
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-                            <h6 class="dropdown-header">{{ 'ui.admin.alerts' | i18n }}:</h6>
+                            <h6 class="dropdown-header">{{ 'ui.emr.alerts' | i18n }}:</h6>
                             <div ng-repeat="t in tickles">
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#">
@@ -144,7 +144,7 @@
                             </div>
                             <div ng-if="tickles.length == 0">
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">{{ 'ui.admin.alerts.none' | i18n }}</a>
+                                <a class="dropdown-item" href="#">{{ 'ui.emr.alerts.none' | i18n }}</a>
                             </div>
                             <div class="dropdown-divider"></div>
                             <button class="btn btn-link" type="button" ng-click="clearTickles()">{{ 'ui.action.dismiss'
@@ -175,16 +175,16 @@
                                 <a ui-sref="santedb-emr.sync" class="nav-link mr-lg-2" ng-disabled="!$root.system.online">
                                     <i class="fa fa-fw fa-sync-alt"></i>
                                     <span class="d-lg-none">{{ 'ui.sync' | i18n }} 
-                                        <span class="badge badge-pill badge-success" ng-show="queue.dead == 0">
+                                        <span class="badge badge-pill badge-success" ng-show="queue.deadletter == 0">
                                             <i class="fas fa-check-circle"></i> {{ 'ui.sync.clear' | i18n }}
                                         </span>
-                                        <span class="badge badge-pill badge-danger" ng-show="queue.dead > 0">
+                                        <span class="badge badge-pill badge-danger" ng-show="queue.deadletter > 0">
                                                 <i class="fas fa-exclamation-circle"></i> {{ deadletterQueue }} {{ 'ui.sync.conflict' | i18n }}
                                         </span>
                                     </span>
                                     <span class="indicator d-none d-lg-block"
-                                        ng-class="{ 'text-danger' : queue.dead > 0, 'text-success' : queue.dead == 0 }">
-                                        <i class="fa fa-fw" ng-class="{ 'fa-exclamation-circle' : queue.dead > 0, 'fa-check-circle' : queue.dead == 0 }"></i>
+                                        ng-class="{ 'text-danger' : queue.deadletter > 0, 'text-success' : queue.deadletter == 0 }">
+                                        <i class="fa fa-fw" ng-class="{ 'fa-exclamation-circle' : queue.deadletter > 0, 'fa-check-circle' : queue.deadletter == 0 }"></i>
                                     </span>
                                 </a>
                             </li>
