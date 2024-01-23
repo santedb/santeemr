@@ -150,6 +150,13 @@
     <string name="ui.emr.patient.search.gender">Gender</string>
     <string name="ui.emr.patient.search.id">ID #</string>
     <string name="ui.emr.job.runJob.confirm">Are you sure you want to run this job?</string>
+    <string name="ui.emr.job.neverRun">Nver Run</string>
+    <string name="ui.emr.job.register.title">Register Job</string>
+    <string name="ui.emr.job.register.help"><![CDATA[This modal allows you to register or activate a SanteDB background job which was not otherwise activated on application startup. The
+    SanteDB iCDR or dCDR will attempt to register the job and will update your configuration.]]></string>
+    <string name="ui.emr.job.register.confirm">Are you sure you want to register {job} with this instance of SanteDB?</string>
+    <string name="ui.emr.job.register.success">Job {job} was successfully registered</string>
+    <string name="ui.emr.job.register.error">Error registering job instance {error}</string>
 
     <!-- Tickles -->
     <string name="ui.emr.alerts">Alerts</string>

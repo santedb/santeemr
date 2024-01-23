@@ -90,3 +90,6 @@ label.required {
 div.scroll-container {
     overflow: auto;
 }
+.w-10 { 
+    max-width: 10%
+}

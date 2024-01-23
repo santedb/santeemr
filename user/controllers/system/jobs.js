@@ -26,7 +26,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
         if (job.schedule) {
             return "<ul class='p-0 m-0 list-unstyled'>" + job.schedule.map(o => {
                 if (o.type == "Scheduled") {
-                    return `<li><i class='fas fa-calendar'></i> ${o.repeat.map(d => d.substring(0, 2)).join(",")} @ ${moment(o.start).format("HH:mm")} <br/>starting ${moment(o.start).format("YYYY-MM-DD")}</li>`;
+                    return `<li><i class='fas fa-calendar'></i> ${o.repeat.map(d => d.substring(0, 2)).join(",")} <br/>@ ${moment(o.start).format("HH:mm")}<br/>starting ${moment(o.start).format("YYYY-MM-DD")}</li>`;
 
                 }
                 else {
@@ -43,7 +43,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
                 return `<span class="badge badge-success badge-pill"><i class="fas fa-check"></i> ${SanteDB.locale.getString("ui.state.complete")}</span>`;
             case "Running":
                 if (job.status) {
-                    return `<div  style="min-width:20vw"><span class="badge badge-primary badge-pill"><i class="fas fa-play"></i> ${SanteDB.locale.getString("ui.state.running")} (${Math.round(job.progress * 100)}%)</span><span class="d-none d-xl-inline"><br/>- ${job.status}</span></div>`;
+                    return `<span class="badge badge-primary badge-pill"><i class="fas fa-play"></i> ${SanteDB.locale.getString("ui.state.running")} (${Math.round(job.progress * 100)}%)</span><br/><small>${job.status}</small>`;
                 }
                 else {
                     return `<span class="badge badge-primary badge-pill"><i class="fas fa-play"></i> ${SanteDB.locale.getString("ui.state.running")}</span>`;
@@ -62,7 +62,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
     $scope.renderName = function(job) {
         retVal = job.name;
         if(job.description) {
-            retVal += `<br/><small class='text-secondary'>${job.description.substr(0,20)}...</small>`;
+            retVal += `<br/><small class='text-secondary'>${job.description}</small>`;
         }
         return retVal;
     }
@@ -80,7 +80,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
             }
         }
         else
-            retVal = `<span class='badge badge-info'><i class="fas fa-info-circle'></i> ${SanteDB.locale.getString("ui.admin.job.neverRun")}</span>`;
+            retVal = `<span class='badge badge-info'><i class='fas fa-info-circle'></i> ${SanteDB.locale.getString("ui.emr.job.neverRun")}</span>`;
         return retVal;
     }
 
@@ -200,5 +200,41 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
                 $rootScope.errorHandler(e);
             }
         }
+    }
+
+    
+    $scope.registerJob = async function(jobType) {
+
+        if(jobType) {
+            // register job
+            if(confirm(SanteDB.locale.getString("ui.emr.job.register.confirm", { job: jobType.type }))) {
+                try {
+                    var ji = {
+                        $type: "JobInfo",
+                        jobType: jobType.type
+                    };
+                    await SanteDB.resources.jobInfo.insertAsync(ji);
+                    toastr.success("ui.emr.job.register.success", {job: jobType.type });
+                    $("#jobsTable table").DataTable().ajax.reload();
+
+                }
+                catch(e) {
+                    $rootScope.errorHandler(e);
+                    toastr.error("ui.emr.job.register.error", { error: e.message, job: jobType.type });
+
+                }
+                finally {
+                    $("#addJobDialog").modal('hide');
+                }
+            }
+        }
+        else {
+            var unconfiguredJobs = await SanteDB.resources.jobInfo.findAsync({ _unconfigured: true });
+            $timeout(() => {
+                $scope.unregisteredJobs = unconfiguredJobs.resource;
+                $("#addJobDialog").modal('show');
+            });
+        }
+
     }
 }]);
