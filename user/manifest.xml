@@ -63,6 +63,10 @@
       <icon>fas fa-cogs</icon>
       <text lang="en">Background Jobs</text>
     </menuItem>
+    <menuItem context="ui.emr" launch="santedb-emr.system.probes" asset="/org.santedb.emr/views/system/probes.html">
+      <icon>fas fa-thermometer</icon>
+      <text lang="en">Probes</text>
+    </menuItem>
     <menuItem context="ui.emr" launch="santedb-emr.system.users.index" asset="/org.santedb.emr/views/system/users/index.html">
       <icon>fas fa-users</icon>
       <text lang="en">Local Users</text>
@@ -70,6 +74,10 @@
     <menuItem context="ui.emr" launch="santedb-emr.system.bug" asset="/org.santedb.emr/views/system/bug.html">
       <icon>fas fa-bug</icon>
       <text lang="en">Submit Bug</text>
+    </menuItem>
+    <menuItem context="ui.emr" launch="santedb-emr.system.audit.index" asset="/org.santedb.emr/views/system/audit/index.html">
+      <icon>fas fa-search-plus</icon>
+      <text lang="en">Audit Log</text>
     </menuItem>
   </menuItem>
 

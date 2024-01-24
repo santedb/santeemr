@@ -161,4 +161,35 @@
     <!-- Tickles -->
     <string name="ui.emr.alerts">Alerts</string>
     <string name="ui.emr.alerts.none">No Alerts</string>
+
+    <!-- Audits -->
+    <string name="org.santedb.widget.emr.panel.audit.eventInfo">Event Information</string>
+    <string name="org.santedb.widget.emr.panel.audit.network">Network Actors</string>
+    <string name="org.santedb.widget.emr.panel.audit.usersAndComputers">Users &amp; Computers</string>
+    <string name="org.santedb.widget.emr.panel.audit.dataAndObjects">Data &amp; Objects</string>
+    <string name="ui.emr.audit.core.sid">Security ID</string>
+    <string name="ui.emr.audit.core.action">Action</string>
+    <string name="ui.emr.audit.core.event">Event</string>
+    <string name="ui.emr.audit.core.timestamp">Timestamp</string>
+    <string name="ui.emr.audit.core.outcome">Outcome</string>
+    <string name="ui.emr.audit.core.process">Process</string>
+    <string name="ui.emr.audit.core.source">Source</string>
+    <string name="ui.emr.audit.network.url">URL</string>
+    <string name="ui.emr.audit.actors.uname">Username</string>
+    <string name="ui.emr.audit.actors.apInfo">Access Point</string>
+    <string name="ui.emr.audit.actors.initiator">Requestor</string>
+    <string name="ui.emr.audit.actors.role">Role(s)</string>
+    <string name="ui.emr.audit.objects">Data &amp; Objects</string>
+    <string name="ui.emr.audit.object.type">Type</string>
+    <string name="ui.emr.audit.object.lifecycle">Lifecycle</string>
+    <string name="ui.emr.audit.object.id">Identifier</string>
+    <string name="ui.emr.audit.object.data">Data</string>
+    <string name="ui.emr.audit.object.role">Role</string>
+    <string name="ui.emr.audit.query">Query Executed</string>
+    <string name="ui.emr.audit.object.idType">ID Type</string>
+    <string name="ui.emr.audit.data.key">Key</string>
+    <string name="ui.emr.audit.data.value">Value</string>
+    <string name="ui.emr.audit.data">Extended Data</string>
+    <string name="ui.emr.audit.name">Display Name</string>
+
 </resources>

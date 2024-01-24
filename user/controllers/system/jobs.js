@@ -27,7 +27,6 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
             return "<ul class='p-0 m-0 list-unstyled'>" + job.schedule.map(o => {
                 if (o.type == "Scheduled") {
                     return `<li><i class='fas fa-calendar'></i> ${o.repeat.map(d => d.substring(0, 2)).join(",")} <br/>@ ${moment(o.start).format("HH:mm")}<br/>starting ${moment(o.start).format("YYYY-MM-DD")}</li>`;
-
                 }
                 else {
                     return `<li><i class='fas fa-clock'></i> repeat ${moment.duration(o.interval).humanize(true)}</li>`;
@@ -105,7 +104,6 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
         }
     }
 
-
     $scope.saveJob = async function(form) {
 
         if(!form.$valid) { return; }
@@ -148,8 +146,8 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
             SanteDB.display.buttonWait("#saveJobButton", false);
 
         }
-
     }
+
     // Render run
     $scope.runJob = async function (id, index, jobParameters) {
 
@@ -201,7 +199,6 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
             }
         }
     }
-
     
     $scope.registerJob = async function(jobType) {
 
