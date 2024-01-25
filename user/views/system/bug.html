@@ -11,10 +11,10 @@
 
 
     <div class="container">
-        <form autocomplete="off"  novalidate="novalidate" class="form" ng-submit="submitBug(bugForm)" name="bugForm">
+        <form autocomplete="__away"  novalidate="novalidate" class="form" ng-submit="submitBug(bugForm)" name="bugForm">
             <div class="form-group row">
                 <label class="col-md-3 col-sm-12 control-label">{{ 'ui.emr.bug.user' | i18n }}</label>
-                <div class="col-md-9 col-sm-12">
+                <div class="col-md-9 col-sm-12 control-value">
                     <i class="fas fa-user"></i> {{ $root.session.user.userName }}
                 </div>
             </div>
@@ -37,7 +37,8 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label class="col-md-3 col-sm-12 control-label required">{{ 'ui.emr.bug.attachments' | i18n }}</label>
+                <label class="col-md-3 col-sm-12 control-label required">
+                    <span class="d-inline-block mt-1">{{ 'ui.emr.bug.attachments' | i18n }}</span></label>
                 <div class="col-md-9 col-sm-12">
                     <div class="list-group">
                         <div class="list-group-item list-group-item-action">

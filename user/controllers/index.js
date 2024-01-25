@@ -22,6 +22,7 @@
 var _boundTransitionStart = false;
 angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", "$transitions", "$timeout", function ($scope, $rootScope, $state, $templateCache, $interval, $transitions, $timeout) {
 
+    var _lastTickle = null;
     // Check for new mail
     async function checkMail() {
 
@@ -62,6 +63,16 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
                 tickles.push(t);
             });
+
+            var lastTickle = tickles.length > 0 ? tickles[tickles.length - 1].id : null;
+            if (!lastTickle) {
+                _lastTickle = null;
+            }
+            else if(lastTickle != _lastTickle) {
+                _lastTickle = lastTickle;
+                toastr.info(SanteDB.locale.getString("ui.emr.alerts.new"), null, { preventDuplicates: true });
+            }
+
             $timeout(() => $scope.tickles = tickles);
         }
         catch (e) {

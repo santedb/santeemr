@@ -161,7 +161,7 @@
     <!-- Tickles -->
     <string name="ui.emr.alerts">Alerts</string>
     <string name="ui.emr.alerts.none">No Alerts</string>
-
+    <string name="ui.emr.alerts.new">You have new alerts</string>
     <!-- Audits -->
     <string name="org.santedb.widget.emr.panel.audit.eventInfo">Event Information</string>
     <string name="org.santedb.widget.emr.panel.audit.network">Network Actors</string>
