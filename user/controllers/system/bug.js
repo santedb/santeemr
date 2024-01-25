@@ -67,7 +67,7 @@ angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootSco
                 });
             }                
             var result = await SanteDB.application.submitBugReportAsync(submission);
-            toastr.info(`${SanteDB.locale.getString("ui.admin.bug.success")} #${result.ticketId}`, null, { preventDuplicates: true });
+            toastr.info(`${SanteDB.locale.getString("ui.emr.bug.success")} #${result.ticketId}`, null, { preventDuplicates: true });
             $state.go("santedb-admin.dashboard");
         }
         catch(e) {
