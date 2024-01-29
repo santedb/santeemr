@@ -75,6 +75,10 @@
       <icon>fas fa-bug</icon>
       <text lang="en">Submit Bug</text>
     </menuItem>
+    <menuItem context="ui.emr" launch="santedb-emr.system.backup.index" asset="/org.santedb.emr/views/system/backup/index.html">
+      <icon>fas fa-cube</icon>
+      <text lang="en">Backups</text>
+    </menuItem>
     <menuItem context="ui.emr" launch="santedb-emr.system.audit.index" asset="/org.santedb.emr/views/system/audit/index.html">
       <icon>fas fa-search-plus</icon>
       <text lang="en">Audit Log</text>

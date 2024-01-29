@@ -118,19 +118,13 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         ).elevate($rootScope.session);
     }
 
-    // On logout transition to the login state
-    $("#logoutModal").on("hidden.bs.modal", function () {
-        if (!window.sessionStorage.getItem("token")) {
-            $templateCache.removeAll();
-            $state.transitionTo('login');
-        }
-    });
-
     // abandon session
     $scope.abandonSession = async function () {
         try {
             await SanteDB.authentication.logoutAsync();
             $("#logoutModal").modal('hide');
+            $state.go('login');
+
         }
         catch (e) {
             $rootScope.errorHandler(e);

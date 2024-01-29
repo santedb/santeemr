@@ -192,4 +192,14 @@
     <string name="ui.emr.audit.data">Extended Data</string>
     <string name="ui.emr.audit.name">Display Name</string>
 
+    <!-- Backup Center -->
+    <string name="ui.emr.backup.delete.confirm">Are you sure you want to delete backup {label}?</string>
+    <string name="ui.emr.backup.delete.success">Backup {label} has been deleted</string>
+    <string name="ui.emr.backup.restore.confirm">Are you sure you want to restore the backup {label}? Note - any changes made since this backup was taken will be lost.</string>
+    <string name="ui.emr.backup.restore.success">The restoration of {label} is complete, you should restart the application.</string>
+    <string name="ui.emr.backup.now">Create Backup</string>
+    <string name="ui.emr.backup.now.help">This action will instruct the SanteDB instance to immediately produce a new backup with the current data in the specified location.</string>
+    <string name="ui.emr.backup.now.securityNotice"><![CDATA[Backups which are not encrypted should never be stored in the <strong>Public</strong> or <strong>Public External</strong> location as this presents a patient privacy risk]]></string>
+    <string name="ui.emr.restore.now">Restore Backup</string>
+    <string name="ui.emr.restore.now.help">This backup is encrypted. To restore it you will need to enter the passphrase which was used to create the backup</string>
 </resources>

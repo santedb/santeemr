@@ -37,13 +37,13 @@
                             <i class="{{m.icon}}"></i>
                             <span class="nav-link-text"> {{ ::m.text || m.action | i18n }}</span>
                         </a>
-                        <a ng-if="m.menu" class="nav-link nav-link-collapse" ui-sref="{{ ::m.action }}"
+                        <a ng-if="m.menu &amp;&amp; m.menu.length > 0" class="nav-link nav-link-collapse" ui-sref="{{ ::m.action }}"
                             data-toggle="collapse" data-target="#MenuCollapse{{$index}}" role="button" aria-haspopup="true"
                             aria-expanded="false"  title="{{::c.text ||c.action | i18n}}">
                             <i class="{{m.icon}}"></i>
                             <span class="nav-link-text"> {{::m.text || m.action | i18n}}</span>
                         </a>
-                        <ul ng-if="m.menu" class="sidenav-second-level collapse" id="MenuCollapse{{$index}}"  data-parent="#menuAccordian">
+                        <ul ng-if="m.menu &amp;&amp; m.menu.length > 0" class="sidenav-second-level collapse" id="MenuCollapse{{$index}}"  data-parent="#menuAccordian">
                             <li ng-repeat="c in ::m.menu" title="{{c.text}}">
                                 <a ui-sref="{{ ::c.action }}" data-toggle="collapse"
                                     data-target=".navbar-collapse-small" title="{{::c.text ||c.action | i18n}}">
@@ -295,7 +295,7 @@
         </div>
     </footer>
     <div class="modal" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalTitle"
-        aria-hidden="true">
+        aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
