@@ -22,7 +22,10 @@ angular.module('santedb').controller("EmrEditUserController", ["$scope", "$rootS
                                     mnemonic: "OfficialRecord"
                                 }),
                                 component: {
-                                    Given: ""
+                                    Prefix: [],
+                                    Given: [],
+                                    Family: [],
+                                    Suffix: []
                                 }
                             })
                         }

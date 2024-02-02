@@ -111,7 +111,7 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 col-sm-12 control-label">{{'ui.model.backup.media' | i18n
+                                <label class="col-md-3 col-sm-12 control-label required">{{'ui.model.backup.media' | i18n
                                     }} <hint-popover hint-title="ui.model.backup.media"/></label>
                                 <div class="col-md-9 col-sm-12">
                                     <select class="form-control my-1" ng-model="newBackup.media">
@@ -127,7 +127,7 @@
                                     {{ 'ui.model.backup.encrypt' | i18n }}</label>
                             </div>
                             <div class="form-group row" ng-if="newBackup.encrypt">
-                                <label class="col-md-3 col-sm-12 control-label">
+                                <label class="col-md-3 col-sm-12 control-label required">
                                     {{ 'ui.model.backup.password' | i18n }} <hint-popover hint-title="ui.model.backup.password"/>
                                 </label>
                                 <div class="col-md-9 col-sm-12">

@@ -9,12 +9,12 @@
         </sdb:view>
     </sdb:state>
 
-    <div ng-if="$root.system.config.sync.mode != 'Sync'" class="alert alert-danger">
+    <div ng-if="$root.system.config.integration.mode != 'synchronize'" class="alert alert-danger">
         <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.emr.directDisable.localUser' | i18n }}
     </div>
-    <div ng-if="$root.system.config.sync.mode == 'Sync'" >
+    <div ng-if="$root.system.config.integration.mode == 'synchronize'" >
         <entity-table id="SecurityUserTable" type="SecurityUser" search-field="userName"
-            default-query="{ 'obsoletionTime' : 'null', 'userClass' : [ UserClassKeys.HumanUser, UserClassKeys.SystemUser ], 'roles.name' : [ 'LOCAL_USERS', 'LOCAL_ADMINISTRATORS' ] }"
+            default-query="{ 'obsoletionTime' : 'null', 'userClass' : [ UserClassKeys.HumanUser, UserClassKeys.SystemUser ],  '$self@SecurityUser': ':(getClaim|urn:santedb:org:claim:local)true' }"
             property-path="entity" i18n-prefix="'ui.emr.users.'" default-filter="initialFilter"
             render="{ lockout: 'renderLockout', lastLoginTime: 'renderLastLogin' }"
             item-class="{ 'lastLoginTime' : 'd-none d-md-table-cell', 'lockout' : 'd-none d-md-table-cell' }"

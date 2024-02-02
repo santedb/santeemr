@@ -105,7 +105,7 @@
                     ng-model="target.entity.phoneNumber" />
             </div>
         </div>
-        <name-edit name="target.userEntity.name" simple-entry="true" no-add="true"  />
+        <name-edit name="target.userEntity.name" simple-entry="true" no-add="true" no-type="true" is-required="true" />
         <div class="form-group row">
             <label for="language"
                 class="col-xs-12 col-md-3 control-label">{{ 'ui.model.userEntity.language' | i18n }}</label>
@@ -119,13 +119,18 @@
             </div>
         </div>
     </div>
-    <div ng-if="$root.system.config.sync.mode != 'Sync'" class="alert alert-danger">
+    <div ng-if="$root.system.config.integration.mode != 'synchronize'" class="alert alert-danger">
         {{ 'emr.directDisable.localUser' | i18n }}
     </div>
     <div class="modal-footer">
-        <a class="btn btn-secondary" ui-sref="santedb-emr.system.users.index" data-dismiss="modal">
+        <div ng-if="userForm.$invalid">
+            <span class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i>
+                {{ 'ui.emr.common.formMissingRequiredInformation' | i18n }}</span>
+        </div>
+            <a class="btn btn-secondary" ui-sref="santedb-emr.system.users.index" data-dismiss="modal">
             <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</a>
-        <button type="submit" id="saveUserButton" btn-disabled="$root.system.config.sync.mode != 'Sync'" class="btn btn-primary">
+        <button type="submit" id="saveUserButton" btn-disabled="$root.system.config.operation.mode != 'synchronize' || userForm.$invalid" class="btn btn-primary"
+        ng-class="{ 'disabled' : userForm.$invalid }">
             <i class="fa fa-check"></i> {{ 'ui.action.save' | i18n }}</button>
     </div>
 
