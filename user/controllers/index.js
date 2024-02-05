@@ -68,7 +68,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             if (!lastTickle) {
                 _lastTickle = null;
             }
-            else if(lastTickle != _lastTickle) {
+            else if (lastTickle != _lastTickle) {
                 _lastTickle = lastTickle;
                 toastr.info(SanteDB.locale.getString("ui.emr.alerts.new"), null, { preventDuplicates: true });
             }
@@ -123,7 +123,10 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         try {
             await SanteDB.authentication.logoutAsync();
             $("#logoutModal").modal('hide');
-            $state.go('login');
+            $timeout(() => {
+                $templateCache.removeAll();
+                $state.go('login');
+            });
 
         }
         catch (e) {
@@ -181,7 +184,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         if (refreshInterval) {
             $interval.cancel(refreshInterval);
         }
-        if(mailInterval) {
+        if (mailInterval) {
             $interval.cancel(mailInterval);
         }
     });
@@ -203,11 +206,11 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         $state.transitionTo("santedb-emr.system.bug");
         return true;
     });
-    
+
     // Is there no route? We should show the dashboard
-    $rootScope.$watch("system.config", function(n, o) {
-        if(n) {
-            if(n._isConfigured === false) {
+    $rootScope.$watch("system.config", function (n, o) {
+        if (n) {
+            if (n._isConfigured === false) {
                 $state.go("santedb-config.initial");
             }
             else if ($state.$current == "santedb-emr") {

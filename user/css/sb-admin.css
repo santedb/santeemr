@@ -171,9 +171,10 @@
     font-weight: 900
   }
   
-  #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown .dropdown-menu > .dropdown-item > .dropdown-message {
+  #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown .dropdown-menu .dropdown-item .dropdown-message {
     overflow: hidden;
     max-width: none;
+    text-wrap: wrap;
     text-overflow: ellipsis;
   }
   
@@ -227,8 +228,9 @@
       width: 24px;
       text-align: center;
     }
-    #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown .dropdown-menu > .dropdown-item > .dropdown-message {
+    #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown .dropdown-menu .dropdown-item > .dropdown-message {
       max-width: 300px;
+      text-wrap: wrap;
     }
   }
   

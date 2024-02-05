@@ -124,6 +124,19 @@ angular.module('santedb').controller("EmrUserIndexController", ["$scope", "$root
     }
 
     /**
+     * @summary Render updated by
+     */
+      $scope.renderUpdatedBy = function (user) {
+        if(user.obsoletedBy != null)
+            return `<provenance provenance-id="'${user.obsoletedBy}'" sessionfn="$parent.sessionFunction" provenance-time="'${user.obsoletedBy}'"></provenance>`;
+        else if (user.updatedBy != null)
+            return `<provenance provenance-id="'${user.updatedBy}'" sessionfn="$parent.sessionFunction" provenance-time="'${user.updatedTime}'"></provenance>`;
+        else if (user.createdBy != null)
+            return `<provenance provenance-id="'${user.createdBy}'" sessionfn="$parent.sessionFunction" provenance-time="'${user.creationTime}'"></provenance>`;
+        return "";
+    }
+
+    /**
      * @summary Render the login status
      */
     $scope.renderLastLogin = function (user) {

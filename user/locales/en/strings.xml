@@ -157,6 +157,7 @@
     <string name="ui.emr.job.register.confirm">Are you sure you want to register {job} with this instance of SanteDB?</string>
     <string name="ui.emr.job.register.success">Job {job} was successfully registered</string>
     <string name="ui.emr.job.register.error">Error registering job instance {error}</string>
+    <string name="ui.emr.job.runJob.success">Job {job} started successfully</string>
 
     <!-- Tickles -->
     <string name="ui.emr.alerts">Alerts</string>
