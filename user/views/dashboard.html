@@ -9,4 +9,18 @@
         </sdb:view>
     </sdb:state>
     <widget-panels context-name="'org.santedb.emr.dashboard'" scoped-object="dashboardScope"/>
+    <entity-list type="Place" 
+        display="grid"
+        can-size="false"
+        can-filter="false"
+        can-change-view="false"
+        search-field="'name.component.value'"
+        >
+        <div class="card-header">
+            <h5 class="card-title">{{ item.name | name }}</h5>
+        </div>
+        <div class="card-body">
+            BODY GOES HERE
+        </div>
+    </entity-list>
 </div>

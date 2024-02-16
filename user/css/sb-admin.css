@@ -229,7 +229,7 @@
       text-align: center;
     }
     #mainNav .navbar-collapse .navbar-nav > .nav-item.dropdown .dropdown-menu .dropdown-item > .dropdown-message {
-      max-width: 300px;
+      width: 350px;
       text-wrap: wrap;
     }
   }

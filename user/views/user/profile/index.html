@@ -21,7 +21,7 @@
     <sdb:script static="false">~/controllers/user/profile.js</sdb:script>
     <sdb:state name="santedb-emr.user.profile" abstract="false">
         <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.1</sdb:demand>
-        <sdb:url>user</sdb:url>
+        <sdb:url>/profile</sdb:url>
         <sdb:view>
             <sdb:controller>UserProfileController</sdb:controller>
             <sdb:title lang="en">My Profile</sdb:title>
@@ -30,14 +30,14 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col">
-                <div class="card shadow">
+                <div class="card mb-0">
                     <div class="card-body">
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-xs-12 col-sm-4">
-                                        <h5 class="m-0 p-2">
-                                            {{ userEntity.name | name }} ( {{ userEntity.securityUserModel.userName }})
-                                        </h5>
+                                    <h5 class="m-0 p-2">
+                                        {{ userEntity.name | name }} ( {{ userEntity.securityUserModel.userName }})
+                                    </h5>
                                 </div>
                                 <div class="col-xs-12 col-sm-8">
                                     <div class="d-flex flex-wrap justify-content-end align-middle">
@@ -51,11 +51,18 @@
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="alert alert-warning" ng-if="!userEntity.securityUserModel._local">
+                    <i class="fas fa-fw fa-cloud"></i> {{ 'ui.model.userEntity.securityUserModel.central' | i18n }}
+                </div>
+                <div class="alert alert-success" ng-if="userEntity.securityUserModel._local">
+                    <i class="fas fa-fw fa-lock-open"></i> {{ 'ui.model.userEntity.securityUserModel.local' | i18n
+                    }}
+                </div>
+                        </div>
         </div>
         <div class="row">
             <div class="col">
-                <widget-tabs context-name="'org.santedb.userEntity.profile'" scoped-object="userEntity"/>
+                <widget-tabs context-name="'org.santedb.userEntity.profile'" scoped-object="userEntity" />
             </div>
         </div>
     </div>

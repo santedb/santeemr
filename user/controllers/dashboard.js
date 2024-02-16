@@ -12,5 +12,10 @@ angular.module('santedb').controller('EmrDashboardController', ["$scope", "$root
             'to-date': new Date()
         }
     };
+
+    $scope.myaction = function(id, record) {
+        console.info(id);
+        console.info(record);
+    }
    
 }]);
