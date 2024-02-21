@@ -33,11 +33,7 @@
     asset="/org.santedb.emr.admin/views/index.html" order="100">
     <icon>fas fa-briefcase-medical</icon>
     <text lang="en">SanteEMR</text>
-    <menuItem context="org.santedb.admin" launch="santedb-admin.emr.cdss.dashboard"
-      asset="/org.santedb.emr.admin/views/cdss/index.html">
-        <icon>fas fa-swatchbook</icon>
-        <text lang="en">CDSS Library</text>
-    </menuItem>
+    
   </menuItem>
 
   <strings lang="en" extern="~/locales/en/strings.xml">
