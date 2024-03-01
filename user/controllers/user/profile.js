@@ -32,6 +32,7 @@ angular.module('santedb').controller('UserProfileController', ["$scope", "$rootS
                 userEntity = await SanteDB.resources.userEntity.getAsync(sessionInfo.entity.id, "full");
             else 
                 userEntity = new UserEntity({
+                    id: SanteDB.application.newGuid(),
                     securityUser: sessionInfo.user.id,
                     language: [
                         {

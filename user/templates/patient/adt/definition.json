@@ -1,5 +1,6 @@
 {
     "$type": "Patient",
+    "template" : "81bc8c96-2f02-4c3f-9e2a-50fba42984a7",
     "templateModel": {
         "mnemonic": "org.santedb.emr.patient"
     },
