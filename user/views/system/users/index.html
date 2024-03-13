@@ -9,7 +9,6 @@
         </sdb:view>
     </sdb:state>
 
-    {{$root.system.config.integration }}
     <div ng-if="$root.system.config.integration.mode != 'synchronize'" class="alert alert-danger">
         <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.emr.directDisable.localUser' | i18n }}
     </div>

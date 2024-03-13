@@ -20,8 +20,6 @@
  * Date: 2019-9-27
  */
 angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
-
-
     // Initial view
     $scope.search = {
         value: null, 
@@ -34,10 +32,10 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
     // Perform the search and populate the results
-    function performSearch(search) {
+    function performSearch(search, upstream) {
         $scope.filter = {
             _any : search.value, 
-            _upstream : search.upstream,
+            _upstream : upstream,
             _viewModel : 'full',
             _orderBy: 'modifiedOn:desc'
         };
@@ -48,5 +46,60 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         performSearch($scope.search);
     }
 
+    $scope.searchOnline = function() {
+        performSearch($scope.search, upstream);
+    }
+}])
+// Advanced Search
+// Search - By Demographics
+.controller('EmrAdvancedPatientSearchController', [ "$scope", "$rootScope", "$state", "$timeout", "$stateParams", function($scope, $rootScope, $state, $timeout, $stateParams) {
 
+    // Initial view
+    $scope.search = {
+        upstream: false
+    };
+
+    function countFilterCriteria() {
+        var nParameters = 0;
+
+        if($scope.search['name.component[Given].value'] && $scope.search['name.component[Family].value']) // Name is one search field
+            nParameters++;
+        if($scope.search['address.component[City].value']) 
+            nParameters++;
+        if($scope.search['genderConcept']) 
+            nParameters++;
+        if($scope.search['dateOfBirth'])
+            nParameters++;
+        if($scope.search['identifier.value']) 
+            nParameters += 5; // Identifier is a known good search criteria
+        if($scope.search['telecom[PrimaryHome|MobileContact].value'] || $scope.search['telecom[WorkPlace].value'])
+            nParameters++;
+        if($scope.search['relationship[type.conceptSet.mnemonic=FamilyMember].target.name.component[Given].value'] && $scope.search['relationship[~FamilyMember].target.name.component[Family].value']) 
+            nParameters++;
+        if($scope.search['relationship[type.conceptSet.mnemonic=FamilyMember].target.telecom[PrimaryHome|MobileContact].value'] || $scope.search['relationship[~FamilyMember].target.telecom[WorkPlace].value'])
+            nParameters++;
+        if($scope.search['relationship[type.conceptSet.mnemonic=FamilyMember].target.identifier.value']) 
+            nParameters += 5;
+
+        $scope.searchForm.$setValidity('insufficient', nParameters >= 3);
+
+    }
+
+    function performSearch(searchCrtiteria) {
+        $scope.filter = {
+            _viewModel: 'full',
+            _orderBy: 'modifiedOn:desc',
+            _upstream: searchCrtiteria.upstream
+        };
+
+        // Are we search
+    }
+
+    $scope.search = function(searchForm) {
+        if(searchForm.$invalid) {
+            return;
+        }
+
+        performSearch($scope.search);
+    }
 }]);

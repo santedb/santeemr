@@ -1,0 +1,12 @@
+<div class="card-body">
+    <h5>{{ item.name | name }}</h5>
+    <div class="d-flex">
+        <span class="badge badge-primary">
+            <i class="fas fa-fw" ng-class="{
+                'fa-genderless' : null ,
+                'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198',
+                'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c'
+            }"></i> {{ item.genderConceptModel | concept }}
+        </span>
+    </div>
+</div>
