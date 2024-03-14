@@ -11,22 +11,200 @@
 
 
     <div class="row">
-        <div class="col-lg-8 col-md-12 offset-lg-2">
-            <form ng-submit="search(searchForm)" name="searchForm" novalidate="novalidate" autocomplete="off">
+        <div class="col-lg-10 col-md-12 offset-lg-1">
+            <form ng-submit="searchLocal(searchForm)" name="searchForm" novalidate="novalidate" autocomplete="off">
                 <div class="card">
                     <div class="card-header">
                         <button data-toggle="collapse" data-target="#advancedSearchFilter" aria-expanded="true"
                             class="btn p-0 btn-link collapse-indicator">
-                            <h5 class="card-title mb-0">{{ 'ui.emr.patient.search.advanced' | i18n }}
+                            <h5 class="card-title mb-0">{{ 'ui.emr.patient.search' | i18n }}
                                 <i class="fas fa-chevron-right"></i>
                             </h5>
                         </button>
                     </div>
                     <div class="collapse show active" id="advancedSearchFilter">
                         <div class="card-body">
-                            Foo
+                            <fieldset class="container-fluid">
+                                <legend>{{ 'ui.emr.patient.search.field.patient' | i18n }}
+                                    <hint-popover hint-title="ui.emr.patient.search.field.patient" />
+                                </legend>
+                                <div class="form-group row">
+                                    
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.patient.name.given' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.patient.name" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <input type="text" autocomplete="__away" class="form-control"
+                                            ng-model="search['name.component[Given].value']"
+                                            ng-change="validateParameterCount()" />
+                                    </div>
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.patient.name.family' | i18n }}
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <input type="text" autocomplete="__away" class="form-control"
+                                            ng-model="search['name.component[Family].value']"
+                                            ng-change="validateParameterCount()" />
+                                    </div>
+                                
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.patient.address.area' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.patient.address.area" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <entity-search type="'Place'"
+                                            group-by="['address.Direct[0].component.State[0]', 'address.Direct[0].component.County[0]', 'address.PhysicalVisit[0].component.State[0]', 'address.PhysicalVisit[0].component.County[0]']"
+                                            ng-model="search._expandAddressId" search-field="'name.component.value'"
+                                            filter="{ 'classConcept': [ '79dd4f75-68e8-4722-a7f5-8bc2e08f5cd6', '6eefee7d-dff5-46d3-a6a7-171ef93879c7', 'acafe0f2-e209-43bb-8633-3665fd7c90ba' ], 'statusConcept': 'c8064cbd-fa06-4530-b430-1a52f1530c27' }" />
+                                    </div>
+                               
+                                    
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.patient.address.street' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.patient.address.street" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <input type="text" class="form-control"
+                                            ng-model="search['address.component[AddressLine].value']"
+                                            ng-change="validateParameterCount()" />
+                                    </div>
+                              
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.patient.gender' | i18n }}
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <concept-select class="form-control" 
+                                            concept-set="'AdministrativeGenderCode'" ng-model="search['genderConcept']"
+                                            add-concept="['61d8f65c-747e-4a99-982f-a42ac5437473']"
+                                            />
+                                    </div>
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.patient.dob' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.patient.dob" />
+                                    </label>                                    
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <div class="input-group mb-0">
+                                            <div class="input-group-prepend">
+                                                <label class="input-group-text">
+                                                    <input type="checkbox" ng-model="search._approxAge" />
+                                                    {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                                                </label>
+                                            </div>
+                                            <input ng-if="search._approxAge" ng-change="validateParameterCount()" type="number" ng-model="search['dateOfBirth'][0]" min="0" max="{{ search['dateOfBirth'][1] || 130 }}" class="form-control" />
+                                            <input ng-if="!search._approxAge" ng-change="validateParameterCount()" type="date" ng-model="search['dateOfBirth'][0]" min="1900-01-01" max="{{ (search['dateOfBirth'][1] || $root.page.maxEventTime) | date: 'yyyy-MM-dd' }}" class="form-control" />
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">-</span>
+                                            </div>
+                                            <input ng-if="search._approxAge" ng-change="validateParameterCount()" type="number" ng-model="search['dateOfBirth'][1]" min="{{search['dateOfBirth'][0] || 0}}" max="130" class="form-control" />
+                                            <input ng-if="!search._approxAge" ng-change="validateParameterCount()" type="date" ng-model="search['dateOfBirth'][1]" min="{{ (search['dateOfBirth'][0] || '1900-01-01') | date: 'yyyy-MM-dd' }}" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control" />
+                                        </div>
+                                    </div>
+
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.patient.identifier' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.patient.identifier" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <div class="input-group mb-0">
+                                            <input type="text" ng-model="search['identifier.value']" class="form-control"
+                                                ng-change="validateParameterCount()" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-outline-secondary" type="button" ng-click="scanBarcode('identifier')">
+                                                    <i class="fas fa-qrcode"></i> {{ 'ui.action.scan' | i18n }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.patient.telecom' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.patient.telecom" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <input ng-change="validateParameterCount()" type="text" ng-model="search['telecom.value']" class="form-control" />
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset class="container-fluid">
+                                <legend>{{ 'ui.emr.patient.search.field.relative' | i18n }}
+                                    <hint-popover hint-title="ui.emr.patient.search.field.relative" />
+
+                                </legend>
+                                <div class="form-group row">
+                                    
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.relative.name.given' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.relative.name" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <input type="text" autocomplete="__away" class="form-control"
+                                            ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value']"
+                                            ng-change="validateParameterCount()" />
+                                    </div>
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.relative.name.family' | i18n }}
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <input type="text" autocomplete="__away" class="form-control"
+                                            ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value']"
+                                            ng-change="validateParameterCount()" />
+                                    </div>
+
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.relative.address.area' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.relative.address.area" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <entity-search type="'Place'"
+                                            group-by="['address.Direct[0].component.State[0]', 'address.Direct[0].component.County[0]', 'address.PhysicalVisit[0].component.State[0]', 'address.PhysicalVisit[0].component.County[0]']"
+                                            ng-model="search._expandRelationshipAddressId" search-field="'name.component.value'"
+                                            filter="{ 'classConcept': [ '79dd4f75-68e8-4722-a7f5-8bc2e08f5cd6', '6eefee7d-dff5-46d3-a6a7-171ef93879c7', 'acafe0f2-e209-43bb-8633-3665fd7c90ba' ], 'statusConcept': 'c8064cbd-fa06-4530-b430-1a52f1530c27' }" />
+                                    </div>
+                               
+                                    
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.relative.address.street' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.relative.address.street" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <input type="text" class="form-control"
+                                            ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[AddressLine].value']"
+                                            ng-change="validateParameterCount()" />
+                                    </div>
+                              
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.relative.identifier' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.relative.identifier" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <div class="input-group mb-0">
+                                            <input type="text" ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier.value']" class="form-control"
+                                                ng-change="validateParameterCount()" />
+                                            <div class="input-group-append">
+                                                <button class="btn btn-sm btn-outline-secondary" type="button" ng-click="scanBarcode('relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier')">
+                                                    <i class="fas fa-qrcode"></i> {{ 'ui.action.scan' | i18n }}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                        {{ 'ui.emr.patient.search.field.relative.telecom' | i18n }}
+                                        <hint-popover hint-title="ui.emr.patient.search.field.relative.telecom" />
+                                    </label>
+                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                        <input type="text" ng-change="validateParameterCount()" ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value']" class="form-control" />
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
                         <div class="card-footer">
+                            <span ng-if="searchForm.$error['insufficient']" class="text-danger">
+                                <i class="fas fa-exclamation-circle"></i> {{
+                                'ui.emr.patient.search.insufficientCriteria' | i18n: { current: countFilterCriteria(),
+                                expected: 3 } }}
+                            </span>
                             <div class="btn-group float-right">
                                 <button class="btn btn-secondary" id="btnReset" type="reset">
                                     <i class="fas fa-undo"></i> {{ 'ui.action.reset' | i18n }}
@@ -42,13 +220,40 @@
                                     <i class="fas fa-search"></i> {{ 'ui.action.search' | i18n }}
                                 </button>
                             </div>
-                            <div class="clearfix" ></div>
+                            <div class="clearfix"></div>
                         </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+    <div class="row" ng-if="filter">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-heading">{{ 'ui.emr.patient.search.results' | i18n }}</h5>
+                </div>
+                <div class="card-body">
+                    <entity-list 
+                        type="Patient" 
+                        can-filter="false" 
+                        default-query="filter" 
+                        actions="[ 
+                            { name: 'register', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.register', className: 'btn-primary', icon: 'fa fa-user-plus' }
+                        ]"
+                        item-actions="[
+                            { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' }
+                        ]"
+                        display="grid"
+                        >
 
+                        <!-- #include virtual="~/partials/patient/search-result.html" -->
+
+                     </entity-list>
+                </div>
+            </div>
+            
+        </div>
+    </div>
 
 </div>

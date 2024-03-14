@@ -28,13 +28,7 @@
     <dependency id="org.santedb.uicore"/>
     <dependency id="org.santedb.admin"/>
   </info>
-
  
-  <menuItem context="org.santedb.admin" launch="santedb-admin.example"
-    asset="/org.santedb.emr.admin/views/example.html" order="-100">
-    <icon>fas fa-smile</icon>
-    <text lang="en">Hello World</text>
-  </menuItem>
   <menuItem context="org.santedb.admin" launch="santedb-admin.emr.dashboard"
     asset="/org.santedb.emr.admin/views/index.html" order="100">
     <icon>fas fa-briefcase-medical</icon>

@@ -151,6 +151,41 @@
     <string name="ui.emr.patient.search.dob">Date of Birth</string>
     <string name="ui.emr.patient.search.gender">Gender</string>
     <string name="ui.emr.patient.search.id">ID #</string>
+    <string name="ui.emr.patient.search.field.patient">Filter by Patient</string>
+    <string name="ui.emr.patient.search.field.patient.hint">These filter parameters apply to the patient being searched.</string>
+    <string name="ui.emr.patient.search.field.relative">Filter by Relative</string>
+    <string name="ui.emr.patient.search.field.relative.hint">These filter parameters apply to any relatives of the patient (mother, father, etc.)</string>
+    <string name="ui.emr.patient.search.insufficientCriteria">Cannot search with only {current} filters, {expected} filters are required</string>
+    <string name="ui.emr.patient.search.field.patient.name.given">Given Name</string>
+    <string name="ui.emr.patient.search.field.patient.name">Given/Family Name</string>
+    <string name="ui.emr.patient.search.field.patient.name.hint">The Given and Family of the patient. Note that these two must be used together.</string>
+    <string name="ui.emr.patient.search.field.patient.name.family">Family Name</string>
+    <string name="ui.emr.patient.search.field.patient.address.area">County/City</string>
+    <string name="ui.emr.patient.search.field.patient.address.area.hint">The city, town, county, precinct, or other census area within which the patient lives</string>
+    <string name="ui.emr.patient.search.field.patient.address.street">Street Address</string>
+    <string name="ui.emr.patient.search.field.patient.address.street.hint">The street address within the city/town/county (for example: &lt;code&gt;123 Main Street West&lt;/code&gt;)</string>
+    <string name="ui.emr.patient.search.field.patient.identifier">Identifier</string>
+    <string name="ui.emr.patient.search.field.patient.identifier.hint">The identifier for the patient with an optional check-digit (if one is provided). You may also scan this information using the device camera.</string>
+    <string name="ui.emr.patient.search.field.patient.gender">Gender</string>
+    <string name="ui.emr.patient.search.field.patient.dob">Date of Birth</string>
+    <string name="ui.emr.patient.search.field.patient.dob.hint"><![CDATA[ The date of birth range expressed as a <code>from</code> - <code>to</code> filter. When using an <code>approximate</code> filter, filter based on the patient's age]]></string>
+    <string name="ui.emr.patient.search.field.patient.telecom">Email/Tel</string>
+    <string name="ui.emr.patient.search.field.patient.telecom.hint">Matches based on the telephone number, or e-mail address of the patient</string>
+    <string name="ui.emr.patient.search.field.relative.identifier">Identifier</string>
+    <string name="ui.emr.patient.search.field.relative.identifier.hint">The identifier for the relative with an optional check-digit (if one is provided). You may also scan this information using the device camera.</string>
+    <string name="ui.emr.patient.search.field.relative.name">Given/Family Name</string>
+    <string name="ui.emr.patient.search.field.relative.name.hint">The Given and Family of the relative. Note that these two must be used together.</string>
+
+    <string name="ui.emr.patient.search.field.relative.name.given">Given Name</string>
+    <string name="ui.emr.patient.search.field.relative.name.family">Family Name</string>
+    <string name="ui.emr.patient.search.field.relative.address.area">County/City</string>
+    <string name="ui.emr.patient.search.field.relative.address.area.hint">The city, town, county, precinct, or other census area within which the patient's relative lives</string>
+    <string name="ui.emr.patient.search.field.relative.address.street">Street Address</string>
+    <string name="ui.emr.patient.search.field.relative.address.street.hint">The street address within the city/town/county (for example: &lt;code&gt;123 Main Street West&lt;/code&gt;)</string>
+    <string name="ui.emr.patient.search.field.relative.telecom">Email/Tel</string>
+    <string name="ui.emr.patient.search.field.relative.telecom.hint">Matches based on the telephone number, or e-mail address of the patient</string>
+
+    <!-- JOBS -->
     <string name="ui.emr.job.runJob.confirm">Are you sure you want to run this job?</string>
     <string name="ui.emr.job.neverRun">Nver Run</string>
     <string name="ui.emr.job.register.title">Register Job</string>
