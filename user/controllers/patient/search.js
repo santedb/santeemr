@@ -101,8 +101,8 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
                     $scope.search[`${searchPath}[State].value`] = address.component.State ? address.component.State[0] : null;
                     $scope.search[`${searchPath}[Country].value`] = address.component.Country ? address.component.Country[0] : null;
-                    $scope.search[`${searchPath}[City].vlaue`] = address.component.City ? address.component.City[0] : null;
-                    $scope.search[`${searchPath}[County].vlaue`] = address.component.County ? address.component.County[0] : null;
+                    $scope.search[`${searchPath}[City].value`] = address.component.City ? address.component.City[0] : null;
+                    $scope.search[`${searchPath}[County].value`] = address.component.County ? address.component.County[0] : null;
 
                     $scope.validateParameterCount();
                 })
