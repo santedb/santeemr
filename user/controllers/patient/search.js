@@ -22,9 +22,9 @@
 angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
     // Initial view
     $scope.search = {
-        value: null, 
-        upstream: false
     };
+
+
     if($state.q) {
         $scope.search.value = q;
         $scope.search.upstream = $state.o;
@@ -47,12 +47,18 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
     $scope.searchOnline = function() {
-        performSearch($scope.search, upstream);
+        performSearch($scope.search, true);
     }
 }])
 // Advanced Search
 // Search - By Demographics
 .controller('EmrAdvancedPatientSearchController', [ "$scope", "$rootScope", "$state", "$timeout", "$stateParams", function($scope, $rootScope, $state, $timeout, $stateParams) {
+
+    $scope.$watch("searchForm", function(n, o) {
+        if(n && !o || n && n.$pristine && !n.$invalid) {
+            n.$setValidity('insufficient', false);
+        }
+    })
 
     // Approximate fields
     var approxFunctions = {
@@ -118,7 +124,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             nParameters++;
         if($scope.search['dateOfBirth'])
             nParameters++;
-        if($scope.search['identifier.value']) 
+        if($scope.search['identifier.value'] || $scope.search['id']) 
             nParameters += 5; // Identifier is a known good search criteria
         if($scope.search['telecom.value'])
             nParameters++;
@@ -126,7 +132,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             nParameters++;
         if($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value'])
             nParameters++;
-        if($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier.value']) 
+        if($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier.value'] || $scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target']) 
             nParameters += 5;
 
         return nParameters;
@@ -156,6 +162,11 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                     });
                 }
 
+                // HACK: Approximate date of birth
+                if(searchObject._approxAge && f == 'dateOfBirth') {
+                    value = value.map(v=>`:(age)${v}`);
+                }
+
                 if(approxFunctions[f]) {
                     $scope.filter[f] = approxFunctions[f](value);
                 }
@@ -172,10 +183,29 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
     $scope.countFilterCriteria = countFilterCriteria;
 
+    $scope.scanBarcode = async function(target) {
+        try {
+            var barcodeIdentifier = await SanteDB.application.scanIdentifierAsync();
+            $timeout(() => {
+                if(barcodeIdentifier._sub) {
+                    // Fetch the subject and populate the values
+
+                    $scope.search[`${target}.source`] = barcodeIdentifier._sub;
+                    $scope.search[`${target}.value`] = barcodeIdentifier.display;
+                }
+                else {
+                    $scope.search[`${target}.value`] = barcodeIdentifier;
+                }
+            })
+        } catch(e){
+            $rootScope.errorHandler(e);
+        }
+
+    }
     // Watch the form and any search criteria to see if there are sufficient inputs
     $scope.validateParameterCount = function()
     {
-        var valid = countFilterCriteria() >= 2;
+        var valid = countFilterCriteria() > 2;
         $scope.searchForm.$setValidity('insufficient', valid);
         return valid;
     }

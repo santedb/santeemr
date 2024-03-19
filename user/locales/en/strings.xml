@@ -8,6 +8,7 @@
     <!-- Actions -->
     <string name="ui.emr.profile">My Profile</string>
 
+    <string name="org.example">Example Widget</string>
 
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
@@ -19,7 +20,7 @@
     <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address, Identification, or Telephone</string>
     <string name="ui.emr.patient.search.online">Include patients from the central server (out of my catchment)</string>
     <string name="ui.emr.patient.upstream.edit">You cannot edit the details of this patient as they exist only on the central server. Download a copy of the resource first</string>
-    <string name="ui.emr.patient.ageOrDate">y.o. / date</string>
+    <string name="ui.emr.patient.ageInYears">y.o.</string>
     <string name="ui.emr.patient.relationship.activate">Patient has a</string>
     <string name="ui.emr.patient.register.duplicates">Potential Duplicates</string>
     <string name="ui.emr.patient.register.duplicates.instruction">The following patients are similar to the patient you have entered. Review the duplicates below to ensure you are not registering a duplicate</string>

@@ -15,7 +15,7 @@
             <form ng-submit="searchLocal(searchForm)" name="searchForm" novalidate="novalidate" autocomplete="off">
                 <div class="card">
                     <div class="card-header">
-                        <button data-toggle="collapse" data-target="#advancedSearchFilter" aria-expanded="true"
+                        <button data-toggle="collapse" type="button" data-target="#advancedSearchFilter" aria-expanded="true"
                             class="btn p-0 btn-link collapse-indicator">
                             <h5 class="card-title mb-0">{{ 'ui.emr.patient.search' | i18n }}
                                 <i class="fas fa-chevron-right"></i>
@@ -75,7 +75,7 @@
                                     </label>
                                     <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
                                         <concept-select class="form-control" 
-                                            concept-set="'AdministrativeGenderCode'" ng-model="search['genderConcept']"
+                                            concept-set="'AdministrativeGenderCode'" ng-change="validateParameterCount()" ng-model="search['genderConcept']"
                                             add-concept="['61d8f65c-747e-4a99-982f-a42ac5437473']"
                                             />
                                     </div>
@@ -98,6 +98,9 @@
                                             </div>
                                             <input ng-if="search._approxAge" ng-change="validateParameterCount()" type="number" ng-model="search['dateOfBirth'][1]" min="{{search['dateOfBirth'][0] || 0}}" max="130" class="form-control" />
                                             <input ng-if="!search._approxAge" ng-change="validateParameterCount()" type="date" ng-model="search['dateOfBirth'][1]" min="{{ (search['dateOfBirth'][0] || '1900-01-01') | date: 'yyyy-MM-dd' }}" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control" />
+                                            <div class="input-group-append" ng-if="search._approxAge">
+                                                <span class="input-group-text">{{ 'ui.emr.patient.ageInYears' | i18n }}</span>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -110,7 +113,7 @@
                                             <input type="text" ng-model="search['identifier.value']" class="form-control"
                                                 ng-change="validateParameterCount()" />
                                             <div class="input-group-append">
-                                                <button class="btn btn-sm btn-outline-secondary" type="button" ng-click="scanBarcode('identifier')">
+                                                <button class="btn btn-sm btn-outline-secondary" type="button" ng-click="scanBarcode('')">
                                                     <i class="fas fa-qrcode"></i> {{ 'ui.action.scan' | i18n }}
                                                 </button>
                                             </div>
@@ -182,7 +185,7 @@
                                             <input type="text" ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier.value']" class="form-control"
                                                 ng-change="validateParameterCount()" />
                                             <div class="input-group-append">
-                                                <button class="btn btn-sm btn-outline-secondary" type="button" ng-click="scanBarcode('relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier')">
+                                                <button class="btn btn-sm btn-outline-secondary" type="button" ng-click="scanBarcode('relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target@Person')">
                                                     <i class="fas fa-qrcode"></i> {{ 'ui.action.scan' | i18n }}
                                                 </button>
                                             </div>
