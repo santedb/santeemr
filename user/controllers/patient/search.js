@@ -101,8 +101,8 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
                     $scope.search[`${searchPath}[State].value`] = address.component.State ? address.component.State[0] : null;
                     $scope.search[`${searchPath}[Country].value`] = address.component.Country ? address.component.Country[0] : null;
-                    $scope.search[`${searchPath}[City].vlaue`] = address.component.City ? address.component.City[0] : null;
-                    $scope.search[`${searchPath}[County].vlaue`] = address.component.County ? address.component.County[0] : null;
+                    $scope.search[`${searchPath}[City].value`] = address.component.City ? address.component.City[0] : null;
+                    $scope.search[`${searchPath}[County].value`] = address.component.County ? address.component.County[0] : null;
 
                     $scope.validateParameterCount();
                 })
@@ -139,6 +139,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
     function performSearch(searchCrtiteria, upstream) {
+        $scope.validateParameterCount();
         $scope.filter = {
             _viewModel: 'full',
             _orderBy: 'modifiedOn:desc',
@@ -187,14 +188,19 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         try {
             var barcodeIdentifier = await SanteDB.application.scanIdentifierAsync();
             $timeout(() => {
-                if(barcodeIdentifier._sub) {
-                    // Fetch the subject and populate the values
+                if(barcodeIdentifier.$type) { // This is a full object so set the search parameters based on the data within
+                    if(target !== '') target += ".";
 
-                    $scope.search[`${target}.source`] = barcodeIdentifier._sub;
-                    $scope.search[`${target}.value`] = barcodeIdentifier.display;
+                    $scope.search[`${target}id`] = barcodeIdentifier.id;
+                    performSearch();
+                    // Find the first identifier 
+                    if(barcodeIdentifier.identifier) {
+                        var domain = Object.keys(barcodeIdentifier.identifier)[0];
+                        $scope.search[`${target}identifier.value`] = barcodeIdentifier.identifier[domain][0].value;
+                    }
                 }
                 else {
-                    $scope.search[`${target}.value`] = barcodeIdentifier;
+                    $scope.search[`${target}identifier.value`] = barcodeIdentifier;
                 }
             })
         } catch(e){

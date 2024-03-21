@@ -80,7 +80,7 @@ angular.module('santedb').controller("EmrBackupIndexController", ["$scope", "$ro
     $scope.backupNow = async function(backupForm) {
         try {
             SanteDB.display.buttonWait("#btnDoBackup", true);
-            await SanteDB.resources.backup.invokeOperationAsync($scope.backupMedia, "backup", { password: $scope.newBackup.password });
+            await SanteDB.resources.backup.invokeOperationAsync($scope.newBackup.media, "backup", { password: $scope.newBackup.password });
             toastr.success(SanteDB.locale.getString("ui.emr.backup.now.success"));
             $("#backupModal").modal('hide');
             $timeout(() => $("#SystemBackupTable table").DataTable().draw());
