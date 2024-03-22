@@ -28,7 +28,8 @@
                                 <legend>{{ 'ui.emr.patient.search.field.patient' | i18n }}
                                     <hint-popover hint-title="ui.emr.patient.search.field.patient" />
                                 </legend>
-                                <div class="form-group row">
+
+                                <div class="form-group row" >
                                     
                                     <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.name.given' | i18n }}
@@ -110,7 +111,7 @@
                                     </label>
                                     <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
                                         <div class="input-group mb-0">
-                                            <input type="text" ng-model="search['identifier.value']" class="form-control"
+                                            <input type="text" ng-model="search['identifier.value']" ng-disabled="search['id']" class="form-control"
                                                 ng-change="validateParameterCount()" />
                                             <div class="input-group-append">
                                                 <button class="btn btn-sm btn-outline-secondary" type="button" ng-click="scanBarcode('')">
@@ -209,7 +210,7 @@
                                 expected: 3 } }}
                             </span>
                             <div class="btn-group float-right">
-                                <button class="btn btn-secondary" id="btnReset" type="reset">
+                                <button class="btn btn-secondary" id="btnReset" type="reset" ng-click="search['id'] = search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target@Person.id'] = undefined">
                                     <i class="fas fa-undo"></i> {{ 'ui.action.reset' | i18n }}
                                 </button>
                                 <button class="ml-1 btn btn-success"

@@ -73,6 +73,7 @@
     <string name="ui.emr.users.lockout">Lockout</string>
     <string name="ui.emr.users.updatedBy">Updated By</string>
     <string name="ui.emr.users.isAdmin">Make User Administrator</string>
+    <string name="ui.emr.users.formMissingRequiredInformation">Required information is missing from the registration</string>
     <string name="ui.emr.mailError">Error retrieving mail</string>
     <string name="ui.emr.tickleError">Error fetching alerts</string>
     <string name="ui.emr.queueError">Error reading queue</string>

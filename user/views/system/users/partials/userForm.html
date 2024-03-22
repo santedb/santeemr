@@ -8,18 +8,18 @@
                     pattern="^[A-Za-z0-9_\.\@]{3,}" minlength="3" maxlength="32" required="required"
                     ng-model="target.entity.userName" />
 
-                <span ng-show="userForm.username.$error['duplicate']" class="text-danger">
+                <div ng-if="userForm.username.$error['duplicate']" class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i>
                     {{ 'ui.error.duplicate' | i18n }}
-                </span>
-                <span ng-show="userForm.username.$error['required'] "
+                </div>
+                <div ng-if="userForm.username.$error['required'] "
                     class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                </span>
-                <span ng-show="userForm.username.$error['pattern'] "
+                </div>
+                <div ng-if="userForm.username.$error['pattern'] "
                     class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
-                </span>
+                </div>
             </div>
         </div>
         <div class="form-group row">
@@ -28,10 +28,10 @@
             <div class="col-sm-12 col-md-9">
                 <input readonly="readonly" name="roles" ng-model="target.role" class="form-control"
                     multiple="multiple" required="required" />
-                <span ng-show="userForm.roles.$error['required'] "
+                <div ng-if="userForm.roles.$error['required'] "
                     class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                </span>
+                </div>
             </div>
             <div class="col-sm-12 col-md-9 offset-md-3">
                 <div>
@@ -52,15 +52,15 @@
                     pattern="[A-Za-z0-9@!#\$\%\^\&amp;\*\(\)\~\`\,\.\?\/\;\'\[\]\{\}\s_]+"
                     ng-class="{'is-invalid': userForm.newPassword.$invalid }"
                     ng-change="userForm.newPassword.$error['err.password.complexity'] ? userForm.newPassword.$error['err.password.complexity']=false : null" />
-                <span ng-show="userForm.newPassword.$error['required'] "
+                <div ng-if="userForm.newPassword.$error['required'] "
                     class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                </span>
-                <span ng-show="userForm.newPassword.$error['err.password.complexity'] "
+                </div>
+                <div ng-if="userForm.newPassword.$error['err.password.complexity'] "
                     class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i>
                     {{ 'ui.password.error.complexity' | i18n }}
-                </span>
+                </div>
             </div>
         </div>
         <div class="form-group row" ng-if="!target.entity.id">
@@ -70,13 +70,13 @@
                 <input type="password" name="confirmPassword" ng-model="target.entity.confirmPassword"
                     class="form-control" ng-required="target.entity.password != null" match-validator="newPassword"
                     ng-class="{'is-invalid': userForm.confirmPassword.$invalid }" />
-                <span ng-show="userForm.confirmPassword.$error['required']"
+                <div ng-if="userForm.confirmPassword.$error['required']"
                     class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                </span>
-                <span ng-show="userForm.confirmPassword.$error['match']" class="text-danger">
+                </div>
+                <div ng-if="userForm.confirmPassword.$error['match']" class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i> {{ 'ui.password.error.mismatch' | i18n }}
-                </span>
+                </div>
             </div>
         </div>
         <div class="form-group row">
@@ -91,10 +91,10 @@
             <div class="col-sm-12 col-md-9">
                 <input name="email" type="email" class="form-control"
                     ng-model="target.entity.email" />
-                <span ng-show="userForm.email.$error['email'] "
+                <div ng-if="userForm.email.$error['email'] "
                     class="text-danger">
                     <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
-                </span>
+                </div>
             </div>
         </div>
         <div class="form-group row">
@@ -105,7 +105,7 @@
                     ng-model="target.entity.phoneNumber" />
             </div>
         </div>
-        <name-edit name="target.userEntity.name" simple-entry="true" no-add="true" no-type="true" is-required="true" />
+        <name-edit name="target.userEntity.name" owner-form="userForm" simple-entry="true" no-add="true" no-type="true" is-required="true" />
         <div class="form-group row">
             <label for="language"
                 class="col-xs-12 col-md-3 control-label">{{ 'ui.model.userEntity.language' | i18n }}</label>
@@ -125,7 +125,7 @@
     <div class="modal-footer">
         <div ng-if="userForm.$invalid">
             <span class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i>
-                {{ 'ui.emr.common.formMissingRequiredInformation' | i18n }}</span>
+                {{ 'ui.emr.users.formMissingRequiredInformation' | i18n }}</span>
         </div>
             <a class="btn btn-secondary" ui-sref="santedb-emr.system.users.index" data-dismiss="modal">
             <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</a>
