@@ -29,6 +29,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                 "source" : id // Where this is the holder
             }, "reverseRelationship");
 
+            // If the patient is an MDM 
             if(er.resource && er.resource.length > 0 && er.resource[0].target != id) {
                 var params = angular.copy($stateParams);
                 params.id = er.resource[0].target;
@@ -41,15 +42,6 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
             // Remote patient perhaps?
             if (e.$type == "FileNotFoundException" || e.cause && e.cause.$type == "FileNotFoundException") {
                 try {
-
-                    // Is this a local session? If so, we need to use the application elevator
-                    var session = await SanteDB.authentication.getSessionInfoAsync();
-                    if (session.method == "LOCAL") // Local session so elevate to use the principal elevator
-                    {
-                        var elevator = new ApplicationPrincipalElevator(true);
-                        await elevator.elevate(session);
-                        SanteDB.authentication.setElevator(elevator);
-                    }
 
                     $scope.patient = await SanteDB.resources.patient.getAsync({ id: id, _upstream: true }, "full");
                     $scope.patient._upstream = true;

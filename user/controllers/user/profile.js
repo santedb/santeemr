@@ -44,13 +44,7 @@ angular.module('santedb').controller('UserProfileController', ["$scope", "$rootS
 
 
             var userInfo = await SanteDB.resources.securityUser.getAsync(sessionInfo.user.id);
-            var _localOnly = await SanteDB.resources.securityUser.findAsync({
-                id : sessionInfo.user.id, 
-                "$self@SecurityUser": ':(getClaim|"urn:santedb:org:claim:local")true',
-                _count: 0,
-                _includeTotal: true
-            });
-            userEntity._localOnly = _localOnly.size > 0;
+            userEntity._localOnly= sessionInfo.claims["urn:santedb:org:claim:local"] && sessionInfo.claims["urn:santedb:org:claim:local"][0] == "true";
             
             $timeout(() => {
                 $scope.userEntity = userEntity;

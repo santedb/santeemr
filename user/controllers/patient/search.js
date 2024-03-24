@@ -88,6 +88,24 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         }
     });
 
+    // Item supplement which determines if the patientin question has an encounter active
+    $scope.patientHasOpenEncounter = async function(patient) {
+        if(patient.id) {
+            try {
+                var encounters = await SanteDB.resources.patientEncounter.findAsync({ "participation[RecordTarget].player" : patient.id, _count: 0, _includeTotal: true });
+                if(encounters.totalResults > 0) {
+                    patient.tag = patient.tag || {};
+                    patient.tag.$hasEncounter = true;
+                }
+            }
+            catch (e) {}
+        }
+        return patient;
+    }
+
+    // Remove the elevator
+    $scope.$on('$destroy', () => SanteDB.authentication.setElevator(null));
+
     // SEt address filters by the place id passed
     async function setAddressFilters(cityOrPlaceId, searchPath) {
         try {
@@ -193,11 +211,11 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
                     $scope.search[`${target}id`] = barcodeIdentifier.id;
                     performSearch();
-                    // Find the first identifier 
-                    if(barcodeIdentifier.identifier) {
-                        var domain = Object.keys(barcodeIdentifier.identifier)[0];
-                        $scope.search[`${target}identifier.value`] = barcodeIdentifier.identifier[domain][0].value;
-                    }
+                    // // Find the first identifier 
+                    // if(barcodeIdentifier.identifier) {
+                    //     var domain = Object.keys(barcodeIdentifier.identifier)[0];
+                    //     $scope.search[`${target}identifier.value`] = barcodeIdentifier.identifier[domain][0].value;
+                    // }
                 }
                 else {
                     $scope.search[`${target}identifier.value`] = barcodeIdentifier;
@@ -217,13 +235,14 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
 
-    $scope.searchOnline = function() {
+    $scope.searchOnline = async function() {
         if($scope.searchForm.$invalid && !$scope.validateParameterCount()) {
             return;
         }
 
         performSearch($scope.search, true);
     }
+
     $scope.searchLocal = function(searchForm) {
         if(searchForm.$invalid && !$scope.validateParameterCount()) {
             return;
