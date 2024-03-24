@@ -8,8 +8,6 @@
     <!-- Actions -->
     <string name="ui.emr.profile">My Profile</string>
 
-    <string name="org.example">Example Widget</string>
-
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
     <string name="ui.emr.patient.index">My Patients</string>
@@ -31,6 +29,9 @@
     <string name="ui.emr.patient.registered">Submitted Data</string>
     <string name="ui.emr.patient.registered.none">No Patients Registered</string>
     <string name="ui.emr.directDisable.localUser">This service is connected directly to the remote server. Local user functions are disabled</string>
+    <!-- Patient Dashboard-->
+    <string name="org.santedb.emr.patient.dashboard.title">Patient Administration</string>
+    
     <!-- Patient View -->
     <string name="org.santedb.emr.widget.patient.demographics">Demographics</string>
     <string name="org.santedb.emr.widget.patient.dashboard">Dashboard</string>

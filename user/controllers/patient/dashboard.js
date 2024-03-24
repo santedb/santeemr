@@ -1,7 +1,28 @@
 /// <reference path="../../.ref/js/santedb.js" />
 
-angular.module('santedb').controller('EmrPatientIndexController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
+angular.module('santedb').controller('EmrPatientDashboardController', ["$scope", "$rootScope", "$state", "$timeout", function ($scope, $rootScope, $state, $timeout) {
 
+    
+
+    async function initializeView() {
+
+        try {
+            $timeout(() => {
+                $scope.dashboard = {
+                    recentPatients: { 
+                        _upstream: true, 
+                        _count: 10, 
+                        _orderBy: 'modifiedOn:desc' 
+                    }
+                };
+            })
+        }
+        catch(err) { $rootScope.errorHandler(err); }
+    }
+
+    initializeView();
+
+    /*
     // Render demographic information
     $scope.renderSummary = renderPatientSummary;
     
@@ -80,5 +101,5 @@ angular.module('santedb').controller('EmrPatientIndexController', ["$scope", "$r
         else retVal += "N/A ";
         return retVal.substring(0, retVal.length - 1);
     }
-
+    */
 }]);

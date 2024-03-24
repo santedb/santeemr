@@ -36,7 +36,7 @@
     <icon>fas fa-tachometer-alt</icon>
     <text lang="en">Dashboard</text>
   </menuItem>
-  <menuItem context="ui.emr" launch="santedb-emr.patient.index" asset="/org.santedb.emr/views/patient/index.html" order="-100">
+  <menuItem context="ui.emr" launch="santedb-emr.patient.dashboard" asset="/org.santedb.emr/views/patient/dashboard.html" order="-100">
     <icon>fas fa-hospital-user</icon>
     <text lang="en">Patient Administration</text>
     <menuItem context="ui.emr" launch="santedb-emr.patient.search" asset="/org.santedb.emr/views/patient/search.html" order="-100">
