@@ -239,6 +239,7 @@
                 </div>
                 <div class="card-body">
                     <entity-list 
+                        id="searchList"
                         type="Patient" 
                         can-filter="false" 
                         default-query="filter"
@@ -248,7 +249,7 @@
                             { name: 'register', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.register', className: 'btn-primary', icon: 'fa fa-user-plus' }
                         ]"
                         item-actions="[
-                            { name: 'download', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', action: downloadResult, className: 'btn-info', icon: 'fas fa-cloud-download', when: 'item.tag.$upstream' },
+                            { name: 'download', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', action: 'downloadPatient', className: 'btn-info', icon: 'fas fa-cloud-download', when: 'item.tag.$upstream' },
                             { name: 'encounter', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.encounter.view', className: 'btn-success', icon: 'fas fa-notes-medical', when: 'item.tag.$hasEncounter' },
                             { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' }
                         ]"

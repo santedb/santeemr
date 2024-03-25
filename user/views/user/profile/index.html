@@ -51,11 +51,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="alert alert-warning" ng-if="!userEntity.securityUserModel._local">
+                <div class="alert alert-warning" ng-if="!userEntity._localOnly">
                     <i class="fas fa-fw fa-cloud"></i> {{ 'ui.model.userEntity.securityUserModel.central' | i18n }}
                 </div>
-                <div class="alert alert-success" ng-if="userEntity.securityUserModel._local">
-                    <i class="fas fa-fw fa-lock-open"></i> {{ 'ui.model.userEntity.securityUserModel.local' | i18n
+                <div class="alert alert-success" ng-if="userEntity._localOnly">
+                    <i class="fas fa-fw fa-tablet"></i> {{ 'ui.model.userEntity.securityUserModel.local' | i18n
                     }}
                 </div>
                         </div>

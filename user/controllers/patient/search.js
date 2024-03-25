@@ -19,7 +19,50 @@
  * User: Justin Fyfe
  * Date: 2019-9-27
  */
+
+function bindSearchScopeCommonFunctions($scope) {
+
+    // Item supplement which determines if the patientin question has an encounter active
+    $scope.patientHasOpenEncounter = async function(patient) {
+        if(patient.id) {
+            try {
+                var encounters = await SanteDB.resources.patientEncounter.findAsync({ "participation[RecordTarget].player" : patient.id, _count: 0, _includeTotal: true });
+                if(encounters.totalResults > 0) {
+                    patient.tag = patient.tag || {};
+                    patient.tag.$hasEncounter = true;
+                }
+            }
+            catch (e) {}
+        }
+        return patient;
+    }
+
+    $scope.downloadPatient = async function(patientId, index) {
+        if(!patientId) return;
+
+        try {
+            SanteDB.display.buttonWait(`#searchList_action_download_${index}`, true);
+            var downloadedPatient = await SanteDB.resources.patient.copyAsync(patientId);
+            // Now we subscribe to the patient
+            await SanteDB.resources.patient.invokeOperationAsync(patientId, "subscribe", {});
+            // Now navigate to the patient 
+            SanteDB.application.callResourceViewer("Patient", null, { id: patientId });
+        }
+        catch(e) {
+            SanteDB.display.getRootScope($scope).errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait(`#searchList_action_download_${index}`, false);
+        }
+    }
+
+}
+
 angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
+    
+    // Bind any common scope searching functions to the scope
+    bindSearchScopeCommonFunctions($scope);
+
     // Initial view
     $scope.search = {
     };
@@ -53,6 +96,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 // Advanced Search
 // Search - By Demographics
 .controller('EmrAdvancedPatientSearchController', [ "$scope", "$rootScope", "$state", "$timeout", "$stateParams", function($scope, $rootScope, $state, $timeout, $stateParams) {
+
+    // Bind any common scope searching functions to the scope
+    bindSearchScopeCommonFunctions($scope);
 
     $scope.$watch("searchForm", function(n, o) {
         if(n && !o || n && n.$pristine && !n.$invalid) {
@@ -88,20 +134,6 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         }
     });
 
-    // Item supplement which determines if the patientin question has an encounter active
-    $scope.patientHasOpenEncounter = async function(patient) {
-        if(patient.id) {
-            try {
-                var encounters = await SanteDB.resources.patientEncounter.findAsync({ "participation[RecordTarget].player" : patient.id, _count: 0, _includeTotal: true });
-                if(encounters.totalResults > 0) {
-                    patient.tag = patient.tag || {};
-                    patient.tag.$hasEncounter = true;
-                }
-            }
-            catch (e) {}
-        }
-        return patient;
-    }
 
     // Remove the elevator
     $scope.$on('$destroy', () => SanteDB.authentication.setElevator(null));
