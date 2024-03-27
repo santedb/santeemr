@@ -68,12 +68,17 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     };
 
 
-    if($state.q) {
-        $scope.search.value = q;
-        $scope.search.upstream = $state.o;
-        performSearch($scope.search);
+    if($stateParams.q) {
+        $scope.search.value = $stateParams.q;
+        $scope.search.upstream = $stateParams.o;
+        performSearch($scope.search, $stateParams.o);
+    } else {
+        $scope.goSearch = function(searchForm, upstream) {
+            if(searchForm.$invalid) return;
+            $state.go("santedb-emr.patient.search", { q: $scope.search.value, o: upstream === true });
+        }
     }
-
+    
     // Perform the search and populate the results
     function performSearch(search, upstream) {
         $scope.filter = {
@@ -83,6 +88,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             _orderBy: 'modifiedOn:desc'
         };
     }
+
 
     $scope.searchLocal = function(searchForm) {
         if(searchForm.$invalid) return;

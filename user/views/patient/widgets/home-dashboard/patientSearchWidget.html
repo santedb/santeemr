@@ -1,0 +1,35 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="m-0 p-0">
+    <sdb:script>~/controllers/patient/search.js</sdb:script>
+    <sdb:widget name="org.santedb.emr.dashboard.patientSearch" context="org.santedb.emr.dashboard" type="Panel"
+        size="Large" order="0" headerClass="alert-info">
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.0</sdb:demand>
+        <sdb:icon>fas fa-search</sdb:icon>
+        <sdb:title lang="en">Patient Search</sdb:title>
+    </sdb:widget>
+
+    <div ng-controller="EmrPatientSearchController">
+        
+    <form novalidate="novalidate" ng-submit="goSearch(searchForm)" autocomplete="off" name="searchForm">
+        <div class="form-group row">
+            <div class="col-10 offset-1">
+                <div class="input-group">
+                    <div class="input-group-prepend d-none d-md-block">
+                        <h5 class="card-title text-muted m-1 py-2"><i class="fas fa-fw fa-search"></i></h5>
+                    </div>
+                    <input required="required" type="text" ng-model="search.value" class="form-control"
+                        placeholder="{{ 'ui.emr.patient.search.placeholder' | i18n }}" autocomplete="__away"
+                        autofocus="true" />
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" ng-click="scanSearch()">
+                            <i class="fas fa-qrcode"></i> <span class="d-none d-md-inline">{{ 'ui.action.scan' | i18n }}</span>
+                        </button>
+                        <button class="btn btn-primary" id="btnSearch" type="submit" ng-disabled="searchForm.$invalid">
+                            <i class="fas fa-search"></i> <span class="d-none d-md-inline">{{ 'ui.action.search' | i18n }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+</div>
