@@ -36,9 +36,7 @@
                             </div>
                         </div>
                         <div class="card-footer">
-                            <span ng-if="searchForm.$invalid" class="text-danger">
-                                <i class="fas fa-exclamation-circle"></i> {{ 'ui.emr.patient.search.insufficientCriteria' | i18n  }}
-                            </span>
+                            
                             <div class="btn-group float-right">
                                 <button class="btn btn-success" ng-if="$root.system.config.integration.mode == 'synchronize'" id="btnSearchOnline" type="button" ng-click="searchOnline()"
                                     ng-disabled="searchForm.$invalid || !$root.system.online">
