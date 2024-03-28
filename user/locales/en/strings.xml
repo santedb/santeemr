@@ -31,7 +31,9 @@
     <string name="ui.emr.directDisable.localUser">This service is connected directly to the remote server. Local user functions are disabled</string>
     <!-- Patient Dashboard-->
     <string name="org.santedb.emr.patient.dashboard.title">Patient Administration</string>
-    
+    <string name="org.santedb.emr.patient.dashboard.recentPatients">Recent Patients</string>
+    <string name="org.santedb.emr.patient.dashboard.summary">Patient Summary</string>
+    <string name="org.santedb.emr.patient.dashboard.duplicates">Possible Duplicate Records</string>
     <!-- Patient View -->
     <string name="org.santedb.emr.widget.patient.demographics">Demographics</string>
     <string name="org.santedb.emr.widget.patient.dashboard">Dashboard</string>

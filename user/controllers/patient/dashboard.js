@@ -2,17 +2,60 @@
 
 angular.module('santedb').controller('EmrPatientDashboardController', ["$scope", "$rootScope", "$state", "$timeout", function ($scope, $rootScope, $state, $timeout) {
 
-    
+    let _renderAge = function(patient){
+        if (patient && patient.dateOfBirth){
+            let curr = moment();
+            let diff = curr.diff(patient.dateOfBirth, 'days');
+
+            if (diff < 45){
+                return `${diff} ${SanteDB.locale.getString('ui.model.patient.age.suffix.daysOld')}`;
+            }
+            diff = curr.diff(patient.dateOfBirth, 'months');
+            if (diff < 18){
+                return `${diff} ${SanteDB.locale.getString('ui.model.patient.age.suffix.monthsOld')}`;
+            }
+            diff = curr.diff(patient.dateOfBirth, 'years');
+            return `${diff} ${SanteDB.locale.getString('ui.model.patient.age.suffix.yearsOld')}`;            
+        }
+        else{
+            return "N/A";
+        }
+    }
+
+    let _renderNameAndGender = function(patient){
+
+        if (patient){
+            let genderIcon = "fa-restroom";
+
+            if (patient.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c'){
+                genderIcon = "fa-female";
+            }
+            else if (patient.genderConcept === 'f4e3a6bb-612e-46b2-9f77-ff844d971198'){
+                genderIcon = 'fa-male';
+            }
+            return `<i class="fas ${genderIcon}"></i> <strong>${SanteDB.display.renderEntityName(patient.name, "OfficialRecord")}</strong>`;
+        }
+        else{
+            return "N/A";
+        }
+    }
 
     async function initializeView() {
 
         try {
             $timeout(() => {
                 $scope.dashboard = {
+                    renderAge: _renderAge,
+                    renderName: _renderNameAndGender,
+                    renderAddress: function(patient){
+                        console.log(patient);
+
+                        return SanteDB.display.renderEntityAddress(patient.address, 'HomeAddress')
+                    },
                     recentPatients: { 
-                        _upstream: true, 
-                        _count: 10, 
-                        _orderBy: 'modifiedOn:desc' 
+                        //modifiedOn: ":(age)<PT4H",
+                        _orderBy: 'creationTime:desc' ,
+                        _upstream: true,
                     }
                 };
             })
