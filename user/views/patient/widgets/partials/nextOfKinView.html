@@ -78,15 +78,15 @@
         </div>
     </div>
         <div ng-if="rel.targetModel.deceasedDate" class="row">
-            <label class="col-sm-3 col-xs-12 control-label">{{ 'ui.model.patient.deceased' | i18n }}</label>
-            <div class="col-sm-9 col-xs-12">
+            <label class="col-sm-3 col-12 control-label">{{ 'ui.model.patient.deceased' | i18n }}</label>
+            <div class="col-sm-9 col-12">
                 {{ rel.targetModel.deceasedDate | extDate: rel.targetModel.deceasedDatePrecision }}
                 ( {{ rel.targetModel.dateOfBirth | age: 'y':rel.targetModel.deceasedDate }} )
             </div>
         </div>
         <div ng-if="rel.targetModel.deceasedDate &amp;&amp; rel.targetModel.relationship.PlaceOfDeath.targetModel" class="row">
-            <label class="col-sm-3 col-xs-12 control-label">{{ 'ui.model.patient.placeOfDeath' | i18n }}</label>
-            <div class="col-sm-9 col-xs-12">
+            <label class="col-sm-3 col-12 control-label">{{ 'ui.model.patient.placeOfDeath' | i18n }}</label>
+            <div class="col-sm-9 col-12">
                 <i class="fas"
                     ng-class="{ 'fa-hospital-alt' : rel.targetModel.relationship.PlaceOfDeath.targetModel.classConcept == 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' , 'fa-map-marked' : rel.targetModel.relationship.PlaceOfDeath.targetModel.classConcept != 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c'}"></i>
                 {{ rel.targetModel.relationship.PlaceOfDeath.targetModel.name | name }} <br />

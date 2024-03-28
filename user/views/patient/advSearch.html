@@ -31,29 +31,29 @@
 
                                 <div class="form-group row" >
                                     
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.name.given' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.patient.name" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <input type="text" autocomplete="__away" class="form-control"
                                             ng-model="search['name.component[Given].value']"
                                             ng-change="validateParameterCount()" />
                                     </div>
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.name.family' | i18n }}
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <input type="text" autocomplete="__away" class="form-control"
                                             ng-model="search['name.component[Family].value']"
                                             ng-change="validateParameterCount()" />
                                     </div>
                                 
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.address.area' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.patient.address.area" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <entity-search type="'Place'"
                                             group-by="['address.Direct[0].component.State[0]', 'address.Direct[0].component.County[0]', 'address.PhysicalVisit[0].component.State[0]', 'address.PhysicalVisit[0].component.County[0]']"
                                             ng-model="search._expandAddressId" search-field="'name.component.value'"
@@ -61,30 +61,30 @@
                                     </div>
                                
                                     
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.address.street' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.patient.address.street" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <input type="text" class="form-control"
                                             ng-model="search['address.component[AddressLine].value']"
                                             ng-change="validateParameterCount()" />
                                     </div>
                               
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.gender' | i18n }}
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <concept-select class="form-control" 
                                             concept-set="'AdministrativeGenderCode'" ng-change="validateParameterCount()" ng-model="search['genderConcept']"
                                             add-concept="['61d8f65c-747e-4a99-982f-a42ac5437473']"
                                             />
                                     </div>
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.dob' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.patient.dob" />
                                     </label>                                    
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <div class="input-group mb-0">
                                             <div class="input-group-prepend">
                                                 <label class="input-group-text">
@@ -105,11 +105,11 @@
                                         </div>
                                     </div>
 
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.identifier' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.patient.identifier" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <div class="input-group mb-0">
                                             <input type="text" ng-model="search['identifier.value']" ng-disabled="search['id']" class="form-control"
                                                 ng-change="validateParameterCount()" />
@@ -121,11 +121,11 @@
                                         </div>
                                     </div>
 
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.patient.telecom' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.patient.telecom" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <input ng-change="validateParameterCount()" type="text" ng-model="search['telecom.value']" class="form-control" />
                                     </div>
                                 </div>
@@ -137,29 +137,29 @@
                                 </legend>
                                 <div class="form-group row">
                                     
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.relative.name.given' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.relative.name" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <input type="text" autocomplete="__away" class="form-control"
                                             ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value']"
                                             ng-change="validateParameterCount()" />
                                     </div>
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.relative.name.family' | i18n }}
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <input type="text" autocomplete="__away" class="form-control"
                                             ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value']"
                                             ng-change="validateParameterCount()" />
                                     </div>
 
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.relative.address.area' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.relative.address.area" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <entity-search type="'Place'"
                                             group-by="['address.Direct[0].component.State[0]', 'address.Direct[0].component.County[0]', 'address.PhysicalVisit[0].component.State[0]', 'address.PhysicalVisit[0].component.County[0]']"
                                             ng-model="search._expandRelationshipAddressId" search-field="'name.component.value'"
@@ -167,21 +167,21 @@
                                     </div>
                                
                                     
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.relative.address.street' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.relative.address.street" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <input type="text" class="form-control"
                                             ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[AddressLine].value']"
                                             ng-change="validateParameterCount()" />
                                     </div>
                               
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.relative.identifier' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.relative.identifier" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <div class="input-group mb-0">
                                             <input type="text" ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier.value']" class="form-control"
                                                 ng-change="validateParameterCount()" />
@@ -193,11 +193,11 @@
                                         </div>
                                     </div>
 
-                                    <label class="mt-1 col-xs-12 col-sm-4 col-md-3 col-lg-2 control-label">
+                                    <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                         {{ 'ui.emr.patient.search.field.relative.telecom' | i18n }}
                                         <hint-popover hint-title="ui.emr.patient.search.field.relative.telecom" />
                                     </label>
-                                    <div class="mt-1 col-xs-12 col-sm-8 col-md-9 col-lg-4">
+                                    <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                         <input type="text" ng-change="validateParameterCount()" ng-model="search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value']" class="form-control" />
                                     </div>
                                 </div>
