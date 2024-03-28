@@ -1,5 +1,5 @@
 
-angular.module('santedb').controller('EmrPatientDashboardController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
+angular.module('santedb').controller('EmrDashboardController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
 
     // Common queries for widgets on the dashboard
     $scope.dashboardScope = {
@@ -13,9 +13,4 @@ angular.module('santedb').controller('EmrPatientDashboardController', ["$scope",
         }
     };
 
-    $scope.myaction = function(id, record) {
-        console.info(id);
-        console.info(record);
-    }
-   
 }]);

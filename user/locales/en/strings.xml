@@ -35,6 +35,7 @@
     <string name="org.santedb.emr.patient.dashboard.summary">Patient Summary</string>
     <string name="org.santedb.emr.patient.dashboard.duplicates">Possible Duplicate Records</string>
     <!-- Patient View -->
+    <string name="org.santedb.emr.widget.dashboard.patientSearch">Quick Search Patients</string>
     <string name="org.santedb.emr.widget.patient.demographics">Demographics</string>
     <string name="org.santedb.emr.widget.patient.dashboard">Dashboard</string>
     <string name="org.santedb.emr.widget.patient.register.demographics">Demographics</string>
@@ -80,6 +81,10 @@
     <string name="ui.emr.tickleError">Error fetching alerts</string>
     <string name="ui.emr.queueError">Error reading queue</string>
     <string name="ui.emr.system.applets.signed">Digitally Signed</string>
+    <string name="org.santedb.widget.emr.tab.user.security">Properties</string>
+    <string name="org.santedb.widget.emr.panel.user.core">Core Properties</string>
+    <string name="org.santedb.widget.emr.panel.user.profile">Public Profile</string>
+    <string name="org.santedb.widget.emr.panel.user.security">Security Properties</string>
     <!-- Next of Kin -->
     <string name="ui.emr.nok.structured">This record points to another patient. You should view/edit additional details on that patient's page</string>
 
@@ -137,7 +142,14 @@
     <string name="ui.emr.bug.attach.config">Attach my configuration files</string>
     <string name="ui.emr.bug.requiredFieldMissing">Ensure you have included a description and steps to reproduce</string>
     <string name="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet</string>
+
+    <!-- User Editing -->
     <string name="ui.emr.users.edit.security.neverLoggedIn">Never Logged In</string>
+    <string name="ui.emr.users.confirmDelete">Are you sure you want to delete this account? (user will not be allowed to log in)</string>
+    <string name="ui.emr.users.confirmUnDelete">Are you sure you want to un-delete this account?</string>
+    <string name="ui.emr.users.reactivate.confirm">Are you sure you want to reactivate this account?</string>
+    <string name="ui.emr.users.confirmLock">Are you sure you want to lock this account (user will not be allowed to log in)?</string>
+    <string name="ui.emr.users.confirmUnlock">Are you sure you want to unlock this user account?</string>
     <string name="ui.emr.users.saveConfirm">User profile settings updated successfully</string>
     <string name="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to the internet and the central server is available</string>
     <string name="ui.emr.bug.attach.detail">Attach last shown error message contents</string>

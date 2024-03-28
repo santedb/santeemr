@@ -1,0 +1,131 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:widget order="0" name="org.santedb.widget.emr.panel.user.security" headerClass="bl-danger"
+        size="Medium" type="Panel" context="org.santedb.securityUser.admin.security">
+        <sdb:icon>fas fa-shield-alt</sdb:icon>
+        <sdb:description lang="en">Security</sdb:description>
+        <sdb:views>
+            <sdb:view type="Edit" />
+        </sdb:views>
+    </sdb:widget>
+
+
+    <div class="row" ng-if="!scopedObject">
+        <div class="col">
+            <p class="m-auto"><i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}</p>
+        </div>
+    </div>
+    <div ng-if="scopedObject" ng-controller="EmrUserProfileWidgetController">
+        <div class="form-group row">
+            <label class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.lastLoginTime' | i18n }}</label>
+            <div class="col-xs-12 col-md-9 control-value" ng-if="scopedObject.entity.lastLoginTime">
+                {{ scopedObject.entity.lastLoginTime | extDate: 'F' }}</div>
+            <div class="col-xs-12 col-md-9 control-value" ng-if="!scopedObject.entity.lastLoginTime">
+                {{ 'ui.model.securityUser.neverLoggedIn' | i18n }}</div>
+        </div>
+        <div class="form-group row">
+            <label
+                class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.invalidLoginAttempts' | i18n }}</label>
+            <div class="col-xs-12 col-md-9 control-value">
+                {{ scopedObject.entity.invalidLoginAttempts }}
+                <button ng-show="panel.view == 'Edit'" ng-click="resetInvalidLogins(scopedObject.entity)"
+                    id="resetInvalidLoginsButton" type="button" class="btn btn-info">
+                    <i class="fas fa-undo"></i> {{ 'ui.action.reset' | i18n }}
+                </button>
+            </div>
+        </div>
+        <div class="form-group row" ng-if="scopedObject.entity.lockout > $root.page.currentTime">
+            <label for="lockout"
+                class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.lockout' | i18n }}</label>
+            <div class="col-xs-12 col-md-9 control-value">
+                {{ scopedObject.entity.lockout | extDate: 'F' }}
+                <button ng-show="panel.view == 'Edit'" ng-click="unlock(scopedObject.entity)" id="unlockButton"
+                    class="btn btn-info" type="button">
+                    <i class="fa fa-lock-open"></i> {{ 'ui.action.unlock' | i18n }}
+                </button>
+            </div>
+        </div>
+
+        <form ng-submit="saveUser(panel.editForm)" method="dialog" autocomplete="off"
+            ng-if="panel.view == 'Edit'" name="panel.editForm" 
+            novalidate="novalidate">
+            <div class="form-group row">
+                <label for="roles"
+                    class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityRole.title' | i18n }}</label>
+                <div class="col-xs-12 col-md-9">
+                    <entity-search name="roles" type="'SecurityRole'" filter="{ obsoletionTime: 'null'}" key="'name'"
+                        selector="'entity'" ng-model="editObject.role" search-field="'name'" class="form-control"
+                        multiple="multiple" required="required" />
+                    <div ng-show="panel.editForm.roles.$error['required']"
+                        class="text-danger">
+                        <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="email"
+                    class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.email' | i18n }}</label>
+                <div class="col-xs-12 col-md-9">
+                    <input name="email" type="email" class="form-control"
+                        ng-model="editObject.entity.email" />
+                    <div ng-show="panel.editForm.email.$error['email']"
+                        class="text-danger">
+                        <i class="fa fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="phoneNumber"
+                    class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.phoneNumber' | i18n }}</label>
+                <div class="col-xs-12 col-md-9">
+                    <input name="phoneNumber" type="tel" class="form-control"
+                        ng-model="editObject.entity.phoneNumber" />
+
+                </div>
+            </div>
+        </form>
+
+        <div ng-if="panel.view != 'Edit'">
+            <div class="form-group row">
+                <label class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityRole.title' | i18n }}</label>
+                <div class="col-xs-12 col-md-9 control-value">
+                    <span ng-repeat="rol in scopedObject.role" class="m-1">
+                        <i class="fas fa-users"></i> {{ rol }} </span>
+                </div>
+            </div>
+            <div class="form-group row" ng-if="scopedObject.entity.email">
+                <label class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.email' | i18n }}</label>
+                <div class="col-xs-12 col-md-9 control-value">
+                    <a href="mailto:{{scopedObject.entity.email}}">{{scopedObject.entity.email}}</a>
+                    <span class="badge badge-success" ng-if="scopedObject.entity.emailConfirmed"><i class="fas fa-check"></i> {{ 'ui.confirmed' | i18n }}</span>
+                </div>
+            </div>
+            <div class="form-group row" ng-if="scopedObject.entity.phoneNumber">
+                <label class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.phoneNumber' | i18n }}</label>
+                <div class="col-xs-12 col-md-9 control-value">
+                    <a href="tel:{{scopedObject.entity.phoneNumber}}">{{scopedObject.entity.phoneNumber}}</a>
+                    <span class="badge badge-success" ng-if="scopedObject.entity.phoneNumberConfirmed"><i class="fas fa-check"></i> {{ 'ui.confirmed' | i18n }}</span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.twoFactorEnabled' | i18n }}</label>
+                <div class="col-xs-12 col-md-9 control-value">
+                    <span class="badge" ng-class="{ 'badge-success' : scopedObject.entity.twoFactorEnabled, 'badge-warning' : !scopedObject.entity.twoFactorEnabled }">{{ 'ui.model.securityUser.twoFactorEnabled.' + scopedObject.entity.twoFactorEnabled  | i18n }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" ng-show="panel.view == 'Edit'">
+            <label class="col-xs-12 col-md-3 control-label">{{ 'ui.model.securityUser.password' | i18n }}</label>
+            <div class="col-xs-12 col-md-9 control-value">
+                <span ng-if="scopedObject.entity.passwordExpiry">{{ 'ui.model.securityUser.passwordExpiry' | i18n }}
+                    {{ scopedObject.entity.passwordExpiry | extDate: 'D' }} </span>
+                <button ng-click="resetPassword(scopedObject.entity)" id="resetPasswordButton" class="btn btn-info"
+                    type="button">
+                    <i class="fa fa-asterisk"></i> {{ 'ui.action.resetPassword' | i18n }}
+                </button>
+            </div>
+        </div>
+
+        <!-- #include virtual="/org.santedb.uicore/views/dialogs/password.partial.html" -->
+    </div>
+
+</div>

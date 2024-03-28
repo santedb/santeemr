@@ -4170,12 +4170,23 @@ function SanteDBWrapper() {
         this.clientCredentialLoginAsync = function (noSession, scope) {
             return new Promise(function (fulfill, reject) {
                 try {
+                    var claims = {};
+                    if (noSession) {
+                        claims["urn:santedb:org:claim:temporary"] = "true";
+                    }
+
+                    if (Object.keys(claims).length > 0) {
+                        headers["X-SanteDBClient-Claim"] =
+                            btoa(Object.keys(claims).map(o => `${o}=${claims[o]}`).join(";"));
+                    }
+                    
                     _auth.postAsync({
                         resource: "oauth2_token",
                         data: {
                             grant_type: 'client_credentials',
                             client_id: SanteDB.configuration.getClientId(),
-                            scope: (scope || ["*"]).join(" ")
+                            scope: (scope || ["*"]).join(" "),
+                            no_session: noSession
                         },
                         contentType: 'application/x-www-form-urlencoded'
                     })

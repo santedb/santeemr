@@ -19,18 +19,66 @@
  * User: Justin Fyfe
  * Date: 2019-9-27
  */
+
+function bindSearchScopeCommonFunctions($scope) {
+
+    // Item supplement which determines if the patientin question has an encounter active
+    $scope.patientHasOpenEncounter = async function(patient) {
+        if(patient.id) {
+            try {
+                var encounters = await SanteDB.resources.patientEncounter.findAsync({ "participation[RecordTarget].player" : patient.id, _count: 0, _includeTotal: true });
+                if(encounters.totalResults > 0) {
+                    patient.tag = patient.tag || {};
+                    patient.tag.$hasEncounter = true;
+                }
+            }
+            catch (e) {}
+        }
+        return patient;
+    }
+
+    $scope.downloadPatient = async function(patientId, index) {
+        if(!patientId) return;
+
+        try {
+            SanteDB.display.buttonWait(`#searchList_action_download_${index}`, true);
+            var downloadedPatient = await SanteDB.resources.patient.copyAsync(patientId);
+            // Now we subscribe to the patient
+            await SanteDB.resources.patient.invokeOperationAsync(patientId, "subscribe", {});
+            // Now navigate to the patient 
+            SanteDB.application.callResourceViewer("Patient", null, { id: patientId });
+        }
+        catch(e) {
+            SanteDB.display.getRootScope($scope).errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait(`#searchList_action_download_${index}`, false);
+        }
+    }
+
+}
+
 angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
+    
+    // Bind any common scope searching functions to the scope
+    bindSearchScopeCommonFunctions($scope);
+
     // Initial view
     $scope.search = {
     };
 
 
-    if($state.q) {
-        $scope.search.value = q;
-        $scope.search.upstream = $state.o;
-        performSearch($scope.search);
+    if($stateParams.q) {
+        $scope.search.value = $stateParams.q;
+        $scope.search.upstream = $stateParams.o;
+        performSearch($scope.search, $stateParams.o);
+    } else {
+        $scope.goSearch = function(searchForm, upstream) {
+            if(searchForm.$invalid) return;
+            $state.go("santedb-emr.patient.search", { q: $scope.search.value, o: upstream === true });
+        }
     }
-
+    
     // Perform the search and populate the results
     function performSearch(search, upstream) {
         $scope.filter = {
@@ -40,6 +88,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             _orderBy: 'modifiedOn:desc'
         };
     }
+
 
     $scope.searchLocal = function(searchForm) {
         if(searchForm.$invalid) return;
@@ -53,6 +102,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 // Advanced Search
 // Search - By Demographics
 .controller('EmrAdvancedPatientSearchController', [ "$scope", "$rootScope", "$state", "$timeout", "$stateParams", function($scope, $rootScope, $state, $timeout, $stateParams) {
+
+    // Bind any common scope searching functions to the scope
+    bindSearchScopeCommonFunctions($scope);
 
     $scope.$watch("searchForm", function(n, o) {
         if(n && !o || n && n.$pristine && !n.$invalid) {
@@ -87,6 +139,10 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             setAddressFilters(n, 'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component');
         }
     });
+
+
+    // Remove the elevator
+    $scope.$on('$destroy', () => SanteDB.authentication.setElevator(null));
 
     // SEt address filters by the place id passed
     async function setAddressFilters(cityOrPlaceId, searchPath) {
@@ -193,11 +249,11 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
                     $scope.search[`${target}id`] = barcodeIdentifier.id;
                     performSearch();
-                    // Find the first identifier 
-                    if(barcodeIdentifier.identifier) {
-                        var domain = Object.keys(barcodeIdentifier.identifier)[0];
-                        $scope.search[`${target}identifier.value`] = barcodeIdentifier.identifier[domain][0].value;
-                    }
+                    // // Find the first identifier 
+                    // if(barcodeIdentifier.identifier) {
+                    //     var domain = Object.keys(barcodeIdentifier.identifier)[0];
+                    //     $scope.search[`${target}identifier.value`] = barcodeIdentifier.identifier[domain][0].value;
+                    // }
                 }
                 else {
                     $scope.search[`${target}identifier.value`] = barcodeIdentifier;
@@ -217,13 +273,14 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
 
-    $scope.searchOnline = function() {
+    $scope.searchOnline = async function() {
         if($scope.searchForm.$invalid && !$scope.validateParameterCount()) {
             return;
         }
 
         performSearch($scope.search, true);
     }
+
     $scope.searchLocal = function(searchForm) {
         if(searchForm.$invalid && !$scope.validateParameterCount()) {
             return;
