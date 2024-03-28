@@ -33,7 +33,7 @@ angular.module('santedb').controller('EmrPatientDashboardController', ["$scope",
             else if (patient.genderConcept === 'f4e3a6bb-612e-46b2-9f77-ff844d971198'){
                 genderIcon = 'fa-male';
             }
-            return `<i class="fas ${genderIcon}"></i> <strong>${SanteDB.display.renderEntityName(patient.name, "OfficialRecord")}</strong>`;
+            return `<i class="fas ${genderIcon}" title="${SanteDB.display.renderConcept(patient.genderConceptModel)}"></i> <strong>${SanteDB.display.renderEntityName(patient.name, "OfficialRecord")}</strong>`;
         }
         else{
             return "N/A";
@@ -48,8 +48,6 @@ angular.module('santedb').controller('EmrPatientDashboardController', ["$scope",
                     renderAge: _renderAge,
                     renderName: _renderNameAndGender,
                     renderAddress: function(patient){
-                        console.log(patient);
-
                         return SanteDB.display.renderEntityAddress(patient.address, 'HomeAddress')
                     },
                     recentPatients: { 
