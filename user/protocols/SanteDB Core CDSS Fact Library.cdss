@@ -41,13 +41,13 @@ define library "SanteDB Core CDSS Fact Library"
 	    define fact "CDS Running Non-Interactive" having type bool with metadata
 	        doc Indicates that the CDSS engine is running in a non-interactive mode such as during a re-calculation
 	    end metadata as 
-	        csharp($$(bool)context["isBackground"]$$)
+	        csharp($$Boolean.Parse(context["isBackground"]?.ToString() ?? "false")$$)
 	   end fact 
 	   
 	   define fact "CDS Running in Test Mode" having type bool with metadata 
 	    doc Indicates that the CDSS engine is running as part of a test mode rather than in a production environment
 	   end metadata as
-	    csharp($$(bool)context["isDebug"]$$)
+	    csharp($$Boolean.Parse(context["isTesting"]?.ToString() ?? "false")$$)
 	   end fact 
 	end logic
 	define logic "SanteDB Core CDSS Patient Facts"
@@ -99,6 +99,28 @@ define library "SanteDB Core CDSS Fact Library"
 		as
 			hdsi($$dateOfBirth$$)
 		end fact
+		define fact "Patient is HIV Positive"
+		    having type bool 
+		as 
+		    any(
+		        // Finding of HIV Status = HIV Positive
+		        hdsi($$participation[RecordTarget].source.typeConcept=8a07a21f-50ff-4631-8e51-c54690fb1127&
+		            participation[RecordTarget].source@CodedObservation.value=f36f692d-798b-4883-8d83-3ecf6c1571d0&
+		            participation[RecordTarget].source.isNegated=false$$),
+		        // Active problem/concern entry
+		        hdsi($$participation[RecordTarget].source.typeConcept=260ffe90-7882-4b38-a7af-d2110e91e752&
+		            participation[RecordTarget].source.relationship[HasSubject].target.value=f36f692d-798b-4883-8d83-3ecf6c1571d0&
+		            participation[RecordTarget].source.relationship[HasSubject].target.typeConcept=8a07a21f-50ff-4631-8e51-c54690fb1127&
+		            participation[RecordTarget].statusConcept=C8064CBD-FA06-4530-B430-1A52F1530C27$$)
+		  )
+	    end fact 
+	    define fact "Patient is Confirmed HIV Negative" 
+	        having type bool 
+	   as 
+	        hdsi($$participation[RecordTarget].source.typeConcept=8a07a21f-50ff-4631-8e51-c54690fb1127&
+	            participation[RecordTarget].source@CodedObservation.value=dd3a4ad8-ec64-44a5-a3aa-8dad28a49d25&
+	            participation[RecordTarget].source.isNegated=false$$)
+	   end fact
 	end logic
 	define logic "SanteDB Core CDSS for Acts"
 		having id <org.santedb.cdss.core.act>
