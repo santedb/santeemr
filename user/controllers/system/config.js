@@ -97,9 +97,9 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
     // Get configuration from the server
     async function _getConfiguration(sessionInfo) {
         try {
-            var config = await SanteDB.configuration.getAsync();
-            var sessionInfo = sessionInfo || await SanteDB.authentication.getSessionInfoAsync();
-            config = await _processConfiguration(config, sessionInfo);
+            let config = await SanteDB.configuration.getAsync();
+            let sessionInfoExt = sessionInfo || await SanteDB.authentication.getSessionInfoAsync();
+            config = await _processConfiguration(config, sessionInfoExt);
             $timeout(() => $scope.config = config);
         }
         catch (e) {
