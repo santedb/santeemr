@@ -98,6 +98,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     $scope.searchOnline = function() {
         performSearch($scope.search, true);
     }
+
 }])
 // Advanced Search
 // Search - By Demographics
@@ -225,7 +226,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 }
 
                 if(approxFunctions[f]) {
-                    $scope.filter[f] = approxFunctions[f](value);
+                    $scope.filter[f] = approxFunctions[f](value, upstream);
                 }
                 else if(typeof value === Date) {
                     $scope.filter[f] = moment(value).format('YYY-MM-DD');
@@ -249,11 +250,6 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
                     $scope.search[`${target}id`] = barcodeIdentifier.id;
                     performSearch();
-                    // // Find the first identifier 
-                    // if(barcodeIdentifier.identifier) {
-                    //     var domain = Object.keys(barcodeIdentifier.identifier)[0];
-                    //     $scope.search[`${target}identifier.value`] = barcodeIdentifier.identifier[domain][0].value;
-                    // }
                 }
                 else {
                     $scope.search[`${target}identifier.value`] = barcodeIdentifier;
@@ -273,11 +269,10 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
 
-    $scope.searchOnline = async function() {
+    $scope.searchOnline = function() {
         if($scope.searchForm.$invalid && !$scope.validateParameterCount()) {
             return;
         }
-
         performSearch($scope.search, true);
     }
 
