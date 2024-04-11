@@ -7,6 +7,9 @@
 
     <!-- Actions -->
     <string name="ui.emr.profile">My Profile</string>
+    <string name="ui.action.check-in">Check-in</string>
+    <string name="ui.action.visit">Visit</string>
+    <string name="ui.action.discharge">Discharge</string>
 
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>

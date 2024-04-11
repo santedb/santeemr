@@ -37,6 +37,25 @@ function bindSearchScopeCommonFunctions($scope) {
         return patient;
     }
 
+    // Item supplement which retrieves details for a patient's first family member
+    $scope.firstFamilyMemberDetails = async function(patient) {
+        if (patient.relationship) {
+            let familyMemberType = Object.keys(patient.relationship).find(r => r === "Father" || r === "Mother");
+            let familyMemberId = patient.relationship[familyMemberType][0].target;
+            if (familyMemberId) {
+                try {
+                    let familyMember = await SanteDB.resources.person.getAsync(familyMemberId, "full", null, true);
+                    if (familyMember) {
+                        familyMember.relationshipType = familyMemberType;
+                        patient.firstFamilyMemberDetails = familyMember;
+                    }
+                }
+                catch (e) {}
+            }
+        }
+        return patient;
+    }
+
     $scope.downloadPatient = async function(patientId, index) {
         if(!patientId) return;
 
