@@ -32,9 +32,8 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
     $scope.newItem = {};
     $scope.serverCaps = {};
     $scope.widgets = {};
-
     // Get the widgets for the config panel
-    SanteDB.application.getWidgetsAsync("org.santedb.config.init", "Tab").then(function (d) {
+    SanteDB.application.getWidgetsAsync("org.santedb.config", "Tab").then(function (d) {
         $scope.widgets = d;
     }).catch(function (e) { console.error(e); });
 
