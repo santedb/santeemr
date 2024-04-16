@@ -59,12 +59,12 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
 
         try {
             // Get subscription reference
-            var subscriptions = await SanteDB.resources.subscriptionDefinition.findAsync({ _upstream: true });
-            var appSolutions = await SanteDB.application.getAppSolutionsAsync();
-            var appInfo = await SanteDB.application.getAppInfoAsync();
-            var dataProviders = await SanteDB.configuration.getDataProvidersAsync();
-            var integrationPatterns = await SanteDB.configuration.getIntegrationPatternsAsync();
-            var certificates = await SanteDB.resources.certificates.findAsync({ hasPrivateKey: true });
+            let subscriptions = await SanteDB.resources.subscriptionDefinition.findAsync({ _upstream: true });
+            let appSolutions = await SanteDB.application.getAppSolutionsAsync();
+            let appInfo = await SanteDB.application.getAppInfoAsync();
+            let dataProviders = await SanteDB.configuration.getDataProvidersAsync();
+            let integrationPatterns = await SanteDB.configuration.getIntegrationPatternsAsync();
+            let certificates = await SanteDB.resources.certificates.findAsync({ hasPrivateKey: true });
 
             config.sync._resource = {};
             config.sync.subscribeTo = config.sync.subscribeTo || [];
@@ -131,7 +131,7 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
 
     $scope.propogateDataChanges = function (n, o) {
         Object.keys($scope.config.data.connections).forEach(k => {
-            var c = $scope.config.data.connections[k];
+            let c = $scope.config.data.connections[k];
             c.provider = $scope.config.data.provider;
             c.options = angular.copy($scope.config.data.options);
         });
@@ -144,7 +144,7 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
             SanteDB.display.buttonWait("#finishButton", true);
 
             // Get and coy the configuration values
-            var config = angular.copy(await SanteDB.configuration.getAsync());
+            let config = angular.copy(await SanteDB.configuration.getAsync());
             config.values = {};
             Object.keys(config).filter(o => !o.startsWith("_") && o !== "values").forEach(c => {
                 config.values[c] = $scope.config[c];
@@ -174,7 +174,7 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
                         $("#countdownModal").modal({
                             backdrop: 'static'
                         });
-                        var iv = $interval(() => {
+                        let iv = $interval(() => {
                             if ($scope.restartTimer-- < 3) {
                                 window.location.hash = '';
                                 window.location.reload();
