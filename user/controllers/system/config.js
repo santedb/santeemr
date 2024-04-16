@@ -200,9 +200,52 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
             $rootScope.errorHandler(e);
         }
     }
-
     
     // Get necessary information
     SanteDB.authentication.setElevator(new SanteDBElevator(_getConfiguration, false));
     _getConfiguration();
+
+    $scope.$watch("config.sync.subscribeType", function (n, o) {
+        if (n) {
+            $scope.config.sync.subscribeTo = $scope.config.sync.subscribeTo || [];
+            // $scope.config.sync.subscribeTo.splice(0, $scope.config.sync.subscribeTo.length);
+            $scope.permittedSubscriptions.splice(0, $scope.permittedSubscriptions.length);
+        }
+    });
+
+    // Watch scope and refresh list of subscriptions
+    $scope.$watch('config.sync.subscribeTo.length', function (n, o) {
+        // Find in new
+        if (n) {
+            $scope.permittedSubscriptions.splice(0, $scope.permittedSubscriptions.length);
+            $scope.config.sync.subscribeTo.forEach(async function (sid) {
+                let referenceObjects = $scope.reference[$scope.config.sync.subscribeType.toCamelCase()];
+                let existingInfo = referenceObjects.find(function (p) { return p.id === sid });
+
+                // Don't have any info on this object - Look it up
+                if (!existingInfo) {
+                    SanteDB.display.buttonWait("#selectAllButton", true);
+                    $("#nextButton").prop("disabled", true);
+                    try {
+                        existingInfo = await SanteDB.resources[$scope.config.sync.subscribeType.toCamelCase()].getAsync(sid, "dropdown");
+                        $timeout(() => {
+                            $scope.reference[$scope.config.sync.subscribeType.toCamelCase()].push(existingInfo);
+                        });
+                        referenceObjects.push(existingInfo);
+                    }
+                    catch (e) {
+                        console.error(e);
+                    }
+                    finally {
+                        SanteDB.display.buttonWait("#selectAllButton", false);
+                        $("#nextButton").prop("disabled", false);
+                    }
+                }
+                let subscriptions = $scope.reference.subscriptions.filter((s) => canSelectSubscription(s, referenceObjects, $scope.config.sync.mode));
+                $timeout(() => {
+                    $scope.permittedSubscriptions = subscriptions;
+                });
+            });
+        }
+    });
 }]);
