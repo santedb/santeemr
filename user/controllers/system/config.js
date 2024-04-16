@@ -84,7 +84,6 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
                 $scope.security.owner = $scope.security.owner || [ sessionInfo.entity.id ];
                 $scope.reference.dataProviders.forEach(p => $scope.reference.providerData[p.invariant] = p.options);
             });
-
         }
         catch (e) {
             $rootScope.errorHandler(e);
@@ -96,9 +95,12 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
     // Get configuration from the server
     async function _getConfiguration(sessionInfo) {
         try {
+
             let config = await SanteDB.configuration.getAsync();
             let sessionInfoExt = sessionInfo || await SanteDB.authentication.getSessionInfoAsync();
+
             config = await _processConfiguration(config, sessionInfoExt);
+
             $timeout(() => $scope.config = config);
         }
         catch (e) {
