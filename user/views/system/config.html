@@ -20,11 +20,16 @@
             ng-submit="save(configurationForm)" ng-if="config.realm.joined">
 
             <div id="{{widget.htmlId}}Tab" ng-repeat="widget in widgets">
-                <h4>
-                    <i class="{{widget.icon}}"></i> {{ widget.name | i18n }}
-                </h4>
-                <p>{{ widget.description[0].value | i18n }}</p>
-                <ng-include src="'/app/Widgets/' + widget.name"></ng-include>
+                <div class="accordion" id="{{widget.htmlId}}Accordion">
+                    <button type="button" class="collapse-indicator btn btn-link p-0" data-toggle="collapse" data-target="#{{widget.htmlId}}AccordionBody" aria-expanded="true">
+                        <i class="{{widget.icon}}"></i><strong>{{ widget.name | i18n }}</strong>
+                        <span class="m-l-10"><i class="fa fa-chevron-right"></i></span>
+                    </button>
+                    <div class="collapse show" id="{{widget.htmlId}}AccordionBody" data-parent="#{{widget.htmlId}}Accordion">
+                        <p>{{ widget.description[0].value | i18n }}</p>
+                        <ng-include src="'/app/Widgets/' + widget.name"></ng-include>
+                    </div>
+                </div>
             </div>
 
         </form>
@@ -37,6 +42,29 @@
                     type="button" ng-click="save()">{{ 'ui.action.save' | i18n }}
                     <i class="fa fa-check"></i>
                 </button>
+            </div>
+        </div>
+        <div class="modal" id="completeModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <h5>
+                            <i class="fa fa-exclamation-circle"></i> {{ 'ui.config.complete' | i18n }}
+                        </h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal" id="countdownModal" tabindex="-1" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
+                        <h5>
+                            <i class="fa fa-exclamation-circle"></i> {{ 'ui.config.appliedRestart' | i18n: { time:
+                            restartTimer } }}
+                        </h5>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
