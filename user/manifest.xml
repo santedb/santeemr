@@ -63,6 +63,10 @@
       <icon>fas fa-tasks</icon>
       <text lang="en">Logs</text>
     </menuItem>
+    <menuItem context="ui.emr" launch="santedb-emr.system.config" asset="/org.santedb.emr/views/system/config.html">
+      <icon>fas fa-tasks</icon>
+      <text lang="en">Configuration</text>
+    </menuItem>
     <menuItem context="ui.emr" launch="santedb-emr.system.jobs" asset="/org.santedb.emr/views/system/jobs.html">
       <icon>fas fa-cogs</icon>
       <text lang="en">Background Jobs</text>
