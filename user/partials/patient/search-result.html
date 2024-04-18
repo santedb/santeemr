@@ -1,26 +1,62 @@
 <div class="card-body">
-    <h5>{{ item.name | name }}</h5>
-    <div class="d-flex">
-        <span class="badge badge-primary">
-            <i class="fas fa-fw" ng-class="{
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4>{{ item.name | name }}</h4>
+            </div>
+            <div class="col">
+                <div class="d-flex">
+                    <label class="control-label"><span class="badge badge-primary">
+                            <i class="fas fa-fw" ng-class="{
                 'fa-genderless' : null ,
                 'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198',
                 'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c'
             }"></i> {{ item.genderConceptModel | concept }}
-        </span>
+                        </span></label>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row">
+                    <div class="col text-right">
+                        <label class="control-label">Age</label>
+                    </div>
+                    <div class="col text-left">
+                        <label class="control-label font-weight-normal">{{ item.dateOfBirth | age }}</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item">Age: {{ item.dateOfBirth | age }}</li>
-        <li class="list-group-item">Telephone: {{ item.telecom }}</li>
-        <li class="list-group-item">Identifier: {{ item.identifier | identifier }}</li>
-        <li class="list-group-item">
-            Family/Relative:
-            <ul class="pl-2 list-group list-group-flush">
-                <li class="list-group-item">Relation: {{ item.firstFamilyMemberDetails.relationshipType }}</li>
-                <li class="list-group-item">Name: {{ item.firstFamilyMemberDetails.name | name }}</li>
-                <li class="list-group-item">Telephone: {{ item.firstFamilyMemberDetails.telecom }}</li>
-                <li class="list-group-item">ID: {{ item.firstFamilyMemberDetails.id }}</li>
-            </ul>
-        </li>
-    </ul>
+
+    <div>
+        <div class="row">
+            <div class="col-2 text-right">
+                <label class="control-label">Telephone/Email</label>
+            </div>
+            <div class="col text-left">
+                <label class="control-label font-weight-normal">{{ item.telecom }}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2 text-right">
+                <label class="control-label">Identifier</label>
+            </div>
+            <div class="col text-left">
+                <label class="control-label font-weight-normal">{{ item.identifier | identifier }}</label>
+            </div>
+        </div>
+    </div>
+
+    <li class="list-group-item">
+        Family/Relative:
+        <ul class="pl-2 list-group list-group-flush">
+            <li class="list-group-item">Relation: {{ item.firstFamilyMemberDetails.relationshipType }}</li>
+            <li class="list-group-item">Name: {{ item.firstFamilyMemberDetails.name | name }}</li>
+            <li class="list-group-item">Telephone: {{ item.firstFamilyMemberDetails.telecom }}</li>
+            <li class="list-group-item">ID: {{ item.firstFamilyMemberDetails.identifier | identifier }}</li>
+        </ul>
+    </li>
 </div>

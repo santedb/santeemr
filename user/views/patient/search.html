@@ -62,30 +62,23 @@
                     <h5 class="card-heading">{{ 'ui.emr.patient.search.results' | i18n }}</h5>
                 </div>
                 <div class="card-body">
-                    <entity-list 
-                        type="Patient"
-                        can-filter="false" 
-                        default-query="filter"
-                        item-supplement="[ firstFamilyMemberDetails ]"
-                        actions="[ 
+                    <entity-list type="Patient" can-filter="false" default-query="filter"
+                        item-supplement="[ firstFamilyMemberDetails, patientHasOpenEncounter ]" actions="[ 
                             { name: 'search.advanced', sref: 'santedb-emr.patient.advSearch', className: 'btn-secondary', icon: 'fa fa-search-plus' },
                             { name: 'register', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.register', className: 'btn-primary', icon: 'fa fa-user-plus' }
-                        ]"
-                        item-actions="[
+                        ]" item-actions="[
                             { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' },
                             { name: 'check-in', className: 'btn-primary', when: '!item.tag.$hasEncounter' },
                             { name: 'visit', className: 'btn-primary', when: 'item.tag.$hasEncounter' },
                             { name: 'discharge', className: 'btn-primary', when: 'item.tag.$hasEncounter' },
-                        ]"
-                        display="grid"
-                        >
+                        ]">
 
                         <!-- #include virtual="~/partials/patient/search-result.html" -->
 
-                     </entity-list>
+                    </entity-list>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
