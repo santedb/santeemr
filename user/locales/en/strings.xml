@@ -263,4 +263,15 @@
     <string name="ui.emr.restore.now.help">This backup is encrypted. To restore it you will need to enter the passphrase which was used to create the backup</string>
     <string name="ui.emr.audit.view.meta">Metadata</string>
     <string name="ui.emr.audit.view.assets">Contents</string>
+
+    <!-- Configuration -->
+    <string name="org.santedb.config.data">Database</string>
+    <string name="org.santedb.config.role">Role</string>
+    <string name="org.santedb.config.integration">Integration</string>
+    <string name="org.santedb.config.subscription">Subscription</string>
+    <string name="org.santedb.config.network">Network</string>
+    <string name="org.santedb.config.security">Security</string>
+    <string name="org.santedb.config.services">Services</string>
+    <string name="org.santedb.config.log">Logging</string>
+    <string name="org.santedb.config.other">Other Settings</string>
 </resources>
