@@ -20,7 +20,7 @@
             <div class="col">
                 <div class="row">
                     <div class="col text-right">
-                        <label class="control-label">Age</label>
+                        <label class="control-label">{{ 'ui.emr.patient.search.age' | i18n }}</label>
                     </div>
                     <div class="col text-left">
                         <label class="control-label font-weight-normal">{{ item.dateOfBirth | age }}</label>
@@ -34,7 +34,7 @@
     <div>
         <div class="row">
             <div class="col-2 text-right">
-                <label class="control-label">Telephone/Email</label>
+                <label class="control-label">{{ 'ui.emr.patient.search.field.patient.telecom' | i18n }}</label>
             </div>
             <div class="col text-left">
                 <label class="control-label font-weight-normal">{{ item.telecom }}</label>
@@ -42,7 +42,7 @@
         </div>
         <div class="row">
             <div class="col-2 text-right">
-                <label class="control-label">Identifier</label>
+                <label class="control-label">{{ 'ui.emr.patient.search.field.patient.identifier' | i18n }}</label>
             </div>
             <div class="col text-left">
                 <label class="control-label font-weight-normal">{{ item.identifier | identifier }}</label>
@@ -51,12 +51,12 @@
     </div>
 
     <li class="list-group-item">
-        Family/Relative:
+        {{ 'ui.emr.patient.search.family.relative' | i18n }}:
         <ul class="pl-2 list-group list-group-flush">
-            <li class="list-group-item">Relation: {{ item.firstFamilyMemberDetails.relationshipType }}</li>
-            <li class="list-group-item">Name: {{ item.firstFamilyMemberDetails.name | name }}</li>
-            <li class="list-group-item">Telephone: {{ item.firstFamilyMemberDetails.telecom }}</li>
-            <li class="list-group-item">ID: {{ item.firstFamilyMemberDetails.identifier | identifier }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.relation' | i18n }}: {{ item.firstFamilyMemberDetails.relationshipType }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.name' | i18n }}: {{ item.firstFamilyMemberDetails.name | name }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.telecom' | i18n }}: {{ item.firstFamilyMemberDetails.telecom }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.id' | i18n }}: {{ item.firstFamilyMemberDetails.identifier | identifier }}</li>
         </ul>
     </li>
 </div>

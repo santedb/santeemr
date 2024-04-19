@@ -167,6 +167,14 @@
     <string name="santedb-emr.system.users.index">Local Users</string>
     <string name="santedb-emr.system.bug">Submit Bug</string>
 
+    <!-- Patient Search -->
+    <string name="ui.emr.patient.search.age">Age</string>
+    <string name="ui.emr.patient.search.family.relative">Family/Relative</string>
+    <string name="ui.emr.patient.search.relative.relation">Relation</string>
+    <string name="ui.emr.patient.search.relative.name">Name</string>
+    <string name="ui.emr.patient.search.relative.telecom">Telecom</string>
+    <string name="ui.emr.patient.search.relative.id">ID</string>
+
     <!-- Advanced Search -->
     <string name="ui.emr.patient.search.dob">Date of Birth</string>
     <string name="ui.emr.patient.search.gender">Gender</string>
