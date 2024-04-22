@@ -11,34 +11,39 @@
 
     <div class="row">
         <div class="col-lg-8 col-md-12 offset-lg-2">
-            <form class="form" ng-submit="searchLocal(searchForm)" name="searchForm" autocapitalize="off" autocomplete="off">
+            <form class="form" ng-submit="searchLocal(searchForm)" name="searchForm" autocapitalize="off"
+                autocomplete="off">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title mb-0">
-                        {{ 'ui.emr.patient.search' | i18n }}</h5>
+                            {{ 'ui.emr.patient.search' | i18n }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-group row">
                             <div class="col-10 offset-1">
                                 <div class="input-group">
                                     <div class="input-group-prepend">
-                                        <h5 class="card-title text-muted m-1 py-2 d-none d-md-block"><i class="fas fa-fw fa-search"></i></h5>
+                                        <h5 class="card-title text-muted m-1 py-2 d-none d-md-block"><i
+                                                class="fas fa-fw fa-search"></i></h5>
                                     </div>
-                                    <input required="required" type="text" ng-model="search.value"
-                                        class="form-control" placeholder="{{ 'ui.emr.patient.search.placeholder' | i18n }}" 
-                                        autocomplete="__away" autofocus="true"/>
+                                    <input required="required" type="text" ng-model="search.value" class="form-control"
+                                        placeholder="{{ 'ui.emr.patient.search.placeholder' | i18n }}"
+                                        autocomplete="__away" autofocus="true" />
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button" ng-click="scanSearch()">
-                                            <i class="fas fa-qrcode"></i> <span class="d-none d-md-inline">{{ 'ui.action.scan' | i18n }}</span>
+                                            <i class="fas fa-qrcode"></i> <span class="d-none d-md-inline">{{
+                                                'ui.action.scan' | i18n }}</span>
                                         </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="card-footer">
-                            
+
                             <div class="btn-group float-right">
-                                <button class="btn btn-success" ng-if="$root.system.config.integration.mode == 'synchronize'" id="btnSearchOnline" type="button" ng-click="searchOnline()"
+                                <button class="btn btn-success"
+                                    ng-if="$root.system.config.integration.mode == 'synchronize'" id="btnSearchOnline"
+                                    type="button" ng-click="searchOnline()"
                                     ng-disabled="searchForm.$invalid || !$root.system.online">
                                     <i class="fas fa-cloud-meatball"></i> {{ 'ui.action.search.upstream' | i18n }}
                                 </button>
@@ -47,7 +52,7 @@
                                     <i class="fas fa-search"></i> {{ 'ui.action.search' | i18n }}
                                 </button>
                             </div>
-                            <div class="clearfix" ></div>
+                            <div class="clearfix"></div>
 
                         </div>
                     </div>
@@ -71,7 +76,7 @@
                             { name: 'check-in', className: 'btn-primary', when: '!item.tag.$hasEncounter' },
                             { name: 'visit', className: 'btn-primary', when: 'item.tag.$hasEncounter' },
                             { name: 'discharge', className: 'btn-primary', when: 'item.tag.$hasEncounter' },
-                        ]">
+                        ]" display="grid">
 
                         <!-- #include virtual="~/partials/patient/search-result.html" -->
 
