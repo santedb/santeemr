@@ -212,6 +212,7 @@
     <string name="ui.emr.patient.search.field.relative.address.street.hint">The street address within the city/town/county (for example: &lt;code&gt;123 Main Street West&lt;/code&gt;)</string>
     <string name="ui.emr.patient.search.field.relative.telecom">Email/Tel</string>
     <string name="ui.emr.patient.search.field.relative.telecom.hint">Matches based on the telephone number, or e-mail address of the patient</string>
+    <string name="ui.emr.patient.search.tag.upstream">Online Result</string>
 
     <!-- JOBS -->
     <string name="ui.emr.job.runJob.confirm">Are you sure you want to run this job?</string>

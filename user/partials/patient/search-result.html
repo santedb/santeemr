@@ -27,8 +27,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-1 text-right" ngIf="item.tag.$upstream[0] == 'true'">
-                <label class="control-label"><span class="badge badge-info">ONLINE</span></label>
+            <div class="col-2 text-right" ngIf="item.tag.$upstream[0] == 'true'">
+                <label class="control-label"><span class="badge badge-info">{{'ui.emr.patient.search.tag.upstream' |
+                        i18n}}</span></label>
             </div>
         </div>
     </div>
