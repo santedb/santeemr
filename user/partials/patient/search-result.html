@@ -37,7 +37,7 @@
                 <label class="control-label">{{ 'ui.emr.patient.search.field.patient.telecom' | i18n }}</label>
             </div>
             <div class="col text-left">
-                <label class="control-label font-weight-normal">{{ item.telecom }}</label>
+                <label class="control-label font-weight-normal">{{ item.telecom['PrimaryHome'][0].value }}</label>
             </div>
         </div>
         <div class="row">
@@ -55,7 +55,7 @@
         <ul class="pl-2 list-group list-group-flush">
             <li class="list-group-item">{{ 'ui.emr.patient.search.relative.relation' | i18n }}: {{ item.firstFamilyMemberDetails.relationshipType }}</li>
             <li class="list-group-item">{{ 'ui.emr.patient.search.relative.name' | i18n }}: {{ item.firstFamilyMemberDetails.name | name }}</li>
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.telecom' | i18n }}: {{ item.firstFamilyMemberDetails.telecom }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.telecom' | i18n }}: {{ item.firstFamilyMemberDetails.telecom['PrimaryHome'][0].value }}</li>
             <li class="list-group-item">{{ 'ui.emr.patient.search.relative.id' | i18n }}: {{ item.firstFamilyMemberDetails.identifier | identifier }}</li>
         </ul>
     </li>
