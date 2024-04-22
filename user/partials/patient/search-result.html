@@ -6,7 +6,7 @@
             <div class="col">
                 <h4>{{ item.name | name }}</h4>
             </div>
-            <div class="col">
+            <div class="col-1 text-center">
                 <div class="d-flex">
                     <label class="control-label"><span class="badge badge-primary">
                             <i class="fas fa-fw" ng-class="{
@@ -27,7 +27,9 @@
                     </div>
                 </div>
             </div>
-
+            <div class="col-1 text-right" ngIf="item.tag.$upstream[0] == 'true'">
+                <label class="control-label"><span class="badge badge-info">ONLINE</span></label>
+            </div>
         </div>
     </div>
 
@@ -53,10 +55,14 @@
     <li class="list-group-item">
         {{ 'ui.emr.patient.search.family.relative' | i18n }}:
         <ul class="pl-2 list-group list-group-flush">
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.relation' | i18n }}: {{ item.firstFamilyMemberDetails.relationshipType }}</li>
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.name' | i18n }}: {{ item.firstFamilyMemberDetails.name | name }}</li>
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.telecom' | i18n }}: {{ item.firstFamilyMemberDetails.telecom['PrimaryHome'][0].value }}</li>
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.id' | i18n }}: {{ item.firstFamilyMemberDetails.identifier | identifier }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.relation' | i18n }}: {{
+                item.firstFamilyMemberDetails.relationshipType }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.name' | i18n }}: {{
+                item.firstFamilyMemberDetails.name | name }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.telecom' | i18n }}: {{
+                item.firstFamilyMemberDetails.telecom['PrimaryHome'][0].value }}</li>
+            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.id' | i18n }}: {{
+                item.firstFamilyMemberDetails.identifier | identifier }}</li>
         </ul>
     </li>
 </div>
