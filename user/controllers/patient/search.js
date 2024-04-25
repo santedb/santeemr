@@ -118,6 +118,11 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         performSearch($scope.search, true);
     }
 
+    $scope.scanSearch = async function() {
+        const result = await SanteDB.application.searchByBarcodeAsync();
+        console.log(result);
+    }
+
 }])
 // Advanced Search
 // Search - By Demographics
