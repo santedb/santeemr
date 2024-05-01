@@ -119,8 +119,8 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
     $scope.scanSearch = async function() {
-        const result = await SanteDB.application.searchByBarcodeAsync();
-        console.log(result);
+        const result = await SanteDB.application.searchByBarcodeAsync(null, true, true);
+        SanteDB.application.callResourceViewer("Patient", null, { id: result.id });
     }
 
 }])
