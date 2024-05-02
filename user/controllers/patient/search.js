@@ -23,24 +23,24 @@
 function bindSearchScopeCommonFunctions($scope) {
 
     // Item supplement which determines if the patientin question has an encounter active
-    $scope.patientHasOpenEncounter = async function(patient) {
-        if(patient.id) {
+    $scope.patientHasOpenEncounter = async function (patient) {
+        if (patient.id) {
             try {
-                var encounters = await SanteDB.resources.patientEncounter.findAsync({ "participation[RecordTarget].player" : patient.id, _count: 0, _includeTotal: true });
-                if(encounters.totalResults > 0) {
+                var encounters = await SanteDB.resources.patientEncounter.findAsync({ "participation[RecordTarget].player": patient.id, _count: 0, _includeTotal: true });
+                if (encounters.totalResults > 0) {
                     patient.tag = patient.tag || {};
                     patient.tag.$hasEncounter = true;
                 }
             }
-            catch (e) {}
+            catch (e) { }
         }
         return patient;
     }
 
     // Item supplement which retrieves details for a patient's first family member
-    $scope.firstFamilyMemberDetails = async function(patient) {
+    $scope.firstFamilyMemberDetails = async function (patient) {
         if (patient.relationship) {
-            let firstFamilyMember = Object.values(patient.relationship).find(relationship => 
+            let firstFamilyMember = Object.values(patient.relationship).find(relationship =>
                 'FamilyMember' in relationship[0].relationshipTypeModel.conceptSetModel
             );
             if (firstFamilyMember) {
@@ -50,14 +50,29 @@ function bindSearchScopeCommonFunctions($scope) {
                         familyMember.relationshipType = firstFamilyMember[0].relationshipTypeModel.mnemonic;
                         patient.firstFamilyMemberDetails = familyMember;
                     }
-                } catch (error) {}
+                } catch (error) { }
             }
         }
         return patient;
     }
 
-    $scope.downloadPatient = async function(patientId, index) {
-        if(!patientId) return;
+    $scope.firstIdentifier = async function (patient) {
+        if (patient.identifier) {
+            let firstIdentifierWithName = Object.values(patient.identifier).find(id =>
+                'domainModel' in id
+            );
+            if (firstIdentifierWithName) {
+                patient.identifier = firstIdentifier
+            }
+            else {
+                patient.identifier = Object.values(patient.identifier)[0][0]
+            }
+        }
+        return patient;
+    }
+
+    $scope.downloadPatient = async function (patientId, index) {
+        if (!patientId) return;
 
         try {
             SanteDB.display.buttonWait(`#searchList_action_download_${index}`, true);
@@ -67,7 +82,7 @@ function bindSearchScopeCommonFunctions($scope) {
             // Now navigate to the patient 
             SanteDB.application.callResourceViewer("Patient", null, { id: patientId });
         }
-        catch(e) {
+        catch (e) {
             SanteDB.display.getRootScope($scope).errorHandler(e);
         }
         finally {
@@ -78,7 +93,7 @@ function bindSearchScopeCommonFunctions($scope) {
 }
 
 angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
-    
+
     // Bind any common scope searching functions to the scope
     bindSearchScopeCommonFunctions($scope);
 
@@ -87,224 +102,223 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     };
 
 
-    if($stateParams.q) {
+    if ($stateParams.q) {
         $scope.search.value = $stateParams.q;
         $scope.search.upstream = $stateParams.o;
         performSearch($scope.search, $stateParams.o);
     } else {
-        $scope.goSearch = function(searchForm, upstream) {
-            if(searchForm.$invalid) return;
+        $scope.goSearch = function (searchForm, upstream) {
+            if (searchForm.$invalid) return;
             $state.go("santedb-emr.patient.search", { q: $scope.search.value, o: upstream === true });
         }
     }
-    
+
     // Perform the search and populate the results
     function performSearch(search, upstream) {
         $scope.filter = {
-            _any : search.value, 
-            _upstream : upstream,
-            _viewModel : 'full',
+            _any: search.value,
+            _upstream: upstream,
+            _viewModel: 'full',
             _orderBy: 'modifiedOn:desc'
         };
     }
 
 
-    $scope.searchLocal = function(searchForm) {
-        if(searchForm.$invalid) return;
+    $scope.searchLocal = function (searchForm) {
+        if (searchForm.$invalid) return;
         performSearch($scope.search);
     }
 
-    $scope.searchOnline = function() {
+    $scope.searchOnline = function () {
         performSearch($scope.search, true);
     }
 
-    $scope.scanSearch = async function() {
+    $scope.scanSearch = async function () {
         const result = await SanteDB.application.searchByBarcodeAsync(null, true, true);
         SanteDB.application.callResourceViewer("Patient", null, { id: result.id });
     }
 
 }])
-// Advanced Search
-// Search - By Demographics
-.controller('EmrAdvancedPatientSearchController', [ "$scope", "$rootScope", "$state", "$timeout", "$stateParams", function($scope, $rootScope, $state, $timeout, $stateParams) {
+    // Advanced Search
+    // Search - By Demographics
+    .controller('EmrAdvancedPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
 
-    // Bind any common scope searching functions to the scope
-    bindSearchScopeCommonFunctions($scope);
+        // Bind any common scope searching functions to the scope
+        bindSearchScopeCommonFunctions($scope);
 
-    $scope.$watch("searchForm", function(n, o) {
-        if(n && !o || n && n.$pristine && !n.$invalid) {
-            n.$setValidity('insufficient', false);
-        }
-    })
-
-    // Approximate fields
-    var approxFunctions = {
-        'name.component[Given].value' : (v, us) => [ `~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2` ],
-        'name.component[Family].value' : (v, us) => [ `~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2` ],
-        'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value' : (v, us) => [ `~${v}`, `:(approx)${v}` ],
-        'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value' : (v, us) => [ `~${v}`, `:(approx)${v}` ],
-        'address.component[AddressLine].value' : (v, us) => [ us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2` ],
-        'telecom.value': (v, us) => [ us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`,  `~${v}` ],
-        'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[AddressLine].value': (v, us) => [ us ?  `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2` ],
-        'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value': (v, us) => [ us ? `:(similarity_lev|${v})<3` : `:(levenshtein|${v})<2`, `~${v}` ],
-    };
-
-    // Initial view
-    $scope.search = {
-    };
-
-    $scope.$watch("search._expandAddressId", function(n, o) {
-        if(n && n != o) {
-            setAddressFilters(n, 'address.component');
-        }
-    });
-    
-    $scope.$watch("search._expandRelationshipAddressId", function(n, o) {
-        if(n && n != o) {
-            setAddressFilters(n, 'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component');
-        }
-    });
-
-
-    // Remove the elevator
-    $scope.$on('$destroy', () => SanteDB.authentication.setElevator(null));
-
-    // SEt address filters by the place id passed
-    async function setAddressFilters(cityOrPlaceId, searchPath) {
-        try {
-            var placeResolution = await SanteDB.resources.place.getAsync(cityOrPlaceId, 'dropdown');
-            if(placeResolution) {
-                $timeout(() => {
-                    var address = placeResolution.address.Direct || placeResolution.address.PhysicalVisit;
-                    if(Array.isArray(address)) {
-                        address = address[0];
-                    }
-
-                    $scope.search[`${searchPath}[State].value`] = address.component.State ? address.component.State[0] : null;
-                    $scope.search[`${searchPath}[Country].value`] = address.component.Country ? address.component.Country[0] : null;
-                    $scope.search[`${searchPath}[City].value`] = address.component.City ? address.component.City[0] : null;
-                    $scope.search[`${searchPath}[County].value`] = address.component.County ? address.component.County[0] : null;
-
-                    $scope.validateParameterCount();
-                })
+        $scope.$watch("searchForm", function (n, o) {
+            if (n && !o || n && n.$pristine && !n.$invalid) {
+                n.$setValidity('insufficient', false);
             }
-        }
-        catch(e) {
-            console.error(e);
-        }
-    }
+        })
 
-    function countFilterCriteria() {
-        var nParameters = 0;
-
-        if($scope.search['name.component[Given].value'] && $scope.search['name.component[Family].value']) // Name is one search field
-            nParameters++;
-        if($scope.search['search._expandAddressId'] || $scope.search['address.component[AddressLine].value']) 
-            nParameters++;
-        if($scope.search['genderConcept']) 
-            nParameters++;
-        if($scope.search['dateOfBirth'])
-            nParameters++;
-        if($scope.search['identifier.value'] || $scope.search['id']) 
-            nParameters += 5; // Identifier is a known good search criteria
-        if($scope.search['telecom.value'])
-            nParameters++;
-        if($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value'] && $scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value']) 
-            nParameters++;
-        if($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value'])
-            nParameters++;
-        if($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier.value'] || $scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target']) 
-            nParameters += 5;
-
-        return nParameters;
-    }
-
-    function performSearch(searchCrtiteria, upstream) {
-        $scope.validateParameterCount();
-        $scope.filter = {
-            _viewModel: 'full',
-            _orderBy: 'modifiedOn:desc',
-            _upstream: upstream
+        // Approximate fields
+        var approxFunctions = {
+            'name.component[Given].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
+            'name.component[Family].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
+            'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value': (v, us) => [`~${v}`, `:(approx)${v}`],
+            'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value': (v, us) => [`~${v}`, `:(approx)${v}`],
+            'address.component[AddressLine].value': (v, us) => [us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
+            'telecom.value': (v, us) => [us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`, `~${v}`],
+            'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[AddressLine].value': (v, us) => [us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
+            'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value': (v, us) => [us ? `:(similarity_lev|${v})<3` : `:(levenshtein|${v})<2`, `~${v}`],
         };
 
+        // Initial view
+        $scope.search = {
+        };
 
-        // Prepare the search parameters
-        var searchObject = angular.copy($scope.search);
-        Object.keys(searchObject)
-            .filter(f=>!f.startsWith('_'))
-            .forEach(f => {
-                var value = searchObject[f];
-                if(value === null || value === '') return;
-                if(angular.isObject(value)) // Turn this into an array
-                {
-                    value = Object.keys(value).filter(v=>value[v]).map(v=>{
-                        var subValue = value[v];
-                        var op = v === '0' ? '>=' : v === '1' ? '<=' : '';
-                        return subValue instanceof Date ? `${op}${moment(subValue).format('YYYY-MM-DD')}` : `${op}${subValue}`;
-                    });
+        $scope.$watch("search._expandAddressId", function (n, o) {
+            if (n && n != o) {
+                setAddressFilters(n, 'address.component');
+            }
+        });
+
+        $scope.$watch("search._expandRelationshipAddressId", function (n, o) {
+            if (n && n != o) {
+                setAddressFilters(n, 'relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component');
+            }
+        });
+
+
+        // Remove the elevator
+        $scope.$on('$destroy', () => SanteDB.authentication.setElevator(null));
+
+        // SEt address filters by the place id passed
+        async function setAddressFilters(cityOrPlaceId, searchPath) {
+            try {
+                var placeResolution = await SanteDB.resources.place.getAsync(cityOrPlaceId, 'dropdown');
+                if (placeResolution) {
+                    $timeout(() => {
+                        var address = placeResolution.address.Direct || placeResolution.address.PhysicalVisit;
+                        if (Array.isArray(address)) {
+                            address = address[0];
+                        }
+
+                        $scope.search[`${searchPath}[State].value`] = address.component.State ? address.component.State[0] : null;
+                        $scope.search[`${searchPath}[Country].value`] = address.component.Country ? address.component.Country[0] : null;
+                        $scope.search[`${searchPath}[City].value`] = address.component.City ? address.component.City[0] : null;
+                        $scope.search[`${searchPath}[County].value`] = address.component.County ? address.component.County[0] : null;
+
+                        $scope.validateParameterCount();
+                    })
                 }
-
-                // HACK: Approximate date of birth
-                if(searchObject._approxAge && f == 'dateOfBirth') {
-                    value = value.map(v=>`:(age)${v}`);
-                }
-
-                if(approxFunctions[f]) {
-                    $scope.filter[f] = approxFunctions[f](value, upstream);
-                }
-                else if(typeof value === Date) {
-                    $scope.filter[f] = moment(value).format('YYY-MM-DD');
-                }
-                else {
-                    $scope.filter[f] = value;
-                }
-            });
-
-
-    }
-
-    $scope.countFilterCriteria = countFilterCriteria;
-
-    $scope.scanBarcode = async function(target) {
-        try {
-            var barcodeIdentifier = await SanteDB.application.scanIdentifierAsync();
-            $timeout(() => {
-                if(barcodeIdentifier.$type) { // This is a full object so set the search parameters based on the data within
-                    if(target !== '') target += ".";
-
-                    $scope.search[`${target}id`] = barcodeIdentifier.id;
-                    performSearch();
-                }
-                else {
-                    $scope.search[`${target}identifier.value`] = barcodeIdentifier;
-                }
-            })
-        } catch(e){
-            $rootScope.errorHandler(e);
+            }
+            catch (e) {
+                console.error(e);
+            }
         }
 
-    }
-    // Watch the form and any search criteria to see if there are sufficient inputs
-    $scope.validateParameterCount = function()
-    {
-        var valid = countFilterCriteria() > 2;
-        $scope.searchForm.$setValidity('insufficient', valid);
-        return valid;
-    }
+        function countFilterCriteria() {
+            var nParameters = 0;
 
+            if ($scope.search['name.component[Given].value'] && $scope.search['name.component[Family].value']) // Name is one search field
+                nParameters++;
+            if ($scope.search['search._expandAddressId'] || $scope.search['address.component[AddressLine].value'])
+                nParameters++;
+            if ($scope.search['genderConcept'])
+                nParameters++;
+            if ($scope.search['dateOfBirth'])
+                nParameters++;
+            if ($scope.search['identifier.value'] || $scope.search['id'])
+                nParameters += 5; // Identifier is a known good search criteria
+            if ($scope.search['telecom.value'])
+                nParameters++;
+            if ($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value'] && $scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value'])
+                nParameters++;
+            if ($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value'])
+                nParameters++;
+            if ($scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.identifier.value'] || $scope.search['relationship[type.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target'])
+                nParameters += 5;
 
-    $scope.searchOnline = function() {
-        if($scope.searchForm.$invalid && !$scope.validateParameterCount()) {
-            return;
+            return nParameters;
         }
-        performSearch($scope.search, true);
-    }
 
-    $scope.searchLocal = function(searchForm) {
-        if(searchForm.$invalid && !$scope.validateParameterCount()) {
-            return;
+        function performSearch(searchCrtiteria, upstream) {
+            $scope.validateParameterCount();
+            $scope.filter = {
+                _viewModel: 'full',
+                _orderBy: 'modifiedOn:desc',
+                _upstream: upstream
+            };
+
+
+            // Prepare the search parameters
+            var searchObject = angular.copy($scope.search);
+            Object.keys(searchObject)
+                .filter(f => !f.startsWith('_'))
+                .forEach(f => {
+                    var value = searchObject[f];
+                    if (value === null || value === '') return;
+                    if (angular.isObject(value)) // Turn this into an array
+                    {
+                        value = Object.keys(value).filter(v => value[v]).map(v => {
+                            var subValue = value[v];
+                            var op = v === '0' ? '>=' : v === '1' ? '<=' : '';
+                            return subValue instanceof Date ? `${op}${moment(subValue).format('YYYY-MM-DD')}` : `${op}${subValue}`;
+                        });
+                    }
+
+                    // HACK: Approximate date of birth
+                    if (searchObject._approxAge && f == 'dateOfBirth') {
+                        value = value.map(v => `:(age)${v}`);
+                    }
+
+                    if (approxFunctions[f]) {
+                        $scope.filter[f] = approxFunctions[f](value, upstream);
+                    }
+                    else if (typeof value === Date) {
+                        $scope.filter[f] = moment(value).format('YYY-MM-DD');
+                    }
+                    else {
+                        $scope.filter[f] = value;
+                    }
+                });
+
+
         }
 
-        performSearch($scope.search);
-    }
-}]);
+        $scope.countFilterCriteria = countFilterCriteria;
+
+        $scope.scanBarcode = async function (target) {
+            try {
+                var barcodeIdentifier = await SanteDB.application.scanIdentifierAsync();
+                $timeout(() => {
+                    if (barcodeIdentifier.$type) { // This is a full object so set the search parameters based on the data within
+                        if (target !== '') target += ".";
+
+                        $scope.search[`${target}id`] = barcodeIdentifier.id;
+                        performSearch();
+                    }
+                    else {
+                        $scope.search[`${target}identifier.value`] = barcodeIdentifier;
+                    }
+                })
+            } catch (e) {
+                $rootScope.errorHandler(e);
+            }
+
+        }
+        // Watch the form and any search criteria to see if there are sufficient inputs
+        $scope.validateParameterCount = function () {
+            var valid = countFilterCriteria() > 2;
+            $scope.searchForm.$setValidity('insufficient', valid);
+            return valid;
+        }
+
+
+        $scope.searchOnline = function () {
+            if ($scope.searchForm.$invalid && !$scope.validateParameterCount()) {
+                return;
+            }
+            performSearch($scope.search, true);
+        }
+
+        $scope.searchLocal = function (searchForm) {
+            if (searchForm.$invalid && !$scope.validateParameterCount()) {
+                return;
+            }
+
+            performSearch($scope.search);
+        }
+    }]);

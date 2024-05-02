@@ -1,69 +1,69 @@
 <div class="card-body">
 
-
     <div class="container">
-        <div class="row">
-            <div class="col">
-                <h4>{{ item.name | name }}</h4>
-            </div>
-            <div class="col-2 text-center">
-                <div class="d-flex">
-                    <label class="control-label"><span class="badge badge-primary">
-                            <i class="fas fa-fw" ng-class="{
-                'fa-genderless' : null ,
-                'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198',
-                'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c'
-            }"></i> {{ item.genderConceptModel | concept }}
-                        </span></label>
-                </div>
-            </div>
-            <div class="col">
-                <div class="row">
-                    <div class="col text-right">
-                        <label class="control-label">{{ 'ui.emr.patient.search.age' | i18n }}</label>
-                    </div>
-                    <div class="col text-left">
-                        <label class="control-label font-weight-normal">{{ item.dateOfBirth | age }}</label>
-                    </div>
-                </div>
-            </div>
+        <div class="row p-2">
+            <h4 class="col">{{ item.name | name }}</h4>
             <div class="col-2 text-right" ngIf="item.tag.$upstream[0] == 'true'">
                 <label class="control-label"><span class="badge badge-info">{{'ui.emr.patient.search.tag.upstream' |
                         i18n}}</span></label>
             </div>
         </div>
+
+        <div class="p-2 flex-grow-1">
+            <h5 class="m-0 p-0">
+                <div>
+                    <i class="fas fa-id-card"></i>
+                    {{
+                    item.identifier.value
+                    }}
+                    <span class="d-none d-md-inline">
+                        <span class="badge badge-primary">
+                            {{item.identifier.domainModel.name }}
+                        </span>
+                    </span>
+                </div>
+            </h5>
+        </div>
+
+        <div class="p-2">
+            <i class="fas fa-fw" ng-class="{
+                'fa-genderless' : null ,
+                'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198',
+                'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c'
+            }"></i>
+            {{ item.genderConceptModel | concept }}
+        </div>
+
+        <div class="p-2">
+            <i class="fas fa-birthday-cake"></i>
+            {{ item.dateOfBirth | extDate: item.dateOfBirthPrecision }} ( <span class="badge badge-dark"
+                ng-if="item.deceasedDate">{{
+                'ui.model.patient.deceasedIndicator' | i18n }}</span>
+            {{ item.dateOfBirth | age: 'y':item.deceasedDate }} )
+        </div>
+
+        <div class="p-2">
+            <i class="fa-solid fa-address-book"></i>
+            {{ item.telecom['PrimaryHome'][0].value }}
+        </div>
+
+        <div class="p-2">
+            <i class="fa-solid fa-people-group"></i>
+            {{item.firstFamilyMemberDetails.name | name }}
+            <label class="control-label">
+                <span class="badge badge-info">{{ item.firstFamilyMemberDetails.relationshipType }}</span>
+            </label>
+        </div>
+
     </div>
 
-    <div>
-        <div class="row">
-            <div class="col-3 text-right">
-                <label class="control-label">{{ 'ui.emr.patient.search.field.patient.telecom' | i18n }}</label>
-            </div>
-            <div class="col text-left">
-                <label class="control-label font-weight-normal">{{ item.telecom['PrimaryHome'][0].value }}</label>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-3 text-right">
-                <label class="control-label">{{ 'ui.emr.patient.search.field.patient.identifier' | i18n }}</label>
-            </div>
-            <div class="col text-left">
-                <label class="control-label font-weight-normal">{{ item.identifier | identifier }}</label>
-            </div>
-        </div>
-    </div>
-
-    <li class="list-group-item">
+    <!-- <li class="list-group-item">
         {{ 'ui.emr.patient.search.family.relative' | i18n }}:
         <ul class="pl-2 list-group list-group-flush">
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.relation' | i18n }}: {{
-                item.firstFamilyMemberDetails.relationshipType }}</li>
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.name' | i18n }}: {{
-                item.firstFamilyMemberDetails.name | name }}</li>
             <li class="list-group-item">{{ 'ui.emr.patient.search.relative.telecom' | i18n }}: {{
                 item.firstFamilyMemberDetails.telecom['PrimaryHome'][0].value }}</li>
             <li class="list-group-item">{{ 'ui.emr.patient.search.relative.id' | i18n }}: {{
                 item.firstFamilyMemberDetails.identifier | identifier }}</li>
         </ul>
-    </li>
+    </li> -->
 </div>
