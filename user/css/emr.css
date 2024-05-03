@@ -105,6 +105,13 @@ div.scroll-container {
     margin: 5px;
 }
 
+.search-card-property-icon {
+    max-width: 20px;
+    width: 100%;
+    text-align: left;
+    margin-right: 15px;
+}
+
 @media only screen and (min-width: 1080px) {
     .search-card {
         max-width: 32%;

@@ -1,20 +1,20 @@
 <div class="card-body">
 
     <div class="container">
-        <div class="row p-2">
+        <div class="row py-2">
             <h4 class="col">{{ item.name | name }}</h4>
-            <div class="col-2 text-right" ng-hide="!item.tag.$upstream[0] == 'true'">
+            <div class="col flex-grow-0 pr-0" ng-hide="!item.tag.$upstream[0] == 'true'">
                 <label class="control-label"><span class="badge badge-info">{{'ui.emr.patient.search.tag.upstream' |
                         i18n}}</span></label>
             </div>
         </div>
 
-        <div class="p-2 flex-grow-1" ng-hide="!item.identifier.value">
+        <div class="py-2 flex-grow-1" ng-hide="!item.identifier.value">
             <h5 class="m-0 p-0">
                 <div>
-                    <i class="fas fa-id-card"></i>
+                    <i class="fas fa-id-card fa-sm search-card-property-icon"></i>
                     {{
-                    item.identifier.value
+                        item.identifier.value
                     }}
                     <span class="d-none d-md-inline" ng-hide="!item.identifier.domainModel.name">
                         <span class="badge badge-primary">
@@ -30,8 +30,8 @@
             </h5>
         </div>
 
-        <div class="p-2">
-            <i class="fas fa-fw" ng-class="{
+        <div class="py-2">
+            <i class="fas fa-fw search-card-property-icon" ng-class="{
                 'fa-genderless' : null ,
                 'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198',
                 'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c'
@@ -39,37 +39,37 @@
             {{ item.genderConceptModel | concept }}
         </div>
 
-        <div class="p-2" ng-hide="!item.dateOfBirth">
-            <i class="fas fa-birthday-cake"></i>
+        <div class="py-2" ng-hide="!item.dateOfBirth">
+            <i class="fas fa-birthday-cake search-card-property-icon"></i>
             {{ item.dateOfBirth | extDate: item.dateOfBirthPrecision }} ( <span class="badge badge-dark"
                 ng-if="item.deceasedDate">{{
                 'ui.model.patient.deceasedIndicator' | i18n }}</span>
             {{ item.dateOfBirth | age: 'y':item.deceasedDate }} )
         </div>
 
-        <div class="p-2" ng-hide="!item.telecom['PrimaryHome'][0].value">
-            <i class="fa-solid fa-address-book"></i>
+        <div class="py-2" ng-hide="!item.telecom['PrimaryHome'][0].value">
+            <i class="fa-solid fa-address-book search-card-property-icon"></i>
             {{ item.telecom['PrimaryHome'][0].value }}
         </div>
         <div ng-hide="!item.firstFamilyMemberDetails">
             <hr />
-            <div class="p-2">
-                <i class="fa-solid fa-people-group"></i>
+            <div class="py-2">
+                <i class="fa-solid fa-people-group search-card-property-icon"></i>
                 {{item.firstFamilyMemberDetails.name | name }}
                 <label class="control-label">
                     <span class="badge badge-info">{{ item.firstFamilyMemberDetails.relationshipType }}</span>
                 </label>
             </div>
-            <div class="p-2" ng-hide="!item.firstFamilyMemberDetails.identifier">
-                <i class="fas fa-id-card"></i>
+            <div class="py-2" ng-hide="!item.firstFamilyMemberDetails.identifier">
+                <i class="fas fa-id-card search-card-property-icon"></i>
                 {{item.firstFamilyMemberDetails.identifier.value }}
                 <label class="control-label">
                     <span class="badge badge-info">{{ item.firstFamilyMemberDetails.identifier.domainModel.name
                         }}</span>
                 </label>
             </div>
-            <div class="p-2" ng-hide="!item.firstFamilyMemberDetails.telecom">
-                <i class="fa-solid fa-people-group"></i>
+            <div class="py-2" ng-hide="!item.firstFamilyMemberDetails.telecom">
+                <i class="fa-solid fa-people-group search-card-property-icon"></i>
                 {{item.firstFamilyMemberDetails.telecom['PrimaryHome'][0].value }}
             </div>
         </div>
