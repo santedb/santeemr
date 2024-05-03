@@ -3,22 +3,27 @@
     <div class="container">
         <div class="row p-2">
             <h4 class="col">{{ item.name | name }}</h4>
-            <div class="col-2 text-right" ngIf="item.tag.$upstream[0] == 'true'">
+            <div class="col-2 text-right" ng-hide="!item.tag.$upstream[0] == 'true'">
                 <label class="control-label"><span class="badge badge-info">{{'ui.emr.patient.search.tag.upstream' |
                         i18n}}</span></label>
             </div>
         </div>
 
-        <div class="p-2 flex-grow-1">
+        <div class="p-2 flex-grow-1" ng-hide="!item.identifier.value">
             <h5 class="m-0 p-0">
                 <div>
                     <i class="fas fa-id-card"></i>
                     {{
                     item.identifier.value
                     }}
-                    <span class="d-none d-md-inline">
+                    <span class="d-none d-md-inline" ng-hide="!item.identifier.domainModel.name">
                         <span class="badge badge-primary">
                             {{item.identifier.domainModel.name }}
+                        </span>
+                    </span>
+                    <span class="d-none d-md-inline" ng-hide="item.identifier.domainModel.name">
+                        <span class="badge badge-primary">
+                            Other
                         </span>
                     </span>
                 </div>
@@ -34,7 +39,7 @@
             {{ item.genderConceptModel | concept }}
         </div>
 
-        <div class="p-2">
+        <div class="p-2" ng-hide="!item.dateOfBirth">
             <i class="fas fa-birthday-cake"></i>
             {{ item.dateOfBirth | extDate: item.dateOfBirthPrecision }} ( <span class="badge badge-dark"
                 ng-if="item.deceasedDate">{{
@@ -42,28 +47,31 @@
             {{ item.dateOfBirth | age: 'y':item.deceasedDate }} )
         </div>
 
-        <div class="p-2">
+        <div class="p-2" ng-hide="!item.telecom['PrimaryHome'][0].value">
             <i class="fa-solid fa-address-book"></i>
             {{ item.telecom['PrimaryHome'][0].value }}
         </div>
-
-        <div class="p-2">
-            <i class="fa-solid fa-people-group"></i>
-            {{item.firstFamilyMemberDetails.name | name }}
-            <label class="control-label">
-                <span class="badge badge-info">{{ item.firstFamilyMemberDetails.relationshipType }}</span>
-            </label>
+        <div ng-hide="!item.firstFamilyMemberDetails">
+            <hr />
+            <div class="p-2">
+                <i class="fa-solid fa-people-group"></i>
+                {{item.firstFamilyMemberDetails.name | name }}
+                <label class="control-label">
+                    <span class="badge badge-info">{{ item.firstFamilyMemberDetails.relationshipType }}</span>
+                </label>
+            </div>
+            <div class="p-2" ng-hide="!item.firstFamilyMemberDetails.identifier">
+                <i class="fas fa-id-card"></i>
+                {{item.firstFamilyMemberDetails.identifier.value }}
+                <label class="control-label">
+                    <span class="badge badge-info">{{ item.firstFamilyMemberDetails.identifier.domainModel.name
+                        }}</span>
+                </label>
+            </div>
+            <div class="p-2" ng-hide="!item.firstFamilyMemberDetails.telecom">
+                <i class="fa-solid fa-people-group"></i>
+                {{item.firstFamilyMemberDetails.telecom['PrimaryHome'][0].value }}
+            </div>
         </div>
-
     </div>
-
-    <!-- <li class="list-group-item">
-        {{ 'ui.emr.patient.search.family.relative' | i18n }}:
-        <ul class="pl-2 list-group list-group-flush">
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.telecom' | i18n }}: {{
-                item.firstFamilyMemberDetails.telecom['PrimaryHome'][0].value }}</li>
-            <li class="list-group-item">{{ 'ui.emr.patient.search.relative.id' | i18n }}: {{
-                item.firstFamilyMemberDetails.identifier | identifier }}</li>
-        </ul>
-    </li> -->
 </div>
