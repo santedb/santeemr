@@ -1,5 +1,4 @@
 <div class="card-body">
-
     <div class="container">
         <div class="row py-2">
             <h4 class="col">{{ item.name | name }}</h4>
@@ -23,7 +22,7 @@
                     </span>
                     <span class="d-none d-md-inline" ng-hide="item.identifier.domainModel.name">
                         <span class="badge badge-primary">
-                            Other
+                            {{'ui.emr.patient.search.other' | i18n}}
                         </span>
                     </span>
                 </div>
