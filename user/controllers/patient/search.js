@@ -58,11 +58,15 @@ function bindSearchScopeCommonFunctions($scope) {
 
     $scope.firstIdentifier = async function (patient) {
         if (patient.identifier) {
-            let firstIdentifierWithName = Object.values(patient.identifier).find(id =>
-                'domainModel' in id
+            let firstIdentifierWithName
+            Object.values(patient.identifier).find(id => {
+                if (id[0].domainModel) {
+                    firstIdentifierWithName = id[0]
+                }
+            }
             );
             if (firstIdentifierWithName) {
-                patient.identifier = firstIdentifier
+                patient.identifier = firstIdentifierWithName
             }
             else {
                 patient.identifier = Object.values(patient.identifier)[0][0]
