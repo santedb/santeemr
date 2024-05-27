@@ -19,17 +19,24 @@
         <form class="form" novalidate="novalidate" name="configurationForm" autocomplete="off"
             ng-submit="save(configurationForm)" ng-if="config.realm.joined">
 
-            <div id="{{widget.htmlId}}Tab" ng-repeat="widget in widgets">
-                <div class="accordion" id="{{widget.htmlId}}Accordion">
-                    <button type="button" class="collapse-indicator btn btn-link p-0" data-toggle="collapse" data-target="#{{widget.htmlId}}AccordionBody" aria-expanded="true">
-                        <i class="{{widget.icon}}"></i><strong>{{ widget.name | i18n }}</strong>
-                        <span class="m-l-10"><i class="fa fa-chevron-right"></i></span>
-                    </button>
-                    <div class="collapse show" id="{{widget.htmlId}}AccordionBody" data-parent="#{{widget.htmlId}}Accordion">
-                        <p>{{ widget.description[0].value | i18n }}</p>
-                        <ng-include src="'/app/Widgets/' + widget.name"></ng-include>
+            <div id="configAccordion" class="accordion">
+                <div id="{{widget.htmlId}}Card" class="card" ng-repeat="widget in widgets track by $index">
+                    <div class="card-header">
+                        <h5 class="card-title my-0">
+                            <button type="button" class="collapse-indicator btn btn-link p-0" data-toggle="collapse" data-target="#Config{{$index}}Collapse" aria-expanded="false">
+                                <i class="{{widget.icon}}"></i><strong>{{ widget.name | i18n }}</strong>
+                                <i class="fa fa-chevron-right"></i>
+                            </button>
+                        </h5>
+                    </div>
+                    <div class="collapse" id="Config{{$index}}Collapse" data-parent="#configAccordion">
+                        <div class="card-body">
+                            <p>{{ widget.description[0].value | i18n }}</p>
+                            <ng-include src="'/app/Widgets/' + widget.name"></ng-include>
+                        </div>
                     </div>
                 </div>
+    
             </div>
 
         </form>
