@@ -178,7 +178,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
                     jobParameters.forEach(o => parms[o.key] = o.value);
                 }
                 await SanteDB.resources.jobInfo.invokeOperationAsync(id, "start", parms);
-                toastr.success(SanteDB.locale.getString("ui.emr.job.runJob.success", { job: $scope.currentJob.name }));
+                toastr.success(SanteDB.locale.getString("ui.emr.job.runJob.success", { job: jobInfo.name }));
                 $("#jobsTable table").DataTable().ajax.reload();
 
             }
