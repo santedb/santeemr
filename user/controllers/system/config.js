@@ -97,7 +97,7 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
         try {
 
             let config = await SanteDB.configuration.getAsync();
-            let sessionInfoExt = sessionInfo || await SanteDB.authentication.getSessionInfoAsync();
+            let sessionInfoExt = sessionInfo || angular.copy(await SanteDB.authentication.getSessionInfoAsync());
 
             config = await _processConfiguration(config, sessionInfoExt);
 
