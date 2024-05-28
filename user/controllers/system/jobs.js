@@ -178,7 +178,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
                     jobParameters.forEach(o => parms[o.key] = o.value);
                 }
                 await SanteDB.resources.jobInfo.invokeOperationAsync(id, "start", parms);
-                toastr.success(SanteDB.locale.getString("ui.emr.job.runJob.success"));
+                toastr.success(SanteDB.locale.getString("ui.emr.job.runJob.success", { job: $scope.currentJob.name }));
                 $("#jobsTable table").DataTable().ajax.reload();
 
             }
@@ -211,7 +211,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
                         jobType: jobType.type
                     };
                     await SanteDB.resources.jobInfo.insertAsync(ji);
-                    toastr.success("ui.emr.job.register.success", {job: jobType.type });
+                    toastr.success(SanteDB.locale.getString("ui.emr.job.register.success", { job: jobType.type }));
                     $("#jobsTable table").DataTable().ajax.reload();
 
                 }
