@@ -22,30 +22,37 @@
 angular.module('santedb').controller('UserProfileController', ["$scope", "$rootScope", "$stateParams", "$timeout", function ($scope, $rootScope, $stateParams, $timeout) {
 
     // Initialize the view
-    var initializeView = async function() {
+    var initializeView = async function () {
 
         try {
             var sessionInfo = await SanteDB.authentication.getSessionInfoAsync();
             var userEntity = null;
-            
-            if(sessionInfo.entity && sessionInfo.entity.id)
+
+            if (sessionInfo.entity && sessionInfo.entity.id)
                 userEntity = await SanteDB.resources.userEntity.getAsync(sessionInfo.entity.id, "full");
-            else 
-                userEntity = new UserEntity({
-                    id: SanteDB.application.newGuid(),
-                    securityUser: sessionInfo.user.id,
-                    language: [
-                        {
-                            "languageCode": SanteDB.locale.getLanguage(),
-                            "isPreferred": true
-                        }
-                    ]
-                }) ;
+            else {
+                var userEntityQuery = await SanteDB.resources.userEntity.findAsync({ securityUser: sessionInfo.user.id });
+                if (userEntityQuery.resource) {
+                    userEntity = userEntityQuery.resource[0];
+                }
+                else {
+                    userEntity = new UserEntity({
+                        id: SanteDB.application.newGuid(),
+                        securityUser: sessionInfo.user.id,
+                        language: [
+                            {
+                                "languageCode": SanteDB.locale.getLanguage(),
+                                "isPreferred": true
+                            }
+                        ]
+                    });
+                }
+            }
 
 
             var userInfo = await SanteDB.resources.securityUser.getAsync(sessionInfo.user.id);
-            userEntity._localOnly= sessionInfo.claims["urn:santedb:org:claim:local"] && sessionInfo.claims["urn:santedb:org:claim:local"][0] == "true";
-            
+            userEntity._localOnly = sessionInfo.claims["urn:santedb:org:claim:local"] && sessionInfo.claims["urn:santedb:org:claim:local"][0] == "true";
+
             $timeout(() => {
                 $scope.userEntity = userEntity;
                 $scope.userEntity.securityUserModel = userInfo.entity;
@@ -53,7 +60,7 @@ angular.module('santedb').controller('UserProfileController', ["$scope", "$rootS
             });
 
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
     }

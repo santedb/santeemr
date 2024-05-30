@@ -9,17 +9,33 @@
     "name" : {
         "OfficialRecord": {
             "component": {
-                "Given":""
+                "Given": [""],
+                "Family": [""]
             }
         }
     },
     "address": {
-        "HomeAddress": {
-            "component": {
-                "CensusTract": ""
+        "HomeAddress": [
+            {
+                "component": {
+                    "$other" : []
+                }
             }
-        }
+        ],
+        "TemporaryAddress" : [
+            {
+                "component": {
+                    "$other": []
+                }
+            }
+        ]
     },
     "dateOfBirth": "{{ $today }}",
-    "dateOfBirthPrecision": 3
+    "dateOfBirthPrecision": 3,
+    "telecom" : {
+        "PrimaryHome": [
+            {
+            }
+        ]
+    }
 }

@@ -58,15 +58,14 @@ function renderPatientSummary(patient) {
 }
 
 
-// Synchronize ages of object
-function synchronizeAge(modelObject, fromDate) {
+// Convert an age to a date
+function ageToDate(age, onDate) {
 
-    if (modelObject.dateOfBirth && fromDate) {
-        modelObject.age = moment().diff(modelObject.dateOfBirth, 'years', false);
-        modelObject.dateOfBirthPrecision = 3;
-    }
-    else if(modelObject.age) {
-        modelObject.dateOfBirth = moment().subtract({ years: modelObject.age }).toDate();
-        modelObject.dateOfBirthPrecision = 1;
-    }
+    return moment(onDate).subtract({years: age}).toDate();
+}
+
+/// Convert a date to an age
+function dateToAge(date, onDate) {
+    return moment(onDate).diff(date, 'years', false);
+
 }

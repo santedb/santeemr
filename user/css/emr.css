@@ -117,3 +117,18 @@ div.scroll-container {
         max-width: 32%;
     }
 }
+
+.content-wrapper { 
+    background-color: white;
+}
+
+fieldset {
+    border: solid 1px var(--light);
+}
+
+fieldset > legend {
+    text-align: center;
+    font-weight: bold;
+    background-color: var(--info);
+    color: var(--light)
+}

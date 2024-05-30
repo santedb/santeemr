@@ -4445,3 +4445,14 @@ div.DTS div.dataTables_length {
   margin-left: 10px; }
 
 /*======= Alert css ends ===========*/
+
+fieldset {
+  border: none;
+}
+
+fieldset > legend {
+  text-align: center;
+  font-weight: bold;
+  background-color: var(--info);
+  color: var(--light)
+}
