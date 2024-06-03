@@ -3,6 +3,7 @@
         size="Large" type="Panel" context="org.santedb.emr.patient.register">
         <sdb:icon>fas fa-phone</sdb:icon>
         <sdb:description lang="en">Patient Telecom Entry</sdb:description>
+        <sdb:guard>scopedObject.age &gt; 12</sdb:guard>
     </sdb:widget>
     <telecom-edit owner-form="panel.editForm" telecom="scopedObject.telecom" allowed-types="[ 'PrimaryHome', 'WorkPlace', 'MobileContact', 'EmergencyContact' ]" required-types="[ 'MobileContact' ]" />
 </div>

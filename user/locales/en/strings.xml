@@ -46,17 +46,27 @@
     <string name="org.santedb.emr.patient.dashboard.recentPatients">Recent Patients</string>
     <string name="org.santedb.emr.patient.dashboard.summary">Patient Summary</string>
     <string name="org.santedb.emr.patient.dashboard.duplicates">Possible Duplicate Records</string>
+    
     <!-- Patient View -->
     <string name="org.santedb.emr.widget.dashboard.patientSearch">Quick Search Patients</string>
     <string name="org.santedb.emr.widget.patient.demographics">Demographics</string>
     <string name="org.santedb.emr.widget.patient.dashboard">Dashboard</string>
+    <string name="org.santedb.emr.widget.patient.identity">Identification</string>
+    <string name="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
+
+    <!-- Patient Registration -->
     <string name="org.santedb.emr.widget.patient.register.demographics">Demographics</string>
     <string name="org.santedb.emr.widget.patient.register.identifier">Identification</string>
     <string name="org.santedb.emr.widget.patient.register.nok">Relatives / Relationships</string>
     <string name="org.santedb.emr.widget.patient.register.address">Addresses</string>
     <string name="org.santedb.emr.widget.patient.register.telecom">Contact Information</string>
-    <string name="org.santedb.emr.widget.patient.identity">Identification</string>
-    <string name="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
+    <string name="org.santedb.emr.widget.patient.register.mother">Mother's Information</string>
+    <string name="ui.emr.patient.register.mother.unknown">Mother is unknown (i.e. child is orphan, adopted, etc.)</string>
+    <string name="ui.emr.patient.register.relative.multipleMatches">Cannot auto-populate the {relativeType} information from identification as more than one match exists</string>
+
+
+
+
     <string name="ui.emr.search.online">Could not locate this data on the local environment, do you
         want to search the central server?</string>
     <string name="ui.emr.search.onlineResult">Online Result</string>
@@ -333,4 +343,5 @@
     <string name="org.santedb.config.services">Services</string>
     <string name="org.santedb.config.log">Logging</string>
     <string name="org.santedb.config.other">Other Settings</string>
+
 </resources>
