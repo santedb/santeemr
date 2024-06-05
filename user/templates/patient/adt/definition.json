@@ -35,13 +35,23 @@
             {
                 "targetModel" : {
                     "$type": "Person",
-                    "genderConcept": "094941e9-a3db-48b5-862c-bc289bd7f86c"
+                    "genderConcept": "094941e9-a3db-48b5-862c-bc289bd7f86c",
+                    "dateOfBirthPrecision": 1,
+                    "address": {
+                        "HomeAddress" : [
+                            {
+                            }
+                        ]
+                    }
                 }
             }
         ],
-        "NextOfKin" : [
+        "$other" : [
             {
-
+                "targetModel": {
+                    "$type" : "Person",
+                    "dateOfBirthPrecision": 1
+                }
             }
         ],
         "DedicatedServiceDeliveryLocation" : [

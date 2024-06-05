@@ -57,14 +57,15 @@
     <!-- Patient Registration -->
     <string name="org.santedb.emr.widget.patient.register.demographics">Demographics</string>
     <string name="org.santedb.emr.widget.patient.register.identifier">Identification</string>
-    <string name="org.santedb.emr.widget.patient.register.nok">Relatives / Relationships</string>
+    <string name="org.santedb.emr.widget.patient.register.contacts">Patient Contacts</string>
     <string name="org.santedb.emr.widget.patient.register.address">Addresses</string>
     <string name="org.santedb.emr.widget.patient.register.telecom">Contact Information</string>
     <string name="org.santedb.emr.widget.patient.register.mother">Mother's Information</string>
+    <string name="org.santedb.emr.widget.patient.register.facilities">Assigned Facilities</string>
     <string name="ui.emr.patient.register.mother.unknown">Mother is unknown (i.e. child is orphan, adopted, etc.)</string>
     <string name="ui.emr.patient.register.relative.multipleMatches">Cannot auto-populate the {relativeType} information from identification as more than one match exists</string>
-
-
+    <string name="ui.emr.patient.mother.differsFromPatient">Different address than the registrant</string>
+    <string name="ui.emr.patient.$other.differsFromPatient">Different address than the registrant</string>
 
 
     <string name="ui.emr.search.online">Could not locate this data on the local environment, do you

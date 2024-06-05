@@ -92,6 +92,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                         lookupRelative("Mother", $scope.scopedObject.relationship.Mother[0].identifier);
                     }
                 });
+
                 break;
             case "org.santedb.emr.widget.patient.register.relative":
                 $scope.$watch(scope => JSON.stringify(scope.scopedObject.relationship.NextOfKin[0].identifier), function (n, o) {

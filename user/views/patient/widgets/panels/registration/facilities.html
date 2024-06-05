@@ -1,0 +1,37 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container p-0">
+    <sdb:widget order="80" name="org.santedb.emr.widget.patient.register.facilities" headerClass="alert-info"
+        size="Large" type="Panel" context="org.santedb.emr.patient.register">
+        <sdb:icon>fas fa-hospital</sdb:icon>
+        <sdb:description lang="en">Facility Entry</sdb:description>
+    </sdb:widget>
+
+    <div ng-controller="EmrPatientRegisterWidgetController">
+
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-3 control-label required">
+                {{ 'ui.model.patient.relationship.DedicatedServiceDeliveryLocation' | i18n }} <hint-popover
+                    hint-title="ui.model.patient.relationship.DedicatedServiceDeliveryLocation" />
+            </label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search type="'Place'" search-field="'name.component.value'"
+                    default-results="{ 'relationship[DedicatedServiceDeliveryLocation].source' : scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], 'relationship[DedicatedServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
+                    group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
+                    filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }" 
+                    ng-model="scopedObject.relationship.DedicatedServiceDeliveryLocation" value-property="'target'" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-3 control-label required">
+                {{ 'ui.model.patient.relationship.IncidentalServiceDeliveryLocation' | i18n }} <hint-popover
+                    hint-title="ui.model.patient.relationship.IncidentalServiceDeliveryLocation" />
+            </label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search type="'Place'" search-field="'name.component.value'"
+                    default-results="{ 'relationship[DedicatedServiceDeliveryLocation].source' : [ scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], scopedObject.address.TemporaryAddress[0].component._AddressPlaceRef[0] ], 'relationship[DedicatedServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
+                    group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
+                    filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }" multiple="multiple"
+                    ng-model="scopedObject.relationship.IncidentalServiceDeliveryLocation" value-property="'target'" />
+            </div>
+        </div>
+    </div>
+</div>
