@@ -43,25 +43,24 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     async function checkTickles() {
         try {
             var sourceTickles = await SanteDB.resources.tickle.findAsync({});
-            var tickles = [];
-            var hasAlert = false;
+            var tickles = [], toasted = [];
             sourceTickles.forEach(function (t) {
 
                 if (!t.type) return;
 
-                if (t.type.indexOf && t.type.indexOf("Danger") > -1 || t.type & 2)
-                    hasAlert = true;
+                if ((t.type.indexOf && t.type.indexOf("Toast") > -1 || t.type & 4) && toasted.indexOf(t.text) == -1) {
+                    
+                    toasted.push(t.text);
 
-                if (t.type.indexOf && t.type.indexOf("Toast") > -1 || t.type & 4) {
                     if (t.type.indexOf && t.type.indexOf("Danger") > -1 || t.type & 2)
                         toastr.error(t.text, null, { preventDuplicates: true });
                     else
                         toastr.info(t.text, null, { preventDuplicates: true });
-
                     SanteDB.resources.tickle.deleteAsync(t.id);
                 }
-
-                tickles.push(t);
+                else {
+                    tickles.push(t);
+                }
             });
 
             var lastTickle = tickles.length > 0 ? tickles[tickles.length - 1].id : null;

@@ -51,10 +51,6 @@
       <icon>fas fa-user-plus</icon>
       <text lang="en">Registration</text>
     </menuItem>
-     <menuItem context="ui.emr" launch="santedb-emr.patient.register-batch" asset="/org.santedb.emr/views/patient/register-batch.html" order="-100">
-      <icon>fas fa-users</icon>
-      <text lang="en">Batch Registration</text>
-    </menuItem>
   </menuItem>
   <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/org.santedb.emr/views/system/index.html" order="1000">
     <icon>fas fa-tablet</icon>

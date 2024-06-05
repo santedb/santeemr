@@ -22,5 +22,66 @@
                  />
         </div>
 
+        <name-edit is-required="true" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
+            name="mothersName" />
+
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-3 control-label required">{{ 'ui.model.patient.dateOfBirth' | i18n }}
+                <hint-popover popover-title="ui.model.patient.dateOfBirth" />
+            </label>
+            <div class="col-sm-12 col-md-9">
+                <div class="input-group m-0">
+                    <div class="input-group mb-0">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">
+                                <input type="checkbox" ng-model="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision" ng-true-value="1"
+                                    ng-false-value="3" />
+                                {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                            </label>
+                        </div>
+                        <input name="motherAge" required="required" ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1"
+                            ng-change="scopedObject.relationship.Mother[0].targetModel.dateOfBirth = ageToDate(scopedObject.age)" type="number"
+                            ng-model="scopedObject.relationship.Mother[0].targetModel.age" min="0" class="form-control" />
+                        <input name="motherDob" required="required" ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 3"
+                            type="date" ng-model="scopedObject.relationship.Mother[0].targetModel.dateOfBirth" min="1900-01-01"
+                            max="{{ scopedObject.dateOfBirth | date: 'yyyy-MM-dd' }}" class="form-control" />
+                        <div class="input-group-append" ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1">
+                            <span class="input-group-text">{{ 'ui.emr.patient.ageInYears' | i18n }}</span>
+                            <span class="input-group-text">{{ 'ui.model.patient.dateOfBirth.approx' | i18n }} {{
+                                scopedObject.relationship.Mother[0].targetModel.dateOfBirth | extDate: scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision }}</span>
+                        </div>
+                        <div class="input-group-append" ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 3">
+                            <span class="input-group-text">{{ dateToAge(scopedObject.relationship.Mother[0].targetModel.dateOfBirth )}} {{ 'ui.emr.patient.ageInYears' | i18n }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-danger d-none d-sm-block"
+                    ng-if="panel.editForm['motherDob'].$invalid || panel.editForm['motherAge'].$invalid">
+                    <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
+        </div>
+
+        <telecom-edit owner-form="panel.editForm" telecom="scopedObject.relationship.Mother[0].targetModel.telecom" allowed-types="[ 'MobileContact' ]" required-types="[ 'MobileContact' ]" />
+
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.nationality' | i18n }}</label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search type="'Concept'"
+                    ng-model="scopedObject.relationship.Mother[0].targetModel.nationalityKey" search-field="'name.value'"
+                    filter="{ 'conceptSet': '7f4e7366-a0e6-4a5e-b2b1-82187447e792' }" />
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.relationship.Citizen' | i18n }}</label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search type="'Place'"
+                    ng-model="scopedObject.relationship.Mother[0].targetModel.Citizen" multiple="multiple" 
+                    search-field="'name.component.value'" value-property="'target'"
+                    filter="{ 'classConcept': '48b2ffb3-07db-47ba-ad73-fc8fb8502471' }" />
+            </div>
+        </div>
+
     </div>
 </div>
