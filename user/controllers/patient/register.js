@@ -47,6 +47,29 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     // unbind the nav away
     $scope.$on("$destroy", function (s) {
         window.onbeforeunload = null;
+    });
+
+    // When the home address changes - automatically apply the default for selected facility
+    $scope.$watch((scope) => scope.entity ? JSON.stringify(scope.entity.address.HomeAddress) : null, async function (n, o) {
+        if (n && n != o) {
+            try {
+                if ($scope.entity.address.HomeAddress[0].component && 
+                    $scope.entity.address.HomeAddress[0].component._AddressPlaceRef &&
+                    $scope.entity.address.HomeAddress[0].component._AddressPlaceRef.length
+                ) {
+                    var dsdl = await SanteDB.resources.place.findAsync({ "classConcept": EntityClassKeys.ServiceDeliveryLocation, "relationship[DedicatedServiceDeliveryLocation].source": $scope.entity.address.HomeAddress[0].component._AddressPlaceRef, _count: 1, _includeTotal: true });
+                    if (dsdl.totalResults == 1) // one result!
+                    {
+                        $timeout(() => {
+                            $scope.entity.relationship.DedicatedServiceDeliveryLocation[0].target = dsdl.resource[0].id;
+                        });
+                    }
+                }
+            }
+            catch (e) {
+                console.warn(e);
+            }
+        }
     })
 }])
     // CONTROLLER -> Generic functions for registration widgets (note: should not $watch or initialize data)
@@ -103,4 +126,4 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 break;
         }
 
-}])
+    }])
