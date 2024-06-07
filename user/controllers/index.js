@@ -23,6 +23,8 @@ var _boundTransitionStart = false;
 angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", "$transitions", "$timeout", function ($scope, $rootScope, $state, $templateCache, $interval, $transitions, $timeout) {
 
     var _lastTickle = null;
+    var _isTickling = false;
+
     // Check for new mail
     async function checkMail() {
 
@@ -42,6 +44,8 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     // Check for new tickles
     async function checkTickles() {
         try {
+            if(_isTickling) return; // already checking tickles - don't want to duplicate
+            _isTickling = true;
             var sourceTickles = await SanteDB.resources.tickle.findAsync({});
             var tickles = [], toasted = [];
             sourceTickles.forEach(function (t) {
@@ -77,6 +81,9 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         catch (e) {
             toastr.warning(SanteDB.locale.getString("ui.emr.tickleError"));
             console.error(e);
+        }
+        finally {
+            _isTickling = false;
         }
     }
 
