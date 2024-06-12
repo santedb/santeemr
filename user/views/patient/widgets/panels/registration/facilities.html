@@ -17,11 +17,16 @@
                     default-results="{ 'relationship[DedicatedServiceDeliveryLocation].source' : scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], 'relationship[DedicatedServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
                     group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
                     filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }" 
+                    required="required"
+                    name="DedicatedServiceDeliveryLocation"
                     ng-model="scopedObject.relationship.DedicatedServiceDeliveryLocation[0].target" />
+                    <div class="text-danger" ng-if="panel.editForm.DedicatedServiceDeliveryLocation.$error['required']">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
             </div>
         </div>
         <div class="form-group row">
-            <label class="col-sm-12 col-md-3 control-label required">
+            <label class="col-sm-12 col-md-3 control-label">
                 {{ 'ui.model.patient.relationship.IncidentalServiceDeliveryLocation' | i18n }} <hint-popover
                     hint-title="ui.model.patient.relationship.IncidentalServiceDeliveryLocation" />
             </label>
@@ -31,6 +36,15 @@
                     group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
                     filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }" multiple="multiple"
                     ng-model="scopedObject.relationship.IncidentalServiceDeliveryLocation" value-property="'target'" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-12 col-md-3 control-label required">
+                {{ 'ui.model.patient.relationship.ServiceDeliveryLocation' | i18n }}
+            </label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search type="'Place'" search-field="'name.component.value'" readonly="readonly" disabled="disabled"
+                    ng-model="scopedObject.relationship.ServiceDeliveryLocation[0].target" />
             </div>
         </div>
     </div>

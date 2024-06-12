@@ -18,11 +18,11 @@
         </div>
         <div ng-if="scopedObject.relationship.Mother[0].operation != 'Delete'">
             <identifier-list-edit owner-form="panel.editForm" name="motherId"
-                identifier="scopedObject.relationship.Mother[0].identifier"
+                model="scopedObject.relationship.Mother[0].targetModel.identifier"
                 container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
 
             <name-edit is-required="true" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
-                name="mothersName" />
+                name="mothersName" model="scopedObject.relationship.Mother[0].targetModel.name" />
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-3 control-label required">{{
@@ -87,10 +87,10 @@
                     {{ 'ui.emr.patient.mother.differsFromPatient' | i18n }} 
                 </label>
             </div>
-            <address-edit ng-if="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress[0]._differentThanPatient" is-required="true" address="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress" name="motherAddress" no-type="true" owner-form="editForm" no-add="true" simple-entry="true" />
+            <address-edit ng-if="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress[0]._differentThanPatient" is-required="true" model="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress" name="motherAddress" no-type="true" owner-form="editForm" no-add="true" simple-entry="true" />
 
             <telecom-edit owner-form="panel.editForm" name="mothersTelecom"
-                telecom="scopedObject.relationship.Mother[0].targetModel.telecom" allowed-types="[ 'MobileContact' ]"
+            model="scopedObject.relationship.Mother[0].targetModel.telecom" allowed-types="[ 'MobileContact' ]"
                 required-types="[ 'MobileContact' ]" />
 
             <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.nationality']">

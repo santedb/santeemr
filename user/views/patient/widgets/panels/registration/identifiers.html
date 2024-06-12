@@ -7,7 +7,14 @@
     </sdb:widget>
 
     <div ng-controller="EmrPatientRegisterWidgetController">
-        <identifier-list-edit owner-form="panel.editForm" identifier="scopedObject.identifier"
-            container-class="scopedObject.classConcept" />
+        <identifier-list-edit owner-form="panel.editForm" model="scopedObject.identifier"
+            container-class="scopedObject.classConcept" name="patientIdentifier" data-quality-id="identifier" />
+        <div class="row">
+            <div class="col-md-9 offset-md-3 col-sm-12"
+                ng-if="panel.editForm['patientIdentifier'].$error['dq'] || panel.editForm.dataQualityIssues['identifier']"
+                ng-class="{ 'text-primary': panel.editForm.dataQualityIssues['identifier'].priority == 'Information', 'text-warning': panel.editForm.dataQualityIssues['identifier'].priority == 'Warning', 'text-danger' :  panel.editForm.dataQualityIssues['identifier'].priority == 'Error'}">
+                <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['identifier'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['identifier'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
+            </div>
+        </div>
     </div>
 </div>

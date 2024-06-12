@@ -38,10 +38,10 @@
   </menuItem>
   <menuItem context="ui.emr" launch="santedb-emr.patient.dashboard" asset="/org.santedb.emr/views/patient/dashboard.html" order="-100">
     <icon>fas fa-hospital-user</icon>
-    <text lang="en">Patient Administration</text>
+    <text lang="en">Patients</text>
     <menuItem context="ui.emr" launch="santedb-emr.patient.search" asset="/org.santedb.emr/views/patient/search.html" order="-100">
       <icon>fas fa-search</icon>
-      <text lang="en">Patient Search</text>
+      <text lang="en">Search</text>
     </menuItem>
     <menuItem context="ui.emr" launch="santedb-emr.patient.advSearch" asset="/org.santedb.emr/views/patient/advSearch.html" order="-100">
       <icon>fas fa-search-plus</icon>
@@ -49,7 +49,7 @@
     </menuItem>
     <menuItem context="ui.emr" launch="santedb-emr.patient.register" asset="/org.santedb.emr/views/patient/register.html" order="-100">
       <icon>fas fa-user-plus</icon>
-      <text lang="en">Registration</text>
+      <text lang="en">Register</text>
     </menuItem>
   </menuItem>
   <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/org.santedb.emr/views/system/index.html" order="1000">

@@ -22,6 +22,10 @@
 
 function bindSearchScopeCommonFunctions($scope) {
 
+    // Initialize the familial relationship types
+    var familialRelationshipType = [];
+    SanteDB.resources.conceptSet.invokeOperationAsync(null, "expand", { "_mnemonic" : "FamilyMember" }).then(r => familialRelationshipType = r.resource.map(o=>o.mnemonic));
+
     // Item supplement which determines if the patientin question has an encounter active
     $scope.patientHasOpenEncounter = async function (patient) {
         if (patient.id) {
@@ -38,39 +42,13 @@ function bindSearchScopeCommonFunctions($scope) {
     }
 
     // Item supplement which retrieves details for a patient's first family member
-    $scope.firstFamilyMemberDetails = async function (patient) {
+    $scope.prepareForDisplay = async function (patient) {
+        console.info(familialRelationshipType);
         if (patient.relationship) {
-            let firstFamilyMember = Object.values(patient.relationship).find(relationship =>
-                'FamilyMember' in relationship[0].relationshipTypeModel.conceptSetModel
-            );
-            if (firstFamilyMember) {
-                try {
-                    let familyMember = await SanteDB.resources.person.getAsync(firstFamilyMember[0].target, "full", null, true);
-                    if (familyMember) {
-                        familyMember.relationshipType = firstFamilyMember[0].relationshipTypeModel.mnemonic;
-                        patient.firstFamilyMemberDetails = familyMember;
-                    }
-                } catch (error) { }
-            }
-        }
-        return patient;
-    }
 
-    $scope.firstIdentifier = async function (patient) {
-        if (patient.identifier) {
-            let firstIdentifierWithName
-            Object.values(patient.identifier).find(id => {
-                if (id[0].domainModel) {
-                    firstIdentifierWithName = id[0]
-                }
-            }
-            );
-            if (firstIdentifierWithName) {
-                patient.identifier = firstIdentifierWithName
-            }
-            else {
-                patient.identifier = Object.values(patient.identifier)[0][0]
-            }
+            // Extract all family members
+            patient.relationship.FamilyMember = Object.keys(patient.relationship).filter(k => familialRelationshipType.indexOf(k) > -1).map(k => patient.relationship[k][0]);
+            
         }
         return patient;
     }
@@ -122,7 +100,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         $scope.filter = {
             _any: search.value,
             _upstream: upstream,
-            _viewModel: 'full',
+            _viewModel: 'fastview',
             _orderBy: 'modifiedOn:desc'
         };
     }
@@ -241,7 +219,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         function performSearch(searchCrtiteria, upstream) {
             $scope.validateParameterCount();
             $scope.filter = {
-                _viewModel: 'full',
+                _viewModel: 'fastview',
                 _orderBy: 'modifiedOn:desc',
                 _upstream: upstream
             };
@@ -259,7 +237,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                         value = Object.keys(value).filter(v => value[v]).map(v => {
                             var subValue = value[v];
                             var op = v === '0' ? '>=' : v === '1' ? '<=' : '';
-                            return subValue instanceof Date ? `${op}${moment(subValue).format('YYYY-MM-DD')}` : `${op}${subValue}`;
+                            return subValue instanceof Date ? `${op}${moment(subValue).format('YYYY-MM-DD')}` : `${op}P${subValue}Y`;
                         });
                     }
 

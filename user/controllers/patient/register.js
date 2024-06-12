@@ -4,8 +4,15 @@
 angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", "$rootScope", "$state", "$transitions", "$interval", "$timeout", function ($scope, $rootScope, $state, $transitions, $interval, $timeout) {
 
 
+    const IGNORE_RELATIONSHIP = [
+        "ServiceDeliveryLocation",
+        "DedicatedServiceDeliveryLocation",
+        "IncidentalServiceDeliveryLocation"
+    ];
+
     // No template use the default
     var templateId = $state.templateId;
+
     if (!templateId) {
         templateId = SanteDB.configuration.getAppSetting("template.patient") || "org.santedb.emr.patient";
     }
@@ -73,9 +80,69 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         }
     });
 
+
+    async function detectDataQualityIssues() {
+        var dataQuality = await SanteDB.resources.patient.invokeOperationAsync(null, "validate", { target: $scope.entity });
+        var registrationForm = angular.element("#editForm").scope().editForm;
+        // Clear all DQ issues
+        Object.keys(registrationForm).filter(k => !k.startsWith("$")).forEach(k => {
+            if (registrationForm[k] && registrationForm[k].$error && registrationForm[k].$error['dq']) {
+                registrationForm[k].$setValidity("dq", true);
+            }
+        });
+
+
+        $timeout(() => {
+            registrationForm.dataQualityIssues = null;
+            if (dataQuality && dataQuality.length > 0) {
+                registrationForm.dataQualityIssues = {};
+                dataQuality.forEach(err => {
+                    var dqTarget = err.id.substring(0, err.id.indexOf('.'));
+                    var targetName = $(`[data-quality-id='${dqTarget}']`).attr("name");
+                    if (targetName) {
+                        registrationForm.dataQualityIssues[dqTarget] = err;
+
+                        if (err.priority == "Error" && registrationForm[targetName]) {
+                            registrationForm[targetName].$setValidity("dq", false);
+                        }
+                        else {
+                            err.dismiss = function () {
+                                delete (registrationForm.dataQualityIssues[dqTarget]);
+
+                                if (registrationForm[targetName]) {
+                                    registrationForm[targetName].$setValidity("dq", true);
+                                }
+                                if (Object.keys(registrationForm.dataQualityIssues) == 0) {
+                                    registrationForm.dataQualityIssues = {};
+                                    registrationForm._ignoreDataQualityIssues = true;
+                                }
+                            }
+                        }
+                        err.goTo = function () {
+                            $(`[name=${targetName}]`).focus();
+                        }
+                    }
+                    else {
+                        registrationForm.dataQualityIssues[dqTarget] = err;
+                    }
+                });
+            }
+        });
+
+    }
+
+    $timeout(() => {
+
+        $("input").on("blur", detectDataQualityIssues);
+        $("select").on("change", detectDataQualityIssues);
+
+    }, 1000);
+
+
     // Register the patient
-    $scope.registerPatient = async function(registrationForm) {
-        if(registrationForm.$invalid) {
+    $scope.registerPatient = async function (registrationForm) {
+
+        if (registrationForm.$invalid || registrationForm.dataQualityIssues && !confirm(SanteDB.locale.getString("ui.emr.patient.register.dataQuality.ignoreConfirm"))) {
             return;
         }
 
@@ -83,17 +150,18 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             SanteDB.display.buttonWait("#btnSubmit", true);
             var submissionBundle = new Bundle({ resource: [] });
             // First we want to strip off dependent objects
-            var patient = angular.copy($scope.entity);
-            
+            var patient = new Patient(angular.copy($scope.entity));
+            patient.id = patient.id || SanteDB.application.newGuid();
+
             // Target models should be moved to the bundle
-            Object.keys(patient.relationship).forEach(key => {
+            Object.keys(patient.relationship).filter(o=>IGNORE_RELATIONSHIP.indexOf(o) == -1).forEach(key => {
                 var relationship = patient.relationship[key];
-                relationship.filter(rel=>rel.relationshipType && rel.targetModel && rel.targetModel.operation !== BatchOperationType.Delete).forEach(rel => {
-                    submissionBundle.resource.push(rel.targetModel); 
+                relationship.filter(rel => rel.relationshipType && rel.targetModel && rel.targetModel.operation !== BatchOperationType.Delete).forEach(rel => {
+                    submissionBundle.resource.push(rel.targetModel);
                     rel.target = rel.targetModel.id = rel.targetModel.id || rel.target || SanteDB.application.newGuid();
 
                     // If the target model is a Person with same address we want to copy 
-                    if(rel.targetModel.address && 
+                    if (rel.targetModel.address &&
                         rel.targetModel.address.HomeAddress[0] &&
                         !rel.targetModel.address.HomeAddress[0]._differentThanPatient
                     ) {
@@ -104,26 +172,77 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             });
 
             // Any relationships under $other are moved 
-            for(var i = patient.relationship.$other.length - 1; i >= 0; i--) {
-                if(!patient.relationship.$other[i].relationshipType)
-                    {
-                        patient.relationship.$other.splice(i, 1);
-                    }
-                if(i > 0) {
+            for (var i = patient.relationship.$other.length - 1; i >= 0; i--) {
+                if (!patient.relationship.$other[i].relationshipType) {
+                    patient.relationship.$other.splice(i, 1);
+                }
+                if (i > 0) {
                     submissionBundle.resource.push(patient.relationship.$other[i]);
-                    delete(patient.relationship.$other[i]);
+                    delete (patient.relationship.$other[i]);
                 }
             }
+
             patient = await prepareEntityForSubmission(patient);
+            patient = scrubModelProperties(patient);
+
+            // Next we want to submit the registration
+            var registrationAct = new Act({
+                id: SanteDB.application.newGuid(),
+                classConcept: ActClassKeys.Registration,
+                actTime: new Date(),
+                moodConcept: ActMoodKeys.Eventoccurrence,
+                typeConcept: ADT_REGISTRATION_TYPES.ADMIT,
+                participation: {
+                    RecordTarget : [
+                        {
+                            player: patient.id
+                        }
+                    ],
+                    Location: [
+                        { 
+                            player: await SanteDB.authentication.getCurrentFacilityId()
+                        }
+                    ],
+                    Authororiginator: [
+                        {
+                            player: await SanteDB.authentication.getCurrentUserEntityId()
+                        }
+                    ]
+                }
+            });
+            //patient.creationAct = registrationAct.id;
+            submissionBundle.resource.push(registrationAct);
             submissionBundle.resource.push(patient);
 
+            // Emit the submission bundle for debugging
             console.info(submissionBundle);
 
             // Check for duplicates 
             console.info("Checking for duplicates");
-            var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: patient  });
+            if (!$scope.entity._ignoreDuplicates) {
+                var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: patient });
+                if (duplicates.results && duplicates.results != null) {
+                    $timeout(() => {
+                        $scope.detectedDuplicates = duplicates.results;
+                        $("#registrationDuplicatesModal").modal('show');
+                    });
+                    return;
+                }
+            }
+
+
+            var submissionResult = await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            toastr.success(SanteDB.locale.getString("ui.emr.patient.register.success"));
+
+            if($scope.entity.$then == "another") {
+                await initializeView();
+                $("input")[0].focus();
+            }
+            else {
+                SanteDB.application.getResourceViewer("Patient")[0]($state, { id: patient.id }); // Nav to the patient view screen
+            }
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
         finally {
@@ -158,11 +277,11 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     var matches = await SanteDB.resources.person.findAsync(filter, "min");
                     if (matches.totalResults == 1) {
                         $scope.scopedObject.relationship[relativeType][0] = new Person(matches.resource[0]); // Copy the information from the other relative
-                        
-                        if($scope.scopedObject.relationship[relativeType][0].address &&
+
+                        if ($scope.scopedObject.relationship[relativeType][0].address &&
                             $scope.scopedObject.relationship[relativeType][0].address.HomeAddress) {
-                                $scope.scopedObject.relationship[relativeType][0].address.HomeAddress[0]._differentThanPatient = true;
-                            }
+                            $scope.scopedObject.relationship[relativeType][0].address.HomeAddress[0]._differentThanPatient = true;
+                        }
                     }
                     else if (matches.totalResults > 1) {
                         toastr.warning(SanteDB.locale.getString("ui.emr.patient.register.relative.multipleMatches", { relativeType: relativeType }));
@@ -202,9 +321,11 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                             identifierList = $scope.scopedObject.identifier;
 
                             // Clear any duplicate errors
-                            $rootScope.system.uniqueDomains.map(uqd => `id${uqd}0`)
+                            $timeout(() => 
+                                $rootScope.system.uniqueDomains.map(uqd => `id${uqd}0`)
                                 .filter(uqd => $scope.panel.editForm[uqd])
-                                .forEach(uqd => $scope.panel.editForm[uqd].$setValidity("duplicate", true));
+                                .forEach(uqd => $scope.panel.editForm[uqd].$setValidity("duplicate", true))
+                            );
 
                             var duplicatedDomains = [];
                             Object.keys($scope.scopedObject.identifier).filter(f => $rootScope.system.uniqueDomains.indexOf(f) > -1).forEach(f => {
@@ -287,13 +408,13 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                         }
                                         else {
                                             toastr.warning(SanteDB.locale.getString("ui.emr.patient.register.duplicateDetected"));
-                                            duplicatedDomains.forEach(uqd => $scope.panel.editForm[`id${uqd}0`].$setValidity("duplicate", false));
+                                            $timeout(()=>duplicatedDomains.forEach(uqd => $scope.panel.editForm[`id${uqd}0`].$setValidity("duplicate", false)));
                                         }
                                         break;
                                     default:
                                         {
                                             toastr.warning(SanteDB.locale.getString("ui.emr.patient.register.duplicateDetected"));
-                                            duplicatedDomains.forEach(uqd => $scope.panel.editForm[`id${uqd}0`].$setValidity("duplicate", false));
+                                            $timeout(()=>duplicatedDomains.forEach(uqd => $scope.panel.editForm[`id${uqd}0`].$setValidity("duplicate", false)));
                                         }
                                 }
                             }

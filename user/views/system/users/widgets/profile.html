@@ -81,10 +81,10 @@
     </div>
     <form ng-submit="saveProfile(panel.editForm)" name="panel.editForm" method="dialog" novalidate="novalidate" autocomplete="off"
         ng-if="panel.view == 'Edit'">
-        <name-edit is-required="true" name="editObject.userEntity.name" simple-entry="true" no-add="true" no-type="true"
+        <name-edit is-required="true" model="editObject.userEntity.name" simple-entry="true" no-add="true" no-type="true"
             owner-form="panel.editForm" />
         <hr />
-        <address-edit is-required="false" address="editObject.userEntity.address" no-add="true" simple-entry="true" no-type="true"
+        <address-edit is-required="false" model="editObject.userEntity.address" no-add="true" simple-entry="true" no-type="true"
             owner-form="panel.editForm" />
         <hr />
         <div class="form-group row">
@@ -92,7 +92,7 @@
                 {{ 'ui.model.entity.telecom.Public' | i18n }}
             </label>
             <div class="col-md-9 col-sm-12">
-                <telecom-edit telecom="editObject.userEntity.telecom" single-edit="'Public'" owner-form="panel.editForm"
+                <telecom-edit model="editObject.userEntity.telecom" single-edit="'Public'" owner-form="panel.editForm"
                     no-label="true" />
             </div>
         </div>

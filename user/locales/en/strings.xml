@@ -65,10 +65,15 @@
     <string name="org.santedb.emr.widget.patient.register.telecom">Contact Information</string>
     <string name="org.santedb.emr.widget.patient.register.mother">Mother's Information</string>
     <string name="org.santedb.emr.widget.patient.register.facilities">Assigned Facilities</string>
+    <string name="ui.emr.patient.register.dataQuality.ignoreConfirm">There are one or more data quality issues with this record, do you still want to submit the registration?</string>
     <string name="ui.emr.patient.register.mother.unknown">Mother is unknown (i.e. child is orphan, adopted, etc.)</string>
     <string name="ui.emr.patient.register.relative.multipleMatches">Cannot auto-populate the {relativeType} information from identification as more than one match exists</string>
+    <string name="ui.emr.patient.register.dataQuality">Data Quality Issues</string>
+    <string name="ui.emr.patient.register.dataQuality.help"><![CDATA[<i class="fas fa-fw fa-cloud-rain"></i> We have detected some logical issues with your submission which may cause issues when using this registration information. Please review the issues and clear any errors prior to submitting the registration again.]]></string>
     <string name="ui.emr.patient.mother.differsFromPatient">Different address than the registrant</string>
     <string name="ui.emr.patient.$other.differsFromPatient">Different address than the registrant</string>
+    <string name="ui.emr.patient.register.upgradePerson">There is an existing non-patient record which will be upgraded when this entity is saved</string>
+    <string name="ui.emr.patient.register.duplicateDetected">A patient with this identifier already exists - please validate your entry and try again</string>
 
     <string name="ui.emr.search.online">Could not locate this data on the local environment, do you
         want to search the central server?</string>

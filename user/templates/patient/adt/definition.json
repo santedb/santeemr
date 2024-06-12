@@ -7,12 +7,12 @@
     "identifier": {
     },
     "name" : {
-        "OfficialRecord": {
+        "OfficialRecord": [{
             "component": {
                 "Given": [""],
                 "Family": [""]
             }
-        }
+        }]
     },
     "address": {
         "HomeAddress": [
@@ -37,9 +37,22 @@
                     "$type": "Person",
                     "genderConcept": "094941e9-a3db-48b5-862c-bc289bd7f86c",
                     "dateOfBirthPrecision": 1,
+                    "name": {
+                        "OfficialRecord": [
+                            {
+                                "component": {
+                                    "Given": [""],
+                                    "Family": [""]
+                                }
+                            }
+                        ]
+                    },
                     "address": {
                         "HomeAddress" : [
                             {
+                                "component": {
+                                    "$other" : []
+                                }
                             }
                         ]
                     }
@@ -50,7 +63,26 @@
             {
                 "targetModel": {
                     "$type" : "Person",
-                    "dateOfBirthPrecision": 1
+                    "dateOfBirthPrecision": 1,
+                   "name": {
+                        "OfficialRecord": [
+                            {
+                                "component": {
+                                    "Given": [""],
+                                    "Family": [""]
+                                }
+                            }
+                        ]
+                    },
+                    "address": {
+                        "HomeAddress" : [
+                            {
+                                "component": {
+                                    "$other" : []
+                                }
+                            }
+                        ]
+                    }
                 }
             }
         ],
@@ -62,6 +94,11 @@
         "IncidentalServiceDeliveryLocation" : [
             {
 
+            }
+        ],
+        "ServiceDeliveryLocation" : [
+            {
+                "target" : "{{ $facilityId }}"
             }
         ],
         "Birthplace" : [

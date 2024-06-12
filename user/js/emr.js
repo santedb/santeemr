@@ -69,3 +69,10 @@ function dateToAge(date, onDate) {
     return moment(onDate).diff(date, 'years', false);
 
 }
+
+
+const ADT_REGISTRATION_TYPES = {
+    BIRTH: 'f562e322-17ca-11eb-adc1-0242ac120002',
+    DEATH: 'f562e458-17ca-11eb-adc1-0242ac120002',
+    ADMIT: 'f562e624-17ca-11eb-adc1-0242ac120002'
+}
