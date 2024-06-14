@@ -16,12 +16,17 @@
                     ng-required="scopedObject.relationship.Mother[0].operation == 'Delete'"
                     concept-set="'ChildFamilyMember'" class="form-control"
                     exclude-concepts="[ '29ff64e5-b564-411a-92c7-6818c02a9e48' ]"
-                    ng-model="scopedObject.relationship.$other[0].relationshipType" />
+                    ng-model="scopedObject.relationship.$other[0].relationshipType" data-quality-id="nok" />
                 <concept-select ng-if="scopedObject.age &gt;= 18" name="nokRelationshipType" required="required"
-                    concept-set="'FamilyMember'" class="form-control"
+                    concept-set="'FamilyMember'" class="form-control" data-quality-id="nok"
                     ng-model="scopedObject.relationship.$other[0].relationshipType" />
                 <div class="text-danger" ng-if="panel.editForm.nokRelationshipType.$error['required']">
                     <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+                <div
+                    ng-if="panel.editForm['nokRelationshipType'].$error['dq'] || panel.editForm.dataQualityIssues['nok']" 
+                    ng-class="{ 'text-primary': panel.editForm.dataQualityIssues['nok'].priority == 'Information', 'text-warning': panel.editForm.dataQualityIssues['nok'].priority == 'Warning', 'text-danger' :  panel.editForm.dataQualityIssues['nok'].priority == 'Error'}">
+                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['nok'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['nok'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
                 </div>
             </div>
         </div>
@@ -30,6 +35,7 @@
 
             <identifier-list-edit owner-form="panel.editForm" name="nokIdentifier"
                 model="scopedObject.relationship.$other[0].targetModel.identifier"
+                create-mode="true"
                 container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
 
             <name-edit is-required="true" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
@@ -46,11 +52,11 @@
                         <div class="input-group mb-0">
                             <div class="input-group-prepend">
                                 <label class="input-group-text">
-                                    <div class="checkbox-container m-2">
+                                    <div class="checkbox-container">
                                         <input type="checkbox"
                                             ng-model="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision"
                                             ng-true-value="1" ng-false-value="3" class="checkbox-control" />
-                                        <span class="m-2"></span>
+                                        <span></span>
                                     </div>
                                     {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
                                 </label>
@@ -94,7 +100,7 @@
                 <div class="col-sm-12 col-md-9">
                     <concept-select class="form-control" required="required" name="nokBirthGender"
                         concept-set="'AdministrativeGenderCode'"
-                        ng-model="scopedObject.relationship.$other[0].targetModel.genderConceptModel" />
+                        ng-model="scopedObject.relationship.$other[0].targetModel.genderConcept" />
                     <div class="text-danger" ng-if="panel.editForm['nokBirthGender'].$invalid">
                         <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                     </div>

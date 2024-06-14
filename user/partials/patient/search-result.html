@@ -3,15 +3,18 @@
         <div class="col-12">
             <div class="d-flex">
                 <h5 class="card-title flex-grow-1 p-0 m-0">{{ item.name | name }}</h5>
-                <div class="p-2 justify-content-center badge badge-secondary" ng-if="item.deceasedDate"><i
+                <div class="m-2 justify-content-center badge badge-secondary" ng-if="item.deceasedDate"><i
                         class="fas fa-exclamation-circle"></i> {{ 'ui.model.patient.deceasedDate' | i18n }} ({{
                     item.deceasedDate | extDate: item.deceasedDatePrecision }})</div>
-                <div class="p-2 justify-content-center badge badge-info" ng-if="item.tag.$upstream[0] == 'true'"><i
+                <div class="m-2 justify-content-center badge badge-info" ng-if="item.tag.$upstream[0] == 'true'"><i
                         class="fas fa-cloud-meatball"></i> {{ 'ui.emr.patient.search.tag.upstream' | i18n }}</div>
-                <div class="p-2 justify-content-center"><i class="fas fa-fw"
+                <div class="m-2 justify-content-center badge badge-light" ng-if="item.multipleBirthOrder !== undefined">
+                    <i class="fas fa-fw fa-people-group"></i> {{ 'ui.model.patient.multipleBirthOrder' | i18n }}
+                </div>
+                <div class="m-2 justify-content-center"><i class="fas fa-fw"
                         ng-class="{ 'fa-genderless': null, 'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
                     {{ item.genderConceptModel | concept }}</div>
-                <div class="flex-grow justify-content-end p-2">
+                <div class="flex-grow justify-content-end m-2">
                     <!-- Show the preferred identifier if exists or configured-->
                     <strong
                         ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; item.identifier[$root.system.config.application.setting['aa.preferred']]">
@@ -41,11 +44,25 @@
         </div>
         <div class="col-12">
             <div class="d-flex">
-                <div class="p-2 flex-grow-1" ng-if="item.address.HomeAddress">
+                <div class="m-2 flex-grow-1" ng-if="item.address.HomeAddress">
                     <i class="fas fa-fw fa-house"></i> {{ item.address.HomeAddress | address }} <span class="badge badge-primary">{{ item.address.HomeAddress[0].useModel | concept }}</span>
                 </div>
-                <div class="p-2" ng-if="item.telecom.MobileContact">
-                    <i class="fas fa-fw fa-telephone"></i> {{ item.telecom.MobileContact | telecom }} <span class="badge badge-primary">{{ item.address.HomeAddress[0].useModel | concept }}</span>
+                <div class="m-2" ng-if="item.telecom.MobileContact">
+                    <i class="fas fa-fw fa-phone"></i> {{ item.telecom.MobileContact | telecom }} <span class="badge badge-primary">{{ item.address.HomeAddress[0].useModel | concept }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="d-flex">
+                <div class="m-2" ng-repeat="(k, rel) in item.relationship" ng-if="['Mother','Father','Guardian','Aunt','Uncle','Wife'].indexOf(k) &gt; -1">
+                    <div ng-repeat="r in rel track by $index" class="search-card-relative">
+                        <i class="fas fa-fw fa-people-arrows"></i>
+                        <span class="badge badge-primary m-2">{{ rel.relationshipTypeModel || k | concept }} </span>
+                        {{ r.targetModel.name | name }} 
+                        <a ng-if="r.targetModel.telecom.MobileContact" href="{{r.targetModel.telecom.MobileContact[0].value}}">
+                            <i class="fas fa-fw fa-phone"></i> {{ r.targetModel.telecom.MobileContact[0].value }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

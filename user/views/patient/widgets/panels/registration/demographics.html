@@ -26,12 +26,12 @@
                     <div class="input-group mb-0">
                         <div class="input-group-prepend">
                             <label class="input-group-text">
-                                <div class="m-2 checkbox-container">
-                                <input type="checkbox" ng-model="scopedObject.dateOfBirthPrecision" ng-true-value="1"
-                                ng-false-value="3" class="checkbox-control"/>
-                                <span class="m-2"></span>
+                                <div class="checkbox-container">
+                                    <input type="checkbox" ng-model="scopedObject.dateOfBirthPrecision" ng-true-value="1"
+                                    ng-false-value="3" class="checkbox-control"/>
+                                    <span></span>
+                                    {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
                                 </div>
-                            {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
                             </label>
                         </div>
                         <input name="patientAge" required="required" ng-if="scopedObject.dateOfBirthPrecision == 1"

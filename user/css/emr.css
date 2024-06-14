@@ -48,13 +48,14 @@ input[type="checkbox"].checkbox-control {
 }
 
 input[type="checkbox"].checkbox-control~span {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 16px;
-    width: 16px;
+    position: relative;
+    display:inline-block;
+    height: 1em;
+    width: 1em;
+    margin: 0em;
     border: solid 1px #868e96;
     border-radius: 5px;
+    margin:0em 0.25em 0em 0em;
 }
 
 label.checkbox-container {
@@ -131,4 +132,10 @@ fieldset > legend {
     font-weight: bold;
     background-color: var(--info);
     color: var(--light)
+}
+
+div.search-card-relative {
+    border: solid 1px var(--secondary);
+    border-radius: 5px;
+    padding: 0.25em
 }

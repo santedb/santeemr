@@ -11,25 +11,26 @@
     </div>
     <div class="row">
         <label class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.name' | i18n }}</label>
-        <div class="col-md-9 col-sm-12">
+        <div class="col-md-9 col-sm-12 pt-2">
             <ul class="list-group">
                 <li class="d-flex align-items-center"
                     ng-repeat="(n, name) in rel.targetModel.name">
                     {{ name | name }} <span
-                        class="badge badge-light">{{ name.useModel | concept }}</span></li>
+                        class="badge badge-light">{{ name[0].useModel | concept }}</span></li>
             </ul>
         </div>
         <label class="col-md-3 col-sm-12 control-label" ng-if="rel.targetModel.identifier">{{ 'ui.model.patient.identifier' | i18n }}</label>
-        <div class="col-md-9 col-sm-12"
+        <div class="col-md-9 col-sm-12 pt-2"
         ng-if="rel.targetModel.identifier">
             <ul class="list-group">
                 <li class="d-flex align-items-center"
                     ng-repeat="(n, id) in rel.targetModel.identifier">
-                    {{ id.value }} <span class="badge badge-info">{{ id.domainModel.name }}</span></li>
+                    <span ng-repeat="i in id track by $index">
+                    {{ i.value }} <span class="badge badge-info">{{ i.domainModel.name }}</span></span></li>
             </ul>
         </div>
         <label class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.dateOfBirth' | i18n }}</label>
-        <div class="col-md-9 col-sm-12"
+        <div class="col-md-9 col-sm-12 pt-2"
             ng-if="rel.targetModel.dateOfBirth">
             {{ rel.targetModel.dateOfBirth | extDate: rel.targetModel.dateOfBirthPrecision }}
             <span ng-if="!rel.targetModel.deceasedDate">
@@ -37,8 +38,7 @@
                 {{ rel.targetModel.dateOfBirth | age }}
                 )</span>
         </div>
-        
-        <div class="col-md-9 col-sm-12"
+        <div class="col-md-9 col-sm-12 pt-2"
             ng-if="!rel.targetModel.dateOfBirth">
             {{ 'ui.unknown' | i18n}}
         </div>
