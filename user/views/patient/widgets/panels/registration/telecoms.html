@@ -5,5 +5,5 @@
         <sdb:description lang="en">Patient Telecom Entry</sdb:description>
         <sdb:guard>scopedObject.age &gt;= 12</sdb:guard>
     </sdb:widget>
-    <telecom-edit owner-form="panel.editForm" name="patientTelecom" telecom="scopedObject.telecom" allowed-types="[ 'PrimaryHome', 'WorkPlace', 'MobileContact', 'EmergencyContact' ]" required-types="[ 'MobileContact' ]" />
+    <telecom-edit owner-form="panel.editForm" name="patientTelecom" model="scopedObject.telecom" allowed-types="[ 'PrimaryHome', 'WorkPlace', 'MobileContact', 'EmergencyContact' ]" required-types="[ 'MobileContact' ]" />
 </div>

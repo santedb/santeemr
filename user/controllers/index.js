@@ -25,6 +25,23 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     var _lastTickle = null;
     var _isTickling = false;
 
+    // Load helper properties
+    async function loadHelperProperties() {
+        if($rootScope.refValues) { return; }
+        try {
+            $rootScope.refValues = {};
+            
+            var familialRelationships = await SanteDB.resources.conceptSet.invokeOperationAsync(null, "expand", { "_mnemonic" : "FamilyMember" });
+
+            $timeout(() => {
+                $rootScope.refValues.FamilyMember = familialRelationships.resource.map(o=>o.mnemonic);
+            });
+        }
+        catch(e) {
+            console.warn("Could not load reference values");
+        }
+    }
+
     // Check for new mail
     async function checkMail() {
 
@@ -145,6 +162,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         if (nv && nv.user) {
             // Add menu items
             loadMenus();
+            loadHelperProperties();
             checkTickles();
             checkConflicts();
             checkMail();
@@ -155,6 +173,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
     if ($rootScope.session) {
         loadMenus();
+        loadHelperProperties();
     }
 
     // Clear all tickles
@@ -180,8 +199,10 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
     // Mailbox
     var refreshInterval = $interval(function () {
-        checkTickles();
-        checkConflicts();
+        if ($rootScope.session) {
+            checkTickles();
+            checkConflicts();
+        }
     }, 60000);
 
     var mailInterval = $interval(checkMail, 600000);

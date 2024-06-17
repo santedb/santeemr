@@ -25,19 +25,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             var _entityTemplate = await SanteDB.application.getTemplateContentAsync(templateId);
             $timeout(() => {
                 $scope.entity = angular.copy(_entityTemplate);
+                $scope.entity.$otherData = [];
             });
             
 
-        }
-        catch (e) {
-            $rootScope.errorHandler(e);
-        }
-    }
-
-    // Check for duplicates
-    async function checkDuplicates(patient) {
-        try {
-            // TODO: Invoke the $match operation
         }
         catch (e) {
             $rootScope.errorHandler(e);
@@ -92,7 +83,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         if(!$scope.entity || !$scope.entity.$type) { 
             return;
         }
-        
+
         var dataQuality = await SanteDB.resources.patient.invokeOperationAsync(null, "validate", { target: $scope.entity });
         var registrationForm = angular.element("#editForm").scope().editForm;
         // Clear all DQ issues
@@ -159,24 +150,28 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             // Target models should be moved to the bundle
             Object.keys(patient.relationship).filter(o => IGNORE_RELATIONSHIP.indexOf(o) == -1).forEach(key => {
                 var relationship = patient.relationship[key];
-                relationship.filter(rel => rel.relationshipType && rel.targetModel && rel.targetModel.operation !== BatchOperationType.Delete).forEach(rel => {
-                    submissionBundle.resource.push(rel.targetModel);
-                    rel.target = rel.targetModel.id = rel.targetModel.id || rel.target || SanteDB.application.newGuid();
+                relationship.filter(rel => rel.relationshipType && rel.targetModel && rel.targetModel.operation !== BatchOperationType.Delete && 
+                    (rel.targetModel.$type != "Person" || rel.targetModel.dateOfBirth)
+                )
+                    .forEach(rel => {                        
+                        submissionBundle.resource.push(rel.targetModel);
+                        rel.target = rel.targetModel.id = rel.targetModel.id || rel.target || SanteDB.application.newGuid();
 
-                    // If the target model is a Person with same address we want to copy 
-                    if (rel.targetModel.address &&
-                        rel.targetModel.address.HomeAddress[0] &&
-                        !rel.targetModel.address.HomeAddress[0]._differentThanPatient
-                    ) {
-                        rel.targetModel.address.HomeAddress = angular.copy(patient.address.HomeAddress);
-                    }
-                    delete rel.targetModel;
-                });
+                        // If the target model is a Person with same address we want to copy 
+                        if (rel.targetModel.address &&
+                            rel.targetModel.address.HomeAddress[0] &&
+                            !rel.targetModel.address.HomeAddress[0]._differentThanPatient
+                        ) {
+                            rel.targetModel.address.HomeAddress = angular.copy(patient.address.HomeAddress);
+                        }
+                        delete rel.targetModel;
+                    });
+                patient.relationship[key] = relationship.filter(o=>o.target);
             });
 
             // Any relationships under $other are moved 
             for (var i = patient.relationship.$other.length - 1; i >= 0; i--) {
-                if (!patient.relationship.$other[i].relationshipType) {
+                if (!patient.relationship.$other[i].relationshipType && !patient.relationship.$other[i].id) {
                     patient.relationship.$other.splice(i, 1);
                 }
                 if (i > 0) {
@@ -185,8 +180,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 }
             }
 
-            patient = await prepareEntityForSubmission(patient);
-            patient = scrubModelProperties(patient);
+            // Push any other data
+            if($scope.entity.$otherData) {
+                $scope.entity.$otherData.forEach(d=>submissionBundle.resource.push(d)); 
+            }
 
             // Next we want to submit the registration
             var registrationAct = new Act({
@@ -213,6 +210,28 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     ]
                 }
             });
+
+            // Move all participations to the ACT
+            if(patient.participation && patient.participation.RecordTarget) {
+                registrationAct.relationship = {
+                    Documents: patient.participation.RecordTarget.filter(o=>o.actModel).map(o => {
+                        if(o.actModel) 
+                        {
+                            o.act = o.actModel.id = o.actModel.id || SanteDB.application.newGuid();
+                            submissionBundle.resource.push(o.actModel);
+                            delete(o.actModel);
+                        }
+                        return new ActRelationship({
+                            target: o.act
+                        });
+                    })
+                };
+                delete patient.participation;
+            }
+            patient = await prepareEntityForSubmission(patient);
+            patient = scrubModelProperties(patient);
+
+
             //patient.creationAct = registrationAct.id;
             submissionBundle.resource.push(registrationAct);
             submissionBundle.resource.push(patient);
@@ -230,7 +249,6 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 }
             }
 
-
             var submissionResult = await SanteDB.resources.bundle.insertAsync(submissionBundle);
             toastr.success(SanteDB.locale.getString("ui.emr.patient.register.success"));
 
@@ -247,7 +265,6 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         }
         finally {
             SanteDB.display.buttonWait("#btnSubmit", false);
-
         }
 
     }
@@ -332,7 +349,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 });
                 break;
             case "org.santedb.emr.widget.patient.register.identifier":
-                $scope.$watch(scope => JSON.stringify(scope.scopedObject.identifier), async function (n, o) {
+                $scope.$watch(scope => scope.scopedObject.identifier ? Object.keys(scope.scopedObject.identifier).map(k => `${k}:${scope.scopedObject.identifier[k].map(i=>i.value).join(";")}`).join(",") : ";", async function (n, o) {
                     if (n && o && n != o) {
                         try {
                             var filter = {
@@ -368,32 +385,44 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                     case 0: // No matches
                                         break;
                                     case 1: // Exactly one 
-                                        if (duplicates.resource[0].$type == "Person") // The duplicate is a person - so we'll be upgrading them
+                                        if (duplicates.resource[0].$type == "Person") // The duplicate is a person - so we'll be linking them
                                         {
                                             toastr.info(SanteDB.locale.getString("ui.emr.patient.register.upgradePerson"));
                                             var dup = duplicates.resource[0];
 
                                             // All references to this person will also need to be corrected to this object
                                             var reverseReferences = await SanteDB.resources.entityRelationship.findAsync({ target: dup.id });
-
+                                            
                                             $timeout(() => {
+                                                SanteDB.application.copyValues($scope.scopedObject, dup);
+                                                $scope.scopedObject.classConcept = EntityClassKeys.Patient;
                                                 $scope.scopedObject.id = SanteDB.application.newGuid();
-                                                $scope.scopedObject.name = angular.copy(dup.name);
-                                                $scope.scopedObject.address = angular.copy(dup.address);
-                                                $scope.scopedObject.telecom = angular.copy(dup.telecom);
-                                                $scope.scopedObject.identifier = angular.copy(dup.identifier);
-                                                $scope.scopedObject.genderConcept = dup.genderConcept;
-                                                $scope.scopedObject.dateOfBirth = dup.dateOfBirth;
-                                                $scope.scopedObject.dateOfBirthPrecision = dup.dateOfBirthPrecision;
-                                                $scope.scopedObject.relationship.Replaces = [
+                                                $scope.scopedObject.age = dateToAge($scope.scopedObject.dateOfBirth);
+
+                                                $scope.scopedObject.$otherData = [];
+                                                $scope.scopedObject.$otherData.push(
+                                                    new EntityRelationship(
                                                     {
                                                         target: dup.id,
-                                                        targetModel: new Person({
-                                                            id: dup.id,
-                                                            statusConcept: StatusKeys.Obsolete
-                                                        })
-                                                    }
-                                                ];
+                                                        relationshipType: EntityRelationshipTypeKeys.Replaces,
+                                                        source: $scope.scopedObject.id
+                                                    })
+                                                );
+
+                                                Object.keys(dup.identifier).filter(f => $rootScope.system.uniqueDomains.indexOf(f) > -1).forEach(key => {
+                                                    dup.identifier[key].forEach(id => {
+                                                        $scope.scopedObject.$otherData.push(new EntityIdentifier({
+                                                            id: id.id,
+                                                            operation: BatchOperationType.Delete
+                                                        }));
+                                                    });
+                                                });
+                                                $scope.scopedObject.$otherData.push(
+                                                    new Person({
+                                                        id: dup.id, 
+                                                        statusConcept: StatusKeys.Obsolete
+                                                    })
+                                                );
 
                                                 // Copy any relationships
                                                 if (dup.relationship) {
@@ -416,15 +445,17 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                                 if (reverseReferences.resource) {
                                                     reverseReferences.resource.forEach(res => {
                                                         // Delete the old relationship
-                                                        $scope.scopedObject.relationship.$other.push(new EntityRelationship({
+                                                        $scope.scopedObject.$otherData.push(new EntityRelationship({
                                                             id: res.id,
                                                             operation: BatchOperationType.Delete
                                                         }));
                                                         // Add a new relationship between the old data and the new data
-                                                        $scope.scopedObject.relationship.$other.push(new EntityRelationship({
+                                                        $scope.scopedObject.$otherData.push(new EntityRelationship({
                                                             source: res.source,
                                                             holder: res.holder,
-                                                            target: $scope.scopedObject.id
+                                                            target: $scope.scopedObject.id,
+                                                            relationshipType: res.relationshipType,
+                                                            relationshipRole: res.relationshipRole
                                                         }));
                                                     });
                                                 }
@@ -449,7 +480,6 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     }
                 })
                 break;
-
         }
 
     }])

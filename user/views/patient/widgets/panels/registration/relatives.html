@@ -8,7 +8,7 @@
 
         <div class="form-group row">
             <label class="col-md-3 col-sm-12 control-label"
-                ng-class="{ 'required' : scopedObject.relationship.Mother[0].operation == 'Delete' }">
+                ng-class="{ 'required' : scopedObject.relationship.Mother[0].operation == 'Delete' &amp;&amp; scopedObject.age &lt; 16 }">
                 {{ 'ui.model.entity.relationship.relationshipType' | i18n }}  <hint-popover hint-title="ui.model.entity.relationship.relationshipType" />
             </label>
             <div class="col-sm-12 col-md-9">
@@ -17,7 +17,7 @@
                     concept-set="'ChildFamilyMember'" class="form-control"
                     exclude-concepts="[ '29ff64e5-b564-411a-92c7-6818c02a9e48' ]"
                     ng-model="scopedObject.relationship.$other[0].relationshipType" data-quality-id="nok" />
-                <concept-select ng-if="scopedObject.age &gt;= 18" name="nokRelationshipType" required="required"
+                <concept-select ng-if="scopedObject.age &gt;= 16" name="nokRelationshipType" ng-required="scopedObject.age &lt; 16"
                     concept-set="'FamilyMember'" class="form-control" data-quality-id="nok"
                     ng-model="scopedObject.relationship.$other[0].relationshipType" />
                 <div class="text-danger" ng-if="panel.editForm.nokRelationshipType.$error['required']">

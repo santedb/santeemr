@@ -108,11 +108,6 @@
         ]
     },
     "dateOfBirth": "{{ $today }}",
-    "dateOfBirthPrecision": 3,
-    "telecom" : {
-        "PrimaryHome": [
-            {
-            }
-        ]
-    }
+    "dateOfBirthPrecision": 3
+    
 }
