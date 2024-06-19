@@ -309,7 +309,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                             $timeout(() => {
                                 originalRelationshipData[relativeType] = $scope.scopedObject.relationship[relativeType][0].targetModel;
 
-                                var person = new Person(matches.resource[0]);
+                                var person = matches.resource[0].$type == "Person" ? new Person(matches.resource[0]) : new Patient(matches.resource[0]);
                                 $scope.scopedObject.relationship[relativeType][0].targetModel = person; // Copy the information from the other relative
                                 person.identifier = identifierList;
                                 person._populatedViaMatch = true;
