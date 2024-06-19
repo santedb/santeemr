@@ -39,7 +39,10 @@
             </div>
         </div>
         <div class="col-12">
-            <div class="d-flex justify-content-between">
+            <div class="d-flex justify-content-between align-items-stretch">
+                <div class="m-2">
+                    <i class="fas fa-fw fa-birthday-cake"></i> {{ item.dateOfBirth | extDate: item.dateOfBirthPrecision }} ({{ item.dateOfBirth | age }})
+                </div>
                 <div class="m-2 flex-grow-1" ng-if="item.telecom.MobileContact">
                     <i class="fas fa-fw fa-phone"></i> {{ item.telecom.MobileContact | telecom }} <span class="badge badge-primary">{{ item.address.HomeAddress[0].useModel | concept }}</span>
                 </div>

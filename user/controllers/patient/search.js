@@ -121,10 +121,10 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
         // Approximate fields
         var approxFunctions = {
-            'name.component[Given].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
-            'name.component[Family].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
-            'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value': (v, us) => [`~${v}`, `:(approx)${v}`],
-            'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value': (v, us) => [`~${v}`, `:(approx)${v}`],
+            'name.component[Given].value': (v, us) => [`~${v}`, `:(soundex)${v}`],
+            'name.component[Family].value': (v, us) => [`~${v}`, `:(similarity_lev|${v})<2` ],
+            'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value': (v, us) => [`~${v}`, `:(soundex)${v}`],
+            'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value': (v, us) => [`~${v}`, `:(similarity_lev|${v})<2`],
             'address.component[StreetAddressLine].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2` ],
             'telecom.value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`, `~${v}`],
             'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[StreetAddressLine].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
@@ -179,9 +179,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         function countFilterCriteria() {
             var nParameters = 0;
 
-            if ($scope.search['name.component[Given].value'] && $scope.search['name.component[Family].value']) // Name is one search field
+            if ($scope.search['name.component[Given].value'] || $scope.search['name.component[Family].value']) // Name is one search field
                 nParameters++;
-            if ($scope.search['search._expandAddressId'] || $scope.search['address.component[AddressLine].value'])
+            if ($scope.search['_expandAddressId'] || $scope.search['address.component[AddressLine].value'])
                 nParameters++;
             if ($scope.search['genderConcept'])
                 nParameters++;
@@ -191,7 +191,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 nParameters += 5; // Identifier is a known good search criteria
             if ($scope.search['telecom.value'])
                 nParameters++;
-            if ($scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value'] && $scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value'])
+            if($scope.search['_expandRelationshipAddressId'] || $scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[AddressLine].value'])
+                nParameters++;
+            if ($scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value'] || $scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value'])
                 nParameters++;
             if ($scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value'])
                 nParameters++;

@@ -66,8 +66,7 @@
                             <div class="input-group-append"
                                 ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 3">
                                 <span class="input-group-text">{{
-                                    dateToAge(scopedObject.relationship.Mother[0].targetModel.dateOfBirth )}} {{
-                                    'ui.emr.patient.ageInYears' | i18n }}</span>
+                                    scopedObject.relationship.Mother[0].targetModel.dateOfBirth  | age }}</span>
                             </div>
                         </div>
                     </div>
@@ -142,7 +141,7 @@
                         hint-title="ui.model.person.nationality" /></label>
                 <div class="col-sm-12 col-md-9">
                     <entity-search type="'Concept'"
-                        ng-model="scopedObject.relationship.Mother[0].targetModel.nationalityKey"
+                        ng-model="scopedObject.relationship.Mother[0].targetModel.nationality"
                         search-field="'name.value'" filter="{ 'conceptSet': '7f4e7366-a0e6-4a5e-b2b1-82187447e792' }" />
                 </div>
             </div>
@@ -151,7 +150,7 @@
                 <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.relationship.Citizen' | i18n
                     }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" /></label>
                 <div class="col-sm-12 col-md-9">
-                    <entity-search type="'Place'" ng-model="scopedObject.relationship.Mother[0].targetModel.Citizen"
+                    <entity-search type="'Place'" ng-model="scopedObject.relationship.Mother[0].targetModel.relationship.Citizen"
                         multiple="multiple" search-field="'name.component.value'" value-property="'target'"
                         filter="{ 'classConcept': '48b2ffb3-07db-47ba-ad73-fc8fb8502471' }" />
                 </div>

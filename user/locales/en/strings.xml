@@ -13,7 +13,8 @@
     <string name="ui.action.check-in">Check-in</string>
     <string name="ui.action.visit">Visit</string>
     <string name="ui.action.discharge">Discharge</string>
-
+    <string name="ui.action.useRecord">Use Record</string>
+    <string name="ui.action.change">Change Record</string>
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
     <string name="ui.emr.patient.index">My Patients</string>
@@ -32,11 +33,18 @@
     <string name="ui.emr.patient.ageInYears">years old</string>
     <string name="ui.emr.patient.relationship.activate">Patient has a</string>
     <string name="ui.emr.patient.register.duplicates">Potential Duplicates</string>
-    <string name="ui.emr.patient.register.duplicates.instruction">The following patients are similar
-        to the patient you have entered. Review the duplicates below to ensure you are not
-        registering a duplicate</string>
+    <string name="ui.emr.patient.register.duplicates.instruction"><![CDATA[The system has detected that the patient information you have entered is similar to the following patients. Please review and: <ul class="m-0 ml-3">
+        <li><strong>Update</strong> - The existing record with the information you have entered</li>
+        <li><strong>Use</strong> - Do not update anything and use the existing record</li>
+        <li><strong>Change</strong> - Modify any data that was entered in the registration form</li>
+        <li><strong>Register</strong> - Ignore the duplicate and register your new patient</li>
+        </ul>]]></string>
     <string name="ui.emr.patient.register.duplicates.verification">I have verified this patient is
         not a duplicate</string>
+    <string name="ui.emr.patient.register.duplicates.confidence">Confidence</string>
+    <string name="ui.emr.patient.register.duplicates.confidence.0">Non-Match</string>
+    <string name="ui.emr.patient.register.duplicates.confidence.1">Probable Match</string>
+    <string name="ui.emr.patient.register.duplicates.confidence.2">Definite Match</string>
     <string name="ui.emr.patient.register.requiredFieldMissing">Required Fields Missing</string>
     <string name="ui.emr.patient.downloading">Downloading patient data from central</string>
     <string name="ui.emr.patient.register">Register Patient</string>

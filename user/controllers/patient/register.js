@@ -41,7 +41,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
     initializeView(templateId);
 
-    var validateInterval = $interval(detectDataQualityIssues, 2000);
+    var validateInterval = $interval(detectDataQualityIssues, 3000);
 
     // Confirm navigation away in browser
     window.onbeforeunload = function () {
@@ -239,11 +239,24 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             // Check for duplicates 
             console.info("Checking for duplicates");
             if (!$scope.entity._ignoreDuplicates) {
-                var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: patient });
+                var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: patient, _count: 5, _offset: 0 });
                 if (duplicates.results && duplicates.results != null) {
+                    // Fetch the results
+                    duplicates.offset = 0;
+                    duplicates.count = 5;
+                    duplicates.results = await Promise.all(duplicates.results.map(async function(res) 
+                    {
+                        try {
+                            res.recordModel = await SanteDB.resources.patient.getAsync(res.record, 'fastview');
+                        }
+                        catch(e) {
+                            res.recordModel = {};
+                        }
+                        return res;
+                    }));
                     $timeout(() => {
-                        $scope.detectedDuplicates = duplicates.results;
-                        $("#registrationDuplicatesModal").modal('show');
+                        $scope.duplicates = duplicates;
+                        $("#duplicateModal").modal('show');
                     });
                     return;
                 }

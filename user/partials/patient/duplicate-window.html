@@ -18,15 +18,34 @@
                     <div class="row">
                         <div class="col">{{ 'ui.emr.patient.register.duplicates.instruction' | i18n }}</div>
                     </div>
-                    <div class="row" ng-repeat="result in duplicates.resource">
+                    <div class="row m-0 mb-1" ng-repeat="duplicate in duplicates.results track by $index">
                         <div class="col">
-                            <!-- #include virtual="~/views/patient/partials/search-result.html" -->
+                            <div class="card m-0" ng-init="item = duplicate.recordModel" ng-class="{ 'alert-success' : duplicate.classification == 2, 'alert-primary': duplicate.classification == 1, 'alert-secondary': duplicate.classification == 0 }">
+                                <!-- #include virtual="~/partials/patient/search-result.html" -->
+                                 <div class="card-footer p-1">
+                                    <div class="d-flex align-items-stretch justify-content-between">
+                                        <div class="p-2 flex-grow-1">
+                                            <div class="p-2 text-center">{{ duplicate.strength * 100 | number: 0 }}% {{ 'ui.emr.patient.register.duplicates.confidence' | i18n }}
+                                                <span class="badge" ng-class="{ 'badge-success' : duplicate.classification == 2, 'badge-primary': duplicate.classification == 1, 'badge-secondary': duplicate.classification == 0 }">
+                                                    {{ 'ui.emr.patient.register.duplicates.confidence.' + duplicate.classification | i18n }}</span>
+                                            </div></div>
+                                        <div class="p-2 btn-group float-right">
+                                            <button type="button" ng-click="updateDuplicateRecord(duplicate.record)" class="btn btn-info">
+                                                <i class="fas fa-fw fa-chevron-up"></i> {{ 'ui.action.update' | i18n }}
+                                            </button>
+                                            <button type="button" ng-click="navRecord(duplicate.record)" class="btn btn-primary">
+                                                <i class="fas fa-fw fa-chevron-right"></i> {{ 'ui.action.useRecord' | i18n }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                 </div>
+                            </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            {{ duplicates.offset + 1}} .. {{ duplicates.offset + duplicates.resource.length}} of
-                            {{ duplicates.totalResults }}
+                            {{ duplicates.offset + 1}} .. {{ duplicates.offset + duplicates.results.length}} of
+                            {{ duplicates.results.length }}
                         </div>
                         <div class="col">
                             <ul class="pagination float-right">
@@ -60,7 +79,7 @@
                     <div class="col">
                         <div class="btn-group float-right">
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                                <i class="fa fa-chevron-right"></i> {{ 'ui.action.back' | i18n }}</button>
+                                <i class="fa fa-chevron-left"></i> {{ 'ui.action.change' | i18n }}</button>
                             <button class="btn btn-primary" ng-disabled="!entity.ignoreDuplicates" type="submit">
                                 <i class="fa fa-check"></i> {{ 'ui.action.register' | i18n }}</button>
                         </div>

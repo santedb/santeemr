@@ -47,7 +47,7 @@
                                 scopedObject.dateOfBirth | extDate: scopedObject.dateOfBirthPrecision }}</span>
                         </div>
                         <div class="input-group-append" ng-if="scopedObject.dateOfBirthPrecision == 3">
-                            <span class="input-group-text">{{ dateToAge(scopedObject.dateOfBirth )}} {{ 'ui.emr.patient.ageInYears' | i18n }}</span>
+                            <span class="input-group-text">{{ scopedObject.dateOfBirth | age }}</span>
                         </div>
                     </div>
                 </div>
