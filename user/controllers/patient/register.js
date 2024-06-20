@@ -141,6 +141,8 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         }
 
         try {
+
+            $("#duplicateModal").modal('hide');
             SanteDB.display.buttonWait("#btnSubmit", true);
             var submissionBundle = new Bundle({ resource: [] });
             // First we want to strip off dependent objects
@@ -164,7 +166,6 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                         ) {
                             rel.targetModel.address.HomeAddress = angular.copy(patient.address.HomeAddress);
                         }
-                        delete rel.targetModel;
                     });
                 patient.relationship[key] = relationship.filter(o=>o.target);
             });
@@ -231,15 +232,15 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             patient = await prepareEntityForSubmission(patient);
             patient = scrubModelProperties(patient);
 
-
             //patient.creationAct = registrationAct.id;
             submissionBundle.resource.push(registrationAct);
             submissionBundle.resource.push(patient);
+            submissionBundle.focal = [ patient.id ];
 
             // Check for duplicates 
             console.info("Checking for duplicates");
             if (!$scope.entity._ignoreDuplicates) {
-                var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: patient, _count: 5, _offset: 0 });
+                var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: submissionBundle, _count: 5, _offset: 0 });
                 if (duplicates.results && duplicates.results != null) {
                     // Fetch the results
                     duplicates.offset = 0;
@@ -256,6 +257,8 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     }));
                     $timeout(() => {
                         $scope.duplicates = duplicates;
+                        $scope.duplicates.inputModel = patient;
+                        $scope.duplicates.inputModel.relationship = $scope.entity.relationship;
                         $("#duplicateModal").modal('show');
                     });
                     return;
