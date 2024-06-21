@@ -1,0 +1,162 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="false">~/controllers/system/backup/index.js</sdb:script>
+    <sdb:state name="santedb-emr.system.backup.index">
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.0.18</sdb:demand>
+        <sdb:url></sdb:url>
+        <sdb:view>
+            <sdb:title>Backup Explorer</sdb:title>
+            <sdb:controller>EmrBackupIndexController</sdb:controller>
+        </sdb:view>
+    </sdb:state>
+
+    <entity-table id="SystemBackupTable" type="Backup" sub-resource-holder="backupMedia" sub-resource="Descriptor"
+        search-field="label" key-property="'label'" i18n-prefix="'ui.model.backup.'" no-deleted="true"
+        button-bar="'#backupMediaDiv'" stateless="true"
+        sort="{ label: 'label', timestamp: 'timestamp',size:'size',createdBy:'createdBy'}"
+        render="{ 'timestamp' : renderTimestamp, 'encrypted': renderEncrypted,  'size': renderSize }" item-actions="[
+            { name: 'view', sref: 'santedb-emr.system.backup.view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.18', className: 'btn-primary', icon: 'fas fa-eye' },
+            { name: 'delete', action: 'deleteBackup', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.18', className: 'btn-danger', icon: 'fas fa-trash' },
+            { name: 'restore', action: 'showRestoreControl', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.18', className: 'btn-warning', icon: 'fas fa-undo' },
+        ]" properties="[ 'label', 'timestamp', 'size', 'encrypted', 'createdBy' ]">
+
+    </entity-table>
+
+    <div id="backupMediaDiv">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text">{{ 'ui.model.backup.media' | i18n }}</span>
+            </div>
+            <select class="form-control my-1" ng-model="backupMedia">
+                <option value="Private">Private</option>
+                <option value="Public">Public</option>
+                <option value="ExternalPublic">External Media</option>
+            </select>
+            <div class="input-group-append">
+                <button id="btnBackup" class="btn btn-info" ng-click="showBackupControl()" type="button">
+                    <i class="fas fa-plus-circle"></i> {{ 'ui.action.backup' | i18n }}
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    
+    <div class="modal" id="restoreModal" tabindex="-1" role="dialog" aria-labelledby="restoreModalTitle"
+        aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="restoreModalTitle">
+                        <i class="fa fa-fw fa-undo"></i> {{ 'ui.emr.restore.now' | i18n }} {{ restoreParm.label }}
+                    </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
+                </div>
+                <form ng-submit="restoreBackup(restoreParm.label)" name="restoreForm" novalidate="novalidate">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    {{ 'ui.emr.restore.now.help' | i18n }}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-sm-12 control-label">
+                                    {{ 'ui.model.backup.password' | i18n }} <hint-popover hint-title="ui.model.backup.password"/>
+                                </label>
+                                <div class="col-md-9 col-sm-12">
+                                    <input type="password" name="txtPassword" ng-required="true"
+                                        ng-model="restoreParm.password" class="form-control" />
+                                    <span class="text-danger" ng-if="restoreForm.txtPassword.$error['required']">
+                                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                    </span>
+                                </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                            <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
+                        <button type="submit" class="btn btn-primary" id="btnDoRestore" ng-disabled="restoreForm.$invalid">
+                            <i class="fa fa-check"></i> {{ 'ui.action.restore' | i18n }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="backupModal" tabindex="-1" role="dialog" aria-labelledby="backupModalTitle"
+        aria-hidden="true" data-backdrop="static">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="backupModalTitle">
+                        <i class="fa fa-fw fa-cubes"></i> {{ 'ui.emr.backup.now' | i18n }}
+                    </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
+                </div>
+                <form ng-submit="backupNow(backupForm)" name="backupForm" novalidate="novalidate">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    {{ 'ui.emr.backup.now.help' | i18n }}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-3 col-sm-12 control-label required">{{'ui.model.backup.media' | i18n
+                                    }} <hint-popover hint-title="ui.model.backup.media"/></label>
+                                <div class="col-md-9 col-sm-12">
+                                    <select class="form-control my-1" ng-model="newBackup.media">
+                                        <option value="Private">Private</option>
+                                        <option value="Public">Public</option>
+                                        <option value="ExternalPublic">External Media</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-md-9 offset-md-3 col-sm-12">
+                                    <input type="checkbox" ng-model="newBackup.encrypt" ng-change="newBackup.password = ''" />
+                                    {{ 'ui.model.backup.encrypt' | i18n }}</label>
+                            </div>
+                            <div class="form-group row" ng-if="newBackup.encrypt">
+                                <label class="col-md-3 col-sm-12 control-label required">
+                                    {{ 'ui.model.backup.password' | i18n }} <hint-popover hint-title="ui.model.backup.password"/>
+                                </label>
+                                <div class="col-md-9 col-sm-12">
+                                    <input type="password" name="txtPassword" ng-required="newBackup.encrypt"
+                                        ng-model="newBackup.password" class="form-control" />
+                                    <span class="text-danger" ng-if="backupForm.txtPassword.$error['required']">
+                                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                    </span>
+                                </div>
+                        </div>
+                            <!-- #include virtual="/org.santedb.uicore/partials/security/password.strength.html" -->
+
+                            <div class="form-group row">
+                                <div class="col-12 alert alert-warning"
+                                    ng-if="newBackup.media != 'Private' &amp;&amp; !newBackup.encrypt">
+                                    <i class="fas fa-exclamation-circle fa-fw"></i> {{
+                                    'ui.emr.backup.now.securityNotice' | i18n }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                            <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
+                        <button type="submit" class="btn btn-primary" id="btnDoBackup" ng-disabled="backupForm.$invalid || (newBackup.encrypt &amp;&amp; strength &lt; 4) ">
+                            <i class="fa fa-check"></i> {{ 'ui.action.backup' | i18n }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

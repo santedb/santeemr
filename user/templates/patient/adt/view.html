@@ -1,0 +1,26 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <div class="row no-gutters align-items-center">
+        <div class="col-12 ml-2">
+            <a  ui-sref="santedb-emr.patient.view({id: entity.id })"><h5>                
+                {{ entity.name | name }} <span class="badge badge-light" ng-repeat="(k,id) in entity.identifier">
+                <span ng-if="id.value">
+                    <i class="fas fa-id-card"></i> {{ id.value }} <small>{{id.domainModel.name}} </small>
+                </span>
+                <span ng-if="id.length" ng-repeat="idd in id">
+                    <i class="fas fa-id-card"></i> {{ idd.value }} <small>{{idd.domainModel.name}} </small></span>
+                </span>
+            </h5> 
+        </a>
+            <em><i class="fas fa-city"></i> {{ entity.address | address }}</em><br/>
+            <i class="fas fa-birthday-cake"></i> {{ entity.dateOfBirth | extDate: entity.dateOfBirthPrecision}} ( {{ entity.dateOfBirth | age }}) 
+            <span ng-if="entity.deceasedDate" class="badge badge-dark">{{ 'ui.model.patient.deceased' | i18n }}</span> 
+            <i class="fas" ng-class="{ 'fa-female' : entity.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c', 'fa-male' : entity.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-restroom' : null }"></i> 
+            {{ entity.genderConceptModel | concept }}
+            <div class="text-danger" ng-if="entity._batchError">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ entity._batchError }}
+            </div>
+
+        </div>
+    </div>
+
+</div>

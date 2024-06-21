@@ -1,0 +1,365 @@
+<resources>
+
+
+    <string name="ui.directConnect">Direct Connect to Server</string>
+    <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
+    <string name="ui.emr.loginMessage">Log into SanteEMR</string>
+    <!-- Mail -->
+    <string name="ui.emr.mail.all">View All Mail</string>
+
+    <!-- Actions -->
+    <string name="ui.emr.profile">My Profile</string>
+    <string name="ui.action.save.then.checkin">Save &amp; Go To</string>
+    <string name="ui.action.check-in">Check-in</string>
+    <string name="ui.action.visit">Visit</string>
+    <string name="ui.action.discharge">Discharge</string>
+    <string name="ui.action.useRecord">Use Record</string>
+    <string name="ui.action.change">Change Record</string>
+    <!-- Search terms -->
+    <string name="ui.emr.patient.search.term">Search For</string>
+    <string name="ui.emr.patient.index">My Patients</string>
+    <string name="ui.emr.patient.mdm.rotWarning">This data comes from a record of truth at the
+        central server. Any edits made will only represent recommended edits, when you
+        re-synchronize this patient you may see your values overridden.</string>
+    <string name="ui.emr.patient.recent">Recent Patients</string>
+    <string name="ui.emr.patient.search">Search Patients</string>
+    <string name="ui.emr.patient.search.results">Results</string>
+    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address,
+        Identification, or Telephone</string>
+    <string name="ui.emr.patient.search.online">Include patients from the central server (out of my
+        catchment)</string>
+    <string name="ui.emr.patient.upstream.edit">You cannot edit the details of this patient as they
+        exist only on the central server. Download a copy of the resource first</string>
+    <string name="ui.emr.patient.ageInYears">years old</string>
+    <string name="ui.emr.patient.relationship.activate">Patient has a</string>
+    <string name="ui.emr.patient.register.duplicates">Potential Duplicates</string>
+    <string name="ui.emr.patient.register.duplicates.instruction"><![CDATA[The system has detected that the patient information you have entered is similar to the following patients. Please review and: <ul class="m-0 ml-3">
+        <li><strong>Update</strong> - The existing record with the information you have entered</li>
+        <li><strong>Use</strong> - Do not update anything and use the existing record</li>
+        <li><strong>Change</strong> - Modify any data that was entered in the registration form</li>
+        <li><strong>Register</strong> - Ignore the duplicate and register your new patient</li>
+        </ul>]]></string>
+    <string name="ui.emr.patient.register.duplicates.verification">I have verified this patient is
+        not a duplicate</string>
+    <string name="ui.emr.patient.register.duplicates.confidence">Confidence</string>
+    <string name="ui.emr.patient.register.duplicates.confidence.0">Non-Match</string>
+    <string name="ui.emr.patient.register.duplicates.confidence.1">Probable Match</string>
+    <string name="ui.emr.patient.register.duplicates.confidence.2">Definite Match</string>
+    <string name="ui.emr.patient.register.duplicates.input">Patient being Registered</string>
+    <string name="ui.emr.patient.register.duplicates.detected">Potential Duplicates Detected</string>
+    <string name="ui.emr.patient.register.requiredFieldMissing">Required Fields Missing</string>
+    <string name="ui.emr.patient.downloading">Downloading patient data from central</string>
+    <string name="ui.emr.patient.register">Register Patient</string>
+    <string name="ui.emr.patient.registered">Submitted Data</string>
+    <string name="ui.emr.patient.registered.none">No Patients Registered</string>
+    <string name="ui.emr.directDisable.localUser">This service is connected directly to the remote
+        server. Local user functions are disabled</string>
+    <!-- Patient Dashboard-->
+    <string name="org.santedb.emr.patient.dashboard.title">Patient Administration</string>
+    <string name="org.santedb.emr.patient.dashboard.recentPatients">Recent Patients</string>
+    <string name="org.santedb.emr.patient.dashboard.summary">Patient Summary</string>
+    <string name="org.santedb.emr.patient.dashboard.duplicates">Possible Duplicate Records</string>
+    
+    <!-- Patient View -->
+    <string name="org.santedb.emr.widget.dashboard.patientSearch">Quick Search Patients</string>
+    <string name="org.santedb.emr.widget.patient.demographics">Demographics</string>
+    <string name="org.santedb.emr.widget.patient.dashboard">Dashboard</string>
+    <string name="org.santedb.emr.widget.patient.identity">Identification</string>
+    <string name="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
+
+    <!-- Patient Registration -->
+    <string name="org.santedb.emr.widget.patient.register.demographics">Demographics</string>
+    <string name="org.santedb.emr.widget.patient.register.identifier">Identification</string>
+    <string name="org.santedb.emr.widget.patient.register.relatives">Relatives / Family Members</string>
+    <string name="org.santedb.emr.widget.patient.register.address">Addresses</string>
+    <string name="org.santedb.emr.widget.patient.register.telecom">Contact Information</string>
+    <string name="org.santedb.emr.widget.patient.register.mother">Mother's Information</string>
+    <string name="org.santedb.emr.widget.patient.register.facilities">Assigned Facilities</string>
+    <string name="ui.emr.patient.register.dataQuality.ignoreConfirm">There are one or more data quality issues with this record, do you still want to submit the registration?</string>
+    <string name="ui.emr.patient.register.mother.unknown">Mother is unknown (i.e. child is orphan, adopted, etc.)</string>
+    <string name="ui.emr.patient.register.relative.multipleMatches">Cannot auto-populate the {relativeType} information from identification as more than one match exists</string>
+    <string name="ui.emr.patient.register.dataQuality">Data Quality Issues</string>
+    <string name="ui.emr.patient.register.dataQuality.help"><![CDATA[<i class="fas fa-fw fa-cloud-rain"></i> We have detected some logical issues with your submission which may cause issues when using this registration information. Please review the issues and clear any errors prior to submitting the registration again.]]></string>
+    <string name="ui.emr.patient.mother.differsFromPatient">Different address than the registrant</string>
+    <string name="ui.emr.patient.$other.differsFromPatient">Different address than the registrant</string>
+    <string name="ui.emr.patient.register.upgradePerson">There is an existing non-patient record which will be upgraded when this entity is saved</string>
+    <string name="ui.emr.patient.register.duplicateDetected">A patient with this identifier already exists - please validate your entry and try again</string>
+
+    <string name="ui.emr.search.online">Could not locate this data on the local environment, do you
+        want to search the central server?</string>
+    <string name="ui.emr.search.onlineResult">Online Result</string>
+    <!-- Mail View -->
+    <string name="ui.emr.mail">Mail</string>
+    <string name="ui.emr.mail.new">New Messages</string>
+    <string name="ui.emr.alerts">Alerts</string>
+    <string name="ui.emr.navigateConfirmation">Are you sure you want to leave this page? Any changes
+        will be lost</string>
+    <!-- System Info View -->
+    <string name="ui.emr.system.info.coreInfo">System Information</string>
+    <string name="ui.emr.system.info.version">Version Code</string>
+    <string name="ui.emr.system.info.product">Product Name</string>
+    <string name="ui.emr.system.info.environment">Operating System</string>
+    <string name="ui.emr.system.info.cpuInfo"># CPU Threads</string>
+    <string name="ui.emr.system.info.memory">Used Memory</string>
+    <string name="ui.emr.system.info.uptime">Uptime / Running Time</string>
+    <string name="ui.emr.system.applets.title">Installed Applets</string>
+    <string name="ui.emr.system.applets.name">Name</string>
+    <string name="ui.emr.system.applets.version">Version</string>
+    <string name="ui.emr.system.applets.id">ID</string>
+    <string name="ui.emr.system.applets.author">Author/Vendor</string>
+    <string name="ui.emr.system.services.title">Application Services</string>
+    <string name="ui.emr.system.services.name">Service</string>
+    <string name="ui.emr.system.services.state">Status</string>
+
+    <!-- Local Users -->
+    <string name="ui.emr.users.edit">Create/Edit Local User</string>
+    <string name="ui.emr.users.userName">User Name</string>
+    <string name="ui.emr.users.lastLoginTime">Last Login</string>
+    <string name="ui.emr.users.lockout">Lockout</string>
+    <string name="ui.emr.users.updatedBy">Updated By</string>
+    <string name="ui.emr.users.isAdmin">Make User Administrator</string>
+    <string name="ui.emr.users.formMissingRequiredInformation">Required information is missing from
+        the registration</string>
+    <string name="ui.emr.mailError">Error retrieving mail</string>
+    <string name="ui.emr.tickleError">Error fetching alerts</string>
+    <string name="ui.emr.queueError">Error reading queue</string>
+    <string name="ui.emr.system.applets.signed">Digitally Signed</string>
+    <string name="org.santedb.widget.emr.tab.user.security">Properties</string>
+    <string name="org.santedb.widget.emr.panel.user.core">Core Properties</string>
+    <string name="org.santedb.widget.emr.panel.user.profile">Public Profile</string>
+    <string name="org.santedb.widget.emr.panel.user.security">Security Properties</string>
+    <!-- Next of Kin -->
+    <string name="ui.emr.nok.structured">This record points to another patient. You should view/edit
+        additional details on that patient's page</string>
+
+    <!-- Clinical History -->
+    <string name="org.santedb.emr.widget.patient.act">Clinical History</string>
+
+    <!-- Encounters -->
+    <string name="org.santedb.emr.widget.patient.act.qentry">New Entry</string>
+    <string name="org.santedb.emr.widget.patient.encounter">Visits &amp; Encounters</string>
+    <string name="org.santedb.emr.widget.patient.act.history">History</string>
+    <string name="org.santedb.emr.widget.patient.encounter.qvisit">Encounter / Visit</string>
+    <string name="ui.emr.patient.encounter.cover.title">Cover Page</string>
+    <string name="ui.emr.patient.encounter.detail.title">Details</string>
+    <string name="ui.emr.patient.encounter.notes.title">Notes</string>
+
+    <!-- Birth Template -->
+    <string name="ui.emr.act.registration.birth.baby">Newborn Demographics</string>
+    <string name="ui.emr.act.registration.birth.event">Birth Event Information</string>
+
+    <!-- Deceased Date -->
+    <string name="ui.emr.act.registration.death.person">Deceased Person</string>
+    <string name="ui.emr.act.registration.death.event">Death Details</string>
+    <string name="ui.emr.act.registration.death.time">Official Date/Time Death</string>
+    <string name="ui.emr.act.registration.death.deceased">Name of Deceased</string>
+    <string name="ui.emr.act.registration.death.officialDeath">Official declaration of death</string>
+    <!-- Template Translations -->
+    <string name="org.santedb.emr.patient">Patient</string>
+    <string name="org.santedb.emr.act.observation.cod">Cause of Death</string>
+    <string name="org.santedb.emr.act.registration.birth">Birth Registration</string>
+    <string name="org.santedb.emr.act.registration.death">Death Registration</string>
+
+    <!-- Help Text -->
+    <string name="ui.emr.templates.observation.birthWeight.help">The measured weight at time of
+        birth (if known)</string>
+    <string name="ui.emr.templates.observation.heightLying.help">The length of the patient when
+        lying down</string>
+    <string name="ui.emr.templates.observation.birthDeliveryLocation.help">The location of the birth
+        (hospital, home, etc.)</string>
+    <string name="ui.emr.templates.observation.birthDeliveryMethod.help">The method of delivery
+        (vaginal, caesarean, etc.)</string>
+    <string name="ui.emr.templates.observation.birthDeliveryOutcome.help">The outcome of the the
+        birth</string>
+    <string name="ui.emr.templates.observation.liveBirths.help">The number of live births of the
+        mother</string>
+    <string name="ui.emr.templates.registration.death.deceasedDate.help">The date of death of the
+        patient</string>
+    <string name="ui.emr.templates.registration.death.placeOfDeath.help">The location (township,
+        hospital, etc.) where the death occurred</string>
+    <string name="ui.emr.templates.observation.cod.help">The official cause of death (if known)</string>
+    <string name="ui.emr.templates.observation.verification.help">The verification status of the
+        death (if known)</string>
+    <string name="ui.emr.templates.observation.death.help">The official date and time of the
+        patient's death (when the patient was declared dead)</string>
+
+    <string name="org.santedb.emr.widget.patient.provenance">Edit History</string>
+
+    <string name="ui.emr.bug">Submit Bug</string>
+    <string name="ui.emr.bug.user">Submitter</string>
+    <string name="ui.emr.bug.description">Description of Bug:</string>
+    <string name="ui.emr.bug.description.help">Enter a description of what you've observed happening</string>
+    <string name="ui.emr.bug.reproduce">Steps to Reproduce</string>
+    <string name="ui.emr.bug.reproduce.help">Enter the what you did before the bug occurred. Include
+        any screens or data you entered</string>
+    <string name="ui.emr.bug.attachments">Attachments</string>
+    <string name="ui.emr.bug.attach.log">Attach log files from my mobile device</string>
+    <string name="ui.emr.bug.attach.config">Attach my configuration files</string>
+    <string name="ui.emr.bug.requiredFieldMissing">Ensure you have included a description and steps
+        to reproduce</string>
+    <string name="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to
+        the internet</string>
+
+    <!-- User Editing -->
+    <string name="ui.emr.users.edit.security.neverLoggedIn">Never Logged In</string>
+    <string name="ui.emr.users.confirmDelete">Are you sure you want to delete this account? (user
+        will not be allowed to log in)</string>
+    <string name="ui.emr.users.confirmUnDelete">Are you sure you want to un-delete this account?</string>
+    <string name="ui.emr.users.reactivate.confirm">Are you sure you want to reactivate this account?</string>
+    <string name="ui.emr.users.confirmLock">Are you sure you want to lock this account (user will
+        not be allowed to log in)?</string>
+    <string name="ui.emr.users.confirmUnlock">Are you sure you want to unlock this user account?</string>
+    <string name="ui.emr.users.saveConfirm">User profile settings updated successfully</string>
+    <string name="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to
+        the internet and the central server is available</string>
+    <string name="ui.emr.bug.attach.detail">Attach last shown error message contents</string>
+    <!-- Menu Items -->
+    <string name="santedb-emr.dashboard">Dashboard</string>
+    <string name="santedb-emr.patient.index">Patient Administration</string>
+    <string name="santedb-emr.patient.search">Search Patients</string>
+    <string name="santedb-emr.patient.register">Register Patient</string>
+    <string name="santedb-emr.system.info">System</string>
+    <string name="santedb-emr.system.logs.index">Logs</string>
+    <string name="santedb-emr.system.jobs">Jobs</string>
+    <string name="santedb-emr.system.users.index">Local Users</string>
+    <string name="santedb-emr.system.bug">Submit Bug</string>
+
+    <!-- Patient Search -->
+    <string name="ui.emr.patient.search.age">Age</string>
+    <string name="ui.emr.patient.search.other">Other</string>
+    <string name="ui.emr.patient.search.family.relative">Family/Relative</string>
+    <string name="ui.emr.patient.search.relative.relation">Relation</string>
+    <string name="ui.emr.patient.search.relative.name">Name</string>
+    <string name="ui.emr.patient.search.relative.telecom">Telecom</string>
+    <string name="ui.emr.patient.search.relative.id">ID</string>
+
+    <!-- Advanced Search -->
+    <string name="ui.emr.patient.search.dob">Date of Birth</string>
+    <string name="ui.emr.patient.search.gender">Gender</string>
+    <string name="ui.emr.patient.search.id">ID #</string>
+    <string name="ui.emr.patient.search.field.patient">Filter by Patient</string>
+    <string name="ui.emr.patient.search.field.patient.hint">These filter parameters apply to the
+        patient being searched.</string>
+    <string name="ui.emr.patient.search.field.relative">Filter by Relative</string>
+    <string name="ui.emr.patient.search.field.relative.hint">These filter parameters apply to any
+        relatives of the patient (mother, father, etc.)</string>
+    <string name="ui.emr.patient.search.insufficientCriteria">Cannot search with only {current}
+        filters, {expected} filters are required</string>
+    <string name="ui.emr.patient.search.field.patient.name.given">Given Name</string>
+    <string name="ui.emr.patient.search.field.patient.name">Given/Family Name</string>
+    <string name="ui.emr.patient.search.field.patient.name.hint">The Given and Family of the
+        patient. Note that these two must be used together.</string>
+    <string name="ui.emr.patient.search.field.patient.name.family">Family Name</string>
+    <string name="ui.emr.patient.search.field.patient.address.area">County/City</string>
+    <string name="ui.emr.patient.search.field.patient.address.area.hint">The city, town, county,
+        precinct, or other census area within which the patient lives</string>
+    <string name="ui.emr.patient.search.field.patient.address.street">Street Address</string>
+    <string name="ui.emr.patient.search.field.patient.address.street.hint">The street address within
+        the city/town/county (for example: &lt;code&gt;123 Main Street West&lt;/code&gt;)</string>
+    <string name="ui.emr.patient.search.field.patient.identifier">Identifier</string>
+    <string name="ui.emr.patient.search.field.patient.identifier.hint">The identifier for the
+        patient with an optional check-digit (if one is provided). You may also scan this
+        information using the device camera.</string>
+    <string name="ui.emr.patient.search.field.patient.gender">Gender</string>
+    <string name="ui.emr.patient.search.field.patient.dob">Date of Birth</string>
+    <string name="ui.emr.patient.search.field.patient.dob.hint"><![CDATA[ The date of birth range expressed as a <code>from</code> - <code>to</code> filter. When using an <code>approximate</code> filter, filter based on the patient's age]]></string>
+    <string name="ui.emr.patient.search.field.patient.telecom">Email/Tel</string>
+    <string name="ui.emr.patient.search.field.patient.telecom.hint">Matches based on the telephone
+        number, or e-mail address of the patient</string>
+    <string name="ui.emr.patient.search.field.relative.identifier">Identifier</string>
+    <string name="ui.emr.patient.search.field.relative.identifier.hint">The identifier for the
+        relative with an optional check-digit (if one is provided). You may also scan this
+        information using the device camera.</string>
+    <string name="ui.emr.patient.search.field.relative.name">Given/Family Name</string>
+    <string name="ui.emr.patient.search.field.relative.name.hint">The Given and Family of the
+        relative. Note that these two must be used together.</string>
+
+    <string name="ui.emr.patient.search.field.relative.name.given">Given Name</string>
+    <string name="ui.emr.patient.search.field.relative.name.family">Family Name</string>
+    <string name="ui.emr.patient.search.field.relative.address.area">County/City</string>
+    <string name="ui.emr.patient.search.field.relative.address.area.hint">The city, town, county,
+        precinct, or other census area within which the patient's relative lives</string>
+    <string name="ui.emr.patient.search.field.relative.address.street">Street Address</string>
+    <string name="ui.emr.patient.search.field.relative.address.street.hint">The street address
+        within the city/town/county (for example: &lt;code&gt;123 Main Street West&lt;/code&gt;)</string>
+    <string name="ui.emr.patient.search.field.relative.telecom">Email/Tel</string>
+    <string name="ui.emr.patient.search.field.relative.telecom.hint">Matches based on the telephone
+        number, or e-mail address of the patient</string>
+    <string name="ui.emr.patient.search.tag.upstream">Online Result</string>
+
+    <!-- JOBS -->
+    <string name="ui.emr.job.runJob.confirm">Are you sure you want to run this job?</string>
+    <string name="ui.emr.job.neverRun">Nver Run</string>
+    <string name="ui.emr.job.register.title">Register Job</string>
+    <string name="ui.emr.job.register.help"><![CDATA[This modal allows you to register or activate a SanteDB background job which was not otherwise activated on application startup. The
+    SanteDB iCDR or dCDR will attempt to register the job and will update your configuration.]]></string>
+    <string name="ui.emr.job.register.confirm">Are you sure you want to register {job} with this
+        instance of SanteDB?</string>
+    <string name="ui.emr.job.register.success">Job {job} was successfully registered</string>
+    <string name="ui.emr.job.register.error">Error registering job instance {error}</string>
+    <string name="ui.emr.job.runJob.success">Job {job} started successfully</string>
+
+    <!-- Tickles -->
+    <string name="ui.emr.alerts">Alerts</string>
+    <string name="ui.emr.alerts.none">No Alerts</string>
+    <string name="ui.emr.alerts.new">You have new alerts</string>
+    <!-- Audits -->
+    <string name="org.santedb.widget.emr.panel.audit.eventInfo">Event Information</string>
+    <string name="org.santedb.widget.emr.panel.audit.network">Network Actors</string>
+    <string name="org.santedb.widget.emr.panel.audit.usersAndComputers">Users &amp; Computers</string>
+    <string name="org.santedb.widget.emr.panel.audit.dataAndObjects">Data &amp; Objects</string>
+    <string name="ui.emr.audit.core.sid">Security ID</string>
+    <string name="ui.emr.audit.core.action">Action</string>
+    <string name="ui.emr.audit.core.event">Event</string>
+    <string name="ui.emr.audit.core.timestamp">Timestamp</string>
+    <string name="ui.emr.audit.core.outcome">Outcome</string>
+    <string name="ui.emr.audit.core.process">Process</string>
+    <string name="ui.emr.audit.core.source">Source</string>
+    <string name="ui.emr.audit.network.url">URL</string>
+    <string name="ui.emr.audit.actors.uname">Username</string>
+    <string name="ui.emr.audit.actors.apInfo">Access Point</string>
+    <string name="ui.emr.audit.actors.initiator">Requestor</string>
+    <string name="ui.emr.audit.actors.role">Role(s)</string>
+    <string name="ui.emr.audit.objects">Data &amp; Objects</string>
+    <string name="ui.emr.audit.object.type">Type</string>
+    <string name="ui.emr.audit.object.lifecycle">Lifecycle</string>
+    <string name="ui.emr.audit.object.id">Identifier</string>
+    <string name="ui.emr.audit.object.data">Data</string>
+    <string name="ui.emr.audit.object.role">Role</string>
+    <string name="ui.emr.audit.query">Query Executed</string>
+    <string name="ui.emr.audit.object.idType">ID Type</string>
+    <string name="ui.emr.audit.data.key">Key</string>
+    <string name="ui.emr.audit.data.value">Value</string>
+    <string name="ui.emr.audit.data">Extended Data</string>
+    <string name="ui.emr.audit.name">Display Name</string>
+
+    <!-- Backup Center -->
+    <string name="ui.emr.backup.delete.confirm">Are you sure you want to delete backup {label}?</string>
+    <string name="ui.emr.backup.delete.success">Backup {label} has been deleted</string>
+    <string name="ui.emr.backup.restore.confirm">Are you sure you want to restore the backup
+        {label}? Note - any changes made since this backup was taken will be lost.</string>
+    <string name="ui.emr.backup.restore.success">The restoration of {label} is complete, you should
+        restart the application.</string>
+    <string name="ui.emr.backup.now">Create Backup</string>
+    <string name="ui.emr.backup.now.success">Manual backup was successfully created</string>
+    <string name="ui.emr.backup.now.help">This action will instruct the SanteDB instance to
+        immediately produce a new backup with the current data in the specified location.</string>
+    <string name="ui.emr.backup.now.securityNotice"><![CDATA[Backups which are not encrypted should never be stored in the <strong>Public</strong> or <strong>Public External</strong> location as this presents a patient privacy risk]]></string>
+    <string name="ui.emr.restore.now">Restore Backup</string>
+    <string name="ui.emr.restore.now.help">This backup is encrypted. To restore it you will need to
+        enter the passphrase which was used to create the backup</string>
+    <string name="ui.emr.audit.view.meta">Metadata</string>
+    <string name="ui.emr.audit.view.assets">Contents</string>
+
+    <!-- Configuration -->
+    <string name="org.santedb.config.data">Database</string>
+    <string name="org.santedb.config.role">Role</string>
+    <string name="org.santedb.config.integration">Integration</string>
+    <string name="org.santedb.config.subscription">Subscription</string>
+    <string name="org.santedb.config.network">Network</string>
+    <string name="org.santedb.config.security">Security</string>
+    <string name="org.santedb.config.services">Services</string>
+    <string name="org.santedb.config.log">Logging</string>
+    <string name="org.santedb.config.other">Other Settings</string>
+
+</resources>

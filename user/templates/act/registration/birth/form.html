@@ -1,0 +1,110 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <fieldset>
+        <legend><i class="fas fa-baby"></i> {{ 'ui.emr.act.registration.birth.baby' | i18n }}</legend>
+        <div class="container-fluid">
+            <name-edit is-required="false" no-add="true" owner-form="panel.editForm" simple-entry="true" no-type="true"
+                model="act.participation.Baby[0].playerModel.name" />
+            <div class="form-group row">
+                <label
+                    class="col-sm-12 col-md-3 control-label required">{{ 'ui.model.patient.dateOfBirth' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    <div class="input-group m-0">
+                        <input class="form-control" type="date"
+                            ng-model="act.participation.Baby[0].playerModel.dateOfBirth"
+                            max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}"
+                            min="{{ scopedObject.dateOfBirth | date: 'yyyy-MM-dd'}}" name="patientDob"
+                            required="required" />
+                        <div class="input-group-append">
+                            <label class="input-group-text">
+                                <input type="checkbox"
+                                    ng-model="act.participation.Baby[0].playerModel.dateOfBirthPrecision"
+                                    ng-true-value="2" ng-false-value="3" />
+                                {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                            </label>
+                        </div>
+                    </div>
+                    <em input-help="true">{{ 'ui.model.act.participation.Baby.dateOfBirth.help' | i18n }}</em>
+                    <div class="text-danger" ng-if="panel.editForm['patientDob'].$invalid">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}</div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                    class="col-sm-12 col-md-3 control-label required">{{ 'ui.model.patient.genderConcept' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    <concept-select class="form-control" required="required" name="birthGender"
+                        concept-set="'AdministrativeGenderCode'"
+                        ng-model="act.participation.Baby[0].playerModel.genderConceptModel" />
+                    <em input-help="true">{{ 'ui.model.act.participation.Baby.genderConcept.help' | i18n }}</em>
+                    <div class="text-danger" ng-if="panel.editForm['birthGender'].$invalid">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}</div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                    class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.multipleBirthOrder' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    <div class="input-group m-0">
+                        <div class="input-group-prepend">
+                            <label class="input-group-text">
+                                <input type="checkbox"
+                                    ng-model="act.participation.Baby[0].playerModel.multipleBirthIndicator" />
+                            </label>
+                        </div>
+                        <select class="form-control" name="birthOrder"
+                            ng-required="act.participation.Baby[0].playerModel.multipleBirthIndicator"
+                            ng-model="act.participation.Baby[0].playerModel.multipleBirthOrder"
+                            ng-disabled="!act.participation.Baby[0].playerModel.multipleBirthIndicator">
+                            <option value="0">{{ 'ui.model.patient.multipleBirthOrder.0' | i18n }}</option>
+                            <option value="1">{{ 'ui.model.patient.multipleBirthOrder.1' | i18n }}</option>
+                            <option value="2">{{ 'ui.model.patient.multipleBirthOrder.2' | i18n }}</option>
+                            <option value="3">{{ 'ui.model.patient.multipleBirthOrder.3' | i18n }}</option>
+                            <option value="4">{{ 'ui.model.patient.multipleBirthOrder.4' | i18n }}</option>
+                            <option value="5">{{ 'ui.model.patient.multipleBirthOrder.5' | i18n }}</option>
+                        </select>
+                    </div>
+                    <em input-help="true">{{ 'ui.model.act.participation.Baby.multipleBirthIndicator.help' | i18n }}</em>
+
+                    <div class="text-danger" ng-if="panel.editForm['birthOrder'].$invalid">
+                        {{ 'ui.error.required' | i18n }}</div>
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.birthplace' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    <entity-search type="'Place'" group-by="'address.Direct.component.State'"
+                        ng-model="act.participation.Baby[0].playerModel.relationship.Birthplace[0].target"
+                        search-field="'name.component.value'"
+                        filter="{ 'statusConcept': 'c8064cbd-fa06-4530-b430-1a52f1530c27' }" />
+                        <em input-help="true">{{ 'ui.model.act.participation.Baby.birthplace.help' | i18n }}</em>
+
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                    class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.relationship.Mother' | i18n }}</label>
+                <div class="col-sm-12 col-md-9">
+                    {{ act.participation.Baby[0].playerModel.relationship.Mother[0].targetModel.name | name }} ({{ act.participation.Baby[0].playerModel.relationship.Mother[0].targetModel.dateOfBirth | age }})
+                </div>
+            </div>
+            <div class="form-group row">
+                <label
+                    class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.address' | i18n }}</label>
+                <div class="col-sm-12 col-md-9" >
+                    {{ act.participation.Baby[0].playerModel.address | address }}
+                </div>
+            </div>
+            
+        </div>
+    </fieldset>
+    <fieldset ng-if="act.relationship.HasComponent">
+        <legend><i class="fas fa-hospital"></i> {{ 'ui.emr.act.registration.birth.event' | i18n }}</legend>
+        <div class="container-fluid">
+            <div ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
+                <ng-include src="resolveTemplateForm(act.templateModel.mnemonic)" />
+            </div>
+        </div>
+    </fieldset>
+
+</div>
