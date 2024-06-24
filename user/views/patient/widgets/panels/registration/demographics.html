@@ -37,7 +37,7 @@
                         <input name="patientAge" required="required" ng-if="scopedObject.dateOfBirthPrecision == 1"
                             ng-change="scopedObject.dateOfBirth = ageToDate(scopedObject.age)" type="number"
                             ng-model="scopedObject.age" min="0" class="form-control" />
-                        <input name="patientDob" data-quality-id="dateOfBirth" required="required" ng-if="scopedObject.dateOfBirthPrecision == 3"
+                        <input name="patientDob" data-quality-id="dob" required="required" ng-if="scopedObject.dateOfBirthPrecision == 3"
                             ng-change="scopedObject.age = dateToAge(scopedObject.dateOfBirth)"
                             type="date" ng-model="scopedObject.dateOfBirth" min="1900-01-01"
                             max="{{ $root.page.today | date: 'yyyy-MM-dd' }}" class="form-control" />
@@ -65,8 +65,8 @@
                 </div>
                 <div class="text-danger"
                     ng-if="panel.editForm['patientDob'].$error['dq'] || panel.editForm.dataQualityIssues['dob']"
-                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['dateOfBirth'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['dateOfBirth'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['dateOfBirth'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['dateOfBirth'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
+                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['dob'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['dob'].priority == 'Warning' }">
+                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['dob'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['dob'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
                 </div>
             </div>
         </div>

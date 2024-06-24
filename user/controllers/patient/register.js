@@ -7,7 +7,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     const IGNORE_RELATIONSHIP = [
         "ServiceDeliveryLocation",
         "DedicatedServiceDeliveryLocation",
-        "IncidentalServiceDeliveryLocation"
+        "IncidentalServiceDeliveryLocation",
+        "Birthplace",
+        "Citizen",
+        "Employee"
     ];
 
     // No template use the default
@@ -136,10 +139,12 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     // Register the patient
     $scope.registerPatient = async function (registrationForm) {
 
-        if (registrationForm.$invalid || registrationForm.dataQualityIssues && !confirm(SanteDB.locale.getString("ui.emr.patient.register.dataQuality.ignoreConfirm"))) {
+        if (registrationForm.$invalid || 
+            !registrationForm._ignoreDq && registrationForm.dataQualityIssues && !confirm(SanteDB.locale.getString("ui.emr.patient.register.dataQuality.ignoreConfirm"))) {
             return;
         }
 
+        registrationForm._ignoreDq = true;
         try {
 
             $("#duplicateModal").modal('hide');
@@ -165,6 +170,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                             !rel.targetModel.address.HomeAddress[0]._differentThanPatient
                         ) {
                             rel.targetModel.address.HomeAddress = angular.copy(patient.address.HomeAddress);
+                        }
+
+                        if(rel.targetModel.deceasedIndicator) {
+                            rel.targetModel.deceasedDate = rel.targetModel.deceasedDate || '0001-01-01'; // Set an indicator of deceased
                         }
                     });
                 patient.relationship[key] = relationship.filter(o=>o.target);
@@ -231,15 +240,60 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             }
             patient = await prepareEntityForSubmission(patient);
             patient = scrubModelProperties(patient);
-
             //patient.creationAct = registrationAct.id;
             submissionBundle.resource.push(registrationAct);
             submissionBundle.resource.push(patient);
             submissionBundle.focal = [ patient.id ];
 
-            // Check for duplicates 
-            console.info("Checking for duplicates");
-            if (!$scope.entity._ignoreDuplicates) {
+            // Are we updating?
+            if($scope.entity._updateDuplicate) {
+                /** @type {Patient} */
+                var existingDuplicate = await SanteDB.resources.patient.getAsync($scope.entity._updateDuplicate);
+
+                // Copy new fields over
+                patient.address = patient.address || existingDuplicate.address;
+                patient.deceasedDate = patient.deceasedDate || existingDuplicate.deceasedDate;
+                patient.deceasedDatePrecision = patient.deceasedDatePrecision || existingDuplicate.deceasedDatePrecision;
+                patient.educationLevel = patient.educationLevel || existingDuplicate.educationLevel;
+                patient.ethnicity = patient.ethnicity || existingDuplicate.ethnicity;
+                patient.genderConcept = patient.genderConcept || existingDuplicate.genderConcept;
+                patient.id = existingDuplicate.id;
+                patient.language = patient.language || existingDuplicate.language;
+                patient.livingArrangement = patient.livingArrangement || existingDuplicate.livingArrangement;
+                patient.maritalStatus = patient.maritalStatus || existingDuplicate.maritalStatus;
+                patient.multipleBirthOrder = patient.multipleBirthOrder || existingDuplicate.multipleBirthOrder;
+                patient.nationality = patient.nationality || existingDuplicate.nationality;
+                patient.occupation = patient.occupation || existingDuplicate.occupation;
+                patient.religion = patient.religion || existingDuplicate.religion;
+                patient.telecom = patient.telecom || existingDuplicate.telecom;
+                patient.vipStatus = patient.vipStatus || existingDuplicate.vipStatus;
+                Object.keys(existingDuplicate.relationship).forEach(k => {
+                    if(!patient.relationship[k]) {
+                        patient.relationship[k] = existingDuplicate.relationship[k];
+                    }
+                });
+
+
+                Object.keys(existingDuplicate.identifier).forEach(k => {
+                    if(!patient.identifier[k]) {
+                        patient.identifier[k] = existingDuplicate.identifier[k];
+                    }
+                });
+
+                Object.keys(existingDuplicate.name).forEach(k => {
+                    if(!patient.name[k]) {
+                        patient.name[k] = existingDuplicate.name[k];
+                    }
+                });
+
+                // More precise date of birth
+                if(existingDuplicate.dateOfBirthPrecision > patient.dateOfBirthPrecision) {
+                    patient.dateOfBirth = existingDuplicate.dateOfBirth;
+                    patient.dateOfBirthPrecision = existingDuplicate.dateOfBirthPrecision;
+                }
+
+            }
+            else if (!$scope.entity._ignoreDuplicates) {
                 var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: submissionBundle, _count: 5, _offset: 0 });
                 if (duplicates.results && duplicates.results != null) {
                     // Fetch the results

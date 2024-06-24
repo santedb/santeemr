@@ -13,7 +13,7 @@
     <string name="ui.action.check-in">Check-in</string>
     <string name="ui.action.visit">Visit</string>
     <string name="ui.action.discharge">Discharge</string>
-    <string name="ui.action.useRecord">Use Record</string>
+    <string name="ui.action.updateSelected">Update Record</string>
     <string name="ui.action.change">Change Record</string>
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
@@ -39,8 +39,7 @@
         <li><strong>Change</strong> - Modify any data that was entered in the registration form</li>
         <li><strong>Register</strong> - Ignore the duplicate and register your new patient</li>
         </ul>]]></string>
-    <string name="ui.emr.patient.register.duplicates.verification">I have verified this patient is
-        not a duplicate</string>
+    <string name="ui.emr.patient.register.duplicates.verification">Patient is not a duplicate</string>
     <string name="ui.emr.patient.register.duplicates.confidence">Confidence</string>
     <string name="ui.emr.patient.register.duplicates.confidence.0">Non-Match</string>
     <string name="ui.emr.patient.register.duplicates.confidence.1">Probable Match</string>
@@ -75,6 +74,7 @@
     <string name="org.santedb.emr.widget.patient.register.telecom">Contact Information</string>
     <string name="org.santedb.emr.widget.patient.register.mother">Mother's Information</string>
     <string name="org.santedb.emr.widget.patient.register.facilities">Assigned Facilities</string>
+    <string name="org.santedb.emr.widget.patient.register.extendedAttr">Additional Information</string>
     <string name="ui.emr.patient.register.dataQuality.ignoreConfirm">There are one or more data quality issues with this record, do you still want to submit the registration?</string>
     <string name="ui.emr.patient.register.mother.unknown">Mother is unknown (i.e. child is orphan, adopted, etc.)</string>
     <string name="ui.emr.patient.register.relative.multipleMatches">Cannot auto-populate the {relativeType} information from identification as more than one match exists</string>
