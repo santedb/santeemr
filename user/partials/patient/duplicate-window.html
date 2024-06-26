@@ -294,7 +294,7 @@
                 <div class="col">
                     <div class="btn-group float-right">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                            <i class="fa fa-person-circle-exclamation"></i> {{ 'ui.action.change' | i18n }}</button>
+                            <i class="fa fa-chevron-left" ng-click="entity._updateDuplicate = entity._ignoreDuplicates = null"></i> {{ 'ui.action.change' | i18n }}</button>
                         <button class="btn btn-info" ng-if="entity._updateDuplicate" type="submit">
                             <i class="fa fa-person-circle-check"></i> {{ 'ui.action.updateSelected' | i18n }}</button>
                         <button class="btn btn-primary" ng-if="entity._ignoreDuplicates" type="submit">
