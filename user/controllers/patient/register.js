@@ -14,6 +14,8 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         "Duplicate"
     ];
 
+    var _ignoreDqIssues = [];
+
     // No template use the default
     var templateId = $state.templateId;
 
@@ -104,6 +106,12 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 registrationForm.dataQualityIssues = {};
                 dataQuality.forEach(err => {
                     var dqTarget = err.id.substring(0, err.id.indexOf('.'));
+
+                    if(_ignoreDqIssues.indexOf(dqTarget) > -1)
+                        {
+                            return;
+                        }
+                        
                     var targetName = $(`[data-quality-id='${dqTarget}']`).attr("name");
                     if (targetName) {
                         registrationForm.dataQualityIssues[dqTarget] = err;
@@ -114,7 +122,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                         else {
                             err.dismiss = function () {
                                 delete (registrationForm.dataQualityIssues[dqTarget]);
-
+                                _ignoreDqIssues.push(dqTarget);
                                 if (registrationForm[targetName]) {
                                     registrationForm[targetName].$setValidity("dq", true);
                                 }
