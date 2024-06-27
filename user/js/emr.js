@@ -61,7 +61,7 @@ function renderPatientSummary(patient) {
 // Convert an age to a date
 function ageToDate(age, onDate) {
 
-    return moment(onDate).subtract({years: age}).toDate();
+    return moment(onDate).subtract({years: age}).startOf('day').toDate();
 }
 
 /// Convert a date to an age
