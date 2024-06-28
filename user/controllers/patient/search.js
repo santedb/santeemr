@@ -64,30 +64,29 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     var idDomainPatterns = [];
     async function initializeView() {
         try {
-            var pattern = await SanteDB.resources.identityDomain.findAsync({ "validation" : "!null", "scope": EntityClassKeys.Patient, "isUnique": true }, "fastView");
-            if(pattern.resource)
-            {
-                idDomainPatterns = pattern.resource.map(o=>new RegExp(o.validation));
+            var pattern = await SanteDB.resources.identityDomain.findAsync({ "validation": "!null", "scope": EntityClassKeys.Patient, "isUnique": true }, "fastView");
+            if (pattern.resource) {
+                idDomainPatterns = pattern.resource.map(o => new RegExp(o.validation));
 
                 // If the user enters a value that matches an identifier domain pattern use it
-                $scope.$watch("search.value", async function(n, o) {
-                    if(n && n != o && idDomainPatterns.find(o=>o.test(n))) {
+                $scope.$watch("search.value", async function (n, o) {
+                    if (n && n != o && idDomainPatterns.find(o => o.test(n))) {
 
                         // Test if there is only one result then load it - TODO: 
                         try {
                             var resCount = await SanteDB.resources.patient.findAsync({ _count: 1, _includeTotal: true, "identifier.value": n }, "fastView");
-                            if(resCount.totalResults == 1) {
+                            if (resCount.totalResults == 1) {
                                 SanteDB.application.callResourceViewer("Patient", null, { id: resCount.resource[0].id });
                             }
                             else {
                                 $timeout(() => performSearch({ value: n }));
                             }
                         }
-                        catch(e) {
+                        catch (e) {
 
                         }
 
-                    }   
+                    }
                 });
 
             }
@@ -95,7 +94,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             // set focus to search
             $("#txtSearchInput").focus();
         }
-        catch(e) {
+        catch (e) {
             console.warn(e);
         }
     }
@@ -141,9 +140,20 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     }
 
     $scope.scanSearch = async function () {
-        const result = await SanteDB.application.searchByBarcodeAsync(null, true, true);
-        if(result && result.id) {        
-            SanteDB.application.callResourceViewer("Patient", null, { id: result.id });
+        try {
+            const result = await SanteDB.application.searchByBarcodeAsync(null, true, null, true);
+            if (result && result.id) {
+                if (!SanteDB.application.callResourceViewer(result.$type, null, { id: result.id })) {
+                    $rootScope.errorHandler(new Exception("InvalidOperationException", SanteDB.locale.getString("error.svrp.noRegisteredViewerForType")));
+                }
+            }
+            else if (result) {
+                $timeout(() => $scope.search.value = result.$search);
+
+            }
+        }
+        catch (e) {
+            $rootScope.errorHandler(e);
         }
     }
 
@@ -164,10 +174,10 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         // Approximate fields
         var approxFunctions = {
             'name.component[Given].value': (v, us) => [`~${v}`, `:(soundex)${v}`],
-            'name.component[Family].value': (v, us) => [`~${v}`, `:(similarity_lev|${v})<2` ],
+            'name.component[Family].value': (v, us) => [`~${v}`, `:(similarity_lev|${v})<2`],
             'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value': (v, us) => [`~${v}`, `:(soundex)${v}`],
             'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value': (v, us) => [`~${v}`, `:(similarity_lev|${v})<2`],
-            'address.component[StreetAddressLine].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2` ],
+            'address.component[StreetAddressLine].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
             'telecom.value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`, `~${v}`],
             'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[StreetAddressLine].value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<2` : `:(levenshtein|${v})<2`],
             'relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.telecom.value': (v, us) => [`~${v}`, us ? `:(similarity_lev|${v})<3` : `:(levenshtein|${v})<2`, `~${v}`],
@@ -233,7 +243,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 nParameters += 5; // Identifier is a known good search criteria
             if ($scope.search['telecom.value'])
                 nParameters++;
-            if($scope.search['_expandRelationshipAddressId'] || $scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[AddressLine].value'])
+            if ($scope.search['_expandRelationshipAddressId'] || $scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.address.component[AddressLine].value'])
                 nParameters++;
             if ($scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Given].value'] || $scope.search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target.name.component[Family].value'])
                 nParameters++;

@@ -28,13 +28,13 @@ angular.module('santedb').controller('AuditIndexController', ["$scope", "$rootSc
     $scope.renderOutcome = function (audit) {
         switch (audit.outcome) {
             case "Success":
-                return `<span class='badge badge-success'><i class='fas fa-check'></i> ${SanteDB.locale.getString("ui.model.audit.outcome.success")}</span>`;
+                return `<span class='badge badge-success'><i class='fas fa-check'></i> <span class="d-none d-lg-inline">${SanteDB.locale.getString("ui.model.audit.outcome.success")}</span></span>`;
             case "MinorFail":
-                return `<span class='badge badge-warning'><i class='fas fa-info-circle'></i> ${SanteDB.locale.getString("ui.model.audit.outcome.warning")}</span>`;
+                return `<span class='badge badge-warning'><i class='fas fa-info-circle'></i> <span class="d-none d-lg-inline">${SanteDB.locale.getString("ui.model.audit.outcome.warning")}</span></span>`;
             case "SeriousFail":
-                return `<span class='badge badge-warning'><i class='fas fa-info-circle'></i> ${SanteDB.locale.getString("ui.model.audit.outcome.error")}</span>`;
+                return `<span class='badge badge-warning'><i class='fas fa-info-circle'></i> <span class="d-none d-lg-inline">${SanteDB.locale.getString("ui.model.audit.outcome.error")}</span></span>`;
             case "EpicFail":
-                return `<span class='badge badge-danger'><i class='fas fa-exclamation-circle'></i> ${SanteDB.locale.getString("ui.model.audit.outcome.epic")}</span>`;
+                return `<span class='badge badge-danger'><i class='fas fa-exclamation-circle'></i> <span class="d-none d-lg-inline">${SanteDB.locale.getString("ui.model.audit.outcome.epic")}</span></span>`;
             default:
                 return audit.outcome;
         }
@@ -42,7 +42,7 @@ angular.module('santedb').controller('AuditIndexController', ["$scope", "$rootSc
 
     // Render the timestamp
     $scope.renderTimestamp = function (audit) {
-        return moment(audit.timestamp).format('YYYY-MM-DD HH:mm:ss Z');
+        return moment(audit.timestamp).format('YYYY-MM-DD HH:mm');
     }
 
     // Render the action column
@@ -122,7 +122,7 @@ angular.module('santedb').controller('AuditIndexController', ["$scope", "$rootSc
                 break;
         }
 
-        return `<span class='badge ${color}'><i class='fas ${icon}'></i> ${audit.event}</span> ${audit.type.display || audit.type.code}`
+        return `<span class='badge ${color}'><i class='fas ${icon}'></i> ${audit.event}</span> <span class="d-none d-xl-inline">${audit.type.display || audit.type.code}</span>`
     }
 
     $scope.renderType = function (audit) {
@@ -135,12 +135,12 @@ angular.module('santedb').controller('AuditIndexController', ["$scope", "$rootSc
 
             audit.actor.forEach(function (a) {
                 if (a.isReq)
-                    retVal += ` ; <i class="fas fa-user"></i> ${a.uname || a.apId} `;
+                    retVal += `<i class="fas fa-user"></i> ${a.uname || a.apId} <br/>`;
                 else
-                    retVal += ` ; <i class="fas fa-circle"></i> ${a.uname || a.apId} `;
+                    retVal += `<i class="fas fa-circle"></i> ${a.uname || a.apId} <br/>`;
             });
 
-            return retVal.substring(2);
+            return retVal.substring(0, retVal.length - 5);
         }
         return "N/A"
     }
