@@ -1,5 +1,5 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0"
-    oc-lazy-load="{ name: 'EmrDemographicsWidgetController', files: ['/org.santedb.emr/controllers/patient/widgets/demographics.js'] }">
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
+    <sdb:script>~/controllers/patient/widgets/demographics.js</sdb:script> 
     <sdb:widget order="0" name="org.santedb.emr.widget.patient.demographics" altViews="Edit" headerClass="alert-info"
         size="Large" type="Panel" context="org.santedb.emr.patient.view">
         <sdb:icon>fas fa-user-edit</sdb:icon>
@@ -10,7 +10,7 @@
             <p class="m-auto"><i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}</p>
         </div>
     </div>
-    <div ng-if="scopedObject" ng-controller="EmrDemographicsWidgetController">
+    <div ng-if="scopedObject" ng-controller="EmrPatientViewWidgetController">
         <div ng-if="panel.view != 'Edit'">
             <!-- #include virtual="/org.santedb.uicore/widgets/patient/partials/demographics/view.html" -->
         </div>

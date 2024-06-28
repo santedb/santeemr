@@ -1,7 +1,11 @@
 /// <reference path="../../../.ref/js/santedb.js"/>
-angular.module('santedb').controller('EmrDemographicsWidgetController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope', '$rootScope', function ($scope, $rootScope) {
 
 
+    $scope.showBarcode = function(barcodeDomain) {
+        $scope.bcDomain = barcodeDomain;
+        $("#barcodeModal").modal('show');
+    }
     // Actually pull 
     $scope.update = async function (form) {
 
