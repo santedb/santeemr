@@ -1,0 +1,53 @@
+<div class="can-print print-only">
+    <div>
+        <table class="table w-100">
+            <caption class="print-only">{{ 'ui.generated.on' | i18n }} {{ :: $root.page.currentTime | extDate: 'M' }}
+            </caption>
+            <tr>
+                <td colspan="2" align="center" class="bg-light">
+                    <img class="m-auto" id="printBarcodeUrl" style="width:5.5in"
+                        src="/hdsi/Patient/{{patient.id}}/_code" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    {{ 'ui.model.patient.name' | i18n }}:
+                </th>
+                <td>
+                    {{ patient.name | name }}
+                </td>
+            </tr>
+            <!-- Show the preferred identifier if exists or configured-->
+            <tr
+                ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; patient.identifier[$root.system.config.application.setting['aa.preferred']]">
+                <th>{{ patient.identifier[$root.system.config.application.setting['aa.preferred']][0].domainModel.name }}</th>
+                <td>
+                    {{ patient.identifier[$root.system.config.application.setting['aa.preferred']][0].value }}
+                </td>
+            </tr>
+            <!-- Show other identifiers in lieu of a preferred identifier -->
+            <tr ng-if="!$root.system.config.application.setting['aa.preferred'] || !patient.identifier[$root.system.config.application.setting['aa.preferred']]"
+                ng-repeat="(domain, id) in patient.identifier">
+                <th class="p-2">
+                    {{ id[0].domainModel.name}}
+                </th>
+                <td>
+                    {{ id[0].value}}
+                </td>
+            </tr>
+            <tr>
+                <th>{{ 'ui.model.patient.dateOfBirth' | i18n }}:</th>
+                <td>{{ patient.dateOfBirth | extDate: patient.dateOfBirthPrecision }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'ui.model.patient.genderConcept' | i18n }}:</th>
+                <td>{{ patient.genderConceptModel | concept }}</td>
+            </tr>
+            <tr>
+                <th>{{ 'ui.model.patient.address' | i18n }}:</th>
+                <td> {{ patient.address | address }}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
