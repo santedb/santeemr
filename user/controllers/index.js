@@ -167,8 +167,10 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             checkConflicts();
             checkMail();
         }
-        else
+        else {
             $scope.menuItems = null;
+            $state.go("login");
+        }
     });
 
     if ($rootScope.session) {
