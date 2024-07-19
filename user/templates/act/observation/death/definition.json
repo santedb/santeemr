@@ -35,6 +35,6 @@
     }
   },
   "tag": {
-    "$cascade:HasComponent:*" : "RecordTarget;Authororiginator;Location"
+    "$cascade:HasComponent:*" : ["RecordTarget","Authororiginator","Location" ]
   }
 }
