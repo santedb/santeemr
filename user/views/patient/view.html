@@ -17,12 +17,5 @@
         <widget-tabs ng-if="!patient.tag.$upstream" context-name="'org.santedb.emr.patient.view'" scoped-object="patient"></widget-tabs>
         <!-- #include virtual="~/partials/patient/patient-card.html" -->
     </div>
-    <div ng-if="error">
-        <div class="alert alert-danger">
-            <h5><i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'error.type.' + (error.$type || 'Exception') | i18n
-                }}</h5>
-            <!-- #include virtual="/org.santedb.uicore/partials/error/error.html" -->
-        </div>
-    </div>
-
+    
 </div>
