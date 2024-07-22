@@ -150,7 +150,7 @@ define library "SanteDB Core CDSS Fact Library"
 		
 		define fact "Observation is expressed in celcius"
 		as
-			hdsi($$value$$)
+			hdsi($$unitOfMeasure=83792d73-6a3a-4a72-b13a-ba95ef4a83ea$$)
 		end fact
 		
     	define fact "Observation is expressed in Lbs"
