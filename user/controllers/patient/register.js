@@ -67,9 +67,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             try {
                 if ($scope.entity.address.HomeAddress[0].component &&
                     $scope.entity.address.HomeAddress[0].component._AddressPlaceRef &&
-                    $scope.entity.address.HomeAddress[0].component._AddressPlaceRef.length
+                    $scope.entity.address.HomeAddress[0].component._AddressPlaceRef[0]
                 ) {
-                    var dsdl = await SanteDB.resources.place.findAsync({ "classConcept": EntityClassKeys.ServiceDeliveryLocation, "relationship[DedicatedServiceDeliveryLocation].source": $scope.entity.address.HomeAddress[0].component._AddressPlaceRef, _count: 1, _includeTotal: true });
+                    var dsdl = await SanteDB.resources.place.findAsync({ "classConcept": EntityClassKeys.ServiceDeliveryLocation, "relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source": $scope.entity.address.HomeAddress[0].component._AddressPlaceRef, _count: 1, _includeTotal: true });
                     if (dsdl.totalResults == 1) // one result!
                     {
                         $timeout(() => {

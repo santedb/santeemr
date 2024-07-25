@@ -14,7 +14,7 @@
             </label>
             <div class="col-sm-12 col-md-9">
                 <entity-search type="'Place'" search-field="'name.component.value'"
-                    default-results="{ 'relationship[CommunityServiceDeliveryLocation].source' : scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
+                    default-results="{ 'relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source' : scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
                     group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
                     filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }" 
                     required="required"
@@ -32,7 +32,7 @@
             </label>
             <div class="col-sm-12 col-md-9">
                 <entity-search type="'Place'" search-field="'name.component.value'"
-                    default-results="{ 'relationship[CommunityServiceDeliveryLocation].source' : [ scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], scopedObject.address.TemporaryAddress[0].component._AddressPlaceRef[0] ], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
+                    default-results="{ 'relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source' : [ scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], scopedObject.address.TemporaryAddress[0].component._AddressPlaceRef[0] ], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
                     group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
                     filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }" multiple="multiple"
                     ng-model="scopedObject.relationship.IncidentalServiceDeliveryLocation" value-property="'target'" />
