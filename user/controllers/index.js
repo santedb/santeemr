@@ -168,7 +168,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             checkConflicts();
             checkMail();
         }
-        else {
+        else if(ov) {
             $scope.menuItems = null;
             $state.go("login");
         }
