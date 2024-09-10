@@ -14,6 +14,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         "Duplicate"
     ];
 
+    var _lastCheck = "";
     var _ignoreDqIssues = [];
 
     // No template use the default
@@ -47,7 +48,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
     initializeView(templateId);
 
-    var validateInterval = $interval(detectDataQualityIssues, 3000);
+    var validateInterval = $interval(detectDataQualityIssues, 10000);
 
     // Confirm navigation away in browser
     window.onbeforeunload = function () {
@@ -86,9 +87,11 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
 
     async function detectDataQualityIssues() {
-        if (!$scope.entity || !$scope.entity.$type) {
+        var jsonEnt = JSON.stringify($scope.entity);
+        if (!$scope.entity || !$scope.entity.$type || jsonEnt == _lastCheck) {
             return;
         }
+        _lastCheck = jsonEnt;
 
         var dataQuality = await SanteDB.resources.patient.invokeOperationAsync(null, "validate", { target: $scope.entity });
         var registrationForm = angular.element("#editForm").scope().editForm;
