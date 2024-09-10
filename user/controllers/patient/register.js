@@ -107,11 +107,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 dataQuality.forEach(err => {
                     var dqTarget = err.id.substring(0, err.id.indexOf('.'));
 
-                    if(_ignoreDqIssues.indexOf(dqTarget) > -1)
-                        {
-                            return;
-                        }
-                        
+                    if (_ignoreDqIssues.indexOf(dqTarget) > -1) {
+                        return;
+                    }
+
                     var targetName = $(`[data-quality-id='${dqTarget}']`).attr("name");
                     if (targetName) {
                         registrationForm.dataQualityIssues[dqTarget] = err;
@@ -323,7 +322,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 }
             }
 
-                        
+
             // Next we want to submit the registration
             var registrationAct = new Act({
                 id: SanteDB.application.newGuid(),
@@ -455,10 +454,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 $scope.$watch(scope => scope.scopedObject.identifier ? Object.keys(scope.scopedObject.identifier).map(k => `${k}:${scope.scopedObject.identifier[k].map(i => i.value).join(";")}`).join(",") : ";", async function (n, o) {
                     if (n && o && n != o) {
                         try {
-                            var filter = {
-                                _includeTotal: true,
-                                _count: 1
-                            };
+                            var filters = [];
 
                             identifierList = $scope.scopedObject.identifier;
 
@@ -475,105 +471,114 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                             Object.keys($scope.scopedObject.identifier).filter(f => $rootScope.system.uniqueDomains.indexOf(f) > -1).forEach(f => {
                                 var identifiers = identifierList[f].filter(id => id.value && id.value != "");
                                 if (identifiers.length > 0) {
+                                    var filter = {
+                                        _includeTotal: true,
+                                        _count: 1
+                                    };
                                     filter[`identifier[${f}].value`] = identifiers.map(id => id.value);
                                     duplicatedDomains.push(f);
+                                    filters.push(filter);
                                 }
                             });
 
                             // TODO: Validate the behavior here
                             var alerts = [];
-                            if (Object.keys(filter).length > 2) {
-                                var duplicates = await SanteDB.resources.person.findAsync(filter, "full");
-                                switch (duplicates.totalResults) {
-                                    case 0: // No matches
-                                        break;
-                                    case 1: // Exactly one 
-                                        if (duplicates.resource[0].$type == "Person") // The duplicate is a person - so we'll be linking them
-                                        {
-                                            toastr.info(SanteDB.locale.getString("ui.emr.patient.register.upgradePerson"));
-                                            var dup = duplicates.resource[0];
+                            if (filters.length > 0) {
+                                for (var fltIdx = 0; fltIdx < filters.length; fltIdx++) {
+                                    var filter = filters[fltIdx];
+                                    var duplicates = await SanteDB.resources.person.findAsync(filter, "full");
+                                    var fltValPath = `patientIdentifierid${duplicatedDomains[fltIdx]}0`;
+                                    switch (duplicates.totalResults) {
+                                        case 0: // No matches
+                                            break;
+                                        case 1: // Exactly one 
+                                            if (duplicates.resource[0].$type == "Person") // The duplicate is a person - so we'll be linking them
+                                            {
+                                                toastr.info(SanteDB.locale.getString("ui.emr.patient.register.upgradePerson"));
+                                                var dup = duplicates.resource[0];
 
-                                            // All references to this person will also need to be corrected to this object
-                                            var reverseReferences = await SanteDB.resources.entityRelationship.findAsync({ target: dup.id });
+                                                // All references to this person will also need to be corrected to this object
+                                                var reverseReferences = await SanteDB.resources.entityRelationship.findAsync({ target: dup.id });
 
-                                            $timeout(() => {
-                                                SanteDB.application.copyValues($scope.scopedObject, dup);
-                                                $scope.scopedObject.classConcept = EntityClassKeys.Patient;
-                                                $scope.scopedObject.id = SanteDB.application.newGuid();
-                                                $scope.scopedObject.age = dateToAge($scope.scopedObject.dateOfBirth);
+                                                $timeout(() => {
+                                                    SanteDB.application.copyValues($scope.scopedObject, dup);
+                                                    $scope.scopedObject.classConcept = EntityClassKeys.Patient;
+                                                    $scope.scopedObject.id = SanteDB.application.newGuid();
+                                                    $scope.scopedObject.age = dateToAge($scope.scopedObject.dateOfBirth);
 
-                                                $scope.scopedObject.$otherData = [];
-                                                $scope.scopedObject.$otherData.push(
-                                                    new EntityRelationship(
-                                                        {
-                                                            target: dup.id,
-                                                            relationshipType: EntityRelationshipTypeKeys.Replaces,
-                                                            source: $scope.scopedObject.id
-                                                        })
-                                                );
-
-                                                Object.keys(dup.identifier).filter(f => $rootScope.system.uniqueDomains.indexOf(f) > -1).forEach(key => {
-                                                    dup.identifier[key].forEach(id => {
-                                                        $scope.scopedObject.$otherData.push(new EntityIdentifier({
-                                                            id: id.id,
-                                                            operation: BatchOperationType.Delete
-                                                        }));
-                                                    });
-                                                });
-                                                $scope.scopedObject.$otherData.push(
-                                                    new Person({
-                                                        id: dup.id,
-                                                        statusConcept: StatusKeys.Obsolete
-                                                    })
-                                                );
-
-                                                // Copy any relationships
-                                                if (dup.relationship) {
-                                                    Object.keys(dup.relationship).forEach(rel => {
-                                                        var dupRel = dup.relationship[rel];
-                                                        scopedObject.relationship[rel] = dupRel.map(drel =>
-                                                            new EntityRelationship({
-                                                                target: drel.target,
-                                                                targetModel: drel.targetModel,
-                                                                relationshipType: drel.relationshipType,
-                                                                classification: drel.classification,
-                                                                externId: drel.externId,
-                                                                relationshipRole: drel.relationshipRole
+                                                    $scope.scopedObject.$otherData = [];
+                                                    $scope.scopedObject.$otherData.push(
+                                                        new EntityRelationship(
+                                                            {
+                                                                target: dup.id,
+                                                                relationshipType: EntityRelationshipTypeKeys.Replaces,
+                                                                source: $scope.scopedObject.id
                                                             })
-                                                        )
-                                                    });
-                                                }
+                                                    );
 
-                                                // Redirect any further references 
-                                                if (reverseReferences.resource) {
-                                                    reverseReferences.resource.forEach(res => {
-                                                        // Delete the old relationship
-                                                        $scope.scopedObject.$otherData.push(new EntityRelationship({
-                                                            id: res.id,
-                                                            operation: BatchOperationType.Delete
-                                                        }));
-                                                        // Add a new relationship between the old data and the new data
-                                                        $scope.scopedObject.$otherData.push(new EntityRelationship({
-                                                            source: res.source,
-                                                            holder: res.holder,
-                                                            target: $scope.scopedObject.id,
-                                                            relationshipType: res.relationshipType,
-                                                            relationshipRole: res.relationshipRole
-                                                        }));
+                                                    Object.keys(dup.identifier).filter(f => $rootScope.system.uniqueDomains.indexOf(f) > -1).forEach(key => {
+                                                        dup.identifier[key].forEach(id => {
+                                                            $scope.scopedObject.$otherData.push(new EntityIdentifier({
+                                                                id: id.id,
+                                                                operation: BatchOperationType.Delete
+                                                            }));
+                                                        });
                                                     });
-                                                }
-                                            });
-                                        }
-                                        else {
-                                            toastr.warning(SanteDB.locale.getString("ui.emr.patient.register.duplicateDetected"));
-                                            $timeout(() => duplicatedDomains.forEach(uqd => $scope.panel.editForm[`patientIdentifierid${uqd}0`].$setValidity("duplicate", false)));
-                                        }
-                                        break;
-                                    default:
-                                        {
-                                            toastr.warning(SanteDB.locale.getString("ui.emr.patient.register.duplicateDetected"));
-                                            $timeout(() => duplicatedDomains.forEach(uqd => $scope.panel.editForm[`patientIdentifierid${uqd}0`].$setValidity("duplicate", false)));
-                                        }
+                                                    $scope.scopedObject.$otherData.push(
+                                                        new Person({
+                                                            id: dup.id,
+                                                            statusConcept: StatusKeys.Obsolete
+                                                        })
+                                                    );
+
+                                                    // Copy any relationships
+                                                    if (dup.relationship) {
+                                                        Object.keys(dup.relationship).forEach(rel => {
+                                                            var dupRel = dup.relationship[rel];
+                                                            scopedObject.relationship[rel] = dupRel.map(drel =>
+                                                                new EntityRelationship({
+                                                                    target: drel.target,
+                                                                    targetModel: drel.targetModel,
+                                                                    relationshipType: drel.relationshipType,
+                                                                    classification: drel.classification,
+                                                                    externId: drel.externId,
+                                                                    relationshipRole: drel.relationshipRole
+                                                                })
+                                                            )
+                                                        });
+                                                    }
+
+                                                    // Redirect any further references 
+                                                    if (reverseReferences.resource) {
+                                                        reverseReferences.resource.forEach(res => {
+                                                            // Delete the old relationship
+                                                            $scope.scopedObject.$otherData.push(new EntityRelationship({
+                                                                id: res.id,
+                                                                operation: BatchOperationType.Delete
+                                                            }));
+                                                            // Add a new relationship between the old data and the new data
+                                                            $scope.scopedObject.$otherData.push(new EntityRelationship({
+                                                                source: res.source,
+                                                                holder: res.holder,
+                                                                target: $scope.scopedObject.id,
+                                                                relationshipType: res.relationshipType,
+                                                                relationshipRole: res.relationshipRole
+                                                            }));
+                                                        });
+                                                    }
+                                                });
+                                            }
+                                            else {
+                                                toastr.warning(SanteDB.locale.getString("ui.emr.patient.register.duplicateDetected"));
+                                                $timeout(() => $scope.panel.editForm[fltValPath].$setValidity("duplicate", false));
+                                            }
+                                            break;
+                                        default:
+                                            {
+                                                toastr.warning(SanteDB.locale.getString("ui.emr.patient.register.duplicateDetected"));
+                                                $timeout(() => $scope.panel.editForm[fltValPath].$setValidity("duplicate", false));
+                                            }
+                                    }
                                 }
                             }
                         }
