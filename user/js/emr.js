@@ -42,7 +42,6 @@ const TEMPLATE_IDS = {
  * @description This is a wrapper class that encapsulates the functionality of SanteEMR
  */
 function SanteEMRWrapper() {
-
     /**
      * @method
      * @memberof SanteEMRWrapper

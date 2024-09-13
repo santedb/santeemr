@@ -333,6 +333,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 actTime: new Date(),
                 moodConcept: ActMoodKeys.Eventoccurrence,
                 typeConcept: ADT_REGISTRATION_TYPES.ADMIT,
+                statusConcept: StatusKeys.Completed,
                 participation: {
                     RecordTarget: [
                         {
