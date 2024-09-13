@@ -157,6 +157,8 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         }
     }
 
+    $scope.checkin = SanteEMR.showCheckin;
+
 }])
     // Advanced Search
     // Search - By Demographics
@@ -342,4 +344,6 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
             performSearch($scope.search);
         }
+
+        $scope.checkin = SanteEMR.showCheckin;
     }]);

@@ -1,0 +1,50 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="false">~/controllers/act/encounter/checkin.js</sdb:script>
+    <div class="modal" id="checkinModal" role="dialog" aria-labelledby="checkinModalTitle" aria-hidden="true"
+        ng-controller="EmrCheckinEncounterController">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="checkinModalTitle">
+                        <i class="fa fa-fw fa-heart-circle-bolt"></i> {{ 'ui.emr.encounter.checkin.title' | i18n }}
+                    </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
+                </div>
+                <form name="checkinForm" ng-submit="saveCheckin(checkinForm)" novalidate="novalidate">
+                    <div class="modal-body">
+
+                        <div ng-if="!recordTarget">
+                            <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+                        </div>
+                        <div ng-if="recordTarget" class="container-fluid">
+                            <div class="alert alert-info p-0" ng-init="item = recordTarget">
+                                <!-- #include virtual="~/partials/patient/search-result.html" -->
+                            </div>
+                            <div class="container-fluid">
+                                <div class="form-group row">
+                                    <label class="col-12 text-bold required">
+                                        {{ 'ui.model.act.template' | i18n }}
+                                    </label>
+                                    <div class="col-12">
+                                        <entity-search class="form-control" type="'Template'" filter="{ scope : 'org.santedb.model.act' }"
+                                            ng-model="act.$templateRef" search-field="'description'" key="'mnemonic'" js-filter="applyGuardExpression" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                            <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
+                        <button type="submit" id="btnLogout" ng-disabled="checkinForm.$invalid" class="btn btn-primary">
+                            <i class="fa fa-check"></i> {{ 'ui.action.check-in' | i18n }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

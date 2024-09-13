@@ -1,7 +1,5 @@
 
 // Template icons
-var _templateIcons = {};
-
 angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope', '$rootScope', '$state', "$timeout", function ($scope, $rootScope, $state, $timeout) {
 
 
@@ -27,28 +25,13 @@ angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope',
 
     initialize();
 
-    /**
-     * @summary Actually load an object from API
-     * @param {*} type The type of object
-     * @param {*} key The key of the object to load
-     */
-    async function loadObject(type, key) {
-        try {
-            return await SanteDB.resources[type.toCamelCase()].getAsync(key);
-        }
-        catch(e) {
+    $scope.resolveSummary = function(templateId) {
 
+        var templateValue = SanteDB.application.resolveTemplateSummary(templateId);
+        if(templateValue == null) {
+            return  "/org.santedb.uicore/partials/act/noTemplate.html"
         }
-    }
-
-    /**
-     * @summary Ensure the specified player object 
-     * @param {*} participation The ActParticipation to load player for
-     */
-    $scope.loadPlayer = async function(participation) {
-        if(participation.playerModel) return; // already loaded
-        var loadedPlayer = await loadObject("Entity", participation.player);
-        $timeout(() => participation.playerModel = loadedPlayer);
+        return templateValue;
     }
 
     // Watch for scoped object
@@ -56,7 +39,7 @@ angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope',
         if(n && n.id) {
             try {
                 var history = [];
-                var offset = 0, count = 1;
+                var offset = 0;
 
                 // Lookup MDM links
                 var er = await SanteDB.resources.entityRelationship.findAsync({ 
@@ -64,28 +47,28 @@ angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope',
                     "target" : n.id // Where this is the target
                 }, "reverseRelationship");
                 var keys = [ n.id ];
-                if(er.resource)
+                if(er.resource) {
                     er.resource.map(function(e) { return e.holder; }).forEach(function(e) { keys.push(e); });
+                }
 
-                while(offset < count) {
+                do {
                     var results = await SanteDB.resources.act.findAsync(
                         {
                             "participation[RecordTarget].player" : keys,
+                            _orderBy: 'actTime:desc',
                             _offset: offset,
-                            _count: 10
+                            _count: 10,
+                            _includeTotal: false
                         },
                         "full"
                     );
-                    count = results.totalResults;
                     offset += results.count;
                     if(results.resource)
                     {
-                        await Promise.all(results.resource.map(async function(r) { 
-                            history.push(r); 
-                        }));
+                        results.resource.forEach(r => history.push(r));
                     }
                     $timeout(() => $scope.history = history);
-                }
+                } while(results.resource)
             }
             catch(e) {
                 $rootScope.errorHandler(e);

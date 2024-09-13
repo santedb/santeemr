@@ -10,7 +10,7 @@
     <!-- Actions -->
     <string name="ui.emr.profile">My Profile</string>
     <string name="ui.action.save.then.checkin">Save &amp; Go To</string>
-    <string name="ui.action.check-in">Check-in</string>
+    <string name="ui.action.check-in">Start Visit</string>
     <string name="ui.action.visit">Visit</string>
     <string name="ui.action.discharge">Discharge</string>
     <string name="ui.action.updateSelected">Update Record</string>
@@ -368,4 +368,9 @@
     <string name="org.santedb.config.log">Logging</string>
     <string name="org.santedb.config.other">Other Settings</string>
 
+    <!-- Checkin -->
+     <string name="ui.emr.encounter.checkin.title">Start Visit</string>
+
+     <!-- Visits -->
+      <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
 </resources>

@@ -25,7 +25,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
     async function loadPatient(id) {
         try {
             var patient = await SanteDB.resources.patient.getAsync(id, "full");
-            $timeout(() => $scope.patient = patient);
+            $timeout(() => $scope.patient = new Patient(patient));
         }
         catch (e) {
 
@@ -43,7 +43,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                             delete patient.tag["$altkeys"];
                             delete patient.tag["$generated"];
                         }
-                        $timeout(() => $scope.patient = patient);
+                        $timeout(() => $scope.patient = new Patient(patient));
                     }
                     catch (e) {
                         $timeout(() => $scope.error = $rootScope.prepareErrorForDisplay(e));
