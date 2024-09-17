@@ -4,16 +4,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
 
     async function initializeView(patientId) {
         try {
-            var carePathways = await SanteDB.resources.carePathwayDefinition.findAsync({}, "full");
-            var careplans = await SanteDB.resources.carePlan.findAsync({ statusConcept: StatusKeys.Active }, "full");
-            careplans.resource = careplans.resource || [];
-
-            $timeout(() => {
-                $scope.carePathways = carePathways.map(cp => {
-                    cp._enrolment = careplans.resource.find(plan => plan.pathway == cp.id);
-                    return cp;
-                });
-            });
+            var carePathways = await SanteDB.resources.carePathwayDefinition.invokeOperationAsync(null, "eligibility", { target: patientId, includeEnrolled: true });
         }
         catch(e) {
             $rootScope.errorHandler(e);

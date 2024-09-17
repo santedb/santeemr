@@ -1,3 +1,11 @@
 <resources>
     
+    <string name="ui.emr.admin.carePaths.title">Care Pathways</string>
+    <string name="ui.emr.admin.carePaths.help">
+        <![CDATA[
+        Care pathways are used as logical groupings for clinical protocols defined in the <a ui-sref="santedb-admin.cdr.cdss.dashboard"><strong>CDSS Library</strong></a>. A care pathway 
+        allows patients to be "enrolled" (either automatically or manually). Once enrolled, a <strong>Care Plan</strong> is created based on the CDSS rules configured. This allows SanteEMR
+        plugins and programmes to track care against a known best practice and compare with actual care delivery.
+        ]]>
+    </string>
 </resources>
