@@ -56,21 +56,19 @@
                 <ul class="list-group">
                     <li ng-repeat="elig in pathway.eligibility track by $index" class="list-group-item">
                         <div class="input-group">
-                        <hdsi-expression ng-model="elig" name="eligibility{{$index}}" focal-type="'Patient'"
-                            simple-input="false" class="form-control" include-rhs="true" required="required" />
+                            
+                        <hdsi-expression ng-model="elig.expr" name="eligibility{{$index}}" focal-type="'Patient'"
+                            simple-input="true" class="form-control" include-rhs="true" />
                             <div class="input-group-append">
                                 <button type="button" class="btn btn-danger" ng-click="pathway.eligibility.splice($index, 1)">
                                     <i class="fas fa-fw fa-minus-circle"></i> {{ 'ui.action.remove' | i18n }}
                                 </button>
                             </div>
                         </div>
-                        <div class="text-danger" ng-if="editCarePathForm['eligibility' + $index].$error['required']">
-                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                        </div>
                         
                     </li>
                     <li class="list-group-item">
-                        <button type="button" class="btn btn-success" ng-click="pathway.eligibility.push('')">
+                        <button type="button" class="btn btn-success" ng-click="pathway.eligibility.push({expr:''})">
                             <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n }}
                         </button>
                     </li>
@@ -87,5 +85,10 @@
                     ng-model="pathway.encounterTemplate" search-field="'description'" key="'uuid'" />
             </div>
         </div>
+    </div>
+    <div class="float-right">
+        <button type="submit" class="btn btn-primary" ng-disabled="editCarePathForm.$invalid">
+            <i class="fas fa-fw fa-check"></i> {{ pathway.id ? 'ui.action.save' : 'ui.action.create' | i18n  }}
+        </button>
     </div>
 </form>
