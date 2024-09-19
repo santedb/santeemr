@@ -1,0 +1,36 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet"
+    oc-lazy-load="{ name: 'EmrActEntryWidgetController', files: ['/org.santedb.emr/controllers/patient/widgets/act-entry.js'] }">
+    <sdb:widget order="10" name="org.santedb.emr.widget.patient.act.qentry" headerClass="alert-primary" size="Large"
+        type="Panel" context="org.santedb.emr.patient.act" >
+        <sdb:icon>fas fa-notes-medical</sdb:icon>
+        <sdb:description lang="en">New Entry</sdb:description>
+        <sdb:guard>!scopedObject._upstream &amp;&amp; !scopedObject.deceasedDate</sdb:guard>
+    </sdb:widget>
+
+    <div id="actEntryDiv" ng-controller="EmrActEntryWidgetController">
+        <form ng-submit="saveAct(panel.editForm)" novalidate="novalidate" autocomplete="off" 
+            ng-init="act.$templateContext = 'org.santedb.model.act'" name="panel.editForm">
+            <!-- #include virtual="~/views/patient/widgets/partials/act/entry/cover-page.html" -->
+            <div class="container-fluid">
+                <div class="row" ng-if="panel.editForm.$invalid">
+                    <div class="col">
+                        <span class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i>
+                            {{ 'ui.emr.patient.register.requiredFieldMissing' | i18n }}</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="btn-group float-right">
+                                <button type="button" ng-click="cancelEntry()" class="btn btn-danger"><i
+                                        class="fas fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
+                                <button id="btnSave" ng-disabled="panel.editForm.$invalid" type="submit" class="btn btn-primary"><i
+                                        class="fas fa-check"></i>
+                                    {{ 'ui.action.save' | i18n }}</button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+
+        </form>
+    </div>
+</div>

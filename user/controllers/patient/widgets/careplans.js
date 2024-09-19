@@ -4,7 +4,8 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
 
     async function initializeView(patientId) {
         try {
-            var carePathways = await SanteDB.resources.carePathwayDefinition.invokeOperationAsync(null, "eligibility", { target: patientId, includeEnrolled: true });
+            var carePathways = await SanteDB.resources.patient.invokeOperationAsync(patientId, "carepath-eligibilty");
+            var enrolledCarePathways = await SanteDB.resources.patient.findAssociatedAsync(patientId, "carepaths");
         }
         catch(e) {
             $rootScope.errorHandler(e);

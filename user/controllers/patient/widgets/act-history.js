@@ -55,6 +55,7 @@ angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope',
                     var results = await SanteDB.resources.act.findAsync(
                         {
                             "participation[RecordTarget].player" : keys,
+                            "moodConcept" : ActMoodKeys.Eventoccurrence,
                             _orderBy: 'actTime:desc',
                             _offset: offset,
                             _count: 10,
