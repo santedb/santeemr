@@ -26,7 +26,7 @@ function bindSearchScopeCommonFunctions($scope) {
     $scope.patientHasOpenEncounter = async function (patient) {
         if (patient.id) {
             try {
-                var encounters = await SanteDB.resources.patientEncounter.findAsync({ "participation[RecordTarget].player": patient.id, _count: 0, _includeTotal: true });
+                var encounters = await SanteDB.resources.patientEncounter.findAsync({ moodConcept: ActMoodKeys.Eventoccurrence, statusConcept: StatusKeys.Active, "participation[RecordTarget].player": patient.id, _count: 0, _includeTotal: true });
                 if (encounters.totalResults > 0) {
                     patient.tag = patient.tag || {};
                     patient.tag.$hasEncounter = true;

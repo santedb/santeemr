@@ -15,6 +15,8 @@
     <string name="ui.action.discharge">Discharge</string>
     <string name="ui.action.updateSelected">Update Record</string>
     <string name="ui.action.change">Change Record</string>
+    <string name="ui.action.enroll">Enroll</string>
+    <string name="ui.action.unenroll">Leave</string>
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
     <string name="ui.emr.patient.index">My Patients</string>
@@ -68,6 +70,7 @@
     <string name="org.santedb.emr.widget.patient.identity">Identification</string>
     <string name="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
     <string name="org.santedb.emr.widget.patient.idCard">Patient ID Card</string>
+    <string name="org.santedb.emr.widget.patient.careplans">Care Plans</string>
 
     <!-- VRP -->
      <string name="ui.emr.vrp.title">Signed Digital ID Code</string>

@@ -7,7 +7,7 @@ define library "SanteDB Core CDSS Fact Library"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0-alpha1
+		version 3.0.11
 		doc This library contains core logic to extract common facts related to objects in SanteDB. It defines
 		doc no rules, protocols, or models, rather is intended to provide common facts about data to allow
 		doc users to more easily derive their own rules
@@ -16,11 +16,49 @@ define library "SanteDB Core CDSS Fact Library"
 	define logic "SanteDB Core CDSS Context Facts"
 		having id <org.santedb.cdss.core.identifiedData>
 		having status active
-		having context Entity		with metadata
+		having context Entity		
+		with metadata
 			version 3.0-alpha
 			doc Core CDSS Facts for all objects
 		end metadata
 		as
+		
+		define fact "CDS Output Will be Saved"
+			having type bool
+			with metadata
+				doc Indicates that the CDSS caller will persist the output
+			end metadata
+		as
+			csharp($$ true.Equals(context["_persistent"]) $$)
+		end fact
+
+		define fact "CDS Exclude Supplements" 
+			having type bool 
+			with metadata 
+				doc When set, indicates that the caller is excluding Supplements
+			end metadata
+		as 
+			csharp($$ true.Equals(context["_excludeSupplements"]) $$)
+		end fact 
+
+		define fact "CDS Exclude Observations" 
+			having type bool 
+			with metadata 
+				doc When set, indicates that the caller is excluding Observations
+			end metadata
+		as 
+			csharp($$ true.Equals(context["_excludeObservations"]) $$)
+		end fact 
+
+		define fact "CDS Pathway Being Executed" 
+			having type string 
+			with metadata 
+				doc Indicates the CDSS engine pathway being executed
+			end metadata
+		as
+			csharp($$ context.String("pathway") $$);
+		end fact 
+
 		define fact "CDS Running Non-Interactive"
 			having type bool
 			with metadata
@@ -46,6 +84,8 @@ define library "SanteDB Core CDSS Fact Library"
 			doc Core CDSS facts for Patients
 		end metadata
 		as
+
+		
 		define fact "Patient Is Deceased"
 			having type bool
 		as

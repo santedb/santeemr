@@ -11,5 +11,46 @@
 
     <div ng-controller="EmrPatientCarePlanController">
 
+        <div class="accordion" id="carePathwayAccordion">
+            <div class="card" ng-repeat="path in carePathways track by $index">
+                <div class="card-header" ng-class="{ 'alert-success' : path._enrolled }">
+                    <button class="btn btn-link p-2 collapse-indicator" ng-click="fetchNextEncounters(path)" aria-expanded="false" data-toggle="collapse" data-target="#carePathway{{$index}}" type="button">
+                        <h5 class="my-0 card-heading">
+                            <i class="fas fa-fw"
+                                ng-class="{ 'fa-house-medical-circle-check text-success' : path._enrolled, 'fa-house-medical-circle-xmark text-info' : null }"></i>
+                            {{ path.description }}
+                            <i class="float-right fas fa-fw fa-chevron-right"></i>
+                        </h5>
+                    </button>
+                    <button class="btn float-right" ng-class="{ 'btn-danger' : path._enrolled, 'btn-success' : null }"
+                        type="button">
+                        <i class="fas fa-fw"
+                            ng-class="{ 'fa-times-circle' : path._enrolled, 'fa-plus-circle' : null }"></i>
+                        <span class="d-none d-lg-inline">{{ path._enrolled ? 'ui.action.unenroll' : 'ui.action.enroll' | i18n }}</span>
+                    </button>
+                    <button class="btn btn-info float-right" type="button">
+                        <i class="fas fa-fw fa-arrows-rotate"></i>
+                        <span class="d-none d-lg-inline">{{ 'ui.action.refresh' | i18n }}</span>
+                    </button>
+                </div>
+                <div class="collapse" id="carePathway{{$index}}">
+                    <div class="card-body">
+                        <div ng-if="!path.encounters">
+                            <i class="fas fa-fw fa-spin fa-circle-notch"></i> {{ 'ui.wait' | i18n }}
+                        </div>
+                        <ul class="list-group" ng-if="path.encounters">
+                            <li class="list-group-item" ng-repeat="enc in path.encounters track by $index">
+                                <h5 class="my-0"><i class="fas fa-fw" ng-class="resolveTemplateIcon(enc.templateModel.mnemonic)"></i> {{ enc.templateModel.mnemonic | i18n }} <small>{{ enc.startTime | extDate: 'D' }} - {{ enc.stopTime | extDate: 'D' }}</small></h5>
+                                <ul class="ml-2">
+                                    <li ng-repeat="comp in enc.relationship.HasComponent track by $index" ng-init="act = comp.targetModel">
+                                        <i class="fas fa-fw" ng-class="resolveTemplateIcon(comp.targetModel.templateModel.mnemonic)"></i> <ng-include class="d-inline" src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)" />
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
