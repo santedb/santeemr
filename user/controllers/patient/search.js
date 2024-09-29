@@ -23,19 +23,8 @@
 function bindSearchScopeCommonFunctions($scope) {
 
     // Item supplement which determines if the patientin question has an encounter active
-    $scope.patientHasOpenEncounter = async function (patient) {
-        if (patient.id) {
-            try {
-                var encounters = await SanteDB.resources.patientEncounter.findAsync({ moodConcept: ActMoodKeys.Eventoccurrence, statusConcept: StatusKeys.Active, "participation[RecordTarget].player": patient.id, _count: 0, _includeTotal: true });
-                if (encounters.totalResults > 0) {
-                    patient.tag = patient.tag || {};
-                    patient.tag.$hasEncounter = true;
-                }
-            }
-            catch (e) { }
-        }
-        return patient;
-    }
+    $scope.patientHasOpenEncounter = SanteEMR.patientHasOpenEncounter;
+    $scope.checkin = SanteEMR.showCheckin;
 
 
     $scope.downloadPatient = async function (patientId, index) {
@@ -157,7 +146,6 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         }
     }
 
-    $scope.checkin = SanteEMR.showCheckin;
 
 }])
     // Advanced Search
@@ -345,5 +333,4 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             performSearch($scope.search);
         }
 
-        $scope.checkin = SanteEMR.showCheckin;
     }]);

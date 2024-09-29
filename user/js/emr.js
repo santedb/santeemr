@@ -42,6 +42,9 @@ const TEMPLATE_IDS = {
  * @description This is a wrapper class that encapsulates the functionality of SanteEMR
  */
 function SanteEMRWrapper() {
+
+    SanteDB.application.getTemplateDefinitionsAsync();
+
     /**
      * @method
      * @memberof SanteEMRWrapper
@@ -57,6 +60,44 @@ function SanteEMRWrapper() {
         $("#checkinModal").modal('show');
     }
 
+    /**
+     * @summary Determines whether the patient has an open encounter or not
+     * @param {Patient} patient The patient which is supposed to have the open encounter
+     * @returns The updated patient with a populated tag if the encounter is open
+     */
+    this.patientHasOpenEncounter = async function (patient) {
+        if (patient.id) {
+            try {
+                var encounters = await SanteDB.resources.patientEncounter.findAsync({ moodConcept: ActMoodKeys.Eventoccurrence, statusConcept: StatusKeys.Active, "participation[RecordTarget].player": patient.id, _count: 0, _includeTotal: true });
+                if (encounters.totalResults > 0) {
+                    patient.tag = patient.tag || {};
+                    patient.tag.$hasEncounter = true;
+                }
+            }
+            catch (e) { }
+        }
+        return patient;
+    }
+
+    
+    this.resolveTemplateIcon = function(templateId) {
+        var template = SanteDB.application.getTemplateMetadata(templateId);
+        if(template) {
+            return template.icon;
+        }
+        else {
+            return "fa-notes-medical";
+        }
+    }
+
+    this.resolveSummaryTemplate = function(templateId) {
+        var templateValue = SanteDB.application.resolveTemplateSummary(templateId);
+        if(templateValue == null) {
+            return  "/org.santedb.uicore/partials/act/noTemplate.html"
+        }
+        return templateValue;
+    }
+    
 }
 
 /**

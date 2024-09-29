@@ -4,7 +4,6 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
 
     async function initializeView(patientId) {
         try {
-            await SanteDB.application.getTemplateDefinitionsAsync();
             var carePathways = await SanteDB.resources.patient.invokeOperationAsync(patientId, "carepath-eligibilty");
             var enrolledCarePathways = await SanteDB.resources.patient.findAssociatedAsync(patientId, "carepaths");
 
@@ -45,24 +44,9 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
         }
     }
 
-    $scope.resolveTemplateIcon = function(templateId) {
-        var template = SanteDB.application.getTemplateMetadata(templateId);
-        if(template) {
-            return template.icon;
-        }
-        else {
-            return "fa-notes-medical";
-        }
-    }
+    $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
+    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
 
-    $scope.resolveSummaryTemplate = function(templateId) {
-        var templateValue = SanteDB.application.resolveTemplateSummary(templateId);
-        if(templateValue == null) {
-            return  "/org.santedb.uicore/partials/act/noTemplate.html"
-        }
-        return templateValue;
-    }
-    
     $scope.fetchNextEncounters = fetchNextEncounters;
     initializeView($scope.scopedObject.id);
 }]);

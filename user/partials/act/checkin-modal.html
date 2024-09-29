@@ -24,17 +24,44 @@
                             <div class="alert alert-info p-0" ng-init="item = recordTarget">
                                 <!-- #include virtual="~/partials/patient/search-result.html" -->
                             </div>
-                            <div class="container-fluid">
-                                <div class="form-group row">
-                                    <label class="col-12 text-bold required">
-                                        {{ 'ui.model.act.template' | i18n }}
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <label class="text-strong d-block w-100">
+                                        <input type="radio" name="startType" required="required" ng-model="newAct.$startType" 
+                                            value="manual" />
+                                        {{ 'ui.emr.encounter.checkin.type.manual' | i18n }}
                                     </label>
-                                    <div class="col-12">
-                                        <entity-search class="form-control" type="'Template'" filter="{ scope : 'org.santedb.model.act' }"
-                                            ng-model="act.$templateRef" search-field="'description'" key="'mnemonic'" js-filter="applyGuardExpression" />
+                                    <div class="form-group row">
+                                        <label class="col-12 text-bold required">
+                                            {{ 'ui.model.act.template' | i18n }}
+                                        </label>
+                                        <div class="col-12">
+                                            <entity-search ng-disabled="newAct.$startType !== 'manual'" ng-required="newAct.$startType === 'manual'" class="form-control" type="'Template'" filter="{ scope : 'org.santedb.model.act' }"
+                                                ng-model="newAct.templateModel.mnemonic" name="template" search-field="'description'" key="'mnemonic'" js-filter="applyGuardExpression" />
+                                            <div ng-if="checkinForm.template.$error.required" class="text-danger">
+                                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </li>
+                                <li class="list-group-item" ng-if="_proposedAct">
+                                    <label class="text-strong d-block w-100">
+                                        <input type="radio" name="startType" required="reuired" ng-model="newAct.$startType"
+                                            value="proposed"/>
+                                        {{ 'ui.emr.encounter.checkin.type.proposed' | i18n }}
+                                    </label>
+                                    <div class="form-group row" ng-class="{ 'alert-secondary': newAct.$startType !== 'proposed' }">
+                                        <div class="col-12">
+                                            <h5 class="my-0"><i class="fas fa-fw" ng-class="resolveTemplateIcon(_proposedAct.templateModel.mnemonic)"></i> {{ _proposedAct.templateModel.mnemonic | i18n }} <small>{{ _proposedAct.startTime | extDate: 'D' }} - {{ _proposedAct.stopTime | extDate: 'D' }}</small></h5>
+                                            <ul class="ml-2">
+                                                <li ng-repeat="comp in _proposedAct.relationship.HasComponent track by $index" ng-init="act = comp.targetModel">
+                                                    <i class="fas fa-fw" ng-class="resolveTemplateIcon(comp.targetModel.templateModel.mnemonic)"></i> <ng-include class="d-inline" src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)" />
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="modal-footer">
