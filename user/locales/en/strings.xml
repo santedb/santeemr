@@ -373,7 +373,9 @@
 
     <!-- Checkin -->
      <string name="ui.emr.encounter.checkin.title">Start Visit</string>
-
+     <string name="ui.emr.encounter.checkin.type.manual">Create New Visit</string>
+     <string name="ui.emr.encounter.checkin.type.proposed">From Care Plan</string>
      <!-- Visits -->
       <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
+
 </resources>

@@ -43,7 +43,6 @@ const TEMPLATE_IDS = {
  */
 function SanteEMRWrapper() {
 
-    SanteDB.application.getTemplateDefinitionsAsync();
 
     /**
      * @method
@@ -81,6 +80,7 @@ function SanteEMRWrapper() {
 
     
     this.resolveTemplateIcon = function(templateId) {
+        SanteDB.application.getTemplateDefinitionsAsync(); // HACK: Force Fetching
         var template = SanteDB.application.getTemplateMetadata(templateId);
         if(template) {
             return template.icon;
@@ -91,6 +91,7 @@ function SanteEMRWrapper() {
     }
 
     this.resolveSummaryTemplate = function(templateId) {
+        SanteDB.application.getTemplateDefinitionsAsync(); // HACK: Force Fetching
         var templateValue = SanteDB.application.resolveTemplateSummary(templateId);
         if(templateValue == null) {
             return  "/org.santedb.uicore/partials/act/noTemplate.html"
