@@ -61,32 +61,38 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
             var templateId = null;
             var pathway = null;
+            var startTypeData = $scope.newAct.$startType.split('-');
             var fulfills = [];
             var fulfillmentTargets = [];
-            switch ($scope.newAct.$startType) {
-                case "manual": 
+            switch (startTypeData[0]) {
+                case "manual":
                     templateId = $scope.newAct.template;
                     break;
                 case "proposed":
-                    templateId = $scope._proposedAct.templateModel.mnemonic;
-                    fulfills.push(new ActRelationship({
-                        target: $scope._proposedAct.id
-                    }));
-                    fulfillmentTargets = $scope._proposedAct.relationship.HasComponent.map(o => new ActRelationship({
-                        target: o.target,
-                        targetModel: {
-                            $type: o.targetModel.$type,
-                            protocol: o.targetModel.protocol
-                        }
-                    }));
-                    break;
+                    {
+                        var idx = parseInt(startTypeData[1]);
+                        pathway = $scope._proposedActs[idx].pathway;
+                        templateId = $scope._proposedActs[idx].templateModel.mnemonic;
+                        fulfills.push(new ActRelationship({
+                            target: $scope._proposedActs[idx].id
+                        }));
+                        fulfillmentTargets = $scope._proposedActs[idx].relationship.HasComponent.map(o => new ActRelationship({
+                            target: o.target,
+                            targetModel: {
+                                $type: o.targetModel.$type,
+                                protocol: o.targetModel.protocol
+                            }
+                        }));
+                        break;
+                    }
+
             }
-    
+
             // Template
             var template = await SanteDB.application.getTemplateContentAsync(templateId, {
                 recordTargetId: $scope.recordTarget.id,
-                facilityId: SanteDB.authentication.getCurrentFacilityId(),
-                userEntityId: SanteDB.authentication.getCurrentUserEntityId()
+                facilityId: await SanteDB.authentication.getCurrentFacilityId(),
+                userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
             });
 
             var encounter = new PatientEncounter(template);
@@ -96,10 +102,11 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             // Ensure the appropriate keys are set
             encounter.startTime = encounter.actTime = new Date();
             encounter.statusConcept = StatusKeys.Active;
-            
+
             // Compute the actions to be performed
             var actions = await SanteDB.resources.patient.invokeOperationAsync($scope.recordTarget.id, "generate-careplan", {
-                pathway: template.templateModel.mnemonic,
+                pathway: pathway,
+                encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD")
             }, undefined, "min");
 
@@ -113,12 +120,12 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                 comp.targetModel.id = comp.targetModel.id || ar.target;
 
                 // Fulfillment for the target model
-                if(comp.targetModel && comp.targetModel.protocol) {
+                if (comp.targetModel && comp.targetModel.protocol) {
                     var fulfillment = fulfillmentTargets.find(o => {
                         var targetAct = o.targetModel;
-                        return targetAct.protocol.find(p => comp.targetModel.protocol.find(p2=>p2.protocol == p.protocol && p2.sequence == p.sequence))
+                        return targetAct.protocol.find(p => comp.targetModel.protocol.find(p2 => p2.protocol == p.protocol && p2.sequence == p.sequence))
                     });
-                    if(fulfillment) {
+                    if (fulfillment) {
                         comp.targetModel.relationship = comp.targetModel.relationship || {};
                         comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
                         comp.targetModel.relationship.Fulfills.push(new ActRelationship({
@@ -128,7 +135,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                 }
                 submission.resource.push(comp.targetModel);
             });
-                
+
             console.info(submission);
         }
         catch (e) {
