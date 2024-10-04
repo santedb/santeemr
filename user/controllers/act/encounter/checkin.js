@@ -1,5 +1,5 @@
 /// <reference path="../../../.ref/js/santedb.js" />
-angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope", "$rootScope", "$timeout", function ($scope, $rootScope, $timeout) {
+angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 
     $scope.patientId = null;
     $scope.$watch("patientId", async function (n, o) {
@@ -96,6 +96,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             });
 
             var encounter = new PatientEncounter(template);
+            encounter.id = encounter.id || SanteDB.application.newGuid();
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
             encounter.relationship.Fulfills = fulfills;
@@ -114,6 +115,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                 var ar = new ActRelationship({
                     relationshipType: comp.relationshipType,
                     target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
+                    targetModel: comp.targetModel,
                     source: encounter.id
                 });
                 encounter.relationship.HasComponent.push(ar);
@@ -133,10 +135,17 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         }));
                     }
                 }
-                submission.resource.push(comp.targetModel);
             });
-
+            
+            encounter = await prepareActForSubmission(encounter);
+            submission = bundleRelatedObjects(encounter);
             console.info(submission);
+
+            // Now we want to submit
+            var submittedBundle = await SanteDB.resources.bundle.insertAsync(submission);
+            toastr.success(SanteDB.locale.getString("ui.emr.encounter.checkin.success"));
+            var encounter = submittedBundle.resource.find(o=>o.$type == "PatientEncounter");
+            $state.go("santedb-emr.encounter.view", { id: encounter.id });
         }
         catch (e) {
             $rootScope.errorHandler(e);

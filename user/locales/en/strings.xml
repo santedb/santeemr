@@ -375,6 +375,8 @@
      <string name="ui.emr.encounter.checkin.title">Start Visit</string>
      <string name="ui.emr.encounter.checkin.type.manual">Create New Visit</string>
      <string name="ui.emr.encounter.checkin.type.proposed">From Care Plan</string>
+     <string name="ui.emr.encounter.checkin.success">Visit has been started successfully</string>
+     <string name="ui.emr.encounter.navigate.notFound">Active encounter could not be found. Please try refreshing the results and attempting your operation again.</string>
      <!-- Visits -->
       <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
 

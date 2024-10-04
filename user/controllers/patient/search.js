@@ -1,5 +1,6 @@
 /// <reference path="../../.ref/js/santedb.js"/>
 /// <reference path="../../.ref/js/santedb-model.js"/>
+/// <reference path="../../js/emr.js"/>
 /*
  * Portions Copyright 2015-2019 Mohawk College of Applied Arts and Technology
  * Portions Copyright 2019-2019 SanteSuite Contributors (See NOTICE)
@@ -20,12 +21,31 @@
  * Date: 2019-9-27
  */
 
-function bindSearchScopeCommonFunctions($scope) {
+function bindSearchScopeCommonFunctions($scope, $state) {
 
     // Item supplement which determines if the patientin question has an encounter active
     $scope.patientHasOpenEncounter = SanteEMR.patientHasOpenEncounter;
     $scope.checkin = SanteEMR.showCheckin;
-
+    $scope.goVisit = async function(id) {
+        try {
+            var encounter = await SanteDB.resources.patientEncounter.findAsync({
+                "participation[RecordTarget].player": id,
+                "statusConcept": StatusKeys.Active,
+                "moodConcept": ActMoodKeys.Eventoccurrence,
+                _count: 1,
+                _includeTotal: true
+            }, "min");
+            if(encounter.resource) {
+                $state.go("santedb-emr.encounter.view", { id: encounter.resource[0].id });
+            }
+            else {
+                toastr.error(SanteDB.locale.getString("ui.emr.encounter.navigate.notFound"));
+            }
+        }
+        catch(e) {
+            SanteDB.display.getRootScope($scope).errorHandler(e);
+        }
+    }
 
     $scope.downloadPatient = async function (patientId, index) {
         if (!patientId) return;
@@ -90,7 +110,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     initializeView();
 
     // Bind any common scope searching functions to the scope
-    bindSearchScopeCommonFunctions($scope);
+    bindSearchScopeCommonFunctions($scope, $state);
 
     // Initial view
     $scope.search = {
@@ -153,7 +173,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     .controller('EmrAdvancedPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
 
         // Bind any common scope searching functions to the scope
-        bindSearchScopeCommonFunctions($scope);
+        bindSearchScopeCommonFunctions($scope, $state);
 
         $scope.$watch("searchForm", function (n, o) {
             if (n && !o || n && n.$pristine && !n.$invalid) {
