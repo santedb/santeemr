@@ -1,0 +1,32 @@
+<!--
+ - Copyright 2021-2024 SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ - Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ - Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ - 
+ - Licensed under the Apache License, Version 2.0 (the "License"); you 
+ - may not use this file except in compliance with the License. You may 
+ - obtain a copy of the License at 
+ - 
+ - http://www.apache.org/licenses/LICENSE-2.0 
+ - 
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ - License for the specific language governing permissions and limitations under 
+ - the License.
+ -->
+<AppletManifest xmlns="http://santedb.org/applet">
+  <info id="santedb.emr.sln" version="3.0.0.0">
+    <icon>/org.santedb.core/img/icon.png</icon>
+    <name lang="en">SanteDB EMR Administration Portal</name>
+    <author>SanteSuite Contributors</author>
+    <dependency id="org.santedb.admin" />
+    <dependency id="org.santedb.core" />
+    <dependency id="org.santedb.uicore" />
+    <dependency id="org.santedb.bicore" />
+    <dependency id="org.santedb.config" />
+    <dependency id="org.santedb.config.init" />
+    <dependency id="org.santedb.i18n.en" />
+    <dependency id="org.santedb.emr.admin" />
+  </info>
+</AppletManifest>
