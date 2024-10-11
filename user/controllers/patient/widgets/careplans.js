@@ -63,9 +63,56 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
         }
     }
 
+    async function unenroll(pathway, idx) {
+        if (confirm(SanteDB.locale.getString("ui.emr.patient.carePaths.unenroll.confirm", { pathway: pathway.name }))) {
+            try {
+                SanteDB.display.buttonWait(`#btnUnenroll${idx}`, true);
+
+                var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-unenroll", {
+                    pathway: pathway.id
+                });
+                $(`#carePathway${idx}`).collapse("hide");
+                $timeout(() =>{
+                    pathway._enrolled = false;
+                    pathway.encounters = null;
+                });
+                toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.unenroll.success"));
+            }
+            catch (e) {
+                $rootScope.errorHandler(e);
+            }
+            finally {
+                SanteDB.display.buttonWait(`#btnUnenroll${idx}`, false);
+            }
+        }
+    }
+    async function enroll(pathway, idx) {
+
+        if (confirm(SanteDB.locale.getString("ui.emr.patient.carePaths.enroll.confirm", { pathway: pathway.name }))) {
+            try {
+                SanteDB.display.buttonWait(`#btnEnroll${idx}`, true);
+
+                var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-enroll", {
+                    pathway: pathway.id
+                });
+                $(`#carePathway${idx}`).collapse("show");
+                await fetchNextEncounters(pathway, 1, 3);
+                $timeout(() => pathway._enrolled = true);
+                toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.enroll.success"));
+            }
+            catch (e) {
+                $rootScope.errorHandler(e);
+            }
+            finally {
+                SanteDB.display.buttonWait(`#btnEnroll${idx}`, false);
+            }
+        }
+    }
 
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.enroll = enroll;
+    $scope.unenroll = unenroll;
 
     $scope.fetchNextEncounters = fetchNextEncounters;
     initializeView($scope.scopedObject.id);

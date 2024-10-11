@@ -377,7 +377,17 @@
      <string name="ui.emr.encounter.checkin.type.proposed">From Care Plan</string>
      <string name="ui.emr.encounter.checkin.success">Visit has been started successfully</string>
      <string name="ui.emr.encounter.navigate.notFound">Active encounter could not be found. Please try refreshing the results and attempting your operation again.</string>
+     <string name="ui.emr.encounter.cancel.confirm">Are you sure you want to cancel this visit?</string>
+     <string name="ui.emr.encounter.cancel.success">Visit has been cancelled successfully</string>
+     <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
+
      <!-- Visits -->
       <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
 
+      <!-- Care Paths -->
+       <string name="ui.emr.patient.carePaths.enroll.confirm">Are you sure you want to enroll this patient into the care pathway {pathway}?</string>
+       <string name="ui.emr.patient.carePaths.enroll.success">Patient enrolled in pathway successfully</string>
+       <string name="ui.emr.patient.carePaths.unenroll.confirm">Are you sure you want to un-enroll this patient from the {pathway} care pathway?</string>
+       <string name="ui.emr.patient.carePaths.unenroll.success">Patient has been removed from the care pathway</string>
+       <string name="ui.emr.patient.carePaths.acts.none">No upcoming encounters in this care pathway</string>
 </resources>

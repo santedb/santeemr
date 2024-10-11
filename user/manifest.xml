@@ -52,6 +52,14 @@
       <text lang="en">Register</text>
     </menuItem>
   </menuItem>
+  <menuItem context="ui.emr" launch="santedb-emr.facility.dashboard" asset="/org.santedb.emr/views/facility/dashboard.html" order="50">
+    <icon>fas fa-fw fa-house-medical-flag</icon>
+    <text lang="en">My Clinic</text>
+    <menuItem context="ui.emr" launch="santedb-emr.encounter.dashboard" asset="/org.santedb.emr/views/act/encounter/dashboard.html" order="0">
+      <icon>fas fa-fw fa-person-breastfeeding</icon>
+      <text lang="en">Waiting Room</text>
+    </menuItem>
+  </menuItem>
   <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/org.santedb.emr/views/system/index.html" order="1000">
     <icon>fas fa-tablet</icon>
     <text lang="en">System</text>
