@@ -1,4 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="false">~/controllers/act/encounter/checkin.js</sdb:script>
     <sdb:widget name="org.santedb.emr.patient.dashboard.recentPatients" type="Panel"
         context="org.santedb.emr.patient.dashboard" order="100" size="Large">
         <sdb:icon>fas fa-bookmark</sdb:icon>
@@ -15,9 +16,18 @@
             properties="[ 'result' ]"
             display="grid"
             render="{'result': renderResult }"
-            item-actions="[ { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' } ]"
+            item-supplement="[  patientHasOpenEncounter ]"
+            item-actions="[ 
+                { name: 'check-in', action: 'checkin', className: 'btn-secondary', when: '!item.tag.$hasEncounter', icon: 'fas fa-heart-circle-bolt' },
+                { name: 'visit', className: 'btn-info', when: 'item.tag.$hasEncounter', icon: 'fa-solid fa-house-user'},
+                { name: 'discharge', className: 'btn-warning', when: 'item.tag.$hasEncounter', icon: 'fa-solid fa-right-from-bracket'},
+                { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' } ,
+                ]"
             actions="[ { name: 'register', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.register', className: 'btn-primary', icon: 'fa fa-user-plus' } , { name: 'search', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.search', className: 'btn-info', icon: 'fa fa-search-plus' } ]"
             item-template="/org.santedb.emr/partials/patient/search-result.html">
         </entity-list>
+
+        <!-- #include virtual="~/partials/act/checkin-modal.html" -->
+
     </div>
 </div>

@@ -19,54 +19,52 @@
  * User: Justin Fyfe
  * Date: 2019-9-27
  */
-angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$rootScope", "$state", "$templateCache", "$stateParams", function ($scope, $rootScope, $state, $templateCache, $stateParams) {
+angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$rootScope", "$state", "$stateParams", "$timeout", function ($scope, $rootScope, $state, $stateParams, $timeout) {
 
     // Loads the specified patient
     async function loadPatient(id) {
         try {
-            var er = await SanteDB.resources.entityRelationship.findAsync({ 
-                "relationshipType": "97730a52-7e30-4dcd-94cd-fd532d111578", // MDM
-                "source" : id // Where this is the holder
-            }, "reverseRelationship");
-
-            // If the patient is an MDM 
-            if(er.resource && er.resource.length > 0 && er.resource[0].target != id) {
-                var params = angular.copy($stateParams);
-                params.id = er.resource[0].target;
-                $state.transitionTo($state.$current.name, params);
-                return;
-            }
-            $scope.patient = await SanteDB.resources.patient.getAsync(id, "full");
+            var patient = await SanteDB.resources.patient.getAsync(id, "full");
+            $timeout(() => $scope.patient = new Patient(patient));
         }
         catch (e) {
-            // Remote patient perhaps?
-            if (e.$type == "FileNotFoundException" || e.cause && e.cause.$type == "FileNotFoundException") {
-                try {
 
-                    $scope.patient = await SanteDB.resources.patient.getAsync({ id: id, _upstream: true }, "full");
-                    $scope.patient._upstream = true;
-                    if ($scope.patient.tag) {
-                        delete $scope.patient.tag["$mdm.type"];
-                        delete $scope.patient.tag["$altkeys"];
-                        delete $scope.patient.tag["$generated"];
+            var rootCause = e.getRootCause();
+            // Type of exception
+            switch (rootCause.$type) {
+                case "FileNotFoundException": // Try upstream
+                case "KeyNotFoundException":
+                    try {
+
+                        var patient = await SanteDB.resources.patient.getAsync(id, "full", null, true);
+                        patient._upstream = true;
+                        if (patient.tag) {
+                            delete patient.tag["$mdm.type"];
+                            delete patient.tag["$altkeys"];
+                            delete patient.tag["$generated"];
+                        }
+                        $timeout(() => $scope.patient = new Patient(patient));
                     }
-                    
-                    return;
-                }
-                catch (e) {
-                    $scope.error = $rootScope.prepareErrorForDisplay(e);
-                }
+                    catch (e) {
+                        $timeout(() => $scope.error = $rootScope.prepareErrorForDisplay(e));
+                    }
+                    break;
+                default:
+                    $timeout(() => $scope.error = $rootScope.prepareErrorForDisplay(e));
+                    break;
             }
-            $scope.error = $rootScope.prepareErrorForDisplay(e);
-
         }
         finally {
-            try { $scope.$apply(); }
-            catch(e) {}
+            SanteDB.authentication.setElevator(null); // we got the patient successfully
         }
     }
+
+    SanteDB.authentication.setElevator(new SanteDBElevator(loadPatient, false));
     loadPatient($stateParams.id);
 
+    $scope.printCard = function() {
+        window.print();
+    }
 
     // Download the specified record by touching it
     $scope.downloadRecord = async function () {
@@ -77,7 +75,6 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
             await SanteDB.resources.patient.updateAsync($stateParams.id, localPatient);
             toastr.info(SanteDB.locale.getString("ui.model.patient.saveSuccess"));
             $state.reload();
-
         }
         catch (e) {
             $rootScope.errorHandler(e);

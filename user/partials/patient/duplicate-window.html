@@ -19,147 +19,21 @@
                 <div class="row">
                     <div class="col">
                         <div class="card">
-                            <div class="card-header"><h5 class="card-title">{{ 'ui.emr.patient.register.duplicates.input' | i18n }}</h5></div>
-                            <div class="card-body">
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <h5 class="p-0 m-0 d-flex justify-content-between align-items-stretch">
-                                                <div class="flex-grow-1">{{ duplicates.inputModel.name | name }}</div>
-                                                <div class="ml-2">
-                                                        <span class="p-2"
-                                                            ng-if="id[0].value"
-                                                            ng-repeat="(domain, id) in duplicates.inputModel.identifier">
-                                                            <i class="far fa-id-card"></i> {{ id[0].value }}
-                                                            <span class="d-none d-md-inline">
-                                                                <small class="badge badge-info">{{
-                                                                    id[0].domainModel.name || domain }}</small>
-                                                            </span>
-                                                        </span>
-                                                </div>
-                                            </h5>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="d-flex">
-                                                <div class="m-2 flex-grow-1"
-                                                    ng-if="duplicates.inputModel.address.HomeAddress">
-                                                    <i class="fas fa-fw fa-house"></i> {{ duplicates.inputModel.address.HomeAddress | address
-                                                    }} <span class="badge badge-primary">{{
-                                                        (duplicates.inputModel.address.HomeAddress[0].useModel || 'HomeAddress') | concept
-                                                        }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="d-flex justify-content-between align-items-stretch">
-                                                <div class="m-2">
-                                                    <i class="fas fa-fw fa-birthday-cake"></i> {{
-                                                    duplicates.inputModel.dateOfBirth | extDate:
-                                                    duplicates.inputModel.dateOfBirthPrecision }} ({{
-                                                    duplicates.inputModel.dateOfBirth | age }})
-                                                </div>
-                                                <div class="m-2 flex-grow-1"
-                                                    ng-if="duplicates.inputModel.telecom.MobileContact">
-                                                    <i class="fas fa-fw fa-phone"></i> {{
-                                                    duplicates.inputModel.telecom.MobileContact | telecom }} <span
-                                                        class="badge badge-primary">{{
-                                                        duplicates.inputModel.address.HomeAddress[0].useModel | concept
-                                                        }}</span>
-                                                </div>
-                                                <div class="m-2"><i class="fas fa-fw"
-                                                        ng-class="{ 'fa-genderless': null, 'fa-male' : duplicates.inputModel.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' : duplicates.inputModel.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
-                                                    <span class="ml-2 d-none d-md-inline">{{
-                                                        duplicates.inputModel.genderConceptModel | concept }}</span>
-                                                </div>
-                                                <div class="m-2 badge badge-secondary"
-                                                    ng-if="duplicates.inputModel.deceasedDate"><i
-                                                        class="fas fa-exclamation-circle"></i> {{
-                                                    'ui.model.patient.deceasedDate' | i18n }} ({{
-                                                    duplicates.inputModel.deceasedDate | extDate:
-                                                    duplicates.inputModel.deceasedDatePrecision }})</div>
-                                                <div class="m-2 badge badge-info"
-                                                    ng-if="duplicates.inputModel.tag.$upstream[0] == 'true'"
-                                                    title="{{ 'ui.emr.patient.search.tag.upstream' | i18n }}"><i
-                                                        class="fas fa-cloud-meatball"></i> <span
-                                                        class="ml-2 d-none d-md-inline">{{
-                                                        'ui.emr.patient.search.tag.upstream' | i18n }}</span> </div>
-                                                <div class="m-2 badge badge-light"
-                                                    ng-if="duplicates.inputModel.multipleBirthOrder !== undefined"
-                                                    title="{{ 'ui.model.patient.multipleBirthOrder' | i18n }}">
-                                                    <i class="fas fa-fw fa-people-group"></i> <span
-                                                        class="ml-2 d-none d-md-inline">{{
-                                                        'ui.model.patient.multipleBirthOrder' | i18n }}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="d-flex">
-                                                <div class="m-2" ng-repeat="(k, rel) in duplicates.inputModel.relationship"
-                                                    ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
-                                                    <div ng-repeat="r in rel track by $index" class="search-card-relative">
-                                                        <i class="fas fa-fw fa-people-arrows"></i>
-                                                        <span class="badge badge-primary m-2">{{ rel.relationshipTypeModel
-                                                            || k | concept }} </span>
-                                                        {{ r.targetModel.name | name }}
-                                                        <a ng-if="r.targetModel.telecom.MobileContact"
-                                                            href="{{r.targetModel.telecom.MobileContact[0].value}}">
-                                                            <i class="fas fa-fw fa-phone"></i> {{
-                                                            r.targetModel.telecom.MobileContact[0].value }}
-                                                        </a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            <div class="card-header">
+                                <h5 class="card-title">{{ 'ui.emr.patient.register.duplicates.input' | i18n }}</h5>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 
-                    END SOURCE RECORD PANEL 
-                -->
-                <div class="row">
-                    <div class="col-12"> 
-                        <h5 class="m-0 card-title">{{ 'ui.emr.patient.register.duplicates.detected' | i18n }}</h5>
-                        <hr/>
-                    </div>
-                </div>
-                <div class="row m-0 mb-1">
-                    <div class="col duplicate-list">
-                        <!-- 
-                            BEGIN MATCH CARD FOR SINGLE MATCH
-                        -->
-                        <div class="card m-0" ng-repeat="duplicate in duplicates.results track by $index"
-                            ng-class="{ 'alert-success' : duplicate.classification == 2, 'alert-primary': duplicate.classification == 1, 'alert-secondary': duplicate.classification == 0 }">
-                            <div class="card-body container-fluid">
+                            <div class="card-body">
                                 <div class="row">
                                     <div class="col-12">
                                         <h5 class="p-0 m-0 d-flex justify-content-between align-items-stretch">
-                                            <div class="flex-grow-1">{{ duplicate.recordModel.name | name }}</div>
+                                            <div class="flex-grow-1">{{ duplicates.inputModel.name | name }}</div>
                                             <div class="ml-2">
-                                                <!-- Show the preferred identifier if exists or configured-->
-                                                <span
-                                                    ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; duplicate.recordModel.identifier[$root.system.config.application.setting['aa.preferred']]">
-                                                    <i class="fas fa-id-card"></i>
-                                                    {{
-                                                    duplicate.recordModel.identifier[$root.system.config.application.setting['aa.preferred']][0].value
-                                                    }}
+                                                <span class="p-2" ng-if="id[0].value"
+                                                    ng-repeat="(domain, id) in duplicates.inputModel.identifier">
+                                                    <i class="far fa-id-card"></i> {{ id[0].value }}
                                                     <span class="d-none d-md-inline">
-                                                        <small class="badge badge-primary">{{
-                                                            duplicate.recordModel.identifier[$root.system.config.application.setting['aa.place.preferred']][0].domainModel.name
-                                                            }}</small>
-                                                    </span>
-                                                </span>
-                                                <!-- Show other identifiers in lieu of a preferred identifier -->
-                                                <span
-                                                    ng-if="!$root.system.config.application.setting['aa.preferred'] || !duplicate.recordModel.identifier[$root.system.config.application.setting['aa.preferred']]">
-                                                    <span class="p-2"
-                                                        ng-if="id[0].value &amp;&amp; domain != $root.system.config.application.setting['aa.preferred']"
-                                                        ng-repeat="(domain, id) in duplicate.recordModel.identifier">
-                                                        <i class="far fa-id-card"></i> {{ id[0].value }}
-                                                        <span class="d-none d-md-inline">
-                                                            <small class="badge badge-info">{{
-                                                                id[0].domainModel.name }}</small>
-                                                        </span>
+                                                        <small class="badge badge-info">{{
+                                                            id[0].domainModel.name || domain }}</small>
                                                     </span>
                                                 </span>
                                             </div>
@@ -168,8 +42,146 @@
                                     <div class="col-12">
                                         <div class="d-flex">
                                             <div class="m-2 flex-grow-1"
+                                                ng-if="duplicates.inputModel.address.HomeAddress">
+                                                <i class="fas fa-fw fa-house"></i> {{
+                                                duplicates.inputModel.address.HomeAddress | address
+                                                }} <span class="badge badge-primary">{{
+                                                    (duplicates.inputModel.address.HomeAddress[0].useModel ||
+                                                    'HomeAddress') | concept
+                                                    }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex justify-content-between align-items-stretch">
+                                            <div class="m-2">
+                                                <i class="fas fa-fw fa-birthday-cake"></i> {{
+                                                duplicates.inputModel.dateOfBirth | extDate:
+                                                duplicates.inputModel.dateOfBirthPrecision }} ({{
+                                                duplicates.inputModel.dateOfBirth | age }})
+                                            </div>
+                                            <div class="m-2 flex-grow-1"
+                                                ng-if="duplicates.inputModel.telecom.MobileContact">
+                                                <i class="fas fa-fw fa-phone"></i> {{
+                                                duplicates.inputModel.telecom.MobileContact | telecom }} <span
+                                                    class="badge badge-primary">{{
+                                                    duplicates.inputModel.address.HomeAddress[0].useModel | concept
+                                                    }}</span>
+                                            </div>
+                                            <div class="m-2"><i class="fas fa-fw"
+                                                    ng-class="{ 'fa-genderless': null, 'fa-male' : duplicates.inputModel.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' : duplicates.inputModel.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
+                                                <span class="ml-2 d-none d-md-inline">{{
+                                                    duplicates.inputModel.genderConceptModel | concept }}</span>
+                                            </div>
+                                            <div class="m-2 badge badge-secondary"
+                                                ng-if="duplicates.inputModel.deceasedDate"><i
+                                                    class="fas fa-exclamation-circle"></i> {{
+                                                'ui.model.patient.deceasedDate' | i18n }} ({{
+                                                duplicates.inputModel.deceasedDate | extDate:
+                                                duplicates.inputModel.deceasedDatePrecision }})</div>
+                                            <div class="m-2 badge badge-info"
+                                                ng-if="duplicates.inputModel.tag.$upstream[0] == 'true'"
+                                                title="{{ 'ui.emr.patient.search.tag.upstream' | i18n }}"><i
+                                                    class="fas fa-cloud-meatball"></i> <span
+                                                    class="ml-2 d-none d-md-inline">{{
+                                                    'ui.emr.patient.search.tag.upstream' | i18n }}</span> </div>
+                                            <div class="m-2 badge badge-light"
+                                                ng-if="duplicates.inputModel.multipleBirthOrder !== undefined"
+                                                title="{{ 'ui.model.patient.multipleBirthOrder' | i18n }}">
+                                                <i class="fas fa-fw fa-people-group"></i> <span
+                                                    class="ml-2 d-none d-md-inline">{{
+                                                    'ui.model.patient.multipleBirthOrder' | i18n }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="d-flex">
+                                            <div class="m-2" ng-repeat="(k, rel) in duplicates.inputModel.relationship"
+                                                ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
+                                                <div ng-repeat="r in rel track by $index" class="search-card-relative">
+                                                    <i class="fas fa-fw fa-people-arrows"></i>
+                                                    <span class="badge badge-primary m-2">{{ rel.relationshipTypeModel
+                                                        || k | concept }} </span>
+                                                    {{ r.targetModel.name | name }}
+                                                    <a ng-if="r.targetModel.telecom.MobileContact"
+                                                        href="{{r.targetModel.telecom.MobileContact[0].value}}">
+                                                        <i class="fas fa-fw fa-phone"></i> {{
+                                                        r.targetModel.telecom.MobileContact[0].value }}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 
+                    END SOURCE RECORD PANEL 
+                -->
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="m-0 card-title">{{ 'ui.emr.patient.register.duplicates.detected' | i18n }}</h5>
+                        <hr />
+                    </div>
+                </div>
+                <div class="row m-0 mb-1">
+                    <div class="col duplicate-list">
+                        <!-- 
+                            BEGIN MATCH CARD FOR SINGLE MATCH
+                        -->
+                        <div class="card m-0 mb-1" ng-repeat="duplicate in duplicates.results track by $index"
+                            ng-class="{ 'alert-success' : duplicate.classification == 2, 'alert-primary': duplicate.classification == 1, 'alert-secondary': duplicate.classification == 0 }">
+                            <div class="card-header">
+                                <h5 class="p-0 m-0 d-flex justify-content-between align-items-stretch">
+                                    <label class="flex-grow-1"><input type="radio" name="rdoSelect"
+                                        ng-change="entity._ignoreDuplicates = entity._updateDuplicate ? false : entity._ignoreDuplicates"
+                                            ng-model="entity._updateDuplicate" value="{{duplicate.record}}" /> {{
+                                        duplicate.recordModel.name | name }}</label>
+                                        <div class="ml-2">
+                                    <span class="badge" 
+                                        ng-class="{ 'badge-success' : duplicate.classification == 2, 'badge-primary': duplicate.classification == 1, 'badge-secondary': duplicate.classification == 0 }">
+                                        {{ duplicate.strength * 100 | number: 0 }}% - {{
+                                        'ui.emr.patient.register.duplicates.confidence' | i18n }}
+                                            {{ 'ui.emr.patient.register.duplicates.confidence.' +
+                                            duplicate.classification | i18n }}</span>
+                                        </div>
+                                    <div class="ml-2"
+                                        ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; duplicate.recordModel.identifier[$root.system.config.application.setting['aa.preferred']]">
+                                        <i class="fas fa-id-card"></i>
+                                        {{
+                                        duplicate.recordModel.identifier[$root.system.config.application.setting['aa.preferred']][0].value
+                                        }}
+                                        <span class="d-none d-md-inline">
+                                            <small class="badge badge-primary">{{
+                                                duplicate.recordModel.identifier[$root.system.config.application.setting['aa.place.preferred']][0].domainModel.name
+                                                }}</small>
+                                        </span>
+                                    </div>
+                                    <!-- Show other identifiers in lieu of a preferred identifier -->
+                                    <div class="ml-2"
+                                        ng-if="!$root.system.config.application.setting['aa.preferred'] || !duplicate.recordModel.identifier[$root.system.config.application.setting['aa.preferred']]">
+                                        <span class="p-2"
+                                            ng-if="id[0].value &amp;&amp; domain != $root.system.config.application.setting['aa.preferred']"
+                                            ng-repeat="(domain, id) in duplicate.recordModel.identifier">
+                                            <i class="far fa-id-card"></i> {{ id[0].value }}
+                                            <span class="d-none d-md-inline">
+                                                <small class="badge badge-info">{{
+                                                    id[0].domainModel.name }}</small>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </h5>
+                            </div>
+                            <div class="card-body container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="d-flex">
+                                            <div class="m-2 flex-grow-1"
                                                 ng-if="duplicate.recordModel.address.HomeAddress">
-                                                <i class="fas fa-fw fa-house"></i> {{ duplicate.recordModel.address.HomeAddress | address
+                                                <i class="fas fa-fw fa-house"></i> {{
+                                                duplicate.recordModel.address.HomeAddress | address
                                                 }} <span class="badge badge-primary">{{
                                                     duplicate.recordModel.address.HomeAddress[0].useModel | concept
                                                     }}</span>
@@ -238,30 +250,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer p-1">
-                                <div class="d-flex align-items-stretch justify-content-between">
-                                    <div class="p-2 flex-grow-1">
-                                        <div class="p-2 text-center">{{ duplicate.strength * 100 | number: 0 }}% {{
-                                            'ui.emr.patient.register.duplicates.confidence' | i18n }}
-                                            <span class="badge"
-                                                ng-class="{ 'badge-success' : duplicate.classification == 2, 'badge-primary': duplicate.classification == 1, 'badge-secondary': duplicate.classification == 0 }">
-                                                {{ 'ui.emr.patient.register.duplicates.confidence.' +
-                                                duplicate.classification | i18n }}</span>
-                                        </div>
-                                    </div>
-                                    <div class="p-2 btn-group float-right">
-                                        <button type="button" ng-click="updateDuplicateRecord(duplicate.record)"
-                                            class="btn btn-info">
-                                            <i class="fas fa-fw fa-chevron-up"></i> {{ 'ui.action.update' | i18n }}
-                                        </button>
-                                        <button type="button" ng-click="navRecord(duplicate.record)"
-                                            class="btn btn-primary">
-                                            <i class="fas fa-fw fa-chevron-right"></i> {{ 'ui.action.useRecord' | i18n
-                                            }}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- 
@@ -275,7 +263,7 @@
                         {{ duplicates.results.length }}
                     </div>
                     <div class="col">
-                        <ul class="pagination float-right">
+                        <!-- <ul class="pagination float-right">
                             <li class="page-item" ng-class="{'disabled': duplicates.page == 0 }"><button type="button"
                                     class="page-link" ng-click="checkDuplicates(duplicates.page - 1)">{{
                                     'ui.action.prev' | i18n
@@ -290,7 +278,7 @@
                                     ng-click="checkDuplicates(duplicates.page + 1)">{{ 'ui.action.next' | i18n
                                     }}</button>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                 </div>
 
@@ -298,7 +286,7 @@
             <div class="modal-footer">
                 <div class="col">
                     <label>
-                        <input type="checkbox" ng-model="entity.ignoreDuplicates"
+                        <input type="checkbox" ng-model="entity._ignoreDuplicates" ng-change="entity._updateDuplicate = entity._ignoreDuplicates ? null : entity._updateDuplicate"
                             class="checkbox-control" /><span></span>
                         {{ 'ui.emr.patient.register.duplicates.verification' | i18n}}
                     </label>
@@ -306,9 +294,11 @@
                 <div class="col">
                     <div class="btn-group float-right">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                            <i class="fa fa-chevron-left"></i> {{ 'ui.action.change' | i18n }}</button>
-                        <button class="btn btn-primary" ng-disabled="!entity.ignoreDuplicates" type="submit">
-                            <i class="fa fa-check"></i> {{ 'ui.action.register' | i18n }}</button>
+                            <i class="fa fa-chevron-left" ng-click="entity._updateDuplicate = entity._ignoreDuplicates = null"></i> {{ 'ui.action.change' | i18n }}</button>
+                        <button class="btn btn-info" ng-if="entity._updateDuplicate" type="submit">
+                            <i class="fa fa-person-circle-check"></i> {{ 'ui.action.updateSelected' | i18n }}</button>
+                        <button class="btn btn-primary" ng-if="entity._ignoreDuplicates" type="submit">
+                            <i class="fa fa-person-circle-plus"></i> {{ 'ui.action.register' | i18n }}</button>
                     </div>
                 </div>
 

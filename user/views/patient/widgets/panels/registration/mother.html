@@ -22,14 +22,14 @@
                 create-mode="true"
                 container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
 
-            <name-edit is-required="true" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
+            <name-edit is-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
                 name="mothersName" model="scopedObject.relationship.Mother[0].targetModel.name" />
 
             <div class="form-group row">
                 <label class="col-sm-12 col-md-3 control-label required">{{
                     scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1 ?
                     'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}
-                    <hint-popover popover-title="ui.model.patient.dateOfBirth" />
+                    <hint-popover hint-title="ui.model.patient.dateOfBirth" />
                 </label>
                 <div class="col-sm-12 col-md-9">
                     <div class="input-group m-0">
@@ -45,12 +45,12 @@
                                     </div>
                                 </label>
                             </div>
-                            <input name="motherAge" required="required"
+                            <input name="motherAge" ng-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                                 ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1"
                                 ng-change="scopedObject.relationship.Mother[0].targetModel.dateOfBirth = ageToDate(scopedObject.relationship.Mother[0].targetModel.age)"
                                 type="number" ng-model="scopedObject.relationship.Mother[0].targetModel.age" min="0"
                                 class="form-control" />
-                            <input name="motherDob" required="required"
+                            <input name="motherDob" ng-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                                 ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 3"
                                 ng-change="scopedObject.relationship.Mother[0].targetModel.age = dateToAge(scopedObject.relationship.Mother[0].targetModel.dateOfBirth)"
                                 type="date" ng-model="scopedObject.relationship.Mother[0].targetModel.dateOfBirth"
@@ -129,30 +129,75 @@
             </div>
             <address-edit
                 ng-if="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress[0]._differentThanPatient"
-                is-required="true" model="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress"
+                is-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" model="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress"
                 name="motherAddress" no-type="true" owner-form="editForm" no-add="true" simple-entry="true" />
 
             <telecom-edit owner-form="panel.editForm" name="mothersTelecom"
                 model="scopedObject.relationship.Mother[0].targetModel.telecom" allowed-types="[ 'MobileContact' ]"
-                required-types="[ 'MobileContact' ]" />
+                required-types="[ !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator ? 'MobileContact' : null ]" />
 
-            <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.nationality']">
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.occupation'] != 'true'">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.occupation' | i18n }} <hint-popover
+                        hint-title="ui.model.person.occupation" /></label>
+                <div class="col-sm-12 col-md-9">
+                    <concept-select name="motherOccupation" ng-required="$root.system.config.application.setting['required.person.occupation'] == 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" concept-set="'OccupationType'" ng-model="scopedObject.relationship.Mother[0].targetModel.occupation" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+                    <div class="text-danger" ng-if="panel.editForm.motherOccupation.$error['required']">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true'">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.vipStatus' | i18n }} <hint-popover
+                        hint-title="ui.model.person.vipStatus" /></label>
+                <div class="col-sm-12 col-md-9">
+                    <concept-select name="motherVipStatus" concept-set="'VeryImportantPersonStatus'" ng-model="scopedObject.relationship.Mother[0].targetModel.vipStatus" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+                </div>
+            </div>
+
+            <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.nationality'] != 'true'">
                 <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.nationality' | i18n }} <hint-popover
                         hint-title="ui.model.person.nationality" /></label>
                 <div class="col-sm-12 col-md-9">
                     <entity-search type="'Concept'"
+                        name="motherNationality"
                         ng-model="scopedObject.relationship.Mother[0].targetModel.nationality"
+                        ng-required="$root.system.config.application.setting['forbid.person.nationality'] == 'required' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                         search-field="'name.value'" filter="{ 'conceptSet': '7f4e7366-a0e6-4a5e-b2b1-82187447e792' }" />
+                        <div class="text-danger" ng-if="panel.editForm.motherNationality.$error['required']">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                        </div>
                 </div>
             </div>
 
-            <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.citizenship']">
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.citizenship'] != 'true'">
                 <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.relationship.Citizen' | i18n
                     }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" /></label>
                 <div class="col-sm-12 col-md-9">
                     <entity-search type="'Place'" ng-model="scopedObject.relationship.Mother[0].targetModel.relationship.Citizen"
                         multiple="multiple" search-field="'name.component.value'" value-property="'target'"
+                        name="motherCitizen"
+                        ng-required="$root.system.config.application.setting['required.person.citizenship'] == 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                         filter="{ 'classConcept': '48b2ffb3-07db-47ba-ad73-fc8fb8502471' }" />
+                        <div class="text-danger" ng-if="panel.editForm.motherCitizen.$error['required']">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                        </div>
+                </div>
+            </div>
+
+            
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true'">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Employee' | i18n
+                    }} <hint-popover hint-title="ui.model.person.relationship.Employee" /></label>
+                <div class="col-sm-12 col-md-9">
+                    <entity-search type="'Organization'" ng-model="scopedObject.relationship.Mother[0].targetModel.relationship.Employee"
+                        multiple="multiple" search-field="'name.component.value'" value-property="'target'"
+                        name="motherEmployee" 
+                        ng-required="$root.system.config.application.setting['required.person.employee'] == 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
+                        />
+                        <div class="text-danger" ng-if="panel.editForm.motherEmployee.$error['required']">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                        </div>
                 </div>
             </div>
 

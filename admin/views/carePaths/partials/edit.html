@@ -1,0 +1,104 @@
+<form xmlns="http://www.w3.org/1999/xhtml" class="form" name="editCarePathForm"
+    ng-submit="saveCarePath(editCarePathForm)" novalidate="novalidate" autocomplete="off">
+    <div class="container">
+        <div class="form-group row">
+            <label class="col-md-3 col-sm-12 control-label required">
+                {{ 'ui.model.carePathwayDefinition.mnemonic' | i18n }} <hint-popover
+                    hint-title="ui.model.carePathwayDefinition.mnemonic" />
+            </label>
+            <div class="col-md-9 col-sm-12">
+                <input class="form-control" type="text" required="required" name="mnemonic" ng-model="pathway.mnemonic"
+                    maxlength="128" pattern="^[A-Za-z][A-Za-z0-9\.]+$" />
+                <div class="text-danger" ng-if="editCarePathForm.mnemonic.$error['required']">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+                <div class="text-danger" ng-if="editCarePathForm.mnemonic.$error['pattern']">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-sm-12 control-label required">
+                {{ 'ui.model.carePathwayDefinition.name' | i18n }}
+                <hint-popover hint-title="ui.model.carePathwayDefinition.name" />
+            </label>
+            <div class="col-md-9 col-sm-12">
+                <input class="form-control" maxlength="256" required="required" ng-model="pathway.name" name="pathName"/>
+                <div class="text-danger" ng-if="editCarePathForm.pathName.$error['required']">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-sm-12 control-label">
+                {{ 'ui.model.carePathwayDefinition.description' | i18n }} <hint-popover
+                    hint-title="ui.model.carePathwayDefinition.description" />
+            </label>
+            <div class="col-md-9 col-sm-12">
+                <textarea name="description" maxlength="1024" ng-model="pathway.description"
+                    class="form-control"></textarea>
+                <div class="float-right">{{ 1024 - pathway.description.length }} {{ 'ui.common.charsRemain' | i18n }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-sm-12 control-label required">
+                {{ 'ui.model.carePathwayDefinition.enrollment' | i18n }} <hint-popover
+                    hint-title="ui.model.carePathwayDefinition.enrollment" />
+            </label>
+            <div class="col-md-9 col-sm-12">
+                <select class="form-control" required="required" name="enrollment" ng-model="pathway.enrollment">
+                    <option value="0">Manual</option>
+                    <option value="1">Automatic</option>
+                </select>
+                <div class="text-danger" ng-if="editCarePathForm.enrollment.$error['required']">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-sm-12 control-label">
+                {{ 'ui.model.carePathwayDefinition.eligibility' | i18n }} <hint-popover
+                    hint-title="ui.model.carePathwayDefinition.eligibility" />
+            </label>
+            <div class="col-md-9 col-sm-12">
+                <ul class="list-group">
+                    <li ng-repeat="elig in pathway.eligibility track by $index" class="list-group-item">
+                        <div class="input-group">
+                            
+                        <hdsi-expression ng-model="elig.expr" name="eligibility{{$index}}" focal-type="'Patient'"
+                            simple-input="true" class="form-control" include-rhs="true" />
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-danger" ng-click="pathway.eligibility.splice($index, 1)">
+                                    <i class="fas fa-fw fa-minus-circle"></i> {{ 'ui.action.remove' | i18n }}
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </li>
+                    <li class="list-group-item">
+                        <button type="button" class="btn btn-success" ng-click="pathway.eligibility.push({expr:''})">
+                            <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n }}
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-sm-12 control-label">
+                {{ 'ui.model.carePathwayDefinition.encounter' | i18n }} <hint-popover
+                    hint-title="ui.model.carePathwayDefinition.encounter" />
+            </label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search class="form-control" type="'Template'" filter="{ scope : 'org.santedb.model.act' }"
+                    ng-model="pathway.encounterTemplate" search-field="'description'" key="'uuid'" />
+            </div>
+        </div>
+    </div>
+    <div class="float-right">
+        <button type="submit" class="btn btn-primary" ng-disabled="editCarePathForm.$invalid">
+            <i class="fas fa-fw fa-check"></i> {{ pathway.id ? 'ui.action.save' : 'ui.action.create' | i18n  }}
+        </button>
+    </div>
+</form>

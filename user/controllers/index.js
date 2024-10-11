@@ -125,7 +125,8 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             $timeout(() => $scope.menuItems = menus);
         }
         catch (e) {
-            $rootScope.errorHandler(e);
+            toastr.warning(SanteDB.locale.getString("ui.admin.menuError"));
+            console.error(e);
         }
     }
 
@@ -167,8 +168,10 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             checkConflicts();
             checkMail();
         }
-        else
+        else if(ov) {
             $scope.menuItems = null;
+            $state.go("login");
+        }
     });
 
     if ($rootScope.session) {
