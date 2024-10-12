@@ -24,7 +24,7 @@
                         </h5>
                     </button>
                     <div class="float-right btn-group">
-                        <button class="btn btn-info" type="button" ng-if="path._enrolled">
+                        <button class="btn btn-info" type="button" ng-if="path._enrolled" ng-click="recompute(path, $index)" id="btnRecompute{{$index}}">
                             <i class="fas fa-fw fa-arrows-rotate"></i>
                             <span class="d-none d-lg-inline">{{ 'ui.action.recompute' | i18n }}</span>
                         </button>

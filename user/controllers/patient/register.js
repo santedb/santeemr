@@ -284,11 +284,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 };
                 delete patient.participation;
             }
-            patient = await prepareEntityForSubmission(patient);
+            patient = await prepareEntityForSubmission(patient, true);
             patient = scrubModelProperties(patient);
             submissionBundle.resource.push(patient);
             submissionBundle.focal = [patient.id];
-
 
             var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: submissionBundle, _count: 5, _offset: 0 });
             if (duplicates.results && duplicates.results != null) {

@@ -95,8 +95,8 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-enroll", {
                     pathway: pathway.id
                 });
-                $(`#carePathway${idx}`).collapse("show");
                 await fetchNextEncounters(pathway, 1, 3);
+                $(`#carePathway${idx}`).collapse("show");
                 $timeout(() => pathway._enrolled = true);
                 toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.enroll.success"));
             }
@@ -108,12 +108,32 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
             }
         }
     }
+    async function recompute(pathway, idx) {
+        if(confirm(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.confirm", { pathway: pathway.name }))) {
+            try {
+                SanteDB.display.buttonWait(`#btnRecompute${idx}`, true);
+
+                var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-recompute", {
+                    pathway: pathway.id
+                });
+                await fetchNextEncounters(pathway, 1, 3);
+                $(`#carePathway${idx}`).collapse("show");
+                toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.success"));
+            }
+            catch(e) {
+                $rootScope.errorHandler(e);
+            }
+            finally {
+                SanteDB.display.buttonWait(`#btnRecompute${idx}`, false);
+            }
+        }
+    }
 
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.enroll = enroll;
     $scope.unenroll = unenroll;
-
+    $scope.recompute = recompute;
     $scope.fetchNextEncounters = fetchNextEncounters;
     initializeView($scope.scopedObject.id);
 }]);

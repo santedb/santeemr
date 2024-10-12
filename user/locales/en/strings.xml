@@ -390,4 +390,7 @@
        <string name="ui.emr.patient.carePaths.unenroll.confirm">Are you sure you want to un-enroll this patient from the {pathway} care pathway?</string>
        <string name="ui.emr.patient.carePaths.unenroll.success">Patient has been removed from the care pathway</string>
        <string name="ui.emr.patient.carePaths.acts.none">No upcoming encounters in this care pathway</string>
+       <string name="ui.emr.patient.carePaths.recompute.confirm">You are about to re-compute the care plan for {pathway}. This operation may take some time, and is often automatically performed after discharge. Are you sure you want to continue recomputation?</string>
+       <string name="ui.emr.patient.carePaths.recompute.success">Care pathway has been successfully re-computed</string>
+       
 </resources>
