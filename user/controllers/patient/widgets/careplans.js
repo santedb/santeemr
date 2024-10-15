@@ -1,5 +1,5 @@
 /// <reference path="../../../.ref/js/santedb.js"/>
-angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', '$timeout', '$rootScope', function ($scope, $timeout, $rootScope) {
+angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', '$timeout', '$rootScope', "$state", function ($scope, $timeout, $rootScope, $state) {
 
 
     async function initializeView(patientId) {
@@ -52,6 +52,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 delete filter.actTime;
                 var count = await SanteDB.resources.patientEncounter.findAsync(filter);
 
+                // TODO: Find out whether the encounter is currently ongoing -- 
                 $timeout(() => {
                     path.encounters = encounters.resource || [];
                     path._totalEncounters = count.totalResults;
@@ -129,11 +130,39 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
         }
     }
 
+    async function startVisit(pathway, encounter, idx) {
+        try {
+            SanteDB.display.buttonWait(`#btnStartVisit${idx}`, true);
+            var templateId = encounter.templateModel.mnemonic;
+            var fulfills = [new ActRelationship({
+                target: encounter.id
+            })];
+            var fulfillmentTargets = encounter.relationship.HasComponent.map(o => new ActRelationship({
+                target: o.target,
+                targetModel: {
+                    $type: o.targetModel.$type,
+                    protocol: o.targetModel.protocol
+                }
+            }));
+
+            var encounter = await SanteEMR.startVisitAsync(templateId, pathway, $scope.scopedObject.id, fulfills, fulfillmentTargets);
+            toastr.success(SanteDB.locale.getString("ui.emr.encounter.checkin.success"));
+            $state.go("santedb-emr.encounter.view", { id: encounter.id });
+
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait(`#btnStartVisit${idx}`, false);
+        }
+    }
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.enroll = enroll;
     $scope.unenroll = unenroll;
     $scope.recompute = recompute;
+    $scope.startVisit = startVisit; 
     $scope.fetchNextEncounters = fetchNextEncounters;
     initializeView($scope.scopedObject.id);
 }]);

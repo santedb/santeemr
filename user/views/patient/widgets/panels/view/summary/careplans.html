@@ -59,7 +59,7 @@
                                         class="badge badge-danger ml-2">
                                         <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.common.pastdue' | i18n }}
                                     </span>
-                                    <button type="button" ng-click="startVisit(enc)" class="btn btn-primary float-right"
+                                    <button type="button" id="btnStartVisit{{$index}}" ng-click="startVisit(path.mnemonic, enc, $index)" class="btn btn-primary float-right"
                                         ng-if="enc.actTime &lt;= $root.page.maxEventTime.addDays(7)">
                                         <i class="fas fa-fw fa-heart-circle-plus"></i> {{ 'ui.action.check-in' | i18n }}
                                     </button>

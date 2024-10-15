@@ -36,6 +36,9 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                             return act;
                         });
                     }
+                    else {
+                        $scope._proposedActs = [];
+                    }
                     tArray = fetchedData.filter(d => d.$type == "Bundle" && d.resource && d.resource[0].moodConcept == ActMoodKeys.Appointment);
                     if (tArray.length > 0) {
                         $scope._appointmentAct = new PatientEncounter(tArray[0].resource[0]);
@@ -57,13 +60,12 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
         try {
             SanteDB.display.buttonWait("#btnSubmit", true);
 
-            var submission = new Bundle({ resource: [] });
-
             var templateId = null;
             var pathway = null;
             var startTypeData = $scope.newAct.$startType.split('-');
             var fulfills = [];
             var fulfillmentTargets = [];
+
             switch (startTypeData[0]) {
                 case "manual":
                     templateId = $scope.newAct.template;
@@ -88,63 +90,8 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
             }
 
-            // Template
-            var template = await SanteDB.application.getTemplateContentAsync(templateId, {
-                recordTargetId: $scope.recordTarget.id,
-                facilityId: await SanteDB.authentication.getCurrentFacilityId(),
-                userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
-            });
-
-            var encounter = new PatientEncounter(template);
-            encounter.id = encounter.id || SanteDB.application.newGuid();
-            encounter.relationship = encounter.relationship || {};
-            encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
-            encounter.relationship.Fulfills = fulfills;
-            // Ensure the appropriate keys are set
-            encounter.startTime = encounter.actTime = new Date();
-            encounter.statusConcept = StatusKeys.Active;
-
-            // Compute the actions to be performed
-            var actions = await SanteDB.resources.patient.invokeOperationAsync($scope.recordTarget.id, "generate-careplan", {
-                pathway: pathway,
-                encounter: template.templateModel.mnemonic,
-                period: moment().format("YYYY-MM-DD")
-            }, undefined, "min");
-
-            actions.relationship.HasComponent.forEach(comp => {
-                var ar = new ActRelationship({
-                    relationshipType: comp.relationshipType,
-                    target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
-                    targetModel: comp.targetModel,
-                    source: encounter.id
-                });
-                encounter.relationship.HasComponent.push(ar);
-                comp.targetModel.id = comp.targetModel.id || ar.target;
-
-                // Fulfillment for the target model
-                if (comp.targetModel && comp.targetModel.protocol) {
-                    var fulfillment = fulfillmentTargets.find(o => {
-                        var targetAct = o.targetModel;
-                        return targetAct.protocol.find(p => comp.targetModel.protocol.find(p2 => p2.protocol == p.protocol && p2.sequence == p.sequence))
-                    });
-                    if (fulfillment) {
-                        comp.targetModel.relationship = comp.targetModel.relationship || {};
-                        comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
-                        comp.targetModel.relationship.Fulfills.push(new ActRelationship({
-                            target: fulfillment.target
-                        }));
-                    }
-                }
-            });
-            
-            encounter = await prepareActForSubmission(encounter);
-            submission = bundleRelatedObjects(encounter);
-            console.info(submission);
-
-            // Now we want to submit
-            var submittedBundle = await SanteDB.resources.bundle.insertAsync(submission);
+            var encounter = await SanteEMR.startVisitAsync(templateId, pathway, $scope.recordTarget.id, fulfills, fulfillmentTargets);
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.checkin.success"));
-            var encounter = submittedBundle.resource.find(o=>o.$type == "PatientEncounter");
             $state.go("santedb-emr.encounter.view", { id: encounter.id });
         }
         catch (e) {
