@@ -1,32 +1,48 @@
 angular.module('santedb').controller("EmrCreateUserController", ["$scope", "$rootScope", "$state", "$timeout", function ($scope, $rootScope, $state, $timeout) {
 
-    $scope.target = {
-        entity: new SecurityUser(),
-        userEntity: new UserEntity({
-            language: [
-                {
-                    "languageCode": SanteDB.locale.getLanguage(),
-                    "isPreferred": true
-                }
-            ],
-            name: {
-                OfficialRecord: new EntityName({
-                    useModel: new Concept({
-                        id: NameUseKeys.OfficialRecord,
-                        mnemonic: "OfficialRecord"
-                    }),
-                    component: {
-                        Prefix: [],
-                        Given: [],
-                        Family: [],
-                        Suffix: []
+    async function initializeView() {
+        var dsdl = await SanteDB.authentication.getCurrentFacilityId();
+        var target = {
+            entity: new SecurityUser(),
+            userEntity: new UserEntity({
+                language: [
+                    {
+                        "languageCode": SanteDB.locale.getLanguage(),
+                        "isPreferred": true
                     }
-                })
-            }
-        }),
-        preferredLanguage: SanteDB.locale.getLanguage(),
-        role: ["LOCAL_USERS", "CLINICAL_STAFF"]
-    };
+                ],
+                name: {
+                    OfficialRecord: new EntityName({
+                        useModel: new Concept({
+                            id: NameUseKeys.OfficialRecord,
+                            mnemonic: "OfficialRecord"
+                        }),
+                        component: {
+                            Prefix: [],
+                            Given: [],
+                            Family: [],
+                            Suffix: []
+                        }
+                    })
+                },
+                relationship: {
+                    DedicatedServiceDeliveryLocation: [
+                        {
+                            target: dsdl
+                        }
+                    ],
+                    MaintainedEntity: [
+
+                    ]
+                }
+            }),
+            preferredLanguage: SanteDB.locale.getLanguage(),
+            role: ["LOCAL_USERS", "CLINICAL_STAFF"]
+        };
+        $timeout(() => $scope.target = target);
+    }
+
+    initializeView();
 
 
     /** Watch for changes in the password and calculate strength  */

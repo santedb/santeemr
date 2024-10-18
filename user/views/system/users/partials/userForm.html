@@ -1,5 +1,5 @@
 <form autocomplete="off"  name="userForm" ng-submit="saveUser(userForm)" novalidate="novalidate" xmlns="http://www.w3.org/1999/xhtml">
-    <div class="modal-body">
+    <div class="modal-body" ng-if="target">
         <div class="form-group row">
             <label class="col-sm-12 col-md-3 control-label required"
                 for="username">{{ 'ui.model.securityUser.userName' | i18n }}</label>
@@ -116,6 +116,33 @@
                     ng-model="target.preferredLanguage">
                     <option ng-repeat="lang in $root.system.locales" value="{{lang}}">{{ 'ui.locale.' + lang | i18n }}</option>
                 </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="familyName"
+                class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.userEntity.relationship.DedicatedServiceDeliveryLocation' | i18n }}
+                <hint-popover hint-title="ui.model.userEntity.relationship.DedicatedServiceDeliveryLocation" />
+            </label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search type="'Place'"
+                    filter="{ obsoletionTime: 'null', classConcept: 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }"
+                    class="form-control"
+                    ng-model="target.userEntity.relationship.DedicatedServiceDeliveryLocation"
+                    value-property="'target'"
+                    multiple="multiple" />
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="familyName"
+                class="col-sm-12 col-md-3 control-label">{{ 'ui.model.userEntity.relationship.MaintainedEntity' | i18n }}
+                <hint-popover hint-title="ui.model.userEntity.relationship.MaintainedEntity" /></label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search type="'Place'" filter="{ 'relationship[DedicatedServiceDeliveryLocation|ServiceDeliveryLocation].source': target.userEntity.id, classConcept: 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }"
+                    class="form-control" ng-model="target.userEntity.relationship.MaintainedEntity"
+                    value-property="'target'"
+                    multiple="multiple"
+                    />
             </div>
         </div>
     </div>
