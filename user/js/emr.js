@@ -10,6 +10,13 @@ function dateToAge(date, onDate) {
 
 }
 
+const ENCOUNTER_FLOW = {
+    EXTENSION_URL: 'http://santedb.org/emr/extensions/encounter-flow',
+    CHECKED_IN: 'A63E9BCC-BE32-4EA6-A43F-1F3C771114D4',
+    WAIT_OBSERVATION: 'AEDF62BB-48F5-437E-914D-36E0CD57B8F8',
+    WAIT_SPECIALIST: 'F5201716-8AA2-4BB9-B574-763E87E3372D'
+};
+
 const ADT_REGISTRATION_TYPES = {
     BIRTH: 'f562e322-17ca-11eb-adc1-0242ac120002',
     DEATH: 'f562e458-17ca-11eb-adc1-0242ac120002',
@@ -138,6 +145,10 @@ function SanteEMRWrapper() {
             // Ensure the appropriate keys are set
             encounter.startTime = encounter.actTime = new Date();
             encounter.statusConcept = StatusKeys.Active;
+            encounter.extension = encounter.extension || {};
+            encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL] = [ SanteDB.application.encodeReferenceExtension(Concept.name, ENCOUNTER_FLOW.CHECKED_IN) ];
+
+            // Set the status 
 
             // Compute the actions to be performed
             var actions = await SanteDB.resources.patient.invokeOperationAsync(recordTargetId, "generate-careplan", {

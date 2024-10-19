@@ -10,7 +10,7 @@
 
     <div ng-controller="EmrWaitingRoomController">
         <entity-list type="PatientEncounter" can-filter="true" id="waitingRoomList"
-            search-field="'participation[RecordTarget].player.identifier.value'" default-query="{
+            search-field="'participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value'" default-query="{
         statusConcept: 'C8064CBD-FA06-4530-B430-1A52F1530C27',
         moodConcept: 'EC74541F-87C4-4327-A4B9-97F325501747',
         _orderBy: 'startTime:desc',
@@ -21,7 +21,9 @@
         { name: 'cancel', action: 'doCancel', className: 'btn-danger', icon: 'fa-solid fa-times-circle'},
         { name: 'discharge', action: 'doDischarge', className: 'btn-warning', icon: 'fa-solid fa-right-from-bracket'},
         { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.encounter.view', className: 'btn-primary', icon: 'fas fa-arrow-right' }
-    ]" display="list" item-template="/org.santedb.emr/partials/act/checkin-summary.html">
+    ]" display="list" 
+    item-supplement="[ loadFlowState ]"
+    item-template="/org.santedb.emr/partials/act/checkin-summary.html">
         </entity-list>
     </div>
 </div>

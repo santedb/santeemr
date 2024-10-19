@@ -2,6 +2,8 @@
 angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 }]).controller("EmrWaitingRoomController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
 
+    var _loadedFlowStates = {};
+
     async function cancelEncounter(encounterId) {
         if(confirm(SanteDB.locale.getString("ui.emr.encounter.cancel.confirm"))) {
             try {
@@ -36,4 +38,19 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
     }
 
     $scope.doCancel = cancelEncounter;
+    $scope.loadFlowState = async function(r) {
+        try {
+            if(r.extension && r.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {
+
+                var extensionValue = r.extension[ENCOUNTER_FLOW.EXTENSION_URL][0];
+                r.flowConceptModel = _loadedFlowStates[extensionValue] || await SanteDB.application.resolveReferenceExtensionAsync(extensionValue);
+                _loadedFlowStates[extensionValue] = r.flowConceptModel;
+            }
+            return r;
+        }
+        catch(e) {
+            console.warn("cannot load flow state", e);
+        }
+    }
+
 }])

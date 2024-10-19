@@ -29,10 +29,10 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
             else {
 
                 var filter = {
-                    moodConcept: ActMoodKeys.Propose,
-                    'relationship[HasComponent].source@CarePlan.pathway': path.id,
+                    moodConcept: [ ActMoodKeys.Propose, ActMoodKeys.Eventoccurrence ],
+                    'relationship[HasComponent].source@CarePlan.pathway||relationship[Fulfills].target.relationship[HasComponent].source@CarePlan.pathway': path.id,
                     'participation[RecordTarget].player': $scope.scopedObject.id,
-                    'statusConcept': StatusKeys.New,
+                    'statusConcept': [ StatusKeys.New, StatusKeys.Active ],
                     'actTime': [],
                     _orderBy: 'actTime:asc',
                     _includeTotal: false,
@@ -46,7 +46,30 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 }
 
                 var encounters = await SanteDB.resources.patientEncounter.findAsync(filter, "full");
+                var proposed = [], event = [];
+                if(encounters.resource) {
+                    proposed = encounters.resource.filter(r => r.moodConcept == ActMoodKeys.Propose);
+                    event = encounters.resource.find(r => r.moodConcept == ActMoodKeys.Eventoccurrence);
 
+                    if(event && event.relationship && event.relationship.Fulfills) {
+                        var fulfilled = proposed.find(p => p.id == event.relationship.Fulfills[0].target);
+                        if(fulfilled) {
+                            fulfilled.relationship = fulfilled.relationship || {};
+                            fulfilled.relationship.Fulfills = fulfilled.relationship.Fulfills || [];
+                            fulfilled.relationship.Fulfills.push(new EntityRelationship({
+                                source: event.id,
+                                target: fulfilled.id
+                            }));
+
+                            // Block starting all encounters
+                            proposed.forEach(p=>{
+                                p.tag = p.tag || {};
+                                p.tag["$nostart"] = [true];
+                            });
+                        }
+                    }
+                }
+                
                 filter._count = 0;
                 filter._includeTotal = true;
                 delete filter.actTime;
@@ -54,7 +77,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
 
                 // TODO: Find out whether the encounter is currently ongoing -- 
                 $timeout(() => {
-                    path.encounters = encounters.resource || [];
+                    path.encounters = proposed;
                     path._totalEncounters = count.totalResults;
                 });
             }
@@ -146,6 +169,8 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
             }));
 
             var encounter = await SanteEMR.startVisitAsync(templateId, pathway, $scope.scopedObject.id, fulfills, fulfillmentTargets);
+            $scope.scopedObject
+
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.checkin.success"));
             $state.go("santedb-emr.encounter.view", { id: encounter.id });
 

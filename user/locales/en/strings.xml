@@ -1,6 +1,7 @@
 <resources>
 
 
+
     <string name="ui.directConnect">Direct Connect to Server</string>
     <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
     <string name="ui.emr.loginMessage">Log into SanteEMR</string>
@@ -393,4 +394,6 @@
        <string name="ui.emr.patient.carePaths.recompute.confirm">You are about to re-compute the care plan for {pathway}. This operation may take some time, and is often automatically performed after discharge. Are you sure you want to continue recomputation?</string>
        <string name="ui.emr.patient.carePaths.recompute.success">Care pathway has been successfully re-computed</string>
        
+       <!-- Search -->
+        <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Search by Name / Identifier</string>
 </resources>
