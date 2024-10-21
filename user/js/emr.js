@@ -123,9 +123,10 @@ function SanteEMRWrapper() {
      * @param {string} recordTargetId The identification of the record target to which the visit is intended 
      * @param {ActRelationship} fulfills An array of {@link:ActRelationship} objects which represent the encounter in the care plan that this visit fulfills
      * @param {ActRelationship} fulfillmentComponents An array of {@link:ActRelationship} objects which reprensets the proposals from the stored care plan which this visit is fulfilling
+     * @param {ActParticipation} informantPtcpt The informant / guardian on the act
      * @returns {PatientEncounter} The constructed and saved {@link:PatientEncounter}
      */
-    this.startVisitAsync = async function(templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents) {
+    this.startVisitAsync = async function(templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt) {
         try {
 
             var submission = new Bundle({ resource: [] });
@@ -136,6 +137,7 @@ function SanteEMRWrapper() {
                 facilityId: await SanteDB.authentication.getCurrentFacilityId(),
                 userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
             });
+
 
             var encounter = new PatientEncounter(template);
             encounter.id = encounter.id || SanteDB.application.newGuid();
@@ -153,6 +155,7 @@ function SanteEMRWrapper() {
             // Compute the actions to be performed
             var actions = await SanteDB.resources.patient.invokeOperationAsync(recordTargetId, "generate-careplan", {
                 pathway: carePathway,
+                //firstOnly: true,
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD")
             }, undefined, "min");
@@ -182,10 +185,30 @@ function SanteEMRWrapper() {
                     }
                 }
             });
+
+            if(informantPtcpt) {
+                encounter.participation = encounter.participation || {};
+                encounter.participation.Informant = encounter.participation.Informant || [];
+                encounter.participation.Informant.push(informantPtcpt);
+                if(informantPtcpt.playerModel && informantPtcpt.player != informantPtcpt.playerModel.id ) {
+                    delete informantPtcpt.playerModel;
+                }
+            }
             
             encounter = await prepareActForSubmission(encounter);
-            submission = bundleRelatedObjects(encounter);
+            submission = bundleRelatedObjects(encounter, "Informant");
 
+            if(informantPtcpt && informantPtcpt.playerModel && informantPtcpt.player == informantPtcpt.playerModel.id ) {
+                    informantPtcpt.playerModel = await prepareEntityForSubmission(informantPtcpt.playerModel, true);
+                    submission.resource.push(informantPtcpt.playerModel);
+                    submission.resource.push(new EntityRelationship(
+                        informantPtcpt.playerModel.relationship.$other[0]
+                    ));
+                    delete informantPtcpt.playerModel.relationship.$other;
+                    delete informantPtcpt.playerModel;
+                
+            }
+            
             // Now we want to submit
             var submittedBundle = await SanteDB.resources.bundle.insertAsync(submission);
             return submittedBundle.resource.find(o=>o.$type == "PatientEncounter");

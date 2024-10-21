@@ -10,9 +10,10 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     SanteDB.resources.carePlan.findAsync({
                         "participation[RecordTarget].player": n,
                         "relationship[HasComponent].target.actTime": [
-                            `>=${moment().add(-10, 'days').format('YYYY-MM-DD')}`,
-                            `<=${moment().add(5, 'days').format('YYYY-MM-DD')}`
+                            `>=${moment().add(-15, 'days').format('YYYY-MM-DD')}`,
+                            `<=${moment().add(10, 'days').format('YYYY-MM-DD')}`
                         ],
+                        _orderBy: "actTime:desc",
                         _includeTotal: false
                     }, 'full'),
                     SanteDB.resources.patientEncounter.findAsync({
@@ -26,11 +27,41 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
                 $timeout(() => {
                     $scope.recordTarget = new Patient(fetchedData.find(d => d.$type == "Patient"));
-                    $scope.newAct = new PatientEncounter();
+                    var pid = SanteDB.application.newGuid();
+                    $scope.newAct = new PatientEncounter({
+                        participation: {
+                            Informant: [
+                                {
+                                    playerModel: new Person({
+                                        id: pid,
+                                        relationship:
+                                        {
+                                            $other: [
+                                                { 
+                                                    relationshipType: EntityRelationshipTypeKeys.FamilyMember,
+                                                    source: $scope.recordTarget.id,
+                                                    target: pid
+                                                }
+                                            ]
+                                        },
+                                        name: {
+                                            Assigned: [
+                                                {
+                                                    component: {
+                                                        "Given": []
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    })
+                                }
+                            ]
+                        }
+                    });
                     var tArray = fetchedData.filter(d => d.$type == "Bundle" && d.resource && d.resource[0].$type == "CarePlan");
                     if (tArray.length > 0) {
                         $scope._proposedActs = tArray[0].resource.map(cp => {
-                            var act = cp.relationship.HasComponent.find(ar => ar.targetModel.actTime >= new Date().addDays(-10) && ar.targetModel.actTime <= new Date().addDays(5)).targetModel;
+                            var act = cp.relationship.HasComponent.find(ar => ar.targetModel.actTime >= new Date().addDays(-15) && ar.targetModel.actTime <= new Date().addDays(10)).targetModel;
                             act.pathway = cp.pathway;
                             act.pathwayModel = cp.pathwayModel;
                             return act;
@@ -90,7 +121,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
             }
 
-            var encounter = await SanteEMR.startVisitAsync(templateId, pathway, $scope.recordTarget.id, fulfills, fulfillmentTargets);
+            var encounter = await SanteEMR.startVisitAsync(templateId, pathway, $scope.recordTarget.id, fulfills, fulfillmentTargets, $scope.newAct.participation.Informant[0]);
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.checkin.success"));
             $state.go("santedb-emr.encounter.view", { id: encounter.id });
         }

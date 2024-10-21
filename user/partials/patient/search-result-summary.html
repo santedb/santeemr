@@ -36,58 +36,32 @@
         <div class="col-12 mb-1">
             <div class="d-flex justify-content-between align-items-stretch">
                 <div class="mr-2">
-                    <i class="fas fa-fw fa-birthday-cake"></i> {{ item.dateOfBirth | extDate: item.dateOfBirthPrecision
-                    }} ({{ item.dateOfBirth | age }})
+                    <i class="fas fa-fw fa-birthday-cake"></i> {{ item.dateOfBirth | extDate: item.dateOfBirthPrecision }} ({{ item.dateOfBirth | age }})
                 </div>
                 <div class="mx-2"><i class="fas fa-fw"
-                        ng-class="{ 'fa-genderless': null, 'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
-                    <span class="ml-2 d-none d-md-inline">{{ item.genderConceptModel | concept }}</span>
-                </div>
+                    ng-class="{ 'fa-genderless': null, 'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
+                    <span class="ml-2 d-none d-md-inline">{{ item.genderConceptModel | concept }}</span></div>
                 <div class="mx-2 badge badge-secondary" ng-if="item.deceasedDate"><i
                         class="fas fa-exclamation-circle"></i> {{ 'ui.model.patient.deceasedDate' | i18n }} ({{
                     item.deceasedDate | extDate: item.deceasedDatePrecision }})</div>
-                <div class="mx-2 badge badge-info" ng-if="item.tag.$upstream[0] == 'true'"
-                    title="{{ 'ui.emr.patient.search.tag.upstream' | i18n }}"><i class="fas fa-cloud-meatball"></i>
-                    <span class="ml-2 d-none d-md-inline">{{ 'ui.emr.patient.search.tag.upstream' | i18n }}</span>
-                </div>
-                <div class="mx-2 badge badge-light" ng-if="item.multipleBirthOrder !== undefined"
-                    title="{{ 'ui.model.patient.multipleBirthOrder' | i18n }}">
-                    <i class="fas fa-fw fa-people-group"></i> <span class="ml-2 d-none d-md-inline">{{
-                        'ui.model.patient.multipleBirthOrder' | i18n }}</span>
+                <div class="mx-2 badge badge-info" ng-if="item.tag.$upstream[0] == 'true'" title="{{ 'ui.emr.patient.search.tag.upstream' | i18n }}"><i
+                        class="fas fa-cloud-meatball"></i> <span class="ml-2 d-none d-md-inline">{{ 'ui.emr.patient.search.tag.upstream' | i18n }}</span> </div>
+                <div class="mx-2 badge badge-light" ng-if="item.multipleBirthOrder !== undefined" title="{{ 'ui.model.patient.multipleBirthOrder' | i18n }}">
+                    <i class="fas fa-fw fa-people-group"></i> <span class="ml-2 d-none d-md-inline">{{ 'ui.model.patient.multipleBirthOrder' | i18n }}</span>
                 </div>
             </div>
         </div>
         <div class="col-12 mb-1">
             <div class="d-flex">
                 <div class="flex-grow-1" ng-if="item.address.HomeAddress">
-                    <i class="fas fa-fw fa-house"></i> {{ item.address.HomeAddress | address }} <span
-                        class="badge badge-primary">{{ item.address.HomeAddress[0].useModel | concept }}</span>
+                    <i class="fas fa-fw fa-house"></i> {{ item.address.HomeAddress | address }} <span class="badge badge-primary">{{ item.address.HomeAddress[0].useModel | concept }}</span>
                 </div>
             </div>
         </div>
         <div class="col-12 mb-1">
             <div class="d-flex justify-content-between align-items-stretch">
                 <div class="mx-2" ng-repeat="(t, tel) in item.telecom track by $index">
-                    <i class="fas fa-fw fa-phone"></i> {{ tel[0] | telecom }} <span class="badge badge-primary">{{
-                        tel[0].useModel || t | concept }}</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-12">
-            <div class="d-flex">
-                <div class="mx-2" ng-repeat="(k, rel) in item.relationship track by $index"
-                    ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
-                    <div ng-repeat="r in rel track by $index" ng-init="r._emit = item._emit = (item._emit || 0) + 1">
-                        <div class="search-card-relative" ng-if="r._emit &lt; 3">
-                            <i class="fas fa-fw fa-people-arrows"></i>
-                            <span class="badge badge-primary m-2">{{ rel.relationshipTypeModel || k | concept }} </span>
-                            {{ r.targetModel.name | name }}
-                            <a ng-if="r.targetModel.telecom.MobileContact"
-                                href="{{r.targetModel.telecom.MobileContact[0].value}}">
-                                <i class="fas fa-fw fa-phone"></i> {{ r.targetModel.telecom.MobileContact[0].value }}
-                            </a>
-                        </div>
-                    </div>
+                    <i class="fas fa-fw fa-phone"></i> {{ tel[0] | telecom }} <span class="badge badge-primary">{{ tel[0].useModel || t | concept }}</span>
                 </div>
             </div>
         </div>

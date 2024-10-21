@@ -37,6 +37,9 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
         }
     }
 
+    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
+
     $scope.doCancel = cancelEncounter;
     $scope.loadFlowState = async function(r) {
         try {

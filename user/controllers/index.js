@@ -30,9 +30,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         if($rootScope.refValues) { return; }
         try {
             $rootScope.refValues = {};
-            
             var familialRelationships = await SanteDB.resources.conceptSet.invokeOperationAsync(null, "expand", { "_mnemonic" : "FamilyMember" });
-
             $timeout(() => {
                 $rootScope.refValues.FamilyMember = familialRelationships.resource.map(o=>o.mnemonic);
             });

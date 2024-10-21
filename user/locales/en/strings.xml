@@ -380,6 +380,8 @@
      <string name="ui.emr.encounter.navigate.notFound">Active encounter could not be found. Please try refreshing the results and attempting your operation again.</string>
      <string name="ui.emr.encounter.cancel.confirm">Are you sure you want to cancel this visit?</string>
      <string name="ui.emr.encounter.cancel.success">Visit has been cancelled successfully</string>
+     <string name="ui.emr.encounter.checkin.informant">Guardian / Parent Present</string>
+     <string name="ui.emr.encounter.checkin.informant.other">Other</string>
      <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
 
      <!-- Visits -->
