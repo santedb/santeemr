@@ -30,6 +30,8 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
         catch (e) {
 
             var rootCause = e.getRootCause();
+
+            // TODO: --- HANDLE ELEVATION CASE
             // Type of exception
             switch (rootCause.$type) {
                 case "FileNotFoundException": // Try upstream

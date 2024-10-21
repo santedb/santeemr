@@ -1,6 +1,7 @@
 <resources>
 
 
+
     <string name="ui.directConnect">Direct Connect to Server</string>
     <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
     <string name="ui.emr.loginMessage">Log into SanteEMR</string>
@@ -15,6 +16,8 @@
     <string name="ui.action.discharge">Discharge</string>
     <string name="ui.action.updateSelected">Update Record</string>
     <string name="ui.action.change">Change Record</string>
+    <string name="ui.action.enroll">Enroll</string>
+    <string name="ui.action.unenroll">Leave</string>
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
     <string name="ui.emr.patient.index">My Patients</string>
@@ -68,6 +71,7 @@
     <string name="org.santedb.emr.widget.patient.identity">Identification</string>
     <string name="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
     <string name="org.santedb.emr.widget.patient.idCard">Patient ID Card</string>
+    <string name="org.santedb.emr.widget.patient.careplans">Care Plans</string>
 
     <!-- VRP -->
      <string name="ui.emr.vrp.title">Signed Digital ID Code</string>
@@ -370,7 +374,26 @@
 
     <!-- Checkin -->
      <string name="ui.emr.encounter.checkin.title">Start Visit</string>
+     <string name="ui.emr.encounter.checkin.type.manual">Create New Visit</string>
+     <string name="ui.emr.encounter.checkin.type.proposed">From Care Plan</string>
+     <string name="ui.emr.encounter.checkin.success">Visit has been started successfully</string>
+     <string name="ui.emr.encounter.navigate.notFound">Active encounter could not be found. Please try refreshing the results and attempting your operation again.</string>
+     <string name="ui.emr.encounter.cancel.confirm">Are you sure you want to cancel this visit?</string>
+     <string name="ui.emr.encounter.cancel.success">Visit has been cancelled successfully</string>
+     <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
 
      <!-- Visits -->
       <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
+
+      <!-- Care Paths -->
+       <string name="ui.emr.patient.carePaths.enroll.confirm">Are you sure you want to enroll this patient into the care pathway {pathway}?</string>
+       <string name="ui.emr.patient.carePaths.enroll.success">Patient enrolled in pathway successfully</string>
+       <string name="ui.emr.patient.carePaths.unenroll.confirm">Are you sure you want to un-enroll this patient from the {pathway} care pathway?</string>
+       <string name="ui.emr.patient.carePaths.unenroll.success">Patient has been removed from the care pathway</string>
+       <string name="ui.emr.patient.carePaths.acts.none">No upcoming encounters in this care pathway</string>
+       <string name="ui.emr.patient.carePaths.recompute.confirm">You are about to re-compute the care plan for {pathway}. This operation may take some time, and is often automatically performed after discharge. Are you sure you want to continue recomputation?</string>
+       <string name="ui.emr.patient.carePaths.recompute.success">Care pathway has been successfully re-computed</string>
+       
+       <!-- Search -->
+        <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Search by Name / Identifier</string>
 </resources>

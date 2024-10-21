@@ -1,0 +1,22 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <div class="d-flex justify-content-between">
+    <h5 class="my-1 flex-grow-1">
+        {{ item.participation.RecordTarget[0].playerModel.name | name }}<br/>
+        <small>{{ item.templateModel.mnemonic | i18n }} / {{ item.typeConceptModel | concept }}</small>
+    </h5>
+    <h5 class="badge align-self-center m-0 p-2 text-uppercase"
+        ng-class="{
+            'badge-primary' : item.flowConceptModel.mnemonic == 'EncounterState-CheckedIn',
+            'badge-success': item.flowConceptModel.mnemonic == 'EncounterState-Observation',
+            'badge-warning': item.flowConceptModel.mnemonic == 'EncounterState-WaitingSpecialist',
+            'badge-secondry' : true
+        }">
+        <i class="fas fa-fw" ng-class="{
+            'fa-check-circle' : item.flowConceptModel.mnemonic == 'EncounterState-CheckedIn',
+            'fa-eye': item.flowConceptModel.mnemonic == 'EncounterState-Observation',
+            'fa-clock': item.flowConceptModel.mnemonic == 'EncounterState-WaitingSpecialist',
+        }"></i>
+        {{ item.flowConceptModel | concept }} ( {{ item.creationTime | since }})
+    </h5>
+</div>
+</div>

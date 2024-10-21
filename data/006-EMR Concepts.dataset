@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="EMR Core Concept Codes v3.0" xmlns="http://santedb.org/data">
+
+  
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>F846EA88-49FA-451E-9804-E8C0F412360C</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterType-Outpatient</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Outpatient</value>
+      </name>
+      <conceptSet>4be73176-2531-41b8-8a68-2f9d41226a96</conceptSet>
+      <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
+    </Concept>
+  </update>
+
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>18E92034-43D5-477D-9748-1609099314DF</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterType-PrimaryCare</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Primary Care</value>
+      </name>
+      <conceptSet>4be73176-2531-41b8-8a68-2f9d41226a96</conceptSet>
+      <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
+    </Concept>
+  </update>
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>1DB6987B-9DBD-443C-B3D9-902625CF24B8</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterType-Pediatric</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Pediatric Care</value>
+      </name>
+      <conceptSet>4be73176-2531-41b8-8a68-2f9d41226a96</conceptSet>
+      <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
+    </Concept>
+  </update>
+</dataset>

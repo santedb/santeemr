@@ -19,16 +19,26 @@
         </div>
         <div class="form-group row">
             <label class="col-md-3 col-sm-12 control-label required">
+                {{ 'ui.model.carePathwayDefinition.name' | i18n }}
+                <hint-popover hint-title="ui.model.carePathwayDefinition.name" />
+            </label>
+            <div class="col-md-9 col-sm-12">
+                <input class="form-control" maxlength="256" required="required" ng-model="pathway.name" name="pathName"/>
+                <div class="text-danger" ng-if="editCarePathForm.pathName.$error['required']">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-3 col-sm-12 control-label">
                 {{ 'ui.model.carePathwayDefinition.description' | i18n }} <hint-popover
                     hint-title="ui.model.carePathwayDefinition.description" />
             </label>
             <div class="col-md-9 col-sm-12">
-                <textarea name="description" required="required" maxlength="1024" ng-model="pathway.description"
+                <textarea name="description" maxlength="1024" ng-model="pathway.description"
                     class="form-control"></textarea>
                 <div class="float-right">{{ 1024 - pathway.description.length }} {{ 'ui.common.charsRemain' | i18n }}
-                </div>
-                <div class="text-danger" ng-if="editCarePathForm.description.$error['required']">
-                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
             </div>
         </div>

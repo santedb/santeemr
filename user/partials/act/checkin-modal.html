@@ -24,23 +24,51 @@
                             <div class="alert alert-info p-0" ng-init="item = recordTarget">
                                 <!-- #include virtual="~/partials/patient/search-result.html" -->
                             </div>
-                            <div class="container-fluid">
-                                <div class="form-group row">
-                                    <label class="col-12 text-bold required">
-                                        {{ 'ui.model.act.template' | i18n }}
+                            <ul class="list-group">
+                                <li class="list-group-item">
+                                    <label class="text-strong d-block w-100">
+                                        <input type="radio" name="startType" required="required" ng-model="newAct.$startType" 
+                                            value="manual" />
+                                            <h5 class="my-1 ml-2 d-inline">{{ 'ui.emr.encounter.checkin.type.manual' | i18n }}</h5>
                                     </label>
-                                    <div class="col-12">
-                                        <entity-search class="form-control" type="'Template'" filter="{ scope : 'org.santedb.model.act' }"
-                                            ng-model="act.$templateRef" search-field="'description'" key="'mnemonic'" js-filter="applyGuardExpression" />
+                                    <div class="form-group row">
+                                        <label class="col-12 text-bold required">
+                                           {{ 'ui.model.act.template' | i18n }}
+                                        </label>
+                                        <div class="col-12">
+                                            <entity-search ng-disabled="newAct.$startType !== 'manual'" ng-required="newAct.$startType === 'manual'" class="form-control" type="'Template'" filter="{ scope : 'org.santedb.model.act' }"
+                                                ng-model="newAct.template" name="template" search-field="'description'" key="'mnemonic'" js-filter="applyGuardExpression" />
+                                            <div ng-if="checkinForm.template.$error.required" class="text-danger">
+                                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                </li>
+                                <li class="list-group-item"  ng-class="{ 'list-group-item-secondary': newAct.$startType !== 'proposed-' + $index, 'list-group-item-primary' : newAct.$startType === 'proposed-' + $index }" ng-repeat="prop in _proposedActs track by $index">
+                                    <label class="text-strong d-block w-100">
+                                        <input type="radio" name="startType" required="required" ng-model="newAct.$startType"
+                                            value="proposed-{{$index}}"/>
+                                        <h5 class="my-1 ml-2  d-inline">{{ 'ui.emr.encounter.checkin.type.proposed' | i18n }} {{ prop.pathwayModel.name }}</h5>
+                                    
+                                    <div class="form-group row">
+                                        <div class="col-12">
+                                            <strong class="my-0"><i class="fas fa-fw" ng-class="resolveTemplateIcon(prop.templateModel.mnemonic)"></i> {{ prop.templateModel.mnemonic | i18n }} <small>{{ prop.startTime | extDate: 'D' }} - {{ prop.stopTime | extDate: 'D' }}</small></strong>
+                                            <ul class="ml-2">
+                                                <li ng-repeat="comp in prop.relationship.HasComponent track by $index" ng-init="act = comp.targetModel">
+                                                    <i class="fas fa-fw" ng-class="resolveTemplateIcon(comp.targetModel.templateModel.mnemonic)"></i> <ng-include class="d-inline" src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)" />
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </label>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">
                             <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
-                        <button type="submit" id="btnLogout" ng-disabled="checkinForm.$invalid" class="btn btn-primary">
+                        <button type="submit" id="btnSubmit" ng-disabled="checkinForm.$invalid" class="btn btn-primary">
                             <i class="fa fa-check"></i> {{ 'ui.action.check-in' | i18n }}</button>
                     </div>
                 </form>
