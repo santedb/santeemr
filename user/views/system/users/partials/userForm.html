@@ -84,6 +84,12 @@
                 <!-- #include virtual="/org.santedb.uicore/partials/security/password.strength.html" -->
             </div>
         </div>
+        <div class="form-group row">
+            <div class="col-xs-12 offset-md-2 col-md-10">
+                <input type="checkbox" ng-model="userForm.expirePassword" />
+                {{ 'ui.password.forceChange' | i18n }}
+            </div>
+        </div>
         <hr />
         <div class="form-group row">
             <label for="email"

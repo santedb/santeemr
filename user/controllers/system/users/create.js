@@ -92,7 +92,8 @@ angular.module('santedb').controller("EmrCreateUserController", ["$scope", "$roo
             var userInfo = {
                 $type: "SecurityUserInfo",
                 role: $scope.target.role,
-                entity: $scope.target.entity
+                entity: $scope.target.entity,
+                expirePassword: $scope.target.expirePassword
             };
 
             userInfo = await SanteDB.resources.securityUser.insertAsync(userInfo);
