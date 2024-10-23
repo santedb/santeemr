@@ -169,6 +169,8 @@ function SanteEMRWrapper() {
                 });
                 encounter.relationship.HasComponent.push(ar);
                 comp.targetModel.id = comp.targetModel.id || ar.target;
+                comp.targetModel.moodConcept = encounter.moodConcept;
+                comp.targetModel.statusConcept = encounter.statusConcept;
 
                 // Fulfillment for the target model
                 if (comp.targetModel && comp.targetModel.protocol) {

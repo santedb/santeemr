@@ -147,17 +147,18 @@
     <scope>org.santedb.emr.act.registration.birth</scope>
     <form>/org.santedb.emr/templates/act/observation/birthWeight/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/birthWeight/view.html</view>
-    <icon>fas fa-weight-scale</icon>
+    <summaryView>/org.santedb.emr/templates/act/observation/birthWeight/summary.html</summaryView>
+    <icon>fas fa-baby</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.5</oid>
     <description>Birth Weight</description>
     <uuid>20691188-f1ca-4d06-90a4-8f857c293853</uuid>
   </template>
-  <template mnemonic="org.santedb.emr.observation.heightLying" public="true">
+  <template mnemonic="org.santedb.emr.observation.height" public="true">
     <definition>/org.santedb.emr/templates/act/observation/heightLying/definition.json</definition>
-    <scope>org.santedb.emr.act.registration.birth</scope>
-    <scope>org.santedb.model.patientEncounter</scope>
-    <form>/org.santedb.emr/templates/act/observation/heightLying/form.html</form>
-    <view>/org.santedb.emr/templates/act/observation/heightLying/view.html</view>
+    <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
+    <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
+    <form>/org.santedb.emr/templates/act/observation/height/form.html</form>
+    <view>/org.santedb.emr/templates/act/observation/height/view.html</view>
     <summaryView>/org.santedb.emr/templates/act/observation/heightLying/summary.html</summaryView>
     <icon>fas fa-ruler-horizontal</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.6</oid>
@@ -166,8 +167,8 @@
   </template>
   <template mnemonic="org.santedb.emr.observation.weight" public="true">
     <definition>/org.santedb.emr/templates/act/observation/weight/definition.json</definition>
-    <scope>org.santedb.emr.act.registration.birth</scope>
-    <scope>org.santedb.model.patientEncounter</scope>
+    <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
+    <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
     <form>/org.santedb.emr/templates/act/observation/weight/form.html</form>
     <view>/org.santedb.emr/templates/act/observation/weight/view.html</view>
     <summaryView>/org.santedb.emr/templates/act/observation/weight/summary.html</summaryView>
@@ -178,7 +179,6 @@
   </template>
   <template mnemonic="org.santedb.emr.observation.pregnancyHistory" public="true">
     <definition>/org.santedb.emr/templates/act/observation/pregnancyHistory/definition.json</definition>
-    <scope>org.santedb.emr.act.registration.birth</scope>
     <form>/org.santedb.emr/templates/act/observation/pregnancyHistory/form.html</form>
     <icon>fas fa-file-medical</icon>
     <view>/org.santedb.emr/templates/act/observation/pregnancyHistory/view.html</view>
@@ -189,6 +189,8 @@
   <template mnemonic="org.santedb.emr.observation.death" public="true">
     <definition>/org.santedb.emr/templates/act/observation/death/definition.json</definition>
     <scope>org.santedb.emr.act.registration.death</scope>
+    <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
+    <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
     <form>/org.santedb.emr/templates/act/observation/death/form.html</form>
     <icon>fas fa-file-medical</icon>
     <view>/org.santedb.emr/templates/act/observation/death/view.html</view>
@@ -198,6 +200,8 @@
   </template>
   <template mnemonic="org.santedb.emr.sbadm.immunization" public="true">
     <definition>/org.santedb.emr/templates/act/sbadm/immunization/definition.json</definition>
+    <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
+    <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
     <form>/org.santedb.emr/templates/act/sbadm/immunization/form.html</form>
     <view>/org.santedb.emr/templates/act/sbadm/immunization/view.html</view>
     <summaryView>/org.santedb.emr/templates/act/sbadm/immunization/summary.html</summaryView>
@@ -208,6 +212,8 @@
   </template>
   <template mnemonic="org.santedb.emr.sbadm.supplement" public="true">
     <definition>/org.santedb.emr/templates/act/sbadm/supplement/definition.json</definition>
+    <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
+    <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
     <form>/org.santedb.emr/templates/act/sbadm/supplement/form.html</form>
     <view>/org.santedb.emr/templates/act/sbadm/supplement/view.html</view>
     <summaryView>/org.santedb.emr/templates/act/sbadm/supplement/summary.html</summaryView>

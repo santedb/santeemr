@@ -8,11 +8,9 @@
         </sdb:view>
     </sdb:state>
 
-    <div ng-if="!encounter">
-        <i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
-    </div>
+    <!-- #include virtual="~/partials/act/encounterHeader.html" -->
     <div ng-if="encounter">
-        <widget-tabs context-name="'org.santedb.emr.encounter.view'" scoped-object="encounter"></widget-tabs>
+        <widget-tabs context-name="'org.santedb.emr.encounter.view'" owner-form="encounterForm" scoped-object="encounter"></widget-tabs>
     </div>
     
 </div>

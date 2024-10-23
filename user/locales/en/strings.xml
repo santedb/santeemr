@@ -13,11 +13,12 @@
     <string name="ui.action.save.then.checkin">Save &amp; Go To</string>
     <string name="ui.action.check-in">Start Visit</string>
     <string name="ui.action.visit">Visit</string>
-    <string name="ui.action.discharge">Discharge</string>
+    <string name="ui.action.discharge">End Visit</string>
     <string name="ui.action.updateSelected">Update Record</string>
     <string name="ui.action.change">Change Record</string>
     <string name="ui.action.enroll">Enroll</string>
     <string name="ui.action.unenroll">Leave</string>
+    <string name="ui.action.wait">Return to Waiting Room</string>
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
     <string name="ui.emr.patient.index">My Patients</string>
@@ -382,6 +383,7 @@
      <string name="ui.emr.encounter.cancel.success">Visit has been cancelled successfully</string>
      <string name="ui.emr.encounter.checkin.informant">Guardian / Parent Present</string>
      <string name="ui.emr.encounter.checkin.informant.other">Other</string>
+     <string name="ui.emr.encounter.completed">This visit has concluded and is in a readonly state</string>
      <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
 
      <!-- Visits -->

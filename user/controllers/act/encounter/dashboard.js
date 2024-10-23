@@ -39,7 +39,19 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
 
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
-
+    $scope.doViewPatient = async function(r) {
+        try {
+            var patient = await SanteDB.resources.patient.findAsync({
+                _includeTotal: false,
+                _count: 1,
+                "participation[RecordTarget].act" : r
+            }, "min");
+            $state.go("santedb-emr.patient.view", { id: patient.resource[0].id });
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+    }
     $scope.doCancel = cancelEncounter;
     $scope.loadFlowState = async function(r) {
         try {

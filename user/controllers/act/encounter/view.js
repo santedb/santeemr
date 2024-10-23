@@ -19,4 +19,6 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
     SanteDB.authentication.setElevator(new SanteDBElevator(initializeView, false));
     initializeView($stateParams.id);
+}]).controller("EmrEncounterEntryController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
+    
 }]);

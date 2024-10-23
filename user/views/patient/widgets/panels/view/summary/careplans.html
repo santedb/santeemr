@@ -55,7 +55,7 @@
                                         ng-class="resolveTemplateIcon(enc.templateModel.mnemonic)"></i> {{
                                     enc.templateModel.mnemonic | i18n }} <small>{{ enc.startTime | extDate: 'D' }} - {{
                                         enc.stopTime | extDate: 'D' }}</small>
-                                    <span ng-if="enc.actTime &lt; $root.page.minEventTime"
+                                    <span ng-if="(enc.stopTime || enc.actTime) &lt; $root.page.minEventTime"
                                         class="badge badge-danger ml-2">
                                         <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.common.pastdue' | i18n }}
                                     </span>
