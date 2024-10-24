@@ -176,4 +176,27 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
         }
     }
 
+}]).controller("EmrDischargeEncounterController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
+
+    // Set the appropriate discharge dispositions etc.
+    $scope.$watch("encounter", function(n, o) {
+        if(n && (!o || o.id != n.id)) {
+
+            // Set the status of the encounter and everything else
+            n.statusConcept = StatusKeys.Completed;
+            if(n.relationship && n.relationship.HasComponent) {
+                n.relationship.HasComponent.forEach(comp => {
+                    comp.targetModel.statusConcept = StatusKeys.Completed;
+                    if(comp.targetModel.previousVersion || 
+                        comp.targetModel.participation &&
+                        comp.targetModel.participation.Performer
+                    ) {
+                        comp.targetModel.operation = BatchOperationType.InsertOrUpdate;
+                    }
+                })
+            }
+        }
+    });
+
+    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
 }]);

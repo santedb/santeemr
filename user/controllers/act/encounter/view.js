@@ -36,7 +36,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     
 
     $scope.doQueue = () => SanteEMR.showRequeue($scope.scopedObject);
-    
+    $scope.doDischarge = () => SanteEMR.showDischarge($scope.scopedObject);
     $scope.saveVisit = async function(form) {
         if(form.$invalid) {
             return;

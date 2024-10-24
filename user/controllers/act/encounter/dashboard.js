@@ -55,6 +55,22 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
         }
     }
     $scope.doCancel = cancelEncounter;
+
+    $scope.doDischarge = async function(r, idx) {
+
+        try {
+            SanteDB.display.buttonWait(`#waitingRoomList_action_discharge_${idx}`, true);
+            var encounter = await SanteDB.resources.patientEncounter.getAsync(r, "full");
+            SanteEMR.showDischarge(encounter);
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait(`#waitingRoomList_action_discharge_${idx}`, false);
+        }
+    }
+
     $scope.loadFlowState = async function (r) {
         try {
             if (r.extension && r.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {

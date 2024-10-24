@@ -18,6 +18,8 @@
     <string name="ui.action.enroll">Enroll</string>
     <string name="ui.action.unenroll">Leave</string>
     <string name="ui.action.wait">Return to Waiting Room</string>
+    <string name="ui.action.dashboard">Dashboard</string>
+    <string name="ui.action.filter">Filter</string>
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
     <string name="ui.emr.patient.index">My Patients</string>
@@ -388,6 +390,9 @@
      <string name="ui.emr.encounter.checkin.state.hint">Select the reason for returning the patient to the waiting room</string>
      <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
      <string name="ui.emr.encounter.save.success">Visit has been updated successfully</string>
+     <string name="ui.emr.encounter.discharge.title">End Visit / Discharge</string>
+     <string name="ui.emr.encounter.discharge.instructions">Validate the following actions occurred during the visit, and they are accurate. If an action was not performed un-select it.</string>
+     <string name="ui.emr.encounter.component.notTouched">It appears this action was not completed (or has incomplete data). If you end the visit you will be attributed as completing the action</string>
 
      <!-- Visits -->
       <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>

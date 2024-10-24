@@ -52,6 +52,7 @@ const TEMPLATE_IDS = {
  */
 function SanteEMRWrapper() {
 
+    SanteDB.application.getTemplateDefinitionsAsync();
 
     /**
      * @method
@@ -67,6 +68,21 @@ function SanteEMRWrapper() {
 
         checkinModal.scope().patientId = patientId;
         $("#checkinModal").modal('show');
+    }
+
+    /**
+     * @method
+     * @memberof SanteEMRWrapper
+     * @param {string} encounter The encounter or encounter id to be discharged
+     */
+    this.showDischarge = function(encounter) {
+        
+        var dischargeModal = angular.element("#dischargeModal");
+        if(dischargeModal == null) {
+            console.warn("Have not included the discharge-modal.html file");
+        }
+        dischargeModal.scope().encounter = angular.copy(encounter);
+        $("#dischargeModal").modal('show');
     }
 
     /**
@@ -111,7 +127,6 @@ function SanteEMRWrapper() {
      * @returns The resolved icon 
      */
     this.resolveTemplateIcon = function(templateId) {
-        SanteDB.application.getTemplateDefinitionsAsync(); // HACK: Force Fetching
         var template = SanteDB.application.getTemplateMetadata(templateId);
         if(template) {
             return template.icon;
@@ -127,7 +142,6 @@ function SanteEMRWrapper() {
      * @returns {String} The location of the summary template
      */
     this.resolveSummaryTemplate = function(templateId) {
-        SanteDB.application.getTemplateDefinitionsAsync(); // HACK: Force Fetching
         var templateValue = SanteDB.application.resolveTemplateSummary(templateId);
         if(templateValue == null) {
             return  "/org.santedb.uicore/partials/act/noTemplate.html"

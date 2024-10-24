@@ -140,7 +140,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-recompute", {
                     pathway: pathway.id
                 });
-                await fetchNextEncounters(pathway, 1, 3);
+                await fetchNextEncounters(pathway.id, 1, 3);
                 $(`#carePathway${idx}`).collapse("show");
                 toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.success"));
             }

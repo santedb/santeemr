@@ -19,7 +19,7 @@
         { name: 'dashboard', sref: 'santedb-emr.encounter.dashboard', className: 'btn-info', icon: 'fas fa-fw fa-heart-circle-bolt' },
         { name: 'filter', className: 'btn-secondary', icon: 'fas fa-fw fa-filter', children: filterActions }
     ]" item-actions="[
-        { name: 'cancel', action: 'doCancel', className: 'btn-danger', icon: 'fa-solid fa-person-circle-xmark'},
+        { name: 'cancel', action: 'doCancel', className: 'btn-danger', icon: 'fa-solid fa-person-circle-xmark', when: '!r.previousVersion'},
         { name: 'discharge', action: 'doDischarge', className: 'btn-success', icon: 'fa-solid fa-person-walking-arrow-right'},
         { name: 'visit', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.encounter.view', className: 'btn-info', icon: 'fas fa-person-shelter' },
         { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', action: 'doViewPatient', className: 'btn-primary', icon: 'fas fa-person' }
@@ -28,4 +28,7 @@
     item-template="/org.santedb.emr/partials/act/checkin-summary.html">
         </entity-list>
     </div>
+
+    <!-- #include virtual="~/partials/act/discharge-modal.html" -->
+
 </div>

@@ -34,13 +34,24 @@
     <icon>fas fa-briefcase-medical</icon>
     <text lang="en">SanteEMR</text>
     <menuItem context="org.santedb.admin" launch="santedb-admin.emr.carePaths.index"
-      asset="/org.santedb.emr.admin/views/carePaths/index.html" order="0">
+      asset="/org.santedb.emr.admin/views/carePaths/index.html" order="1000">
       <icon>fas fa-bezier-curve</icon>
       <text lang="en">Care Paths</text>
     </menuItem>
+    <menuItem context="org.santedb.admin" launch="santedb-admin.emr.patients.dashboard"
+      asset="/org.santedb.emr.admin/views/patients/index.html" order="0">
+      <icon>fas fa-people-roof</icon>
+      <text lang="en">Patients</text>
+    </menuItem>
   </menuItem>
 
-  <strings lang="en" extern="~/locales/en/strings.xml">
-    <string priority="0" />
-  </strings>
+  <viewModel key="emr.duplicateRelationship">
+    <definition>/org.santedb.emr.admin/models/duplicate.xml</definition>
+  </viewModel>
+
+  <strings lang="en" extern="~/locales/en/strings.xml"/>
+  <strings lang="en-ca" extern="~/locales/en/strings.xml"/>
+  <strings lang="en-us" extern="~/locales/en/strings.xml"/>
+  <strings lang="en-gb" extern="~/locales/en/strings.xml"/>
+  <strings lang="en-iso" extern="~/locales/en/strings.xml"/>
 </AppletManifest>
