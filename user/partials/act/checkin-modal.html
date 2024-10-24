@@ -1,12 +1,12 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
-    <sdb:script static="false">~/controllers/act/encounter/checkin.js</sdb:script>
+    <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
     <div class="modal" id="checkinModal" role="dialog" aria-labelledby="checkinModalTitle" aria-hidden="true"
         ng-controller="EmrCheckinEncounterController">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="checkinModalTitle">
-                        <i class="fa fa-fw fa-heart-circle-bolt"></i> {{ 'ui.emr.encounter.checkin.title' | i18n }}
+                        <i class="fa fa-fw fa-person-circle-plus"></i> {{ 'ui.emr.encounter.checkin.title' | i18n }}
                     </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">

@@ -1,7 +1,6 @@
 <resources>
 
-
-
+    <string name="ui.title">SanteEMR</string>
     <string name="ui.directConnect">Direct Connect to Server</string>
     <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
     <string name="ui.emr.loginMessage">Log into SanteEMR</string>
@@ -384,7 +383,11 @@
      <string name="ui.emr.encounter.checkin.informant">Guardian / Parent Present</string>
      <string name="ui.emr.encounter.checkin.informant.other">Other</string>
      <string name="ui.emr.encounter.completed">This visit has concluded and is in a readonly state</string>
+     <string name="ui.emr.encounter.return.title">Return To Waiting Room</string>
+     <string name="ui.emr.encounter.checkin.state">Status/Reason</string>
+     <string name="ui.emr.encounter.checkin.state.hint">Select the reason for returning the patient to the waiting room</string>
      <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
+     <string name="ui.emr.encounter.save.success">Visit has been updated successfully</string>
 
      <!-- Visits -->
       <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>

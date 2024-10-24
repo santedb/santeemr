@@ -1,22 +1,25 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
     <sdb:script static="false">~/controllers/act/encounter/view.js</sdb:script>
-    <sdb:widget name="org.santedb.emr.encounter.view.entry" type="Tab" context="org.santedb.emr.encounter.view" order="0">
+    <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
+    <sdb:widget name="org.santedb.emr.encounter.view.entry" type="Tab" context="org.santedb.emr.encounter.view"
+        order="0">
         <sdb:icon>fas fa-list-check</sdb:icon>
         <sdb:title lang="en">Current Entry</sdb:title>
         <sdb:description lang="en">Current actions for the encounter/visit</sdb:description>
     </sdb:widget>
 
     <div ng-controller="EmrEncounterEntryController">
-        <form ng-submit="saveEncounter(encounterForm)" name="encounterForm" novalidate="novalidate"
-            autocapitalize="off" autocomplete="off" aria-autocomplete="none">
-            <act-edit owner-form="encounterForm" model="scopedObject" no-add="false" no-header="true" no-override="false"
-                actions="[
-                { name: 'save', action: 'doSave', className: 'btn-primary', icon: 'fas fa-fw fa-floppy-disk' },
+        <form ng-submit="saveVisit(encounterForm)" name="encounterForm" novalidate="novalidate" autocapitalize="off"
+            autocomplete="off" aria-autocomplete="none">
+            <act-edit owner-form="encounterForm" model="scopedObject" no-add="false" no-header="true"
+                no-override="false" actions="[
+                { name: 'save', type: 'submit', className: 'btn-primary', icon: 'fas fa-fw fa-floppy-disk' },
                 { name: 'wait', action: 'doQueue', className: 'btn-secondary', icon: 'fas fa-fw fa-person-walking-arrow-loop-left' },
                 { name: 'discharge', action: 'doDischarge', className: 'btn-success', icon: 'fas fa-fw fa-person-walking-arrow-right' }
-                ]"
-                no-remove="false"  />
+                ]" no-remove="false" />
         </form>
     </div>
+
+    <!-- #include virtual="~/partials/act/return-waiting-modal.html" -->
 
 </div>

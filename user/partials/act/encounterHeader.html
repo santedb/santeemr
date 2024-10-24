@@ -24,12 +24,12 @@
             <div class="row">
                 <div class="col-6">
                     <div class="p-2">
-                        <h5 class="m-0">{{ encounter.participation.RecordTarget[0].playerModel.name | name }} <span
+                        <a ui-sref="santedb-emr.patient.view({ id: encounter.participation.RecordTarget[0].player })"><h5 class="m-0">{{ encounter.participation.RecordTarget[0].playerModel.name | name }} <span
                                 class="badge badge-info mr-2"><i class="fas"
                                     ng-class="{ 'fa-male' : encounter.participation.RecordTarget[0].playerModel.genderConceptModel.mnemonic == 'Male' || encounter.participation.RecordTarget[0].playerModel.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' :  encounter.participation.RecordTarget[0].playerModel.genderConceptModel.mnemonic == 'Female' || encounter.participation.RecordTarget[0].playerModel.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
                                 {{ encounter.participation.RecordTarget[0].playerModel.genderConceptModel | concept
                                 }}</span>
-                        </h5>
+                        </h5></a>
                         <span>
                             <div
                                 ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']]">
@@ -61,11 +61,12 @@
                     </div>
                 </div>
                 <div class="col-6">
-                    <div class="p-2 flex-grow-1 float-right">
+                    <div class="p-2 float-right d-flex flex-column  align-items-end">
                         <h5 class="m-0">
                             {{ encounter.templateModel.name }}
-                            <span class="badge badge-info">{{ encounter.typeConceptModel | concept }}</span>
+                            <span class="badge badge-info">{{ encounter.typeConceptModel | concept }}</span> <br/>
                         </h5>
+                        <span class="badge badge-primary"><i class="fas fa-fw fa-timeline"></i> {{ encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0] | concept }}</span>
                         <div>
                             <div class="p-2"
                                 ng-if="id[0].value &amp;&amp; domain != $root.system.config.application.setting['aa.preferred']"

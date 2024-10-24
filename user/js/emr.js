@@ -1,3 +1,5 @@
+/// <reference path="../.ref/js/santedb.js" />
+
 // Convert an age to a date
 function ageToDate(age, onDate) {
 
@@ -59,11 +61,28 @@ function SanteEMRWrapper() {
     this.showCheckin = function(patientId) {
         var checkinModal = angular.element("#checkinModal");
         if(checkinModal == null) {
-            console.warn("Have not included the checkin modal");
+            console.warn("Have not included the checkin-modal.html file");
+            return;
         }
 
         checkinModal.scope().patientId = patientId;
         $("#checkinModal").modal('show');
+    }
+
+    /**
+     * @method
+     * @memberof SanteEMRWrapper
+     * @param {string} encounter The encounter object to show the modal for
+     */
+    this.showRequeue = function(encounter) {
+        var requeueModal = angular.element("#returnModal");
+        if(requeueModal == null) {
+            console.warn("Have not included the return-waiting-modal.html file");
+            return;
+        }
+
+        requeueModal.scope().encounter = encounter;
+        $("#returnModal").modal('show');
     }
 
     /**
@@ -117,6 +136,63 @@ function SanteEMRWrapper() {
     }
 
     /**
+     * @summary Save the encounter 
+     * @method
+     * @param {PatientEncounter} encounter The encounter that is to be saved
+     * @returns {PatientEncounter} The updated encounter
+     */
+    this.saveVisitAsync = async function(encounter) {
+        try {
+
+            encounter = new PatientEncounter(angular.copy(encounter));
+            // Process extensions
+            if(encounter.extension) {
+                Object.keys(encounter.extension).forEach(url => {
+                    encounter.extension[url] = encounter.extension[url].map(ext => {
+                        if(ext.$type) // reference
+                        {
+                            return SanteDB.application.encodeReferenceExtension(ext.$type, ext.id);
+                        }
+                        return ext;
+                    });
+                });
+            }
+
+            encounter.operation = BatchOperationType.Update;
+            encounter = await prepareActForSubmission(encounter);
+            var submissionBundle = bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills" ]);
+
+            // Is the current user listed as a performer?
+            var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
+            
+            // For each entry which is being updated set the performer
+            submissionBundle.resource.filter(act => act.operation != BatchOperationType.Ignore).forEach(act => {
+                act.participation = act.participation || {};
+                
+                var participationType = "Performer";
+                if(act.tag && act.tag.isBackEntry && act.tag.isBackEntry[0] != "True") {
+                    participationType = "DataEnterer";
+                }
+
+                act.participation = act.participation || {};
+                act.participation[participationType] = act.participation[participationType] || [];
+                if(act.participation[participationType].find(o=>o.player == myUserId) == null) {
+                    act.participation[participationType].push(new ActParticipation({
+                        player: myUserId
+                    }));
+                }
+
+            });
+
+            submissionBundle = await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            return submissionBundle.resource.find(o=>o.$type == "PatientEncounter");
+        }
+        catch(e) {
+            throw new Exception("EmrException", e.message, null, e);
+        }
+    }
+
+    /**
      * @summary Starts a visit given the input parameters provided
      * @param {string} templateId The visit template (encounter template) which is to be started, this dictates the input form and the structure of the visit
      * @param {string} carePathway The care pathway in which this visit fits (used for generating the CDSS actions)
@@ -157,7 +233,8 @@ function SanteEMRWrapper() {
                 pathway: carePathway,
                 //firstOnly: true,
                 encounter: template.templateModel.mnemonic,
-                period: moment().format("YYYY-MM-DD")
+                period: moment().format("YYYY-MM-DD"),
+                _includeBackentry: true
             }, undefined, "min");
 
             actions.relationship.HasComponent.forEach(comp => {
@@ -198,7 +275,7 @@ function SanteEMRWrapper() {
             }
             
             encounter = await prepareActForSubmission(encounter);
-            submission = bundleRelatedObjects(encounter, "Informant");
+            submission =  bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Authororiginator" ]);
 
             if(informantPtcpt && informantPtcpt.playerModel && informantPtcpt.player == informantPtcpt.playerModel.id ) {
                     informantPtcpt.playerModel = await prepareEntityForSubmission(informantPtcpt.playerModel, true);

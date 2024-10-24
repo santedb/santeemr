@@ -153,4 +153,27 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
     });
 
 
+}]).controller('EmrReturnWaitingRoomController', ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
+
+    $scope.saveEncounter = async function(form) {
+        if(form.$invalid) {
+            return;
+        }
+
+        try {
+            SanteDB.display.buttonWait("#btnSubmit", true);
+            await SanteEMR.saveVisitAsync($scope.encounter);
+            
+            toastr.success(SanteDB.locale.getString("ui.emr.encounter.save.success"));
+            $state.go("santedb-emr.encounter.dashboard");
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+        finally{ 
+            SanteDB.display.buttonWait("#btnSubmit", false);
+
+        }
+    }
+
 }]);
