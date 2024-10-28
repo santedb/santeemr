@@ -40,6 +40,7 @@ angular.module("santedb").controller("EmrMatchDashboardController", ["$scope", "
             SanteDB.display.buttonWait(`#Patientignore${m}`, true);
             var candidate = await SanteDB.resources.entityRelationship.getAsync(candidateId, "min", null, true);
             await ignoreCandidateAsync(candidate.holder, candidate.target);
+            $("#duplicatesTable").attr("newQueryId", true);
             $("#duplicatesTable table").DataTable().ajax.reload();
         }
         catch(e) {

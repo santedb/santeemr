@@ -1,0 +1,72 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="true">~/js/emr.js</sdb:script>
+    <sdb:script static="false">~/controllers/patients/match.js</sdb:script>
+    <sdb:state name="santedb-admin.emr.patients.matches.view">
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.0</sdb:demand>
+        <sdb:url>/view?{id}&amp;{sourceId}&amp;{targetId}&amp;{configurationId}</sdb:url>
+        <sdb:view>
+            <sdb:controller>EmrMatchViewController</sdb:controller>
+            <sdb:title lang="en">View Match</sdb:title>
+        </sdb:view>
+    </sdb:state>
+
+    <div class="row" ng-if="matchReport">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-body container-fluid">
+                    <div class="row">
+                        <div class="col-10">
+                            <h5>{{ 'ui.emr.matches.detail' | i18n }}</h5>
+                            <div><strong>{{ 'ui.emr.matches.patient.a' | i18n }}:</strong> {{ matchReport.recordA.name
+                                | name }} / {{ matchReport.recordA.identifier | identifier }} / {{
+                                matchReport.recordA.genderConceptModel | concept }}</div>
+                            <div><strong>{{ 'ui.emr.matches.patient.b' | i18n }}:</strong> {{ matchReport.recordB.name
+                                | name }} / {{ matchReport.recordB.identifier | identifier }} / {{
+                                matchReport.recordB.genderConceptModel | concept }}</div>
+                        </div>
+                        <div class="col-2">
+                            <center>
+                                <small>{{ 'ui.match.strength.label' | i18n }}</small>
+                                <h1 class="m-0 p-0">
+                                    {{ matchReport.results[0].strength * 100 | number: 0}}%
+                                </h1>
+                                <span class="badge"
+                                    ng-class="{ 'badge-success' : matchReport.results[0].classification == 2, 'badge-info' : matchReport.results[0].classification == 1, 'badge-dark' : matchReport.results[0].classification == 0 }">{{
+                                    'ui.match.class.' + matchReport.results[0].classification | i18n }}</span>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer p-2 alert-warning" ng-if="!matchReport.candidate.obsoleteVersionSequence &amp;&amp; matchReport._isConfigurationIssue">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    {{ 'ui.emr.matches.configurationDisagreement' | i18n }}
+
+                </div>
+                <div class="card-footer p-2 alert-success" ng-if="matchReport.candidate.obsoleteVersionSequence">
+                    <i class="fas fa-check-circle"></i>
+                    {{ 'ui.emr.matches.alreadyResolved' | i18n }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <widget-tabs context-name="'org.santedb.emr.match.view'" scoped-object="matchReport" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="float-right">
+                <div class="btn-group">
+                    <button id="btnResolve" ng-disabled="!matchReport.candidate.id || matchReport.candidate.obsoleteVersionSequence" ng-click="resolve(matchReport.candidate)" class="btn btn-success"><i class="fas fa-check"></i> {{
+                        'ui.action.resolve' | i18n }}</button>
+                    <button id="btnIgnore" ng-disabled="!matchReport.candidate.id || matchReport.candidate.obsoleteVersionSequence" ng-click="ignore(matchReport.candidate)" class="btn btn-danger"><i class="fas fa-times"></i> {{
+                        'ui.action.ignore' | i18n }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

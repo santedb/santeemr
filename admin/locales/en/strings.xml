@@ -17,4 +17,9 @@
     <string name="ui.model.patient.duplicate.strength">Strength</string>
     <string name="ui.model.patient.duplicate.targetModel">Duplicate</string>
     <string name="ui.model.patient.duplicate.holderModel">Patient</string>
+
+    <!-- Matches -->
+    <string name="ui.emr.matches.detail">Match Detail</string>
+    <string name="ui.emr.matches.patient.a">Patient A</string>
+    <string name="ui.emr.matches.patient.b">Patient B</string>
 </resources>
