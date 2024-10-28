@@ -191,7 +191,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         comp.targetModel.participation &&
                         comp.targetModel.participation.Performer
                     ) {
-                        comp.targetModel.operation = BatchOperationType.InsertOrUpdate;
+                        comp.targetModel.operation = BatchOperationType.InsertOrUpdateInt;
                     }
                 })
             }

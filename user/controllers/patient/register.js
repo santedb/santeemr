@@ -174,7 +174,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
                 // Copy new fields over
                 patient.id = existingDuplicate.id;
-                patient.operation = BatchOperationType.Update;
+                patient.operation = BatchOperationType.UpdateInt;
                 patient.address = patient.address || existingDuplicate.address;
                 patient.deceasedDate = patient.deceasedDate || existingDuplicate.deceasedDate;
                 patient.deceasedDatePrecision = patient.deceasedDatePrecision || existingDuplicate.deceasedDatePrecision;
@@ -198,7 +198,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                         var patientObj = patient.relationship[k];
                         var existingObj = existingDuplicate.relationship[k];
                         if (patientObj.targetModel) {
-                            patientObj.operation = BatchOperationType.Update;
+                            patientObj.operation = BatchOperationType.UpdateInt;
                             patientObj.target = patientObj.targetModel.id = existingObj.target;
                         }
                     }
@@ -230,7 +230,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             // Target models should be moved to the bundle
             Object.keys(patient.relationship).filter(o => IGNORE_RELATIONSHIP.indexOf(o) == -1).forEach(key => {
                 var relationship = patient.relationship[key];
-                relationship.filter(rel => rel.relationshipType && rel.targetModel && rel.targetModel.operation !== BatchOperationType.Delete &&
+                relationship.filter(rel => rel.relationshipType && rel.targetModel && rel.targetModel.operation !== BatchOperationType.DeleteInt &&
                     (rel.targetModel.$type != "Person" || rel.targetModel.dateOfBirth)
                 )
                     .forEach(rel => {
@@ -523,7 +523,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                                         dup.identifier[key].forEach(id => {
                                                             $scope.scopedObject.$otherData.push(new EntityIdentifier({
                                                                 id: id.id,
-                                                                operation: BatchOperationType.Delete
+                                                                operation: BatchOperationType.DeleteInt
                                                             }));
                                                         });
                                                     });
@@ -557,7 +557,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                                             // Delete the old relationship
                                                             $scope.scopedObject.$otherData.push(new EntityRelationship({
                                                                 id: res.id,
-                                                                operation: BatchOperationType.Delete
+                                                                operation: BatchOperationType.DeleteInt
                                                             }));
                                                             // Add a new relationship between the old data and the new data
                                                             $scope.scopedObject.$otherData.push(new EntityRelationship({

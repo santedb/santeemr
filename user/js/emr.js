@@ -52,7 +52,52 @@ const TEMPLATE_IDS = {
  */
 function SanteEMRWrapper() {
 
-    SanteDB.application.getTemplateDefinitionsAsync();
+
+    /**
+     * @method
+     * @private
+     * @summary Prepares the {@link:encounter} for submission by processing reference extensions and extracting the components
+     * @param {PatientEncounter} encounter The encounter to prepare
+     * @return {Bundle} The bundled encounter submission
+     */
+    async function _bundleVisit(encounter) {
+        encounter = new PatientEncounter(angular.copy(encounter));
+        // Process extensions
+        if(encounter.extension) {
+            Object.keys(encounter.extension).forEach(url => {
+                encounter.extension[url] = encounter.extension[url].map(ext => {
+                    if(ext.$type) // reference
+                    {
+                        return SanteDB.application.encodeReferenceExtension(ext.$type, ext.id);
+                    }
+                    return ext;
+                });
+            });
+        }
+
+        encounter.operation = BatchOperationType.UpdateInt;
+        encounter = await prepareActForSubmission(encounter);
+        return bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills" ]);
+    }
+
+    /**
+     * @method
+     * @summary Perform an analysis of the actions in the {@link:encounter} and return the detected issues
+     * @param {PatientEncounter} encounter The encounter containing data to be analysed
+     * @returns {Array} The array of detected issues
+     */
+    this.analyzeVisit = async function(encounter) {
+        try {
+            var bundle = await _bundleVisit(encounter);
+            var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
+                target: bundle
+            });
+            return result;
+        }
+        catch(e) {
+            throw new Exception("EmrException", "Could not analyze the submitted visit", null, e);
+        }
+    }
 
     /**
      * @method
@@ -74,15 +119,24 @@ function SanteEMRWrapper() {
      * @method
      * @memberof SanteEMRWrapper
      * @param {string} encounter The encounter or encounter id to be discharged
+     * @param {timeout} $timeout The scope timeout service
      */
-    this.showDischarge = function(encounter) {
+    this.showDischarge = function(encounter, $timeout) {
         
         var dischargeModal = angular.element("#dischargeModal");
         if(dischargeModal == null) {
             console.warn("Have not included the discharge-modal.html file");
         }
-        dischargeModal.scope().encounter = angular.copy(encounter);
-        $("#dischargeModal").modal('show');
+
+        SanteEMR.analyzeVisit(encounter).then(r => {
+            var enc = angular.copy(encounter);
+            enc._issues = r;
+            var scope = dischargeModal.scope();
+            $timeout(() => {
+                scope.encounter = enc;
+                $("#dischargeModal").modal('show');
+            })
+        });
     }
 
     /**
@@ -158,29 +212,12 @@ function SanteEMRWrapper() {
     this.saveVisitAsync = async function(encounter) {
         try {
 
-            encounter = new PatientEncounter(angular.copy(encounter));
-            // Process extensions
-            if(encounter.extension) {
-                Object.keys(encounter.extension).forEach(url => {
-                    encounter.extension[url] = encounter.extension[url].map(ext => {
-                        if(ext.$type) // reference
-                        {
-                            return SanteDB.application.encodeReferenceExtension(ext.$type, ext.id);
-                        }
-                        return ext;
-                    });
-                });
-            }
-
-            encounter.operation = BatchOperationType.Update;
-            encounter = await prepareActForSubmission(encounter);
-            var submissionBundle = bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills" ]);
-
+            var submissionBundle = await _bundleVisit(encounter);
             // Is the current user listed as a performer?
             var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
             
             // For each entry which is being updated set the performer
-            submissionBundle.resource.filter(act => act.operation != BatchOperationType.Ignore).forEach(act => {
+            submissionBundle.resource.filter(act => act.operation != BatchOperationType.IgnoreInt && act.operation != BatchOperationType.Ignore).forEach(act => {
                 act.participation = act.participation || {};
                 
                 var participationType = "Performer";
@@ -261,7 +298,9 @@ function SanteEMRWrapper() {
                 encounter.relationship.HasComponent.push(ar);
                 comp.targetModel.id = comp.targetModel.id || ar.target;
                 comp.targetModel.moodConcept = encounter.moodConcept;
+                delete comp.targetModel.moodConceptModel;
                 comp.targetModel.statusConcept = encounter.statusConcept;
+                delete comp.targetModel.statusConceptModel;
 
                 // Fulfillment for the target model
                 if (comp.targetModel && comp.targetModel.protocol) {

@@ -1,6 +1,5 @@
 /// <reference path="../../../.ref/js/santedb.js" />
-angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
-}]).controller("EmrWaitingRoomController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
+angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 
     var _loadedFlowStates = {};
     async function cancelEncounter(encounterId) {
@@ -10,7 +9,7 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
                 var submissionBundle = new Bundle({ resource: [] });
                 submissionBundle.resource.push(new PatientEncounter({
                     id: encounterId,
-                    operation: BatchOperationType.Delete
+                    operation: BatchOperationType.DeleteInt
                 }));
 
                 var component = await SanteDB.resources.actRelationship.findAsync({
@@ -21,7 +20,7 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
                 if (component.resource) {
                     component.resource.forEach(c => submissionBundle.resource.push(new Act({
                         id: c.target,
-                        operation: BatchOperationType.Delete
+                        operation: BatchOperationType.DeleteInt
                     })));
                 }
 
@@ -35,9 +34,10 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
             }
         }
     }
-    $scope.filterByState = [];
-    
-    $scope.filterActions = [];
+    $scope.filterByFlowState = null;
+    $scope.filterByType = null;
+    $scope.filterFlow = [];
+    $scope.filterType = [];
 
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
@@ -61,7 +61,7 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
         try {
             SanteDB.display.buttonWait(`#waitingRoomList_action_discharge_${idx}`, true);
             var encounter = await SanteDB.resources.patientEncounter.getAsync(r, "full");
-            SanteEMR.showDischarge(encounter);
+            await SanteEMR.showDischarge(encounter, $timeout);
         }
         catch(e) {
             $rootScope.errorHandler(e);
@@ -79,15 +79,25 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
                 r.flowConceptModel = _loadedFlowStates[extensionValue] || await SanteDB.application.resolveReferenceExtensionAsync(extensionValue);
                 _loadedFlowStates[extensionValue] = r.flowConceptModel;
 
-                if (!$scope.filterActions.find(f => f.id === r.flowConceptModel.id)) {
-                    $scope.filterActions.push({
+                if (!$scope.filterFlow.find(f => f.id === extensionValue)) {
+                    $scope.filterFlow.push({
                         name: r.flowConceptModel.mnemonic,
                         id: extensionValue,
                         label: SanteDB.display.renderConcept(r.flowConceptModel),
-                        action: $scope.doFilterResults,
+                        action: $scope.doFilterFlow,
                         icon: 'fas fa-fw fa-circle',
                     });
                 }
+                if(!$scope.filterType.find(f => f.id === r.typeConcept)) {
+                    $scope.filterType.push({
+                        name: r.typeConcept,
+                        id: r.typeConcept,
+                        label: SanteDB.display.renderConcept(r.typeConceptModel), 
+                        action: $scope.doFilterType,
+                        icon: 'fas fa-fw fa-circle'
+                    });
+                }
+
 
                 return r;
             }
@@ -97,16 +107,30 @@ angular.module('santedb').controller('EmrEncounterDashboardController', ["$scope
         }
     }
 
-    $scope.doFilterResults = function (parm, index) {
+    $scope.doFilterFlow = function (parm, index) {
         $("#actionList_1 button").removeClass("active");
-        if (parm != $scope.filterByState) {
-            $scope.filterByState = parm;
+        if (parm != $scope.filterByFlowState) {
+            $scope.filterByFlowState = parm;
             $($("#actionList_1 button")[index]).addClass("active");
             $("#actionList_button_1").html($($("#actionList_1 button")[index]).html());
         }
         else {
-            $scope.filterByState = null;
-            $("#actionList_button_1").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filter")}`);
+            $scope.filterByFlowState = null;
+            $("#actionList_button_1").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterFlow")}`);
+        }
+    }
+
+    
+    $scope.doFilterType = function (parm, index) {
+        $("#actionList_2 button").removeClass("active");
+        if (parm != $scope.filterByType) {
+            $scope.filterByType = parm;
+            $($("#actionList_2 button")[index]).addClass("active");
+            $("#actionList_button_2").html($($("#actionList_2 button")[index]).html());
+        }
+        else {
+            $scope.filterByType = null;
+            $("#actionList_button_2").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterType")}`);
         }
     }
 

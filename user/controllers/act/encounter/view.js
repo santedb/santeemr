@@ -13,7 +13,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
             // All participations are not touched
             if(encounter.relationship && encounter.relationship.HasComponent) {
-                encounter.relationship.HasComponent.forEach(e=> e.operation = BatchOperationType.Ignore );
+                encounter.relationship.HasComponent.forEach(e=> e.targetModel.operation = BatchOperationType.IgnoreInt );
             }
 
             // TODO: Load the current act list and assign to the _HasComponent relationship
@@ -36,7 +36,15 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     
 
     $scope.doQueue = () => SanteEMR.showRequeue($scope.scopedObject);
-    $scope.doDischarge = () => SanteEMR.showDischarge($scope.scopedObject);
+    $scope.doDischarge = async () => {
+        try {
+            SanteDB.display.buttonWait("#btnActEditdischarge", true);
+            await SanteEMR.showDischarge($scope.scopedObject, $timeout);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnActEditdischarge", false);
+        }
+    }
     $scope.saveVisit = async function(form) {
         if(form.$invalid) {
             return;

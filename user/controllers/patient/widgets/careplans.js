@@ -21,9 +21,9 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
         }
     }
 
-    async function fetchNextEncounters(path, monthLimit, limit) {
+    async function fetchNextEncounters(path, monthLimit, limit, force) {
         try {
-            if (path.encounters) {
+            if (path.encounters && !force) {
                 return;
             }
             else {
@@ -115,10 +115,10 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
         if (confirm(SanteDB.locale.getString("ui.emr.patient.carePaths.enroll.confirm", { pathway: pathway.name }))) {
             try {
                 SanteDB.display.buttonWait(`#btnEnroll${idx}`, true);
-
                 var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-enroll", {
                     pathway: pathway.id
                 });
+
                 await fetchNextEncounters(pathway, 1, 3);
                 $(`#carePathway${idx}`).collapse("show");
                 $timeout(() => pathway._enrolled = true);
@@ -133,14 +133,14 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
         }
     }
     async function recompute(pathway, idx) {
+        
         if(confirm(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.confirm", { pathway: pathway.name }))) {
             try {
                 SanteDB.display.buttonWait(`#btnRecompute${idx}`, true);
-
                 var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-recompute", {
                     pathway: pathway.id
                 });
-                await fetchNextEncounters(pathway.id, 1, 3);
+                await fetchNextEncounters(pathway.id, 1, 3, true);
                 $(`#carePathway${idx}`).collapse("show");
                 toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.success"));
             }

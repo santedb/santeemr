@@ -1,36 +1,3 @@
 <div xmlns="http://www.w3.org/1999/xhtml" >
-    <div class="form-group row">
-        <div class="offset-sm-0 offset-md-3">
-            <label class="checkbox-container">
-                <input type="checkbox" ng-model="act._active" />
-                {{ 'ui.emr.act.registration.death.officialDeath' | i18n}}
-            </label>
-        </div>
-    </div>
-    <div ng-if="act._active">
-        <div class="form-group row">
-            <label class="control-label col-md-3 col-sm-12">{{ act.typeConceptModel | concept }}</label>
-            <div class="col-md-9 col-sm-12">
-                {{ act.valueModel | concept }}
-            </div>
-        </div>
-        <div ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel; act._active = true">
-            <ng-include src="resolveTemplateForm(act.templateModel.mnemonic)" />
-        </div>
-        <div class="form-group row">
-            <label
-                class="control-label col-md-3 col-sm-12 required">{{ 'ui.emr.act.registration.death.time' | i18n }}</label>
-            <div class="col-md-9 col-sm-12">
-                <input type="datetime-local" name="officialDateOfDeath" class="form-control" ng-model="act.actTime"
-                    ng-disabled="act.relationship.HasComponent[1].targetModel.valueModel.id != '97513b10-188f-11eb-adc1-0242ac120002'"
-                    ng-required="act.relationship.HasComponent[1].targetModel.valueModel.id == '97513b10-188f-11eb-adc1-0242ac120002'"
-                    max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}"
-                    />
-                <div class="text-danger" ng-if="panel.editForm['officialDateOfDeath'].$invalid">
-                    <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}</div>
-            <em input-help="true">{{ 'ui.emr.templates.observation.death.help' | i18n }}</em>
-
-            </div>
-        </div>
-    </div>
+    PLACEHOLDER FOR DEATH REPORT
 </div>
