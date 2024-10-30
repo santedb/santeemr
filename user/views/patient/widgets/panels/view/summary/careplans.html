@@ -50,17 +50,18 @@
                         </div>
                         <ul class="list-group" ng-if="path.encounters.length">
                             <li class="list-group-item" ng-repeat="enc in path.encounters track by $index"
-                                ng-class="{ 'list-group-item-secondary' : enc.actTime &lt; $root.page.minEventTime, 'list-group-item-success' : enc.startTime &lt; $root.page.minEventTime &amp;&amp; enc.stopTime &gt; $root.page.minEventTime }">
+                                ng-class="{ 'list-group-item-secondary' : (enc.stopTime || enc.actTime) &lt; $root.page.minEventTime, 'list-group-item-success' : enc.tag.$canstart }">
                                 <h5 class="my-0"><i class="fas fa-fw"
                                         ng-class="resolveTemplateIcon(enc.templateModel.mnemonic)"></i> {{
                                     enc.templateModel.mnemonic | i18n }} <small>{{ enc.startTime | extDate: 'D' }} - {{
-                                        enc.stopTime | extDate: 'D' }}</small>
+                                        enc.stopTime | extDate: 'D' }} 
+                                    </small>
                                     <span ng-if="(enc.stopTime || enc.actTime) &lt; $root.page.minEventTime"
                                         class="badge badge-danger ml-2">
                                         <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.common.pastdue' | i18n }}
                                     </span>
                                     <button type="button" id="btnStartVisit{{$index}}" ng-click="startVisit(path.mnemonic, enc, $index)" class="btn btn-primary float-right"
-                                        ng-if="enc.actTime &lt;= $root.page.maxEventTime.addDays(7) &amp;&amp; !enc.tag.$nostart">
+                                        ng-if="enc.tag.$canstart">
                                         <i class="fas fa-fw fa-heart-circle-plus"></i> {{ 'ui.action.check-in' | i18n }}
                                     </button>
                                     <a class="btn btn-info float-right" ng-if="enc.relationship.Fulfills" ui-sref="santedb-emr.encounter.view({ id: enc.relationship.Fulfills[0].source })">

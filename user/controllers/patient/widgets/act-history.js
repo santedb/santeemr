@@ -52,7 +52,7 @@ angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope',
                 }
 
                 do {
-                    var results = await SanteDB.resources.act.findAsync(
+                    var results = await SanteDB.resources.patientEncounter.findAsync(
                         {
                             "participation[RecordTarget].player" : keys,
                             "moodConcept" : ActMoodKeys.Eventoccurrence,

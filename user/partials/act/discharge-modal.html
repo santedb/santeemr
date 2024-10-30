@@ -1,100 +1,83 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
     <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
-    <div class="modal" id="dischargeModal" role="dialog" aria-labelledby="dischargeModalTitle" aria-hidden="true"
-        ng-controller="EmrDischargeEncounterController">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="dischargeModalTitle">
-                        <i class="fa fa-fw fa-person-walking-arrow-right"></i> {{ 'ui.emr.encounter.discharge.title' | i18n }}
-                    </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">
-                            <i class="fa fa-times"></i>
-                        </span>
-                    </button>
-                </div>
-                <form name="dischargeForm" ng-submit="saveDischarge(dischargeForm)" novalidate="novalidate">
-                    <div class="modal-body">
-                        <div ng-if="!encounter">
-                            <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
-                        </div>
-                        <div ng-if="encounter" class="container-fluid">
-                            <div class="row">
-                                <div class="col-12">
-                                    {{ 'ui.emr.encounter.discharge.instructions' | i18n }}
-                                </div>
+    <div ng-controller="EmrDischargeEncounterController">
+        
+        <div class="modal" id="dischargeModal" role="dialog" aria-labelledby="dischargeModalTitle" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dischargeModalTitle">
+                            <i class="fa fa-fw fa-person-walking-arrow-right"></i> {{ 'ui.emr.encounter.discharge.title'
+                            | i18n }}
+                        </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <form name="dischargeForm" ng-submit="saveDischarge(dischargeForm)" novalidate="novalidate">
+                        <div class="modal-body">
+                            <div ng-if="!encounter">
+                                <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
                             </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <ul class="list-unstyled ml-2">
-                                        <li ng-repeat="comp in encounter.relationship.HasComponent track by $index" ng-if="comp.targetModel.tag.isBackEntry[0] != 'True'">
-                                            <label class="checkbox-container" ng-init="act = comp.targetModel">
-                                                <input type="checkbox" class="checkbox-control" ng-model="comp.targetModel.operation" ng-true-value="'InsertOrUpdate'" ng-false-value="'Delete'" />
-                                                <span></span>
-                                                <!-- <i class="fas fa-fw fa-circle"></i> -->
-                                                <ng-include src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)"></ng-include>
-                                            </label>
-                                            <div class="text-info ml-10" ng-if="comp.targetModel.operation == 'InsertOrUpdate' &amp;&amp; !(comp.targetModel.previousVersion || comp.targetModel.participation &amp;&amp; comp.targetModel.participation.Performer)">
-                                                <i class="fas fa-fw fa-lightbulb"></i> {{ 'ui.emr.encounter.component.notTouched' | i18n }}
-                                            </div>
-                                        </li>
-                                    </ul>
+                            <div ng-if="encounter" class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{ 'ui.emr.encounter.discharge.instructions' | i18n }}
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="control-label required col-sm-12 col-md-3">
-                                    {{ 'ui.model.patientEncounter.dischargeDisposition' | i18n }}
-                                    <hint-popover hint-title="ui.model.paitentEncounter.dischargeDisposition" />
-                                </label>
-                                <div class="col-sm-12 col-md-9">
-                                    <concept-select concept-set="'DischargeDisposition'" name="dischargeDisposition" required="required" class="form-control"
-                                        ng-model="encounter.dischargeDisposition" add-concepts="[ '6052712a-340e-4480-ad6b-409ba320db4f', '70fe34ce-caff-4f46-b6e6-9cd6d8f289d6' ]" />
-                                    <div class="text-danger" ng-if="dischargeForm.dischargeDisposition.$error.required">
-                                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="list-unstyled ml-2">
+                                            <li ng-repeat="comp in encounter.relationship.HasComponent track by $index"
+                                                ng-if="comp.targetModel.tag.isBackEntry[0] != 'True'">
+                                                <label class="checkbox-container" ng-init="act = comp.targetModel">
+                                                    <input type="checkbox" class="checkbox-control"
+                                                        ng-model="comp.targetModel.operation"
+                                                        ng-true-value="'InsertOrUpdate'" ng-false-value="'Delete'" />
+                                                    <span></span>
+                                                    <!-- <i class="fas fa-fw fa-circle"></i> -->
+                                                    <ng-include
+                                                        src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)"></ng-include>
+                                                </label>
+                                                <div class="text-info ml-10"
+                                                    ng-if="comp.targetModel.operation == 'InsertOrUpdate' &amp;&amp; !(comp.targetModel.previousVersion || comp.targetModel.participation &amp;&amp; comp.targetModel.participation.Performer)">
+                                                    <i class="fas fa-fw fa-lightbulb"></i> {{
+                                                    'ui.emr.encounter.component.notTouched' | i18n }}
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label required col-sm-12 col-md-3">
+                                        {{ 'ui.model.patientEncounter.dischargeDisposition' | i18n }}
+                                        <hint-popover hint-title="ui.model.paitentEncounter.dischargeDisposition" />
+                                    </label>
+                                    <div class="col-sm-12 col-md-9">
+                                        <concept-select concept-set="'DischargeDisposition'" name="dischargeDisposition"
+                                            required="required" class="form-control"
+                                            ng-model="encounter.dischargeDisposition"
+                                            add-concepts="[ '6052712a-340e-4480-ad6b-409ba320db4f', '70fe34ce-caff-4f46-b6e6-9cd6d8f289d6' ]" />
+                                        <div class="text-danger"
+                                            ng-if="dischargeForm.dischargeDisposition.$error.required">
+                                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' |
+                                            i18n }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group row" ng-if="nextEncounter">
-                                <label class="control-label col-md-3 col-sm-12">
-                                    {{ 'ui.emr.encounter.nextVisit' | i18n }} <hint-popover hint-title="ui.emr.encounter.nextVisit" />
-                                </label>
-                                <ul class="col-sm-12 col-md-9 list-group">
-                                    <li class="list-group-item">
-                                        <div class="input-group">
-                                            <label class="input-group-text checkbox-container">
-                                                <input class="checkbox-control" type="checkbox" ng-model="nextEncounter.moodConcept" ng-true-value="'c46eee70-5612-473f-8d24-595ea15c9c39'" ng-false-value="'acf7baf2-221f-4bc2-8116-ceb5165be079'" />
-                                                <span></span>
-                                                {{ 'ui.emr.encounter.nextVisit.confirm' | i18n }}
-                                            </label>
-                                            <input type="datetime" class="form-control" name="nextEncounterDate" ng-readonly="nextVisit.moodConcept == 'acf7baf2-221f-4bc2-8116-ceb5165be079'"
-                                                ng-model="nextVisit.actTime" />
-                                            <div class="input-group-append">
-                                                <button class="btn btn-info" type="button" ng-disabled="nextVisit.moodConcept == 'acf7baf2-221f-4bc2-8116-ceb5165be079'">
-                                                    {{ 'ui.action.schedulingAssistant' | i18n }}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <ul class="list-unstyled ml-2">
-                                            <li ng-repeat="comp in nextVisit.relationship.HasComponent track by $index">
-                                                <ng-include src="resolveTemplateSummaryView(comp.targetModel.templateModel.mnemonic)"></ng-include>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                                <!-- TODO: Appointment Schedule Assitant -->
-                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                            <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
-                        <button type="submit" id="btnSubmit" ng-disabled="dischargeForm.$invalid" class="btn btn-primary">
-                            <i class="fa fa-check"></i> {{ 'ui.action.discharge' | i18n }}</button>
-                    </div>
-                </form>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                                <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
+                            <button type="submit" id="btnSubmit" ng-disabled="dischargeForm.$invalid"
+                                class="btn btn-primary">
+                                <i class="fa fa-check"></i> {{ 'ui.action.discharge' | i18n }}</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

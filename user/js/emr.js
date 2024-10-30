@@ -76,8 +76,17 @@ function SanteEMRWrapper() {
         }
 
         encounter.operation = BatchOperationType.UpdateInt;
+
         encounter = await prepareActForSubmission(encounter);
-        return bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills" ]);
+        var bundle = bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills" ]);
+        encounter = bundle.resource.find(o=>o.$type == PatientEncounter.name);
+        // remove components which have a deleted target
+        if(encounter.relationship && encounter.relationship.HasComponent) {
+            encounter.relationship.HasComponent = encounter.relationship.HasComponent.filter(e=> {
+                return bundle.resource.find(o=>o.id == e.target && o.operation != BatchOperationType.Delete && o.operation != BatchOperationType.DeleteInt) != null;
+            });
+        }
+        return bundle;        
     }
 
     /**
@@ -217,7 +226,9 @@ function SanteEMRWrapper() {
             var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
             
             // For each entry which is being updated set the performer
-            submissionBundle.resource.filter(act => act.operation != BatchOperationType.IgnoreInt && act.operation != BatchOperationType.Ignore).forEach(act => {
+            submissionBundle.resource.filter(act => act.operation != BatchOperationType.IgnoreInt  && act.operation != BatchOperationType.Ignore &&
+                act.operation != BatchOperationType.Delete && act.operation != BatchOperationType.DeleteInt
+            ).forEach(act => {
                 act.participation = act.participation || {};
                 
                 var participationType = "Performer";
@@ -347,6 +358,32 @@ function SanteEMRWrapper() {
         }
         catch(e) {
             throw new Exception("EmrException", e.message, null, e);
+        }
+    }
+
+    /**
+     * @summary Attempt to get the care plan from the encounter id
+     * @param {string} proposedEncounterId The proposed encounter identifier from which the care plan should be fetched
+     * @returns {CarePlan} The care plan that the proposed encounter id belongs
+     */
+    this.getCarePlanFromEncounter = async function(proposedEncounterId) {
+        try {
+            var cps = await SanteDB.resources.carePlan.findAsync({
+                "relationship[HasComponent].target": proposedEncounterId, 
+                "statusConcept": StatusKeys.Active,
+                _includeTotal: false,
+                _count: 1
+            }, "fastview");
+
+            if(cps.resource) {
+                return cps.resource[0];
+            }
+            else {
+                return null;
+            }
+        }
+        catch(e) {
+            throw new Exception("EmrException", "Failed to fetch careplan", null, e);
         }
     }
     

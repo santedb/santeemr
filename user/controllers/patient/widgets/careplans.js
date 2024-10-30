@@ -33,23 +33,17 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                     'relationship[HasComponent].source@CarePlan.pathway||relationship[Fulfills].target.relationship[HasComponent].source@CarePlan.pathway': path.id,
                     'participation[RecordTarget].player': $scope.scopedObject.id,
                     'statusConcept': [ StatusKeys.New, StatusKeys.Active ],
-                    'actTime': [],
+                    'actTime': `<${moment().add(monthLimit || 0, 'month').format("YYYY-MM-DD")}`,
                     _orderBy: 'actTime:asc',
-                    _includeTotal: false,
-                    _count: limit
+                    _includeTotal: false
                 };
-
-                if (monthLimit) {
-                    for (var mo = -monthLimit; mo <= monthLimit; mo++) {
-                        filter.actTime.push(`~${moment().add(mo, 'month').format('YYYY-MM')}`);
-                    }
-                }
 
                 var encounters = await SanteDB.resources.patientEncounter.findAsync(filter, "full");
                 var proposed = [], event = [];
                 if(encounters.resource) {
                     proposed = encounters.resource.filter(r => r.moodConcept == ActMoodKeys.Propose);
                     event = encounters.resource.find(r => r.moodConcept == ActMoodKeys.Eventoccurrence);
+
 
                     if(event && event.relationship && event.relationship.Fulfills) {
                         var fulfilled = proposed.find(p => p.id == event.relationship.Fulfills[0].target);
@@ -61,7 +55,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                                 target: fulfilled.id
                             }));
 
-                            // Block starting all encounters
+                            // Block starting all encounters - i.e. one encounter is already started - so we want to not allow starting encounters
                             proposed.forEach(p=>{
                                 p.tag = p.tag || {};
                                 p.tag["$nostart"] = [true];
@@ -70,6 +64,18 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                     }
                 }
                 
+                var now = new Date().trunc();
+                proposed.filter(enc=>!(enc.tag && enc.tag.$nostart)).forEach(enc => {
+                    if (
+                        (enc.startTime || enc.actTime).trunc() <= now && (enc.stopTime || enc.actTime).trunc() >= now || // start and stop time are in bound
+                        enc.actTime.isoWeek() == now.isoWeek() && enc.actTime.getFullYear() == now.getFullYear() // Encounter was scheduled to start this week
+                    )
+                    {
+                        enc.tag = enc.tag || {};
+                        enc.tag["$canstart"] = [true];
+                    }
+                });
+
                 filter._count = 0;
                 filter._includeTotal = true;
                 delete filter.actTime;
