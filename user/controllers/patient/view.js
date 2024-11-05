@@ -25,7 +25,23 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
     async function loadPatient(id) {
         try {
             var patient = await SanteDB.resources.patient.getAsync(id, "full");
-            $timeout(() => $scope.patient = new Patient(patient));
+
+            // Post the patient to the AngularJS scope and then load the patient encounter
+            $timeout(() => {
+                $scope.patient = new Patient(patient);
+            });
+
+            // Attempt to get any current encounter
+            var encounter = await SanteDB.resources.patientEncounter.findAsync({
+                "participation[RecordTarget].player": id,
+                statusConcept: StatusKeys.Active,
+                _count: 1,
+                _includeTotal: false
+            }, "full");
+            if(encounter.resource) {
+                $scope.patient._currentEncounter = encounter.resource[0];
+            }
+
         }
         catch (e) {
 
@@ -64,7 +80,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
     SanteDB.authentication.setElevator(new SanteDBElevator(loadPatient, false));
     loadPatient($stateParams.id);
 
-    $scope.printCard = function() {
+    $scope.printCard = function () {
         window.print();
     }
 
