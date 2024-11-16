@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dataset xmlns="http://santedb.org/data" id="EMR Encounter Tags">
+  <update insertIfNotExists="true">
+    <ExtensionType xmlns="http://santedb.org/model">
+      <id>CB08FF14-3DD8-40F9-869A-93C8127FC021</id>
+      <handlerClass>SanteDB.Core.Extensions.ReferenceExtensionHandler, SanteDB.Core.Model</handlerClass>
+      <name>Encounter Flow State</name>
+      <uri>http://santedb.org/emr/extensions/encounter-flow</uri>
+      <scope>54b52119-1709-4098-8911-5df6d6c84140</scope>
+    </ExtensionType>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>D46D45B3-4DB3-4641-ADFC-84A80B7D1637</id>
+      <mnemonic>EMREncounterTags</mnemonic>
+      <oid>1.3.6.1.4.1.33349.3.1.5.9.3.109</oid>
+      <name>EMR Encounter Tags</name>
+      <url>http://santedb.org/emr/conceptset/encounterTags</url>
+    </ConceptSet>
+  </update>
+
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>A63E9BCC-BE32-4EA6-A43F-1F3C771114D4</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterState-CheckedIn</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Checked In</value>
+      </name>
+      <conceptSet>D46D45B3-4DB3-4641-ADFC-84A80B7D1637</conceptSet>
+    </Concept>
+  </update>
+
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>AEDF62BB-48F5-437E-914D-36E0CD57B8F8</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterState-Observation</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Held for Observation</value>
+      </name>
+      <conceptSet>D46D45B3-4DB3-4641-ADFC-84A80B7D1637</conceptSet>
+    </Concept>
+  </update>
+
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>F5201716-8AA2-4BB9-B574-763E87E3372D</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterState-WaitingSpecialist</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Awaiting Specialist Care</value>
+      </name>
+      <conceptSet>D46D45B3-4DB3-4641-ADFC-84A80B7D1637</conceptSet>
+    </Concept>
+  </update>
+
+</dataset>

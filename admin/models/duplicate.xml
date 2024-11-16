@@ -1,0 +1,35 @@
+<ViewModel xmlns="http://santedb.org/model/view">
+    <include>base</include>
+
+    <type type="Patient" all="true">
+        <property name="genderConceptModel" behavior="always" />
+        <property name="identifier" behavior="always">
+            <property name="*" all="true">
+                <property name="domainModel" behavior="always" />
+            </property>
+        </property>
+        <property name="name" behavior="always">
+            <property name="*" all="true">
+                <property name="useModel" behavior="always" />
+                <property name="component" behavior="always" all="true" />
+            </property>
+        </property>
+        <property name="address" behavior="always">
+            <property name="*" all="true">
+                <property name="useModel" behavior="always" />
+                <property name="component" behavior="always" all="true" />
+            </property>
+        </property>
+    </type>
+    <type type="EntityRelationship" all="true">
+        <property name="target" all="true" behavior="always" />
+        <property name="holder" all="true" />
+        <property name="relationshipType" all="true" behavior="always" />
+        <property name="key" all="true" />
+        <property name="quantity" all="true" />
+        <property name="strength" all="true" />
+        <property name="holderModel" behavior="always" ref="Patient" />
+        <property name="targetModel" behavior="always" ref="Patient" />
+    </type>
+
+</ViewModel>

@@ -13,7 +13,7 @@ angular.module('santedb').controller("EmrUserIndexController", ["$scope", "$root
                 $("#action_grp_" + index + " a i.fa-trash").removeClass("fa-trash").addClass("fa-circle-notch fa-spin");
                 SanteDB.resources.securityUser.deleteAsync(id)
                     .then(function (e) {
-                        $("#SecurityUserTable").attr("newQuery", true);
+                        $("#SecurityUserTable").attr("newQueryId", true);
                         $("#SecurityUserTable table").DataTable().draw();
                     })
                     .catch($rootScope.errorHandler);
@@ -40,7 +40,7 @@ angular.module('santedb').controller("EmrUserIndexController", ["$scope", "$root
 
                 SanteDB.resources.securityUser.patchAsync(id, data.securityStamp, patch)
                     .then(function (e) {
-                        $("#SecurityUserTable").attr("newQuery", true);
+                        $("#SecurityUserTable").attr("newQueryId", true);
                         $("#SecurityUserTable table").DataTable().draw();
                     })
                     .catch(function (e) {

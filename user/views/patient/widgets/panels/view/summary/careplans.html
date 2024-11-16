@@ -14,7 +14,8 @@
         <div class="accordion" id="carePathwayAccordion">
             <div class="card" ng-repeat="path in carePathways track by $index">
                 <div class="card-header" ng-class="{ 'alert-success' : path._enrolled }">
-                    <button class="btn btn-link p-2 collapse-indicator" ng-click="fetchNextEncounters(path, 1, 3)" aria-expanded="false" data-toggle="collapse" data-target="#carePathway{{$index}}" type="button">
+                    <button class="btn btn-link p-2 collapse-indicator" ng-click="fetchNextEncounters(path, 1, 3)"
+                        aria-expanded="false" data-toggle="collapse" data-target="#carePathway{{$index}}" type="button">
                         <h5 class="my-0 card-heading">
                             <i class="fas fa-fw"
                                 ng-class="{ 'fa-house-medical-circle-check text-success' : path._enrolled, 'fa-house-medical-circle-xmark text-info' : null }"></i>
@@ -22,40 +23,64 @@
                             <i class="float-right fas fa-fw fa-chevron-right"></i>
                         </h5>
                     </button>
-                    <button class="btn float-right" ng-class="{ 'btn-danger' : path._enrolled, 'btn-success' : null }"
-                        type="button">
-                        <i class="fas fa-fw"
-                            ng-class="{ 'fa-times-circle' : path._enrolled, 'fa-plus-circle' : null }"></i>
-                        <span class="d-none d-lg-inline">{{ path._enrolled ? 'ui.action.unenroll' : 'ui.action.enroll' | i18n }}</span>
-                    </button>
-                    <button class="btn btn-info float-right" type="button">
-                        <i class="fas fa-fw fa-arrows-rotate"></i>
-                        <span class="d-none d-lg-inline">{{ 'ui.action.recompute' | i18n }}</span>
-                    </button>
+                    <div class="float-right btn-group">
+                        <button class="btn btn-info" type="button" ng-if="path._enrolled" ng-click="recompute(path, $index)" id="btnRecompute{{$index}}">
+                            <i class="fas fa-fw fa-arrows-rotate"></i>
+                            <span class="d-none d-lg-inline">{{ 'ui.action.recompute' | i18n }}</span>
+                        </button>
+                        <button class="btn btn-success" ng-if="!path._enrolled" id="btnEnroll{{$index}}"
+                            ng-click="enroll(path, $index)" type="button">
+                            <i class="fas fa-fw fa-plus-circle"></i> 
+                            <span class="d-none d-lg-inline">{{ 'ui.action.enroll' | i18n }}</span>
+                        </button>
+                        <button class="btn btn-danger" ng-if="path._enrolled" id="btnUnenroll{{$index}}"
+                            ng-click="unenroll(path, $index)" type="button">
+                            <i class="fas fa-fw fa-times-circle"></i>
+                            <span class="d-none d-lg-inline">{{ 'ui.action.unenroll' | i18n }}</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="collapse" id="carePathway{{$index}}">
                     <div class="card-body">
-                        <div ng-if="!path.encounters">
+                        <div ng-if="path.encounters === undefined">
                             <i class="fas fa-fw fa-spin fa-circle-notch"></i> {{ 'ui.wait' | i18n }}
                         </div>
-                        <ul class="list-group" ng-if="path.encounters">
-                            <li class="list-group-item" ng-repeat="enc in path.encounters track by $index" ng-class="{ 'list-group-item-secondary' : enc.actTime &lt; $root.page.minEventTime, 'list-group-item-success' : enc.startTime &lt; $root.page.minEventTime &amp;&amp; enc.stopTime &gt; $root.page.minEventTime }">
-                                <h5 class="my-0"><i class="fas fa-fw" ng-class="resolveTemplateIcon(enc.templateModel.mnemonic)"></i> {{ enc.templateModel.mnemonic | i18n }} <small>{{ enc.startTime | extDate: 'D' }} - {{ enc.stopTime | extDate: 'D' }}</small> 
-                                <span ng-if="enc.actTime &lt; $root.page.minEventTime" class="badge badge-danger ml-2">
-                                    <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.common.pastdue' | i18n }}
-                                </span>
-                                <button type="button" ng-click="startVisit(enc)" class="btn btn-primary float-right" ng-if="enc.actTime &lt;= $root.page.maxEventTime.addDays(7)">
-                                    <i class="fas fa-fw fa-heart-circle-plus"></i> {{ 'ui.action.check-in' | i18n }}
-                                </button>
-                            </h5>
+                        <div ng-if="path.encounters.length === 0">
+                            {{ 'ui.emr.patient.carePaths.acts.none' | i18n }}
+                        </div>
+                        <ul class="list-group" ng-if="path.encounters.length">
+                            <li class="list-group-item" ng-repeat="enc in path.encounters track by $index"
+                                ng-class="{ 'list-group-item-secondary' : (enc.stopTime || enc.actTime) &lt; $root.page.minEventTime, 'list-group-item-success' : enc.tag.$canstart }">
+                                <h5 class="my-0"><i class="fas fa-fw"
+                                        ng-class="resolveTemplateIcon(enc.templateModel.mnemonic)"></i> {{
+                                    enc.templateModel.mnemonic | i18n }} <small>{{ enc.startTime | extDate: 'D' }} - {{
+                                        enc.stopTime | extDate: 'D' }} 
+                                    </small>
+                                    <span ng-if="(enc.stopTime || enc.actTime) &lt; $root.page.minEventTime"
+                                        class="badge badge-danger ml-2">
+                                        <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.common.pastdue' | i18n }}
+                                    </span>
+                                    <button type="button" id="btnStartVisit{{$index}}" ng-click="startVisit(path.mnemonic, enc, $index)" class="btn btn-primary float-right"
+                                        ng-if="enc.tag.$canstart">
+                                        <i class="fas fa-fw fa-heart-circle-plus"></i> {{ 'ui.action.check-in' | i18n }}
+                                    </button>
+                                    <a class="btn btn-info float-right" ng-if="enc.relationship.Fulfills" ui-sref="santedb-emr.encounter.view({ id: enc.relationship.Fulfills[0].source })">
+                                        <i class="fas fa-fw fa-eye"></i> {{ 'ui.action.view' | i18n }}
+                                    </a>
+                                </h5>
                                 <ul class="ml-2">
-                                    <li ng-repeat="comp in enc.relationship.HasComponent track by $index" ng-init="act = comp.targetModel">
-                                        <i class="fas fa-fw" ng-class="resolveTemplateIcon(comp.targetModel.templateModel.mnemonic)"></i> <ng-include class="d-inline" src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)" />
+                                    <li ng-repeat="comp in enc.relationship.HasComponent track by $index"
+                                        ng-init="act = comp.targetModel">
+                                        <i class="fas fa-fw"
+                                            ng-class="resolveTemplateIcon(comp.targetModel.templateModel.mnemonic)"></i>
+                                        <ng-include class="d-inline"
+                                            src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)" />
                                     </li>
                                 </ul>
                             </li>
                             <li class="list-group-item p-0 text-right">
-                                {{ 'ui.common.results' | i18n: { start: 1, end: path.encounters.length, total: path._totalEncounters } }} 
+                                {{ 'ui.common.results' | i18n: { start: 1, end: path.encounters.length, total:
+                                path._totalEncounters } }}
                             </li>
                         </ul>
                     </div>

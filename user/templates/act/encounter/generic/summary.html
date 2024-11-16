@@ -1,0 +1,30 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
+    <div class="row" ng-if="act.relationship.HasComponent">
+        <label class="control-label col-sm-12 col-md-3">
+            {{ 'ui.model.patientEncounter.relationship.HasComponent' | i18n }}
+        </label>
+        <div class="col-sm-12 col-md-9">
+            <ul class="list-unstyled mr-2">
+                <li ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
+                    <ng-include src="$parent.$parent.$parent.resolveSummary(comp.targetModel.templateModel.mnemonic)"></ng-include>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" ng-if="act.relationship.Fulfills">
+        <label class="control-label col-sm-12 col-md-3">
+            {{ 'ui.model.patientEncounter.relationship.Fulfills' | i18n }}
+        </label>
+        <div class="col-sm-12 col-md-9 mt-2">
+            {{ act.relationship.Fulfills[0].targetModel.templateModel.name }}
+        </div>
+    </div>
+    <div class="row" ng-if="act.dischargeDisposition">
+        <label class="control-label col-sm-12 col-md-3">
+            {{ 'ui.model.patientEncounter.dischargeDisposition' | i18n }}
+        </label>
+        <div class="col-sm-12 col-md-9 mt-2">
+            <i class="fas fa-fw fa-circle"></i> {{ act.dischargeDispositionModel | concept }}
+        </div>
+    </div>
+</div>

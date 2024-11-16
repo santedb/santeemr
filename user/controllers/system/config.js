@@ -147,7 +147,7 @@ angular.module('santedb').controller('ConfigurationController', ['$scope', '$roo
             // Get and coy the configuration values
             let config = angular.copy(await SanteDB.configuration.getAsync());
             config.values = {};
-            Object.keys(config).filter(o => !o.startsWith("_") && o !== "values").forEach(c => {
+            Object.keys(config).filter(o => !o.startsWith("_") && o !== "values" && o !== "realm").forEach(c => {
                 config.values[c] = $scope.config[c];
                 delete config[c];
             });

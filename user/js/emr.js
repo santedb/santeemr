@@ -1,3 +1,5 @@
+/// <reference path="../.ref/js/santedb.js" />
+
 // Convert an age to a date
 function ageToDate(age, onDate) {
 
@@ -9,6 +11,13 @@ function dateToAge(date, onDate) {
     return moment(onDate).diff(date, 'years', false);
 
 }
+
+const ENCOUNTER_FLOW = {
+    EXTENSION_URL: 'http://santedb.org/emr/extensions/encounter-flow',
+    CHECKED_IN: 'A63E9BCC-BE32-4EA6-A43F-1F3C771114D4',
+    WAIT_OBSERVATION: 'AEDF62BB-48F5-437E-914D-36E0CD57B8F8',
+    WAIT_SPECIALIST: 'F5201716-8AA2-4BB9-B574-763E87E3372D'
+};
 
 const ADT_REGISTRATION_TYPES = {
     BIRTH: 'f562e322-17ca-11eb-adc1-0242ac120002',
@@ -46,17 +55,113 @@ function SanteEMRWrapper() {
 
     /**
      * @method
+     * @private
+     * @summary Prepares the {@link:encounter} for submission by processing reference extensions and extracting the components
+     * @param {PatientEncounter} encounter The encounter to prepare
+     * @return {Bundle} The bundled encounter submission
+     */
+    async function _bundleVisit(encounter) {
+        encounter = new PatientEncounter(angular.copy(encounter));
+        // Process extensions
+        if(encounter.extension) {
+            Object.keys(encounter.extension).forEach(url => {
+                encounter.extension[url] = encounter.extension[url].map(ext => {
+                    if(ext.$type) // reference
+                    {
+                        return SanteDB.application.encodeReferenceExtension(ext.$type, ext.id);
+                    }
+                    return ext;
+                });
+            });
+        }
+
+        encounter.operation = BatchOperationType.UpdateInt;
+
+        encounter = await prepareActForSubmission(encounter);
+        var bundle = bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills" ]);
+        encounter = bundle.resource.find(o=>o.$type == PatientEncounter.name);
+        // remove components which have a deleted target
+        if(encounter.relationship && encounter.relationship.HasComponent) {
+            encounter.relationship.HasComponent = encounter.relationship.HasComponent.filter(e=> {
+                return bundle.resource.find(o=>o.id == e.target && o.operation != BatchOperationType.Delete && o.operation != BatchOperationType.DeleteInt) != null;
+            });
+        }
+        return bundle;        
+    }
+
+    /**
+     * @method
+     * @summary Perform an analysis of the actions in the {@link:encounter} and return the detected issues
+     * @param {PatientEncounter} encounter The encounter containing data to be analysed
+     * @returns {Array} The array of detected issues
+     */
+    this.analyzeVisit = async function(encounter) {
+        try {
+            var bundle = await _bundleVisit(encounter);
+            var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
+                target: bundle
+            });
+            return result;
+        }
+        catch(e) {
+            throw new Exception("EmrException", "Could not analyze the submitted visit", null, e);
+        }
+    }
+
+    /**
+     * @method
      * @memberof SanteEMRWrapper
      * @param {string} patientId The patient identifier to show the checkin modal for
      */
     this.showCheckin = function(patientId) {
         var checkinModal = angular.element("#checkinModal");
         if(checkinModal == null) {
-            console.warn("Have not included the checkin modal");
+            console.warn("Have not included the checkin-modal.html file");
+            return;
         }
 
         checkinModal.scope().patientId = patientId;
         $("#checkinModal").modal('show');
+    }
+
+    /**
+     * @method
+     * @memberof SanteEMRWrapper
+     * @param {string} encounter The encounter or encounter id to be discharged
+     * @param {timeout} $timeout The scope timeout service
+     */
+    this.showDischarge = function(encounter, $timeout) {
+        
+        var dischargeModal = angular.element("#dischargeModal");
+        if(dischargeModal == null) {
+            console.warn("Have not included the discharge-modal.html file");
+        }
+
+        SanteEMR.analyzeVisit(encounter).then(r => {
+            var enc = angular.copy(encounter);
+            enc._issues = r;
+            var scope = dischargeModal.scope();
+            $timeout(() => {
+                scope.encounter = enc;
+                $("#dischargeModal").modal('show');
+            })
+        });
+    }
+
+    /**
+     * @method
+     * @memberof SanteEMRWrapper
+     * @param {string} encounter The encounter object to show the modal for
+     */
+    this.showRequeue = function(encounter) {
+        var requeueModal = angular.element("#returnModal");
+        if(requeueModal == null) {
+            console.warn("Have not included the return-waiting-modal.html file");
+            return;
+        }
+
+        requeueModal.scope().encounter = encounter;
+        $("#returnModal").modal('show');
     }
 
     /**
@@ -79,8 +184,12 @@ function SanteEMRWrapper() {
     }
 
     
+    /**
+     * @summary Resolves the template icon for the specified act/entity template
+     * @param {string} templateId The template mnemonic to resolve the icon for
+     * @returns The resolved icon 
+     */
     this.resolveTemplateIcon = function(templateId) {
-        SanteDB.application.getTemplateDefinitionsAsync(); // HACK: Force Fetching
         var template = SanteDB.application.getTemplateMetadata(templateId);
         if(template) {
             return template.icon;
@@ -90,13 +199,192 @@ function SanteEMRWrapper() {
         }
     }
 
+    /**
+     * @summary Resolve the summary template (one line summary) for the template
+     * @param {string} templateId The template mnemonic to resolve the summary for
+     * @returns {String} The location of the summary template
+     */
     this.resolveSummaryTemplate = function(templateId) {
-        SanteDB.application.getTemplateDefinitionsAsync(); // HACK: Force Fetching
         var templateValue = SanteDB.application.resolveTemplateSummary(templateId);
         if(templateValue == null) {
             return  "/org.santedb.uicore/partials/act/noTemplate.html"
         }
         return templateValue;
+    }
+
+    /**
+     * @summary Save the encounter 
+     * @method
+     * @param {PatientEncounter} encounter The encounter that is to be saved
+     * @returns {PatientEncounter} The updated encounter
+     */
+    this.saveVisitAsync = async function(encounter) {
+        try {
+
+            var submissionBundle = await _bundleVisit(encounter);
+            // Is the current user listed as a performer?
+            var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
+            
+            // For each entry which is being updated set the performer
+            submissionBundle.resource.filter(act => act.operation != BatchOperationType.IgnoreInt  && act.operation != BatchOperationType.Ignore &&
+                act.operation != BatchOperationType.Delete && act.operation != BatchOperationType.DeleteInt
+            ).forEach(act => {
+                act.participation = act.participation || {};
+                
+                var participationType = "Performer";
+                if(act.tag && act.tag.isBackEntry && act.tag.isBackEntry[0] != "True") {
+                    participationType = "DataEnterer";
+                }
+
+                act.participation = act.participation || {};
+                act.participation[participationType] = act.participation[participationType] || [];
+                if(act.participation[participationType].find(o=>o.player == myUserId) == null) {
+                    act.participation[participationType].push(new ActParticipation({
+                        player: myUserId
+                    }));
+                }
+
+            });
+
+            submissionBundle = await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            return submissionBundle.resource.find(o=>o.$type == "PatientEncounter");
+        }
+        catch(e) {
+            throw new Exception("EmrException", e.message, null, e);
+        }
+    }
+
+    /**
+     * @summary Starts a visit given the input parameters provided
+     * @param {string} templateId The visit template (encounter template) which is to be started, this dictates the input form and the structure of the visit
+     * @param {string} carePathway The care pathway in which this visit fits (used for generating the CDSS actions)
+     * @param {string} recordTargetId The identification of the record target to which the visit is intended 
+     * @param {ActRelationship} fulfills An array of {@link:ActRelationship} objects which represent the encounter in the care plan that this visit fulfills
+     * @param {ActRelationship} fulfillmentComponents An array of {@link:ActRelationship} objects which reprensets the proposals from the stored care plan which this visit is fulfilling
+     * @param {ActParticipation} informantPtcpt The informant / guardian on the act
+     * @returns {PatientEncounter} The constructed and saved {@link:PatientEncounter}
+     */
+    this.startVisitAsync = async function(templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt) {
+        try {
+
+            var submission = new Bundle({ resource: [] });
+
+            // Template
+            var template = await SanteDB.application.getTemplateContentAsync(templateId, {
+                recordTargetId: recordTargetId,
+                facilityId: await SanteDB.authentication.getCurrentFacilityId(),
+                userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
+            });
+
+
+            var encounter = new PatientEncounter(template);
+            encounter.id = encounter.id || SanteDB.application.newGuid();
+            encounter.relationship = encounter.relationship || {};
+            encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
+            encounter.relationship.Fulfills = fulfills;
+            // Ensure the appropriate keys are set
+            encounter.startTime = encounter.actTime = new Date();
+            encounter.statusConcept = StatusKeys.Active;
+            encounter.extension = encounter.extension || {};
+            encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL] = [ SanteDB.application.encodeReferenceExtension(Concept.name, ENCOUNTER_FLOW.CHECKED_IN) ];
+
+            // Set the status 
+
+            // Compute the actions to be performed
+            var actions = await SanteDB.resources.patient.invokeOperationAsync(recordTargetId, "generate-careplan", {
+                pathway: carePathway,
+                //firstOnly: true,
+                encounter: template.templateModel.mnemonic,
+                period: moment().format("YYYY-MM-DD"),
+                _includeBackentry: true
+            }, undefined, "min");
+
+            actions.relationship.HasComponent.forEach(comp => {
+                var ar = new ActRelationship({
+                    relationshipType: comp.relationshipType,
+                    target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
+                    targetModel: comp.targetModel,
+                    source: encounter.id
+                });
+                encounter.relationship.HasComponent.push(ar);
+                comp.targetModel.id = comp.targetModel.id || ar.target;
+                comp.targetModel.moodConcept = encounter.moodConcept;
+                delete comp.targetModel.moodConceptModel;
+                comp.targetModel.statusConcept = encounter.statusConcept;
+                delete comp.targetModel.statusConceptModel;
+
+                // Fulfillment for the target model
+                if (comp.targetModel && comp.targetModel.protocol) {
+                    var fulfillment = fulfillmentComponents.find(o => {
+                        var targetAct = o.targetModel;
+                        return targetAct.protocol.find(p => comp.targetModel.protocol.find(p2 => p2.protocol == p.protocol && p2.sequence == p.sequence))
+                    });
+                    if (fulfillment) {
+                        comp.targetModel.relationship = comp.targetModel.relationship || {};
+                        comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
+                        comp.targetModel.relationship.Fulfills.push(new ActRelationship({
+                            target: fulfillment.target
+                        }));
+                    }
+                }
+            });
+
+            if(informantPtcpt) {
+                encounter.participation = encounter.participation || {};
+                encounter.participation.Informant = encounter.participation.Informant || [];
+                encounter.participation.Informant.push(informantPtcpt);
+                if(informantPtcpt.playerModel && informantPtcpt.player != informantPtcpt.playerModel.id ) {
+                    delete informantPtcpt.playerModel;
+                }
+            }
+            
+            encounter = await prepareActForSubmission(encounter);
+            submission =  bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Authororiginator" ]);
+
+            if(informantPtcpt && informantPtcpt.playerModel && informantPtcpt.player == informantPtcpt.playerModel.id ) {
+                    informantPtcpt.playerModel = await prepareEntityForSubmission(informantPtcpt.playerModel, true);
+                    submission.resource.push(informantPtcpt.playerModel);
+                    submission.resource.push(new EntityRelationship(
+                        informantPtcpt.playerModel.relationship.$other[0]
+                    ));
+                    delete informantPtcpt.playerModel.relationship.$other;
+                    delete informantPtcpt.playerModel;
+                
+            }
+            
+            // Now we want to submit
+            var submittedBundle = await SanteDB.resources.bundle.insertAsync(submission);
+            return submittedBundle.resource.find(o=>o.$type == "PatientEncounter");
+        }
+        catch(e) {
+            throw new Exception("EmrException", e.message, null, e);
+        }
+    }
+
+    /**
+     * @summary Attempt to get the care plan from the encounter id
+     * @param {string} proposedEncounterId The proposed encounter identifier from which the care plan should be fetched
+     * @returns {CarePlan} The care plan that the proposed encounter id belongs
+     */
+    this.getCarePlanFromEncounter = async function(proposedEncounterId) {
+        try {
+            var cps = await SanteDB.resources.carePlan.findAsync({
+                "relationship[HasComponent].target": proposedEncounterId, 
+                "statusConcept": StatusKeys.Active,
+                _includeTotal: false,
+                _count: 1
+            }, "fastview");
+
+            if(cps.resource) {
+                return cps.resource[0];
+            }
+            else {
+                return null;
+            }
+        }
+        catch(e) {
+            throw new Exception("EmrException", "Failed to fetch careplan", null, e);
+        }
     }
     
 }

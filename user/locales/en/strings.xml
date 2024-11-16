@@ -1,6 +1,6 @@
 <resources>
 
-
+    <string name="ui.title">SanteEMR</string>
     <string name="ui.directConnect">Direct Connect to Server</string>
     <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
     <string name="ui.emr.loginMessage">Log into SanteEMR</string>
@@ -12,11 +12,16 @@
     <string name="ui.action.save.then.checkin">Save &amp; Go To</string>
     <string name="ui.action.check-in">Start Visit</string>
     <string name="ui.action.visit">Visit</string>
-    <string name="ui.action.discharge">Discharge</string>
+    <string name="ui.action.discharge">End Visit</string>
     <string name="ui.action.updateSelected">Update Record</string>
     <string name="ui.action.change">Change Record</string>
     <string name="ui.action.enroll">Enroll</string>
     <string name="ui.action.unenroll">Leave</string>
+    <string name="ui.action.wait">Return to Waiting Room</string>
+    <string name="ui.action.dashboard">Dashboard</string>
+    <string name="ui.action.filter">Filter</string>
+    <string name="ui.action.filterFlow">Workflow Filter</string>
+    <string name="ui.action.filterType">Type Filter</string>
     <!-- Search terms -->
     <string name="ui.emr.patient.search.term">Search For</string>
     <string name="ui.emr.patient.index">My Patients</string>
@@ -377,7 +382,34 @@
      <string name="ui.emr.encounter.checkin.type.proposed">From Care Plan</string>
      <string name="ui.emr.encounter.checkin.success">Visit has been started successfully</string>
      <string name="ui.emr.encounter.navigate.notFound">Active encounter could not be found. Please try refreshing the results and attempting your operation again.</string>
+     <string name="ui.emr.encounter.cancel.confirm">Are you sure you want to cancel this visit?</string>
+     <string name="ui.emr.encounter.cancel.success">Visit has been cancelled successfully</string>
+     <string name="ui.emr.encounter.checkin.informant">Guardian / Parent Present</string>
+     <string name="ui.emr.encounter.checkin.informant.other">Other</string>
+     <string name="ui.emr.encounter.completed">This visit has concluded and is in a readonly state</string>
+     <string name="ui.emr.encounter.return.title">Return To Waiting Room</string>
+     <string name="ui.emr.encounter.checkin.state">Status/Reason</string>
+     <string name="ui.emr.encounter.checkin.state.hint">Select the reason for returning the patient to the waiting room</string>
+     <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
+     <string name="org.santedb.emr.dashboard.waitingRoom">Waiting Room</string>
+     <string name="org.santedb.emr.encounter.dashboard.title">Visit Dashboard</string>
+     <string name="ui.emr.encounter.save.success">Visit has been updated successfully</string>
+     <string name="ui.emr.encounter.discharge.title">End Visit / Discharge</string>
+     <string name="ui.emr.encounter.discharge.instructions">Validate the following actions occurred during the visit, and they are accurate. If an action was not performed un-select it.</string>
+     <string name="ui.emr.encounter.component.notTouched">It appears this action was not completed (or has incomplete data). If you end the visit you will be attributed as completing the action</string>
+     <string name="ui.emr.encounter.discharge.bookAppointment.confirm">This patient has upcoming events in their careplan. Do you want to view the next scheduled appointment now?</string>
      <!-- Visits -->
       <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
 
+      <!-- Care Paths -->
+       <string name="ui.emr.patient.carePaths.enroll.confirm">Are you sure you want to enroll this patient into the care pathway {pathway}?</string>
+       <string name="ui.emr.patient.carePaths.enroll.success">Patient enrolled in pathway successfully</string>
+       <string name="ui.emr.patient.carePaths.unenroll.confirm">Are you sure you want to un-enroll this patient from the {pathway} care pathway?</string>
+       <string name="ui.emr.patient.carePaths.unenroll.success">Patient has been removed from the care pathway</string>
+       <string name="ui.emr.patient.carePaths.acts.none">No upcoming encounters in this care pathway</string>
+       <string name="ui.emr.patient.carePaths.recompute.confirm">You are about to re-compute the care plan for {pathway}. This operation may take some time, and is often automatically performed after discharge. Are you sure you want to continue recomputation?</string>
+       <string name="ui.emr.patient.carePaths.recompute.success">Care pathway has been successfully re-computed</string>
+       
+       <!-- Search -->
+        <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Search by Name / Identifier</string>
 </resources>

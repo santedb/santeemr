@@ -3,6 +3,10 @@
         order="100">
         <sdb:icon>fas fa-clipboard-check</sdb:icon>
         <sdb:description lang="en">Encounter</sdb:description>
+        <sdb:guard>scopedObject._currentEncounter</sdb:guard>
     </sdb:widget>
-    <widget-panels context-name="'org.santedb.emr.patient.view.visit'" scoped-object="scopedObject"/>
+    <act-edit ng-if="scopedObject._currentEncounter" model="scopedObject._currentEncounter" no-add="true"
+        no-header="true" no-override="true" readonly="true" actions="[
+                { name: 'view', action: 'goEncounter', className: 'btn-success', icon: 'fas fa-fw fas fa-person-shelter' }
+                ]"></act-edit>
 </div>

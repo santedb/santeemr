@@ -17,6 +17,7 @@
       <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
     </Concept>
   </update>
+
   <update insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
       <id>18E92034-43D5-477D-9748-1609099314DF</id>
@@ -47,4 +48,50 @@
       <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
     </Concept>
   </update>
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>FA342034-43D5-477D-9748-1609099314DF</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterType-Antenatal</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Antenatal Care</value>
+      </name>
+      <conceptSet>4be73176-2531-41b8-8a68-2f9d41226a96</conceptSet>
+      <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
+    </Concept>
+  </update>
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>B3432034-43D5-477D-9748-1609099314DF</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterType-Postnatal</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Postnatal Care</value>
+      </name>
+      <conceptSet>4be73176-2531-41b8-8a68-2f9d41226a96</conceptSet>
+      <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
+    </Concept>
+  </update>
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>F8932034-43D5-477D-9748-1609099314DF</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterType-LaborDelivery</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Labour &amp; Delivery</value>
+      </name>
+      <conceptSet>4be73176-2531-41b8-8a68-2f9d41226a96</conceptSet>
+      <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
+    </Concept>
+  </update>
+
 </dataset>

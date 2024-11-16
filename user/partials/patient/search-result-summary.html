@@ -1,0 +1,69 @@
+<div class="card-body">
+    <div class="row">
+        <div class="col-12 mb-1">
+            <h5 class="p-0 m-0 d-flex justify-content-between align-items-stretch">
+                <div class="flex-grow-1">{{ item.name | name }}</div>
+            </h5>
+        </div>
+        <div class="col-12 mb-1">
+            <div class="d-flex justify-content-between align-items-stretch">
+                <!-- Show the preferred identifier if exists or configured-->
+                <span
+                    ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; item.identifier[$root.system.config.application.setting['aa.preferred']]">
+                    <i class="fas fa-id-card"></i>
+                    {{ item.identifier[$root.system.config.application.setting['aa.preferred']][0].value }}
+                    <span class="d-none d-xl-inline">
+                        <small class="badge badge-primary">{{
+                            item.identifier[$root.system.config.application.setting['aa.preferred']][0].domainModel.name
+                            }}</small>
+                    </span>
+                </span>
+                <!-- Show other identifiers in lieu of a preferred identifier -->
+                <span
+                    ng-if="!$root.system.config.application.setting['aa.preferred'] || !item.identifier[$root.system.config.application.setting['aa.preferred']]">
+                    <span class="p-2"
+                        ng-if="id[0].value &amp;&amp; domain != $root.system.config.application.setting['aa.preferred']"
+                        ng-repeat="(domain, id) in item.identifier">
+                        <i class="far fa-id-card"></i> {{ id[0].value }}
+                        <span class="d-none d-xl-inline">
+                            <small class="badge badge-info">{{
+                                id[0].domainModel.name }}</small>
+                        </span>
+                    </span>
+                </span>
+            </div>
+        </div>
+        <div class="col-12 mb-1">
+            <div class="d-flex justify-content-between align-items-stretch">
+                <div class="mr-2">
+                    <i class="fas fa-fw fa-birthday-cake"></i> {{ item.dateOfBirth | extDate: item.dateOfBirthPrecision }} ({{ item.dateOfBirth | age }})
+                </div>
+                <div class="mx-2"><i class="fas fa-fw"
+                    ng-class="{ 'fa-genderless': null, 'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
+                    <span class="ml-2 d-none d-md-inline">{{ item.genderConceptModel | concept }}</span></div>
+                <div class="mx-2 badge badge-secondary" ng-if="item.deceasedDate"><i
+                        class="fas fa-exclamation-circle"></i> {{ 'ui.model.patient.deceasedDate' | i18n }} ({{
+                    item.deceasedDate | extDate: item.deceasedDatePrecision }})</div>
+                <div class="mx-2 badge badge-info" ng-if="item.tag.$upstream[0] == 'true'" title="{{ 'ui.emr.patient.search.tag.upstream' | i18n }}"><i
+                        class="fas fa-cloud-meatball"></i> <span class="ml-2 d-none d-md-inline">{{ 'ui.emr.patient.search.tag.upstream' | i18n }}</span> </div>
+                <div class="mx-2 badge badge-light" ng-if="item.multipleBirthOrder !== undefined" title="{{ 'ui.model.patient.multipleBirthOrder' | i18n }}">
+                    <i class="fas fa-fw fa-people-group"></i> <span class="ml-2 d-none d-md-inline">{{ 'ui.model.patient.multipleBirthOrder' | i18n }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-1">
+            <div class="d-flex">
+                <div class="flex-grow-1" ng-if="item.address.HomeAddress">
+                    <i class="fas fa-fw fa-house"></i> {{ item.address.HomeAddress | address }} <span class="badge badge-primary">{{ item.address.HomeAddress[0].useModel | concept }}</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 mb-1">
+            <div class="d-flex justify-content-between align-items-stretch">
+                <div class="mx-2" ng-repeat="(t, tel) in item.telecom track by $index">
+                    <i class="fas fa-fw fa-phone"></i> {{ tel[0] | telecom }} <span class="badge badge-primary">{{ tel[0].useModel || t | concept }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

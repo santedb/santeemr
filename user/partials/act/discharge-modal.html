@@ -1,0 +1,84 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
+    <div ng-controller="EmrDischargeEncounterController">
+        
+        <div class="modal" id="dischargeModal" role="dialog" aria-labelledby="dischargeModalTitle" aria-hidden="true" data-backdrop="static">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="dischargeModalTitle">
+                            <i class="fa fa-fw fa-person-walking-arrow-right"></i> {{ 'ui.emr.encounter.discharge.title'
+                            | i18n }}
+                        </h5>
+                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">
+                                <i class="fa fa-times"></i>
+                            </span>
+                        </button>
+                    </div>
+                    <form name="dischargeForm" ng-submit="saveDischarge(dischargeForm)" novalidate="novalidate">
+                        <div class="modal-body">
+                            <div ng-if="!encounter">
+                                <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+                            </div>
+                            <div ng-if="encounter" class="container-fluid">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{ 'ui.emr.encounter.discharge.instructions' | i18n }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12">
+                                        <ul class="list-unstyled ml-2">
+                                            <li ng-repeat="comp in encounter.relationship.HasComponent track by $index"
+                                                ng-if="comp.targetModel.tag.isBackEntry[0] != 'True'">
+                                                <label class="checkbox-container" ng-init="act = comp.targetModel">
+                                                    <input type="checkbox" class="checkbox-control"
+                                                        ng-model="comp.targetModel.operation"
+                                                        ng-true-value="'InsertOrUpdate'" ng-false-value="'Delete'" />
+                                                    <span></span>
+                                                    <!-- <i class="fas fa-fw fa-circle"></i> -->
+                                                    <ng-include
+                                                        src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)"></ng-include>
+                                                </label>
+                                                <div class="text-info ml-10"
+                                                    ng-if="comp.targetModel.operation == 'InsertOrUpdate' &amp;&amp; !(comp.targetModel.previousVersion || comp.targetModel.participation &amp;&amp; comp.targetModel.participation.Performer)">
+                                                    <i class="fas fa-fw fa-lightbulb"></i> {{
+                                                    'ui.emr.encounter.component.notTouched' | i18n }}
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="control-label required col-sm-12 col-md-3">
+                                        {{ 'ui.model.patientEncounter.dischargeDisposition' | i18n }}
+                                        <hint-popover hint-title="ui.model.paitentEncounter.dischargeDisposition" />
+                                    </label>
+                                    <div class="col-sm-12 col-md-9">
+                                        <concept-select concept-set="'DischargeDisposition'" name="dischargeDisposition"
+                                            required="required" class="form-control"
+                                            ng-model="encounter.dischargeDisposition"
+                                            add-concepts="[ '6052712a-340e-4480-ad6b-409ba320db4f', '70fe34ce-caff-4f46-b6e6-9cd6d8f289d6' ]" />
+                                        <div class="text-danger"
+                                            ng-if="dischargeForm.dischargeDisposition.$error.required">
+                                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' |
+                                            i18n }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                                <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
+                            <button type="submit" id="btnSubmit" ng-disabled="dischargeForm.$invalid"
+                                class="btn btn-primary">
+                                <i class="fa fa-check"></i> {{ 'ui.action.discharge' | i18n }}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
