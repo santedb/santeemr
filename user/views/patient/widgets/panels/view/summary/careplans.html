@@ -1,4 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script>~/controllers/act/encounter/modal.js</sdb:script>
     <sdb:script>~/controllers/patient/widgets/careplans.js</sdb:script>
     <sdb:widget order="1000" name="org.santedb.emr.widget.patient.careplans" headerClass="alert-success" size="Medium"
         type="Panel" context="org.santedb.emr.patient.view.dashboard">
@@ -88,4 +89,7 @@
             </div>
         </div>
     </div>
+
+    <!-- #include virtual="~/partials/act/checkin-modal.html" -->
+
 </div>

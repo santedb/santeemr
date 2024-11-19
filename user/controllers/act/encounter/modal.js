@@ -2,6 +2,7 @@
 angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 
     $scope.patientId = null;
+
     $scope.$watch("patientId", async function (n, o) {
         if (n && n != o) {
             try {
@@ -80,7 +81,14 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     if (tArray.length > 0) {
                         $scope._appointmentAct = new PatientEncounter(tArray[0].resource[0]);
                     }
-                    $scope.newAct.$startType = 'manual';
+
+                    if($scope.encounterId) {
+                        var idx = $scope._proposedActs.indexOf($scope._proposedActs.find(o=>o.id == $scope.encounterId));
+                        $scope.newAct.$startType = `proposed-${idx}`;
+                    }
+                    else {
+                        $scope.newAct.$startType = 'manual';
+                    }
                 });
             }
             catch (e) {

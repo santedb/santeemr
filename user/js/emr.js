@@ -112,14 +112,16 @@ function SanteEMRWrapper() {
      * @method
      * @memberof SanteEMRWrapper
      * @param {string} patientId The patient identifier to show the checkin modal for
+     * @param {string} encounterId The encounter identifier to be selected as the start encounter
      */
-    this.showCheckin = function(patientId) {
+    this.showCheckin = function(patientId, encounterId) {
         var checkinModal = angular.element("#checkinModal");
         if(checkinModal == null) {
             console.warn("Have not included the checkin-modal.html file");
             return;
         }
 
+        checkinModal.scope().encounterId = encounterId;
         checkinModal.scope().patientId = patientId;
         $("#checkinModal").modal('show');
     }
