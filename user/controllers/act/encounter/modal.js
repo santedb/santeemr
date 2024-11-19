@@ -39,7 +39,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                                         relationship:
                                         {
                                             $other: [
-                                                { 
+                                                {
                                                     relationshipType: EntityRelationshipTypeKeys.FamilyMember,
                                                     source: $scope.recordTarget.id,
                                                     target: pid
@@ -64,9 +64,9 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     if (tArray.length > 0) {
                         $scope._proposedActs = tArray[0].resource.map(cp => {
 
-                            var act = cp.relationship.HasComponent.map(o=>o.targetModel).find(enc => {
+                            var act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => {
                                 return (enc.startTime || enc.actTime).trunc() <= today && (enc.stopTime || enc.actTime).trunc() >= today || // start and stop time are in bound
-                                    enc.actTime.isoWeek() == today.isoWeek() && enc.actTime.getFullYear() == today.getFullYear() 
+                                    enc.actTime.isoWeek() == today.isoWeek() && enc.actTime.getFullYear() == today.getFullYear()
                             });
                             act.pathway = cp.pathway;
                             act.pathwayModel = cp.pathwayModel;
@@ -161,39 +161,56 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
 }]).controller('EmrReturnWaitingRoomController', ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 
-    $scope.saveEncounter = async function(form) {
-        if(form.$invalid) {
+    $scope.$watch("encounter.id", async function (n) {
+        if (n ) {
+            try {
+                var stateId = $scope.encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0].id
+                var targetStates = await SanteDB.resources.concept.findAsync({
+                    conceptSet: 'D46D45B3-4DB3-4641-ADFC-84A80B7D1637', // EMREncounterTags
+                    "id||relationship[StateFlow].source": stateId,
+                    _includeTotal: false
+                });
+                $timeout(() => $scope.targetStates = targetStates.resource);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+    });
+
+    $scope.saveEncounter = async function (form) {
+        if (form.$invalid) {
             return;
         }
 
         try {
             SanteDB.display.buttonWait("#btnSubmit", true);
             await SanteEMR.saveVisitAsync($scope.encounter);
-            
+
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.save.success"));
             $state.go("santedb-emr.encounter.dashboard");
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
-        finally{ 
+        finally {
             SanteDB.display.buttonWait("#btnSubmit", false);
 
         }
     }
 
-}]).controller("EmrDischargeEncounterController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
+}]).controller("EmrDischargeEncounterController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 
     // Set the appropriate discharge dispositions etc.
-    $scope.$watch("encounter", function(n, o) {
-        if(n && (!o || o.id != n.id)) {
+    $scope.$watch("encounter", function (n, o) {
+        if (n && (!o || o.id != n.id)) {
 
             // Set the status of the encounter and everything else
             n.statusConcept = StatusKeys.Completed;
             delete n.statusConceptModel;
-            if(n.relationship && n.relationship.HasComponent) {
+            if (n.relationship && n.relationship.HasComponent) {
                 n.relationship.HasComponent.forEach(comp => {
-                    if(comp.targetModel.previousVersion || 
+                    if (comp.targetModel.previousVersion ||
                         comp.targetModel.participation &&
                         comp.targetModel.participation.Performer
                     ) {
@@ -211,8 +228,8 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
 
-    $scope.saveDischarge = async function(formData) {
-        if(formData.$invalid) {
+    $scope.saveDischarge = async function (formData) {
+        if (formData.$invalid) {
             return;
         }
 
@@ -223,22 +240,22 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             var savedEncounter = await SanteEMR.saveVisitAsync($scope.encounter);
 
             // Was this part of a pathway or CDSS proposal? 
-            if($scope.encounter.relationship.Fulfills && 
+            if ($scope.encounter.relationship.Fulfills &&
                 $scope.encounter.relationship.Fulfills[0].targetModel.moodConcept == ActMoodKeys.Propose
-            ) { 
-                
+            ) {
+
                 var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
 
-                if(careplan) {
+                if (careplan) {
                     // Regenerate the careplan
                     careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
                         pathway: careplan.pathway
                     });
-                    
+
                     var today = new Date().trunc();
-                    
-                    var nextProposedAction = careplan.relationship.HasComponent.map(o=>o.targetModel).filter(o=>o.actTime > today)[0];
-                    if(nextProposedAction && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
+
+                    var nextProposedAction = careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0];
+                    if (nextProposedAction && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
                         SanteEMR.showAppointmentBooking(nextProposedAction);
                     }
                 }
@@ -253,7 +270,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.discharge.success"));
 
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
         finally {

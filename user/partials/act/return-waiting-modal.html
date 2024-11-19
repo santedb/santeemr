@@ -1,7 +1,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
     <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
-    <div class="modal" id="returnModal" role="dialog" aria-labelledby="returnModalTitle" aria-hidden="true"  data-backdrop="static"
-        ng-controller="EmrReturnWaitingRoomController">
+    <div class="modal" id="returnModal" role="dialog" aria-labelledby="returnModalTitle" aria-hidden="true"
+        data-backdrop="static" ng-controller="EmrReturnWaitingRoomController">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -17,21 +17,20 @@
                 </div>
                 <form name="returnForm" ng-submit="saveEncounter(returnForm)" novalidate="novalidate">
                     <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="form-group row">
-                                <label class="col-sm-12 col-lg-3 control-label">{{ 'ui.emr.encounter.checkin.state' |
-                                    i18n }}
-                                    <hint-popover hint-title="ui.emr.encounter.checkin.state" />
-                                </label>
-                                <div class="col-sm-12 col-lg-9">
-                                    <concept-select required="required" name="returnReason" concept-set="'EMREncounterTags'" class="form-control"
+                        <ul class="list-unstyled">
+                            <li ng-repeat="state in targetStates track by $index">
+                                <label class="checkbox-container">
+                                    <input type="radio"
                                         ng-model="encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0].id"
-                                         />
-                                         <div class="text-danger" ng-if="returnForm.returnReason.$error['required']">
-                                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                                            </div>
-                                </div>
-                            </div>
+                                        value="{{state.id}}" name="returnReason" class="checkbox-control" />
+                                    <span></span>
+                                    {{ state | concept }}
+                                </label>
+                            </li>
+                        </ul>
+                        <div class="text-danger" ng-if="returnForm.returnReason.$error['required']">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n
+                            }}
                         </div>
                     </div>
                     <div class="modal-footer">
