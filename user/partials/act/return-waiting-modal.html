@@ -18,7 +18,7 @@
                 <form name="returnForm" ng-submit="saveEncounter(returnForm)" novalidate="novalidate">
                     <div class="modal-body">
                         <ul class="list-unstyled">
-                            <li ng-repeat="state in targetStates track by $index">
+                            <li ng-repeat="state in encounter._nextStates track by $index">
                                 <label class="checkbox-container">
                                     <input type="radio"
                                         ng-model="encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0].id"

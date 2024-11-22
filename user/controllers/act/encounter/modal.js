@@ -82,8 +82,8 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         $scope._appointmentAct = new PatientEncounter(tArray[0].resource[0]);
                     }
 
-                    if($scope.encounterId) {
-                        var idx = $scope._proposedActs.indexOf($scope._proposedActs.find(o=>o.id == $scope.encounterId));
+                    if ($scope.encounterId) {
+                        var idx = $scope._proposedActs.indexOf($scope._proposedActs.find(o => o.id == $scope.encounterId));
                         $scope.newAct.$startType = `proposed-${idx}`;
                     }
                     else {
@@ -169,23 +169,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
 }]).controller('EmrReturnWaitingRoomController', ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 
-    $scope.$watch("encounter.id", async function (n) {
-        if (n ) {
-            try {
-                var stateId = $scope.encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0].id
-                var targetStates = await SanteDB.resources.concept.findAsync({
-                    conceptSet: 'D46D45B3-4DB3-4641-ADFC-84A80B7D1637', // EMREncounterTags
-                    "id||relationship[StateFlow].source": stateId,
-                    _includeTotal: false
-                });
-                $timeout(() => $scope.targetStates = targetStates.resource);
-            }
-            catch (e) {
-                console.error(e);
-            }
-        }
-    });
-
+    
     $scope.saveEncounter = async function (form) {
         if (form.$invalid) {
             return;
