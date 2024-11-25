@@ -66,7 +66,7 @@
                             {{ encounter.templateModel.name }}
                             <span class="badge badge-info">{{ encounter.typeConceptModel | concept }}</span> <br/>
                         </h5>
-                        <span class="badge badge-primary"><i class="fas fa-fw fa-timeline"></i> {{ encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0] | concept }}</span>
+                        <span class="badge badge-lg badge-primary"><i class="fas fa-fw fa-timeline"></i> {{ encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0] | concept }}</span>
                         <div>
                             <div class="p-2"
                                 ng-if="id[0].value &amp;&amp; domain != $root.system.config.application.setting['aa.preferred']"

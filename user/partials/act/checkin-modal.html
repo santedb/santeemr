@@ -33,10 +33,12 @@
                                             <ul class="list-unstyled ml-2">
                                                 <li ng-repeat="(k, famr) in recordTarget.relationship track by $index"
                                                     ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
-                                                    <label ng-repeat="fam in famr track by $index">
-                                                        <input required="required" type="radio" name="informant"
+                                                    <label ng-repeat="fam in famr track by $index" class="checkbox-container">
+                                                        <input class="checkbox-control" required="required" type="radio" name="informant"
                                                             ng-model="newAct.participation.Informant[0].player"
                                                             value="{{fam.target}}" />
+                                        <span></span>
+
                                                         {{ fam.targetModel.name | name }} <strong
                                                             class="badge badge-primary">{{
                                                             fam.relationshipTypeModel |
@@ -45,10 +47,12 @@
                                                 </li>
                                                 <li>
                                                     <div class="input-group">
-                                                        <label>
+                                                        <label class="checkbox-container">
                                                             <input required="required" type="radio" name="informant"
+                                                            class="checkbox-control"
                                                                 ng-model="newAct.participation.Informant[0].player"
                                                                 value='{{ newAct.participation.Informant[0].playerModel.id }}' />
+                                                                <span></span>
                                                             {{ "ui.emr.encounter.checkin.informant.other" | i18n }}
                                                         </label>
                                                         <div class="input-group-prepend">
@@ -87,9 +91,10 @@
                         </div>
                         <ul class="list-group">
                             <li class="list-group-item" ng-if="!newAct._fulfills">
-                                <label class="text-strong d-block w-100">
-                                    <input type="radio" name="startType" required="required"
+                                <label class="text-strong d-block w-100 checkbox-container">
+                                    <input type="radio" name="startType" required="required" class="checkbox-control"
                                         ng-model="newAct.$startType" value="manual" />
+                                        <span></span>
                                     <h5 class="my-1 ml-2 d-inline">{{ 'ui.emr.encounter.checkin.type.manual' | i18n
                                         }}</h5>
                                 </label>
@@ -113,9 +118,10 @@
                             <li class="list-group-item"
                                 ng-class="{ 'list-group-item-secondary': newAct.$startType !== 'proposed-' + $index, 'list-group-item-primary' : newAct.$startType === 'proposed-' + $index }"
                                 ng-repeat="prop in _proposedActs track by $index">
-                                <label class="text-strong d-block w-100">
-                                    <input type="radio" name="startType" required="required"
+                                <label class="text-strong d-block w-100 checkbox-container">
+                                    <input type="radio" name="startType" required="required" class="checkbox-control"
                                         ng-model="newAct.$startType" value="proposed-{{$index}}" />
+                                        <span></span>
                                     <h5 class="my-1 ml-2  d-inline">{{ 'ui.emr.encounter.checkin.type.proposed' |
                                         i18n }} {{ prop.pathwayModel.name }}</h5>
 

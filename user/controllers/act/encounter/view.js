@@ -20,6 +20,21 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             $timeout(() => {
                 $scope.encounter = encounter;
             });
+
+            // Load the next states
+            var stateId = encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0].id
+            var targetStates = await SanteDB.resources.concept.findAsync({
+                conceptSet: 'D46D45B3-4DB3-4641-ADFC-84A80B7D1637', // EMREncounterTags
+                "id||relationship[StateFlow].source": stateId,
+                _includeTotal: false
+            });
+            encounter._nextStates = targetStates.resource.map(state => {
+                state.icon = 'fas fa-fw fa-person-walking-arrow-loop-left';
+                state.action = $scope.returnToState;
+                state.label = SanteDB.display.renderConcept(state);
+                return state;
+            });
+
         }
         catch(e) {
             // TODO: HANDLE ELEVATION CASE
@@ -34,7 +49,6 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     initializeView($stateParams.id);
 }]).controller("EmrEncounterEntryController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
     
-
     $scope.doQueue = () => SanteEMR.showRequeue($scope.scopedObject);
     $scope.doDischarge = async () => {
         try {

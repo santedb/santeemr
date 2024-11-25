@@ -25,7 +25,7 @@ function bindSearchScopeCommonFunctions($scope, $state) {
 
     // Item supplement which determines if the patientin question has an encounter active
     $scope.patientHasOpenEncounter = SanteEMR.patientHasOpenEncounter;
-    $scope.checkin = SanteEMR.showCheckin;
+    $scope.checkin = (o,i) => SanteEMR.showCheckin(o);
     $scope.goVisit = async function(id) {
         try {
             var encounter = await SanteDB.resources.patientEncounter.findAsync({
