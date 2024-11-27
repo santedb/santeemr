@@ -412,4 +412,9 @@
        
        <!-- Search -->
         <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Search by Name / Identifier</string>
+
+        <!-- Observation Labels -->
+         <string name="ui.emr.observation.height.method">Method</string>
+         <string name="ui.emr.observation.height.method.lying">Lying (Length)</string>
+         <string name="ui.emr.observation.height.method.standing">Standing (Height)</string>
 </resources>

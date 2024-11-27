@@ -1,3 +1,55 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-   PLACEHOLDER FOR HEIGHT
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
+   <!-- TODO: History Entry -->
+   <div class="form-group row">
+      <label class="col-12 font-weight-bold">
+         {{ ::act.typeConceptModel | concept }}
+      </label>
+      <div class="col-12">
+         <div class="input-group">
+            <div class="input-group-prepend">
+                  <select class="form-control" required="required" ng-model="act.typeConcept" ng-change="act.typeConceptModel = undefined">
+                     <option value="850ca898-c656-4ba2-a7c1-ff74e3331396">{{ 'ui.emr.observation.height.method.standing' | i18n }}</option>
+                     <option value="8d2e144b-d7bf-4c17-8916-25aff60bcb2f">{{ 'ui.emr.observation.height.method.lying' | i18n }}</option>
+                  </select>
+            </div>
+            <input type="number" min="0" name="heightValue" ng-model="act.value" required="required"
+               cdss-interactive="act" class="form-control" />
+            <div class="input-group-append">
+               <label class="required input-group-text">
+                  {{ 'ui.model.observation.unitOfMeasure' | i18n }}
+               </label>
+            </div>
+            <concept-select concept-set="'UnitOfMeasureHeight'" required="required" class="form-control"
+               name="heightUnit" ng-model="act.unitOfMeasure" />
+            <!-- <div class="input-group-append">
+                   <span ng-switch="act.interpretationConcept" class="input-group-text">
+                       <span class="badge badge-danger" ng-switch-when="3c4d6579-7496-4b44-aac1-18a714ff7a05">
+                           <i class="fas fa-fw fa-chevron-up"></i> <span class="d-none d-inline">{{
+                               'ui.model.observation.interpretationConcept.high' | i18n }}</span>
+                       </span>
+                       <span class="badge badge-danger" ng-switch-when="6188f821-261f-420c-9520-0de240a05661">
+                           <i class="fas fa-fw fa-chevron-down"></i> <span class="d-none d-inline">{{
+                               'ui.model.observation.interpretationConcept.low' | i18n }}</span>
+                       </span>
+                       <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d"> 
+                           <i class="fas fa-fw fa-check"></i><span
+                           class="d-none d-inline">{{ 'ui.model.observation.interpretationConcept.normal' | i18n
+                           }}</span>
+                       </span>
+                       <span class="badge badge-secondary" ng-switch-default="default"> 
+                       <i class="fas fa-fw fa-question-circle"></i><span
+                       class="d-none d-inline">{{ 'ui.model.observation.interpretationConcept.unknown' | i18n
+                       }}</span>
+                   </span>
+                   </span>
+               </div> -->
+         </div>
+      </div>
+      <div class="col-12">
+         <div class="text-danger"
+            ng-if="$parent.$parent.ownerForm.heightValue.$error.required || $parent.$parent.ownerForm.heightUnit.$error.required">
+            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+         </div>
+      </div>
+   </div>
 </div>
