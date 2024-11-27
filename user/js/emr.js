@@ -232,7 +232,10 @@ function SanteEMRWrapper() {
                 act.operation != BatchOperationType.Delete && act.operation != BatchOperationType.DeleteInt
             ).forEach(act => {
                 act.participation = act.participation || {};
-                
+
+                if(act.$type != PatientEncounter.name) {
+                    act.actTime = act.stopTime = act.stopTime || new Date();
+                }
                 var participationType = "Performer";
                 if(act.tag && act.tag.isBackEntry && act.tag.isBackEntry[0] != "True") {
                     participationType = "DataEnterer";
@@ -309,6 +312,12 @@ function SanteEMRWrapper() {
                     source: encounter.id
                 });
                 encounter.relationship.HasComponent.push(ar);
+
+                if(!comp.targetModel.tag || !comp.targetModel.tag.isBackEntry) {
+                    comp.targetModel.stopTime = null;
+                    comp.targetModel.actTime = comp.targetModel.startTime = encounter.startTime;
+                }
+
                 comp.targetModel.id = comp.targetModel.id || ar.target;
                 comp.targetModel.moodConcept = encounter.moodConcept;
                 delete comp.targetModel.moodConceptModel;

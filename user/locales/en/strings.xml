@@ -417,4 +417,5 @@
          <string name="ui.emr.observation.height.method">Method</string>
          <string name="ui.emr.observation.height.method.lying">Lying (Length)</string>
          <string name="ui.emr.observation.height.method.standing">Standing (Height)</string>
+
 </resources>
