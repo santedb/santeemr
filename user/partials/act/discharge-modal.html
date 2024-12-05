@@ -59,6 +59,7 @@
                                         <concept-select concept-set="'DischargeDisposition'" name="dischargeDisposition"
                                             required="required" class="form-control"
                                             ng-model="encounter.dischargeDisposition"
+                                            ng-change="encounter.dischargeDispositionModel = undefined"
                                             add-concepts="[ '6052712a-340e-4480-ad6b-409ba320db4f', '70fe34ce-caff-4f46-b6e6-9cd6d8f289d6' ]" />
                                         <div class="text-danger"
                                             ng-if="dischargeForm.dischargeDisposition.$error.required">

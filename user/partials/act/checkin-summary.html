@@ -17,7 +17,7 @@
             'fa-clock': item.flowConceptModel.mnemonic == 'EncounterState-WaitingSpecialist',
             'fa-exclamation' : ['EncounterState-CheckedIn','EncounterState-Observation','EncounterState-WaitingSpecialist'].indexOf(item.flowConceptModel.mnemonic) == -1
         }"></i>
-            {{ item.flowConceptModel | concept }} ( {{ item.creationTime | since }})
+            {{ item.flowConceptModel | concept }} ( {{ item.startTime | dateDiff: { prefix: 'ui.common.since' } }})
         </h5>
     </div>
     <div class="container-fluid d-none d-lg-block">

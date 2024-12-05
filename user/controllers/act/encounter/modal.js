@@ -228,6 +228,8 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
         try {
             SanteDB.display.buttonWait("#btnSubmit", true);
 
+            $scope.encounter.stopTime = new Date();
+            
             // Save the discharge
             var savedEncounter = await SanteEMR.saveVisitAsync($scope.encounter);
 

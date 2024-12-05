@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="EMR Concept Name Changes v3.0" xmlns="http://santedb.org/data">
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>9b2a42b0-8fbc-11ef-bd3e-07f2104ba275</id>
+      <source>a261f8cd-69b0-49aa-91f4-e6d3e5c612ed</source>
+      <language>en</language>
+      <value>Body Weight</value>
+    </ConceptName>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>9b275b54-8fbc-11ef-bd35-033242f8399c</id>
+      <source>850ca898-c656-4ba2-a7c1-ff74e3331396</source>
+      <language>en</language>
+      <value>Body Height (Standing)</value>
+    </ConceptName>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>9b2845a0-8fbc-11ef-bd38-db7c646cdac2</id>
+      <source>8d2e144b-d7bf-4c17-8916-25aff60bcb2f</source>
+      <language>en</language>
+      <value>Body Length (Lying Down)</value>
+    </ConceptName>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>93a0372a-8fbc-11ef-ab32-770527470b9d</id>
+      <source>ee99c69d-bfc4-4363-abec-28d8cbfe9976</source>
+      <language>en</language>
+      <value>Patient Left / Discontinued Care</value>
+    </ConceptName>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>93984e0c-8fbc-11ef-ab1c-33ff737a04fc</id>
+      <source>5a6d3db4-cb61-4608-a061-89592f539276</source>
+      <language>en</language>
+      <value>Admitted to this hospital</value>
+    </ConceptName>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>93998f24-8fbc-11ef-ab1f-73cb98203008</id>
+      <source>499f18c5-56c4-496e-9e23-e5cf862cfab8</source>
+      <language>en</language>
+      <value>Discharged Home (routine discharge)</value>
+    </ConceptName>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>939aa314-8fbc-11ef-ab22-ef595e5e13fc</id>
+      <source>01f28777-fc6c-40bd-a50b-e0c98d15892d</source>
+      <language>en</language>
+      <value>Transferred/Referred to Hospital for Inpatient Care</value>
+    </ConceptName>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>939ca588-8fbc-11ef-ab27-83c8b000ee99</id>
+      <source>7347937e-8d0e-43d7-92c0-b0a410173079</source>
+      <language>en</language>
+      <value>Transferred/Referred to Intermediate Care Facility (ICF)</value>
+    </ConceptName>
+  </update>
+
+  <update insertIfNotExists="true">
+    <ConceptName xmlns="http://santedb.org/model">
+      <id>939d7ce2-8fbc-11ef-ab2a-a7fdff9c79a4</id>
+      <source>1a117ead-3882-4692-9ecc-e660adbc6d8c</source>
+      <language>en</language>
+      <value>Transferred/Referred Another Facility (not listed here)</value>
+    </ConceptName>
+  </update>
+
+</dataset>
