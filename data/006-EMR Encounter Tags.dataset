@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<dataset xmlns="http://santedb.org/data" id="EMR Encounter Tags">
+<dataset xmlns="http://santedb.org/data" id="EMR Encounter Tags v3.4">
   <update insertIfNotExists="true">
     <ExtensionType xmlns="http://santedb.org/model">
       <id>CB08FF14-3DD8-40F9-869A-93C8127FC021</id>
@@ -32,6 +32,22 @@
         <value>Checked In</value>
       </name>
       <conceptSet>D46D45B3-4DB3-4641-ADFC-84A80B7D1637</conceptSet>
+      <relationship>
+        <targetConcept>1db6987b-9dbd-443c-b3d9-902625cf24b8</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>18e92034-43d5-477d-9748-1609099314df</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>f846ea88-49fa-451e-9804-e8c0f412360c</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>427650fc-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
     </Concept>
   </update>
 
@@ -47,6 +63,22 @@
         <value>Held for Observation</value>
       </name>
       <conceptSet>D46D45B3-4DB3-4641-ADFC-84A80B7D1637</conceptSet>
+      <relationship>
+        <targetConcept>1db6987b-9dbd-443c-b3d9-902625cf24b8</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>18e92034-43d5-477d-9748-1609099314df</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>f846ea88-49fa-451e-9804-e8c0f412360c</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>427650fc-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
     </Concept>
   </update>
 
@@ -62,6 +94,22 @@
         <value>Awaiting Specialist Care</value>
       </name>
       <conceptSet>D46D45B3-4DB3-4641-ADFC-84A80B7D1637</conceptSet>
+      <relationship>
+        <targetConcept>1db6987b-9dbd-443c-b3d9-902625cf24b8</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>18e92034-43d5-477d-9748-1609099314df</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>f846ea88-49fa-451e-9804-e8c0f412360c</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <targetConcept>427650fc-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
     </Concept>
   </update>
 
