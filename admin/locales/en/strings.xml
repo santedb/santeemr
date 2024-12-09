@@ -22,4 +22,19 @@
     <string name="ui.emr.matches.detail">Match Detail</string>
     <string name="ui.emr.matches.patient.a">Patient A</string>
     <string name="ui.emr.matches.patient.b">Patient B</string>
+
+    <!-- Flow -->
+    <string name="ui.emr.admin.visitTypes.title">Visit Types &amp; Flow</string>
+    <string name="ui.emr.admin.visitTypes.help"><![CDATA[ 
+    This screen allows you to edit the EMR visit types and the associated flow of those visit types. A visit type is a sub-classification of a visit used in SanteEMR and generally classifies 
+    the nature of a visit (example: Ambulatory, Outpatient, Pediatric, etc.). This is further specified by layering a template atop these classifications (example: type may be pediatric however
+    there may be templates for vaccination, growth, IMCI, etc.).
+    ]]></string>
+    <string name="ui.model.visitTypes.name">Name / Sub-Classification</string>
+    <string name="ui.model.visitTypes.mnemonic">Mnemonic</string>
+    <string name="ui.model.visitTypes.flow">Flow States</string>
+    <string name="ui.emr.admin.visitTypes.remove.confirm">Are you sure you want to remove this type of visit from your EMR installation?</string>
+    <string name="ui.emr.admin.visitTypes.remove.success">EMR visit type has been removed from iCDR</string>
+    <string name="ui.emr.admin.visitTypes.edit">Edit Visit Type</string>
+    <string name="ui.emr.admin.visitTypes.create">Create Visit Type</string>
 </resources>

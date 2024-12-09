@@ -77,7 +77,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
                 r.flowConceptModel = _loadedFlowStates[extensionValue] || await SanteDB.application.resolveReferenceExtensionAsync(extensionValue);
                 _loadedFlowStates[extensionValue] = r.flowConceptModel;
 
-                if (!$scope.filterFlow.find(f => f.id === extensionValue)) {
+                if (!$scope.filterFlow.find(f => f.id === extensionValue) && r.statusConcept != StatusKeys.Completed) {
                     $scope.filterFlow.push({
                         name: r.flowConceptModel.mnemonic,
                         id: extensionValue,
@@ -125,7 +125,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
     $scope.doFilterReleased = function (parm, index) {
         $("#actionList_1 button").removeClass("active");
         $scope.filterByFlowState = null;
-        if (!$scope.filterByReleaseState) {
+        if (!$scope.filterByActState) {
             $scope.filterByActState = StatusKeys.Completed;
             $scope.filterByActDate = ':(age)<1d';
             $($("#actionList_1 button")[index]).addClass("active");
@@ -162,5 +162,5 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
             action: $scope.doFilterReleased
         }
     ];
-    
+
 }])
