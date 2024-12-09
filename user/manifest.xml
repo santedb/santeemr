@@ -154,7 +154,7 @@
     <uuid>20691188-f1ca-4d06-90a4-8f857c293853</uuid>
   </template>
   <template mnemonic="org.santedb.emr.observation.height" public="true">
-    <definition>/org.santedb.emr/templates/act/observation/heightLying/definition.json</definition>
+    <definition>/org.santedb.emr/templates/act/observation/height/definition.json</definition>
     <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
     <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
     <form>/org.santedb.emr/templates/act/observation/height/form.html</form>

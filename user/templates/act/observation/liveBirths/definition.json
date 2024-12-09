@@ -9,5 +9,28 @@
     "typeConcept": "549070d0-1889-11eb-adc1-0242ac120002",
     "unitOfMeasure": "fea2cfb1-f231-413d-b113-372779092e56",
     "actTime": "{{ $now }}",
-    "value": 1
+    "value": 1,
+    "participation": {
+    "Location": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $facilityId }}"
+      }
+    ],
+    "Authororiginator": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $userEntityId }}"
+      }
+    ],
+    "RecordTarget": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $recordTargetId }}"
+      }
+    ]
+  }
   }
