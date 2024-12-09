@@ -5,7 +5,8 @@
             item.participation.Informant[0].playerModel.name | name }}<br />
             <small>{{ item.templateModel.mnemonic | i18n }} / {{ item.typeConceptModel | concept }}</small>
         </h5>
-        <h5 class="badge align-self-center m-0 p-2 text-uppercase" ng-class="{
+
+        <h5 ng-if="item.statusConcept !== 'afc33800-8225-4061-b168-bacc09cdbae3'" class="badge align-self-center m-0 p-2 text-uppercase" ng-class="{
             'badge-primary' : item.flowConceptModel.mnemonic == 'EncounterState-CheckedIn',
             'badge-success': item.flowConceptModel.mnemonic == 'EncounterState-Observation',
             'badge-warning': item.flowConceptModel.mnemonic == 'EncounterState-WaitingSpecialist',
@@ -18,6 +19,9 @@
             'fa-exclamation' : ['EncounterState-CheckedIn','EncounterState-Observation','EncounterState-WaitingSpecialist'].indexOf(item.flowConceptModel.mnemonic) == -1
         }"></i>
             {{ item.flowConceptModel | concept }} ( {{ item.startTime | dateDiff: { prefix: 'ui.common.since' } }})
+        </h5>
+        <h5 ng-if="item.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3'" class="badge align-self-center m-0 p-2 text-uppercase badge-dark">
+            <i class="fas fa-fw fa-person-walking-arrow-loop-left"></i> {{ 'ui.emr.encounter.waitingRoom.filter.released' | i18n }}
         </h5>
     </div>
     <div class="container-fluid d-none d-lg-block">
