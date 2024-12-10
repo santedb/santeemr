@@ -1,0 +1,79 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
+    <sdb:script static="false">~/controllers/templates/widgets.js</sdb:script>
+    <sdb:widget order="10" name="org.santedb.emr.admin.templates.properties.info" type="Panel" size="Large"
+        context="org.santedb.emr.admin.templates.properties">
+        <sdb:icon>fas fa-fw fa-bars</sdb:icon>
+        <sdb:views>
+            <sdb:view type="Edit" />
+        </sdb:views>
+    </sdb:widget>
+
+    <div ng-controller="ViewTemplatePropertiesController" class="container">
+        <div class="row">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.dataTemplateDefinition.mnemonic' | i18n }}
+            </label>
+            <div class="col-sm-12 col-md-9 pt-2">
+                <code>{{ scopedObject.mnemonic }}</code>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.dataTemplateDefinition.oid' | i18n }}
+            </label>
+            <div class="col-sm-12 col-md-9 pt-2">
+                {{ scopedObject.oid }}
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.dataTemplateDefinition.name' | i18n }}
+            </label>
+            <div class="col-sm-12 col-md-9 pt-2">
+                {{ scopedObject.name }}
+            </div>
+        </div>
+        <div class="row" ng-if="scopedObject.description">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.dataTemplateDefinition.description' | i18n }}
+            </label>
+            <div class="col-sm-12 col-md-9 pt-2">
+                <pre>{{ scopedObject.description }}</pre>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.dataTemplateDefinition.version' | i18n }}
+            </label>
+            <div class="col-sm-12 col-md-9 pt-2">
+                rev.{{ scopedObject.meta.version }} (<i class="fas fa-fw fa-clock"></i> {{
+                scopedObject.meta.lastModified | extDate }})
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.dataTemplateDefinition.author' | i18n }}
+            </label>
+            <div class="col-sm-12 col-md-9 pt-2">
+                <ul class="list-unstyled">
+                    <li ng-repeat="aut in scopedObject.meta.author track by $index">
+                        <i class="fas fa-fw fa-users"></i> {{ aut}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.dataTemplateDefinition.scope' | i18n }}
+            </label>
+            <div class="col-sm-12 col-md-9">
+                <ul class="list-group">
+                    <li class="list-group-item" ng-repeat="scp in scopedObject.scopeModel track by $index">
+                        {{ scp | concept }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+</div>

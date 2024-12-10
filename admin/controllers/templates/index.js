@@ -18,10 +18,88 @@ angular.module('santedb').controller("EmrTemplateIndexController", [ "$scope", "
         return retVal;
     }
 
+    $scope.renderName = function(tpl) {
+        if(tpl.meta) {
+            return `<i class="${tpl.meta.icon}"></i> ${tpl.name}`;
+        }
+        else {
+            return tpl.name;
+        }
+    }
+
+    $scope.renderVersion = function(tpl) {
+        if(tpl.meta) {
+            return tpl.meta.version;
+        }
+        return "1.0";
+    }
+
     $scope.renderViews = function(tpl) {
         if(tpl.views) {
-            return tpl.views.map(v=>`<span class='badge badge-info ml-2 p-1' style='border-radius: 0'><i class='far fa-fw fa-window-maximize'></i> ${v.type}</span>`).join(" ");
+            return tpl.views.map(v=>`<span class='badge badge-info ml-2 p-1' style='border-radius: 0'><i class='far fa-fw fa-window-maximize'></i> ${SanteDB.locale.getString("ui.model.dataTemplateDefinition.views." + v.type)}</span>`).join(" ");
         }
         return "";
+    }
+
+    $scope.downloadTemplate = function(id) {
+        var win = window.open(`/ami/DataTemplateDefinition/${id}?_download=true`, '_blank');
+        win.onload = function (e) {
+            win.close();
+        };
+    }
+
+    $scope.uploadTemplate = function() {
+        $("#uploadTemplateModal").modal('show');
+    }
+
+    $scope.removeTemplate = async function(id, idx) {
+        if(confirm(SanteDB.locale.getString("ui.emr.admin.templates.remove.confirm"))) {
+            try {
+                SanteDB.display.buttonWait(`#DataTemplateDefinitionremove${idx}`, true);
+
+                await SanteDB.resources.dataTemplateDefinition.deleteAsync(id);
+                toastr.success(SanteDB.locale.getString("ui.emr.admin.templates.remove.success"));
+                $("#templateTypeTable table").DataTable().draw();
+            }
+            catch(e) {
+                $rootScope.errorHandler(e);
+            }
+            finally{ 
+                SanteDB.display.buttonWait(`#DataTemplateDefinitionremove${idx}`, false);
+            }
+        }
+    }
+    $scope.doUploadTemplate = function(form) {
+        if(form.$invalid) return;
+
+        try {
+            SanteDB.display.buttonWait("#btnSubmit", true);
+            var file_data = $('#sourceFile').prop('files')[0];
+            var form_data = new FormData();
+            form_data.append('source', file_data);
+            $.ajax({
+                cache: false,
+                contentType: false,
+                processData: false,
+                method: 'POST',
+                url: "/ami/DataTemplateDefinition",
+                data: form_data,
+                success: function (data) {
+                    console.log('Success');
+                    toastr.success(SanteDB.locale.getString('ui.emr.admin.upload.success'));
+                    $("#templateTypeTable table").DataTable().draw();
+                    $("#uploadTemplateModal").modal('hide');
+                },
+                error: function (xhr, status, error) {
+                    SanteDB.display.buttonWait("#btnSubmit", false);
+                    $rootScope.errorHandler(JSON.parse(xhr.responseText));
+                }
+            });
+
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+        
     }
 }]);

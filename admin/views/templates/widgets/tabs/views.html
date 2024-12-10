@@ -1,0 +1,10 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
+    <sdb:script static="false">~/controllers/templates/widgets.js</sdb:script>
+    <sdb:widget order="200" name="org.santedb.emr.admin.templates.view" type="Tab" 
+        context="org.santedb.emr.admin.templates">
+        <sdb:icon>far fa-window-restore</sdb:icon>
+    </sdb:widget>
+
+    <widget-panels ng-if="scopedObject" context-name="'org.santedb.emr.admin.templates.view'" scoped-object="scopedObject" />
+
+</div>

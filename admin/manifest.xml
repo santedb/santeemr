@@ -55,13 +55,4 @@
     </menuItem>
   </menuItem>
 
-  <viewModel key="emr.duplicateRelationship">
-    <definition>/org.santedb.emr.admin/models/duplicate.xml</definition>
-  </viewModel>
-
-  <strings lang="en" extern="~/locales/en/strings.xml"/>
-  <strings lang="en-ca" extern="~/locales/en/strings.xml"/>
-  <strings lang="en-us" extern="~/locales/en/strings.xml"/>
-  <strings lang="en-gb" extern="~/locales/en/strings.xml"/>
-  <strings lang="en-iso" extern="~/locales/en/strings.xml"/>
 </AppletManifest>

@@ -1,0 +1,57 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script>~/controllers/templates/view.js</sdb:script>
+    <sdb:state name="santedb-admin.emr.templates.view" abstract="false">
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3</sdb:demand>
+        <sdb:url>/{id}</sdb:url>
+        <sdb:view>
+            <sdb:controller>EmrTemplateViewController</sdb:controller>
+            <sdb:title lang="en">View Template</sdb:title>
+        </sdb:view>
+    </sdb:state>
+
+    <div class="mb-1 scroll-sticky object-header">
+        <div class="card">
+            <div class="card-body" ng-if="!templateDefinition">
+                <i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+            </div>
+            <div class="card-body " ng-if="templateDefinition">
+                <div class="d-flex justify-content-between">
+                    <h5 class="m-0 flex-grow-1"><i ng-class="templateDefinition.meta.icon"></i> {{ templateDefinition.name }}
+                        <div class="d-inline btn-group">
+                            <button type="button" class="btn"
+                                ng-class="{'btn-primary active' : templateDefinition.active , 'btn-light' : !templateDefinition.active }"
+                                ng-click="setActive(true)">
+                                {{ 'ui.model.dataTemplateDefinition.status.active' | i18n }}
+                            </button>
+                            <button type="button" class="btn"
+                                ng-class="{'btn-primary active' : !templateDefinition.active , 'btn-light' : templateDefinition.active }"
+                                ng-click="setActive(false)">
+                                {{ 'ui.model.dataTemplateDefinition.status.inactive' | i18n }}
+                            </button>
+                            <a ng-if="download" type="button" demand="1.3.6.1.4.1.33349.3.1.5.9.2.500"
+                                href="/ami/DataTemplateDefinition/{{templateDefinition.id}}?_download=true"
+                                class="btn btn-info"><i class="fas fa-download"></i> {{
+                                'ui.action.download' | i18n }}</a>
+                        </div>
+                    </h5>
+                    <h5 class="m-auto">
+                        rev. {{ templateDefinition.meta.version }}
+                    </h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="p-2" ng-repeat="aut in templateDefinition.meta.author track by $index">
+                        <i class="fas fa-fw fa-users"></i> {{ aut }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-0 alert alert-secondary" ng-if="templateDefinition._checkedOut">
+            <i class="fas fa-lock"></i> {{ 'ui.notices.checkout' | i18n: { user:
+            templateDefinition._checkedOut } }}
+        </div>
+        <div class="m-0 alert alert-dark" ng-if="templateDefinition.isReadonly">
+            <i class="fas fa-exclamation-circle"></i> {{ 'ui.emr.admin.templates.readonlyWarning' | i18n }}
+        </div>
+    </div>
+    <widget-tabs ng-if="templateDefinition" context-name="'org.santedb.emr.admin.templates'" scoped-object="templateDefinition" />
+</div>

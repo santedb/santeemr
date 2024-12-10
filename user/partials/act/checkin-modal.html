@@ -105,7 +105,7 @@
                                     <div class="col-12">
                                         <entity-search ng-disabled="newAct.$startType !== 'manual'"
                                             ng-required="newAct.$startType === 'manual'" class="form-control"
-                                            type="'Template'" filter="{ scope : 'org.santedb.model.act' }"
+                                            type="'Template'" filter="{ scope :  [ 'org.santedb.model.act', '54b52119-1709-4098-8911-5df6d6c84140' ]  }"
                                             ng-model="newAct.template" name="template" search-field="'description'"
                                             key="'mnemonic'" js-filter="applyGuardExpression" />
                                         <div ng-if="checkinForm.template.$error.required" class="text-danger">

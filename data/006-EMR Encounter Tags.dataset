@@ -23,7 +23,6 @@
   <update insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
       <id>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</id>
-      <sequence xsi:nil="true" />
       <mnemonic>EncounterState-CheckedIn</mnemonic>
       <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
       <relationship>

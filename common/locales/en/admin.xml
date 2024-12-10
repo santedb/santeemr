@@ -48,5 +48,21 @@
     <string name="ui.emr.admin.templates.help"><![CDATA[In SanteEMR a clinical data template represents a binding between a data element in the <strong>Reference Information Model</strong> and the user interface. These templates are used to further 
         specify and render clinical data into the user interface. Where as a <strong>classification</strong> or <strong>type</strong> concept will be used in the database to identify a piece of information, the <strong>template</strong> lets 
         SanteEMR and SanteIMS to further distinguish how a piece of data will be rendered, and collected]]></string>
-    
+    <string name="ui.emr.admin.templates.upload.title">Upload Clinical Template</string>
+    <string name="ui.emr.admin.templates.upload.help"><![CDATA[ 
+        This dialog will allow you to submit a new clinical template definition file which was exported from another SanteDB server or provided by your 
+        system application developer. <strong>Note:</strong> Readonly template definitions cannot be uploaded or modified
+    ]]></string>
+    <string name="ui.emr.admin.templates.upload.file">Template File</string>
+    <string name="ui.emr.admin.templates.upload.file.hint">Select the template definition file and press upload.</string>
+    <string name="ui.emr.admin.templates.upload.success">Definition file has been uploaded successfully</string>
+    <string name="ui.emr.admin.templates.remove.confirm">Are you sure you want to remove the template definition?</string>
+    <string name="ui.emr.admin.templates.remove.success">The clinical template definition has been removed</string>
+    <string name="ui.emr.admin.templates.readonlyWarning">This clinical template is readonly and cannot be modified</string>
+    <string name="ui.emr.admin.templates.cannotEdit">This data points to a resource contained in an applet. Unfortunately, this means that this template content cannot be edited in the user interface, and instead should be edited in the applet</string>
+    <string name="org.santedb.emr.admin.templates.properties">Template Properties</string>
+    <string name="org.santedb.emr.admin.templates.view">Views / Forms</string>
+    <string name="org.santedb.emr.admin.templates.model">Model / Template</string>
+    <string name="org.santedb.emr.admin.templates.properties.info">Template Properties &amp; Settings</string>
+    <string name="org.santedb.emr.admin.templates.model.edit">RIM Template</string>
 </resources>
