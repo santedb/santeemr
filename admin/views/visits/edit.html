@@ -29,11 +29,6 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
             <sdb:title lang="en">Edit Visit Type</sdb:title>
         </sdb:view>
     </sdb:state>
-    <div ng-if="!visitType">
-        <i class="fas fa-fw fa-spin fa-circle-notch"></i> {{ 'ui.wait' | i18n }}
-    </div>
-    <div ng-if="visitType">
-        <h5>{{ 'ui.emr.admin.visitTypes.edit' | i18n }} - {{ visitType.conceptModel | concept }}</h5>
-        <!-- #include virtual="~/views/visits/partials/form.html" -->
-    </div>
+    <h5>{{ 'ui.emr.admin.visitTypes.edit' | i18n }} - {{ visitType.conceptModel | concept }}</h5>
+    <!-- #include virtual="~/views/visits/partials/form.html" -->
 </div>
