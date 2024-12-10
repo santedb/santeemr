@@ -56,7 +56,6 @@ angular.module('santedb').controller('EmrEditVisitTypesController', ["$scope", "
             $scope.visitType.flowStates.forEach(state => {
 
                 var targets = [];
-
                 var stateData = _refStates[state.id];
                 if (stateData.relationship && stateData.relationship.StateFlow) {
                     targets = stateData.relationship
@@ -67,11 +66,23 @@ angular.module('santedb').controller('EmrEditVisitTypesController', ["$scope", "
                 else {
                     targets = ['[*]']; // terminal
                 }
-
                 var fromId = tMap.indexOf(SanteDB.display.renderConcept(state));
                 targets.forEach(t => mermaidStr += `\t${fromId} --> ${t}\r\n`);
-
             });
+
+            // Add start / terminal states
+            tMap.forEach((t,i) => {
+                var isTerminal = mermaidStr.indexOf(`${i} -->`) == -1; // Goes to no state
+                var isStart = mermaidStr.indexOf(`--> ${i}`) == -1; // Comes from no state
+                if(isStart) // Start state
+                {
+                    mermaidStr += `\t[*] --> ${i}\r\n`;
+                }
+                if(isTerminal) // terminal state
+                {
+                    mermaidStr += `\t${i} --> [*]\r\n`;
+                }
+            })
             console.info(mermaidStr);
             mermaid.mermaidAPI.render("stateDiagram", mermaidStr, (svg) => {
                 $("#stateDiagramSvg").html(svg);

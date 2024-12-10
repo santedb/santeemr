@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <dataset xmlns="http://santedb.org/data" id="EMR Encounter Tags v3.4">
   <update insertIfNotExists="true">
     <ExtensionType xmlns="http://santedb.org/model">
@@ -22,32 +22,67 @@
 
   <update insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
-      <id>A63E9BCC-BE32-4EA6-A43F-1F3C771114D4</id>
-      <isReadonly>false</isReadonly>
+      <id>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</id>
+      <sequence xsi:nil="true" />
       <mnemonic>EncounterState-CheckedIn</mnemonic>
       <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
-      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
-      <name>
-        <language>en</language>
-        <value>Checked In</value>
-      </name>
-      <conceptSet>D46D45B3-4DB3-4641-ADFC-84A80B7D1637</conceptSet>
       <relationship>
+        <id>481e4dfd-ae82-11ef-b9b2-a7414a07ee16</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
         <targetConcept>1db6987b-9dbd-443c-b3d9-902625cf24b8</targetConcept>
         <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
       </relationship>
       <relationship>
+        <id>481e4dfe-ae82-11ef-b9b3-3bd90e22e899</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
         <targetConcept>18e92034-43d5-477d-9748-1609099314df</targetConcept>
         <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
       </relationship>
       <relationship>
+        <id>481e4dff-ae82-11ef-b9b4-c39283069dd6</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
         <targetConcept>f846ea88-49fa-451e-9804-e8c0f412360c</targetConcept>
         <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
       </relationship>
       <relationship>
+        <id>481e4e00-ae82-11ef-b9b5-8fb4de0d2cc1</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
         <targetConcept>427650fc-17be-11eb-adc1-0242ac120002</targetConcept>
         <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
       </relationship>
+      <relationship>
+        <id>6daf231c-b70a-11ef-8ca3-73aab018c440</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
+        <targetConcept>6cec1ca3-9e06-45fc-bcf5-b641bf397399</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>7bb76140-b70a-11ef-9ea4-d7edda2f8dd1</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
+        <targetConcept>2a205838-8e40-461f-b65f-96d2d6f02836</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>52df325c-a693-11ef-a809-13340483201a</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
+        <targetConcept>f5201716-8aa2-4bb9-b574-763e87e3372d</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+     
+      <relationship>
+        <id>74fb7c1a-b70a-11ef-9a2d-478a61d1703c</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
+        <targetConcept>cf3917a1-c77f-4537-9f22-6082c90310d9</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>481e4dfc-ae82-11ef-b9b1-6701dd942494</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
+        <language>en</language>
+        <value>Checked In</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
     </Concept>
   </update>
 
@@ -113,4 +148,243 @@
     </Concept>
   </update>
 
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>3708d2c4-12b1-4446-81a7-a5562bbd2270</id>
+      <mnemonic>EncounterState-Recovery</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <relationship>
+        <id>a437ba22-b708-11ef-a8e8-a37053069a98</id>
+        <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
+        <targetConcept>427654b2-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>b5196200-b708-11ef-a8e9-dfebb8c3089c</id>
+        <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
+        <targetConcept>42765002-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>be583c06-b708-11ef-81ec-ef89aa9cd2e5</id>
+        <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
+        <targetConcept>e43326c2-5daa-4872-ad58-75f0f9ba52ae</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>c7baeba4-b708-11ef-9b21-83938d52f70b</id>
+        <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
+        <targetConcept>aedf62bb-48f5-437e-914d-36e0cd57b8f8</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>2bd99626-b709-11ef-8422-ab8ecdd234be</id>
+        <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
+        <targetConcept>f5201716-8aa2-4bb9-b574-763e87e3372d</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>982e29dc-b708-11ef-8421-d7a98bd351fc</id>
+        <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
+        <language>en</language>
+        <value>In Recovery Ward</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
+    </Concept>
+  </update>
+
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>41148b51-16ef-4212-b0ae-d83f8901c2e4</id>
+      <mnemonic>EncoutnerState-UnderProcedure</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <relationship>
+        <id>9f20fe9e-b709-11ef-aa5e-07266f99d923</id>
+        <source>41148b51-16ef-4212-b0ae-d83f8901c2e4</source>
+        <targetConcept>42765002-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>b5c9dfc6-b709-11ef-8f2e-9b4f3d12de9e</id>
+        <source>41148b51-16ef-4212-b0ae-d83f8901c2e4</source>
+        <targetConcept>aedf62bb-48f5-437e-914d-36e0cd57b8f8</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>90085010-b709-11ef-b767-5bd43cddf711</id>
+        <source>41148b51-16ef-4212-b0ae-d83f8901c2e4</source>
+        <targetConcept>427654b2-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>a5313ab0-b709-11ef-8821-5b10ee694963</id>
+        <source>41148b51-16ef-4212-b0ae-d83f8901c2e4</source>
+        <targetConcept>3708d2c4-12b1-4446-81a7-a5562bbd2270</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>c30298ae-b709-11ef-8fdf-23c2a845b51a</id>
+        <source>41148b51-16ef-4212-b0ae-d83f8901c2e4</source>
+        <targetConcept>e43326c2-5daa-4872-ad58-75f0f9ba52ae</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>6796113a-b709-11ef-8423-d38685fafab1</id>
+        <source>41148b51-16ef-4212-b0ae-d83f8901c2e4</source>
+        <language>en</language>
+        <value>In Procedure/Operating Room</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
+    </Concept>
+  </update>
+
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>2a205838-8e40-461f-b65f-96d2d6f02836</id>
+      <mnemonic>EncounterState-WaitingProcedure</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <relationship>
+        <id>2d19cbc4-b708-11ef-96d9-cfbcf1177821</id>
+        <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
+        <targetConcept>42765002-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>7978edf0-b709-11ef-9422-4bcbc73b4682</id>
+        <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
+        <targetConcept>41148b51-16ef-4212-b0ae-d83f8901c2e4</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>880e222c-b709-11ef-8f2c-2741592eff5c</id>
+        <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
+        <targetConcept>3708d2c4-12b1-4446-81a7-a5562bbd2270</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>3732cf0c-b708-11ef-9b1e-8b3442784855</id>
+        <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
+        <targetConcept>427654b2-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>81ee803a-b709-11ef-8fde-777b4431d788</id>
+        <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
+        <targetConcept>aedf62bb-48f5-437e-914d-36e0cd57b8f8</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>cacea44c-b709-11ef-8822-d3fcc8d8af11</id>
+        <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
+        <targetConcept>e43326c2-5daa-4872-ad58-75f0f9ba52ae</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>e5c7823e-b707-11ef-afe4-779ad12006fd</id>
+        <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
+        <language>en</language>
+        <value>Awaiting Procedure</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
+    </Concept>
+  </update>
+
+    <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>e43326c2-5daa-4872-ad58-75f0f9ba52ae</id>
+      <mnemonic>EncounterState-WaitingDischarge</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <relationship>
+        <id>60384f80-b708-11ef-96da-ff221c052735</id>
+        <source>e43326c2-5daa-4872-ad58-75f0f9ba52ae</source>
+        <targetConcept>427654b2-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>664e412c-b708-11ef-81eb-933e8143a10f</id>
+        <source>e43326c2-5daa-4872-ad58-75f0f9ba52ae</source>
+        <targetConcept>42765002-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>d973b156-b707-11ef-94d0-47009277040f</id>
+        <source>e43326c2-5daa-4872-ad58-75f0f9ba52ae</source>
+        <language>en</language>
+        <value>Awaiting Discharge</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
+    </Concept>
+  </update>
+
+    <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>6cec1ca3-9e06-45fc-bcf5-b641bf397399</id>
+      <mnemonic>EncounterState-WaitingBed</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <relationship>
+        <id>713d555a-b708-11ef-96db-ef3829008405</id>
+        <source>6cec1ca3-9e06-45fc-bcf5-b641bf397399</source>
+        <targetConcept>427654b2-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>8c197bec-b708-11ef-954c-b70c1c4f1dc9</id>
+        <source>6cec1ca3-9e06-45fc-bcf5-b641bf397399</source>
+        <targetConcept>cf3917a1-c77f-4537-9f22-6082c90310d9</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>cefaae32-b707-11ef-b412-8f9080853cab</id>
+        <source>6cec1ca3-9e06-45fc-bcf5-b641bf397399</source>
+        <language>en</language>
+        <value>Awaiting Bed</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
+    </Concept>
+  </update>
+
+    <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>cf3917a1-c77f-4537-9f22-6082c90310d9</id>
+      <mnemonic>EncounterState-InWard</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <relationship>
+        <id>1dcc217e-b70a-11ef-8f2f-23c6d8a1bf57</id>
+        <source>cf3917a1-c77f-4537-9f22-6082c90310d9</source>
+        <targetConcept>427654b2-17be-11eb-adc1-0242ac120002</targetConcept>
+        <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+      </relationship>
+      <relationship>
+        <id>30f605c6-b70a-11ef-8f30-33f0337e391d</id>
+        <source>cf3917a1-c77f-4537-9f22-6082c90310d9</source>
+        <targetConcept>2a205838-8e40-461f-b65f-96d2d6f02836</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>23ad05b8-b70a-11ef-b769-9f7224623adc</id>
+        <source>cf3917a1-c77f-4537-9f22-6082c90310d9</source>
+        <targetConcept>e43326c2-5daa-4872-ad58-75f0f9ba52ae</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>2afaa118-b70a-11ef-b76a-675ffa5e4e93</id>
+        <source>cf3917a1-c77f-4537-9f22-6082c90310d9</source>
+        <targetConcept>f5201716-8aa2-4bb9-b574-763e87e3372d</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>814f03a8-b708-11ef-9b20-1342a2771dfc</id>
+        <source>cf3917a1-c77f-4537-9f22-6082c90310d9</source>
+        <language>en</language>
+        <value>In Patient Care Ward</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
+    </Concept>
+  </update>
 </dataset>

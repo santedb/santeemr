@@ -29,6 +29,12 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
             <sdb:title lang="en">Edit Visit Type</sdb:title>
         </sdb:view>
     </sdb:state>
-    <h5>{{ 'ui.emr.admin.visitTypes.edit' | i18n }} - {{ visitType.conceptModel | concept }}</h5>
-    <!-- #include virtual="~/views/visits/partials/form.html" -->
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h5>{{ 'ui.emr.admin.visitTypes.edit' | i18n }} - {{ visitType.conceptModel | concept }}</h5>
+            </div>
+        </div>
+        <!-- #include virtual="~/views/visits/partials/form.html" -->
+    </div>
 </div>

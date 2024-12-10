@@ -37,4 +37,16 @@
     <string name="ui.emr.admin.visitTypes.remove.success">EMR visit type has been removed from iCDR</string>
     <string name="ui.emr.admin.visitTypes.edit">Edit Visit Type</string>
     <string name="ui.emr.admin.visitTypes.create">Create Visit Type</string>
+    <string name="ui.emr.admin.visitTypes.concept">Classifcation Concept</string>
+    <string name="ui.emr.admin.visitTypes.concept.hint">Select the classification concept that the flow and visit type is bound to. You can use the Concept Dictionary screen to create new concepts</string>
+    <string name="ui.emr.admin.visitTypes.flowStates">Visit Flow</string>
+    <string name="ui.emr.admin.visitTypes.flowStates.hint">Configure the flow of a person undertaking this visit will undergo</string>
+    <string name="ui.emr.admin.visitTypes.stateDiagram">Flow Diagram</string>
+    <string name="ui.emr.admin.visits.removeState">Are you sure you want to remove this flow state?</string>
+    <!-- Templates -->
+    <string name="ui.emr.admin.templates.title">Clinical Data Templates</string>
+    <string name="ui.emr.admin.templates.help"><![CDATA[In SanteEMR a clinical data template represents a binding between a data element in the <strong>Reference Information Model</strong> and the user interface. These templates are used to further 
+        specify and render clinical data into the user interface. Where as a <strong>classification</strong> or <strong>type</strong> concept will be used in the database to identify a piece of information, the <strong>template</strong> lets 
+        SanteEMR and SanteIMS to further distinguish how a piece of data will be rendered, and collected]]></string>
+    
 </resources>
