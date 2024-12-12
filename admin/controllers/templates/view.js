@@ -32,6 +32,9 @@ angular.module('santedb').controller("EmrTemplateViewController", ["$scope", "$r
                     }
                 }));
             }
+            else {
+                definition.scopes = [];
+            }
             $timeout(() => $scope.templateDefinition = definition);
         }
         catch (e) {
@@ -39,6 +42,7 @@ angular.module('santedb').controller("EmrTemplateViewController", ["$scope", "$r
         }
     }
 
+    $scope.loadTemplate = initializeView;
     initializeView($stateParams.id);
 
     $scope.setActive = async function (state) {
@@ -59,8 +63,8 @@ angular.module('santedb').controller("EmrTemplateViewController", ["$scope", "$r
             });
 
             var result = await SanteDB.resources.dataTemplateDefinition.patchAsync($scope.templateDefinition.id, null, patch);
-
             $timeout(() => $scope.templateDefinition.active = state);
+            toastr.success(SanteDB.locale.getString("org.santedb.emr.admin.templates.save.success"));
         }
         catch (e) {
             $rootScope.errorHandler(e);

@@ -1,59 +1,94 @@
-angular.module('santedb').controller("EmrTemplateIndexController", [ "$scope", "$rootScope", "$state", "$timeout", function($scope, $rootScope, $state, $timeout) {
+angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$rootScope", "$state", "$timeout", function ($scope, $rootScope, $state, $timeout) {
 
-    $scope.renderStatus = function(tpl) {
+    $scope.renderStatus = function (tpl) {
         var retVal = "";
-        if(tpl.active) {
+        if (tpl.active) {
             retVal += "<span class='badge badge-success'><i class='fas fa-fw fa-check-circle'></i> {{ 'ui.model.dataTemplateDefinition.status.active' | i18n }}</span>";
         } else {
             retVal += "<span class='badge badge-danger'><i class='fas fa-fw fa-times-circle'></i> {{ 'ui.model.dataTemplateDefinition.status.inactive' | i18n }}</span>";
         }
 
-        if(tpl.isReadonly) {
+        if (tpl.isReadonly) {
             retVal += "<span class='ml-2 badge badge-dark'><i class='fas fa-fw fa-lock'></i> {{ 'ui.model.dataTemplateDefinition.status.readonly' | i18n }}</span>";
         }
 
-        if(tpl.public) {
+        if (tpl.public) {
             retVal += "<span class='ml-2 badge badge-primary'><i class='fas fa-fw fa-list'></i> {{ 'ui.model.dataTemplateDefinition.status.public' | i18n }}</span>";
         }
         return retVal;
     }
 
-    $scope.renderName = function(tpl) {
-        if(tpl.meta) {
-            return `<i class="${tpl.meta.icon}"></i> ${tpl.name}`;
+    $scope.renderName = function (tpl) {
+        if (tpl.meta) {
+            return `<i class="${tpl.icon}"></i> ${tpl.name}`;
         }
         else {
             return tpl.name;
         }
     }
 
-    $scope.renderVersion = function(tpl) {
-        if(tpl.meta) {
-            return tpl.meta.version;
+    $scope.renderVersion = function (tpl) {
+        if (tpl.meta) {
+            return tpl.version;
         }
         return "1.0";
     }
 
-    $scope.renderViews = function(tpl) {
-        if(tpl.views) {
-            return tpl.views.map(v=>`<span class='badge badge-info ml-2 p-1' style='border-radius: 0'><i class='far fa-fw fa-window-maximize'></i> ${SanteDB.locale.getString("ui.model.dataTemplateDefinition.views." + v.type)}</span>`).join(" ");
+    $scope.renderViews = function (tpl) {
+        if (tpl.views) {
+            return tpl.views.map(v => `<span class='badge badge-info ml-2 p-1' style='border-radius: 0'><i class='far fa-fw fa-window-maximize'></i> ${SanteDB.locale.getString("ui.model.dataTemplateDefinition.views." + v.type)}</span>`).join(" ");
         }
         return "";
     }
 
-    $scope.downloadTemplate = function(id) {
+    $scope.downloadTemplate = function (id) {
         var win = window.open(`/ami/DataTemplateDefinition/${id}?_download=true`, '_blank');
         win.onload = function (e) {
             win.close();
         };
     }
 
-    $scope.uploadTemplate = function() {
+    $scope.uploadTemplate = function () {
         $("#uploadTemplateModal").modal('show');
     }
 
-    $scope.removeTemplate = async function(id, idx) {
-        if(confirm(SanteDB.locale.getString("ui.emr.admin.templates.remove.confirm"))) {
+    $scope.toggleActive = async function (id, idx) {
+        var data = $("#templateTypeTable table").DataTable().row(idx).data();
+        if (confirm(SanteDB.locale.getString("org.santedb.emr.admin.templates.toggle.confirm"))) {
+            try {
+                SanteDB.display.buttonWait(`#DataTemplateDefinitionenable${idx}`, true);
+                SanteDB.display.buttonWait(`#DataTemplateDefinitiondisable${idx}`, true);
+
+                var patch = new Patch({
+                    appliesTo: {
+                        type: "DataTemplateDefinition",
+                        id: id
+                    },
+                    change: [
+                        {
+                            op: PatchOperationType.Replace,
+                            path: "active",
+                            value: !data.active
+                        }
+                    ]
+                });
+
+                await SanteDB.resources.dataTemplateDefinition.patchAsync(id, null, patch);
+                toastr.success(SanteDB.locale.getString("org.santedb.emr.admin.templates.save.success"));
+                $("#templateTypeTable table").DataTable().draw();
+            }
+            catch (e) {
+                $rootScope.errorHandler(e);
+            }
+            finally {
+                SanteDB.display.buttonWait(`#DataTemplateDefinitionenable${idx}`, false);
+                SanteDB.display.buttonWait(`#DataTemplateDefinitiondisable${idx}`, false);
+            }
+        }
+    }
+
+    $scope.removeTemplate = async function (id, idx) {
+        if (confirm(SanteDB.locale.getString("ui.emr.admin.templates.remove.confirm"))) {
             try {
                 SanteDB.display.buttonWait(`#DataTemplateDefinitionremove${idx}`, true);
 
@@ -61,16 +96,16 @@ angular.module('santedb').controller("EmrTemplateIndexController", [ "$scope", "
                 toastr.success(SanteDB.locale.getString("ui.emr.admin.templates.remove.success"));
                 $("#templateTypeTable table").DataTable().draw();
             }
-            catch(e) {
+            catch (e) {
                 $rootScope.errorHandler(e);
             }
-            finally{ 
+            finally {
                 SanteDB.display.buttonWait(`#DataTemplateDefinitionremove${idx}`, false);
             }
         }
     }
-    $scope.doUploadTemplate = function(form) {
-        if(form.$invalid) return;
+    $scope.doUploadTemplate = function (form) {
+        if (form.$invalid) return;
 
         try {
             SanteDB.display.buttonWait("#btnSubmit", true);
@@ -97,9 +132,9 @@ angular.module('santedb').controller("EmrTemplateIndexController", [ "$scope", "
             });
 
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
-        
+
     }
 }]);

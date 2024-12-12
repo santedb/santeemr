@@ -16,7 +16,7 @@
             </div>
             <div class="card-body " ng-if="templateDefinition">
                 <div class="d-flex justify-content-between">
-                    <h5 class="m-0 flex-grow-1"><i ng-class="templateDefinition.meta.icon"></i> {{ templateDefinition.name }}
+                    <h5 class="m-0 flex-grow-1"><i ng-class="templateDefinition.icon"></i> {{ templateDefinition.name }}
                         <div class="d-inline btn-group">
                             <button type="button" class="btn"
                                 ng-class="{'btn-primary active' : templateDefinition.active , 'btn-light' : !templateDefinition.active }"
@@ -35,11 +35,11 @@
                         </div>
                     </h5>
                     <h5 class="m-auto">
-                        rev. {{ templateDefinition.meta.version }}
+                        rev. {{ templateDefinition.version }}
                     </h5>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <div class="p-2" ng-repeat="aut in templateDefinition.meta.author track by $index">
+                    <div class="p-2" ng-repeat="aut in templateDefinition.author track by $index">
                         <i class="fas fa-fw fa-users"></i> {{ aut }}
                     </div>
                 </div>

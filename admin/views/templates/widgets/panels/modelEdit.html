@@ -5,7 +5,7 @@
         <sdb:icon>fas fa-fw fa-code</sdb:icon>
         <sdb:views>
             <sdb:view type="Edit">
-                <sdb:guard>scopedObject.template.type !== 'reference'</sdb:guard>
+                <sdb:guard>scopedObject.template.type !== 'reference' &amp;&amp; !scopedObject.isReadonly</sdb:guard>
             </sdb:view>
         </sdb:views>
     </sdb:widget>
