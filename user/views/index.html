@@ -252,8 +252,8 @@
                                 </span>
                             </button>
                         </div>
-                        <div>
-                            <breadcrumbs />
+                        <div ng-if="$root.refValues.facilityName">
+                            <breadcrumbs root-node="{ title: $root.refValues.facilityName, state: 'santedb-emr.dashboard' }" />
                         </div>
                     </div>
                 </div>
@@ -283,13 +283,8 @@
                     </span>
                     <span class="badge badge-pill badge-danger" ng-if="!$root.system.online">
                         {{ 'ui.state.offline' | i18n }}
-                    </span> |
-                    <span class="badge badge-pill badge-success" ng-show="queue.dead == 0">
-                        <i class="fas fa-check-circle"></i> {{ 'ui.sync.clear' | i18n }}
                     </span>
-                    <span class="badge badge-pill badge-danger" ng-show="queue.dead > 0">
-                            <i class="fas fa-exclamation-circle"></i> {{ 'ui.sync.conflict' | i18n }}
-                    </span>
+                   
                 </small>
             </div>
         </div>

@@ -31,10 +31,15 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             $rootScope.refValues = {};
             var templates = await SanteDB.application.getTemplateDefinitionsAsync();
             var familialRelationships = await SanteDB.resources.conceptSet.invokeOperationAsync(null, "expand", { "_mnemonic" : "FamilyMember" });
+            var myFacility = await SanteDB.resources.place.getAsync(await SanteDB.authentication.getCurrentFacilityId(), "min");
             $timeout(() => {
                 $rootScope.refValues.FamilyMember = familialRelationships.resource.map(o=>o.mnemonic);
                 $rootScope.refValues.templates = templates;
+                $rootScope.refValues.facilityName = SanteDB.display.renderEntityName(myFacility.name);
+                $rootScope.refValues.facility = myFacility;
             });
+
+
         }
         catch(e) {
             console.warn("Could not load reference values");
