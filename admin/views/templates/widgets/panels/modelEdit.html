@@ -1,5 +1,8 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
     <sdb:script static="false">~/controllers/templates/widgets.js</sdb:script>
+    <sdb:script static="true">/org.santedb.admin/lib/ace/ace.min.js</sdb:script>
+    <sdb:script static="false">~/controllers/templates/rimEditor.js</sdb:script>
+    <sdb:script static="false">/org.santedb.admin/lib/ace/ext-language_tools.js</sdb:script>
     <sdb:widget order="10" name="org.santedb.emr.admin.templates.model.edit" type="Panel" size="Large"
         context="org.santedb.emr.admin.templates.model">
         <sdb:icon>fas fa-fw fa-code</sdb:icon>
@@ -37,5 +40,20 @@
                 </div>
             </div>
         </div>
+        <form ng-if="panel.view === 'Edit'" name="panel.editForm" ng-submit="saveTemplateDefinition(panel.editForm)"
+            novalidate="novalidate">
+            <div id="modelEditor" style="height: calc(100vh - 200px); max-height:calc(100vh - 200px)">
+            </div>
+            <div class="w-100 alert-info">
+                <h5 class="p-1 m-0"><i class="fas fa-tasks fa-fw"></i> {{ 'ui.admin.emr.model.edit.errorList' | i18n }}
+                </h5>
+            </div>
+            <ul class="list-unstyled" style="max-height:10vh; overflow-y: scroll; height:10vh">
+                <li ng-click="gotoIssue(iss)" ng-repeat="iss in validationIssues"><i class="fas"
+                        ng-class="{ 'text-danger fa-times-square': iss.type == 'error', 'text-warning fa-exclamation-triangle' : iss.type == 'warning', 'text-primary fa-info-circle' : iss.type == 'info' }"></i>
+                    {{ iss.type }} - {{ iss.text }} @ {{iss.row + 1}}:{{iss.column}}</li>
+            </ul>
+
+        </form>
     </div>
 </div>
