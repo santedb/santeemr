@@ -30,8 +30,8 @@
                     <ul class="list-group">
                         <li class="list-group-item list-group-item-info"
                             ng-if="scopedObject.template.type == 'reference'">
-                            <a href="{{ scopedObject.template.template }}" target="_blank"><i
-                                    class="fas fa-fw fa-file"></i> {{ scopedObject.template.template }}</a>
+                            <a href="{{ scopedObject.template.content }}" target="_blank"><i
+                                    class="fas fa-fw fa-file"></i> {{ scopedObject.template.content }}</a>
                         </li>
                         <li class="list-group-item">
                             <object-tree object="scopedObject.templateJson" />
@@ -45,7 +45,7 @@
             <div id="modelEditor" style="height: calc(100vh - 200px); max-height:calc(100vh - 200px)">
             </div>
             <div class="w-100 alert-info">
-                <h5 class="p-1 m-0"><i class="fas fa-tasks fa-fw"></i> {{ 'ui.admin.emr.model.edit.errorList' | i18n }}
+                <h5 class="p-1 m-0"><i class="fas fa-tasks fa-fw"></i> {{ 'ui.admin.emr.templates.model.edit.errorList' | i18n }}
                 </h5>
             </div>
             <ul class="list-unstyled" style="max-height:10vh; overflow-y: scroll; height:10vh">

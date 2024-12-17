@@ -1,0 +1,80 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
+    <sdb:script static="false">~/controllers/templates/widgets.js</sdb:script>
+    <sdb:script static="true">/org.santedb.admin/lib/ace/ace.min.js</sdb:script>
+    <sdb:script static="false">~/controllers/templates/rimEditor.js</sdb:script>
+    <sdb:script static="false">/org.santedb.admin/lib/ace/ext-language_tools.js</sdb:script>
+    <sdb:widget order="10" name="org.santedb.emr.admin.templates.view.edit" type="Panel" size="Large"
+        context="org.santedb.emr.admin.templates.view">
+        <sdb:icon>far fa-fw fa-window-restore</sdb:icon>
+        <sdb:views>
+            <sdb:view type="Edit">
+                <sdb:guard>!scopedObject.isReadonly</sdb:guard>
+            </sdb:view>
+        </sdb:views>
+    </sdb:widget>
+
+    <div ng-controller="EmrEditTemplateViewController">
+        <div class="accordion" id="viewAccordion" ng-if="panel.view !== 'Edit'">
+            <div ng-if="!scopedObject.views" class="alert alert-primary">
+                <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.emr.admin.templates.view.noViews' | i18n}}
+            </div>
+            <div class="card" ng-repeat="view in scopedObject.views track by $index">
+                <div class="card-header ">
+                    <h5 class="card-title">
+                        <button type="button" class="collapse-indicator btn btn-link p-0" data-toggle="collapse"
+                            data-target="#view{{$index}}Collapse" aria-expanded="false">
+                            <i class="far fa-fw fa-window-maximize"></i> {{ view.type }}
+                            <i class="fa fa-chevron-right"></i>
+                        </button>
+                    </h5>
+                </div>
+                <div class="collapse" ng-class="{ 'show' : $index === 0 }" data-parent="#viewAccordion" id="view{{$index}}Collapse">
+                    <div class="card-body" ng-switch="view.contentType" ng-init="act = scopedObject.filledJson">
+                        <div ng-switch-when="ref">
+                            <div class="card">
+                                <div class="card-header alert-info p-1">
+                                    <a href="{{view.content}}" target="_blank"><i class="fas fa-fw fa-file"></i> {{ view.content }}</a>
+                                </div>
+                                <div class="card-body">
+                                    <ng-include src="view.content" />
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-switch-when="div">
+                            <div class="card">
+                                <div class="card-body" ng-bind-html="view.content">
+                                </div>
+                            </div>
+                        </div>
+                        <div ng-switch-default="default">
+                            DEFAULT
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form name="panel.editForm" ng-submit="saveTemplateDefinition(panel.editForm)" ng-if="panel.view === 'Edit'"
+         novalidate="novalidate">
+            <ul class="nav nav-tabs" role="tablist" id="formViews">
+                <li class="nav-item" ng-class="{ 'active' : $index === 0 }" role="presentation" ng-repeat="view in scopedObject.views track by $index">
+                    <a class="nav-link active" href="javascript:" data-target="#view{{view.type}}" data-toggle="tab">
+                        <i class="far fa-fw fa-window-maximize"></i> {{ view.type }}
+                    </a>
+                </li>
+                <li class="nav-item" ng-class="{ 'active' : !scopedObject.views }" role="presentation" ng-if="scopedObject.views.length !== 4">
+                    <a class="nav-link active" href="javascript:" data-target="#newView" data-toggle="tab">
+                        <i class="fas fa-fw fa-asterisk"></i> {{ 'ui.action.new' | i18n }}
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-panel content-fluid" ng-class="{ 'active' : !scopedObject.views  }">
+                    <label class="col-sm-12 col-md-3 control-label">
+                        {{ 'ui.emr.admin.templates'}}
+                    </label>
+                </div>
+                <div class="tab-pane" role="tab" id="view{{view.type}}" ng-repeat="view in scopedObject.views track by $index"></div>
+            </div>
+        </form>
+    </div>
+</div>

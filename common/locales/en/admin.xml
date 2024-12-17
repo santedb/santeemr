@@ -65,6 +65,9 @@
     <string name="org.santedb.emr.admin.templates.model">Model / Template</string>
     <string name="org.santedb.emr.admin.templates.properties.info">Template Properties &amp; Settings</string>
     <string name="org.santedb.emr.admin.templates.model.edit">RIM Template</string>
-    <string name="org.santedb.emr.admin.templates.save.success">Data template has been saved successfully</string>
-    <string name="org.santedb.emr.admin.templates.toggle.confirm">Are you sure you want to activate/deactivate this template?</string>
+    <string name="ui.admin.emr.templates.model.edit.errorList">Errors/Issues</string>
+    <string name="org.santedb.emr.admin.templates.view.edit">Views / Forms</string>
+    <string name="ui.emr.admin.templates.view.noViews">No Views are present in the template</string>
+    <string name="ui.emr.admin.templates.save.success">Data template has been saved successfully</string>
+    <string name="ui.emr.admin.templates.toggle.confirm">Are you sure you want to activate/deactivate this template?</string>
 </resources>

@@ -13,10 +13,28 @@ angular.module('santedb').controller("EmrTemplateViewController", ["$scope", "$r
                     });
 
                     definition.templateJson = await rawApi.getAsync({
-                        resource: definition.template.template,
+                        resource: definition.template.content,
                     });
                 }
                 catch (e) {
+                    console.warn(e);
+                }
+            }
+            else {
+                definition.templateJson = JSON.parse(definition.template.content);
+            }
+
+            // Fill out the data
+            if(definition.templateJson && definition.templateJson.$type)
+            {
+                try {
+                    definition.filledJson = await SanteDB.application.getTemplateContentAsync(definition.mnemonic, {
+                        recordTargetId: SanteDB.application.newGuid(),
+                        facilityId: await SanteDB.authentication.getCurrentFacilityId() || SanteDB.application.newGuid(),
+                        userEntityId: await SanteDB.authentication.getCurrentUserEntityId() || SanteDB.application.newGuid()
+                    });
+                }
+                catch(e) {
                     console.warn(e);
                 }
             }

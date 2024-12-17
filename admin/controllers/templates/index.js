@@ -19,12 +19,7 @@ angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$
     }
 
     $scope.renderName = function (tpl) {
-        if (tpl.meta) {
-            return `<i class="${tpl.icon}"></i> ${tpl.name}`;
-        }
-        else {
-            return tpl.name;
-        }
+        return `<i class="${tpl.icon}"></i> ${tpl.name} <br/><small>${tpl.mnemonic}</small>`;
     }
 
     $scope.renderVersion = function (tpl) {
@@ -36,7 +31,7 @@ angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$
 
     $scope.renderViews = function (tpl) {
         if (tpl.views) {
-            return tpl.views.map(v => `<span class='badge badge-info ml-2 p-1' style='border-radius: 0'><i class='far fa-fw fa-window-maximize'></i> ${SanteDB.locale.getString("ui.model.dataTemplateDefinition.views." + v.type)}</span>`).join(" ");
+            return tpl.views.map(v => `<i class='far fa-fw fa-window-maximize'></i> ${SanteDB.locale.getString("ui.model.dataTemplateDefinition.views." + v.type)}`).join(" ");
         }
         return "";
     }
@@ -54,7 +49,7 @@ angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$
 
     $scope.toggleActive = async function (id, idx) {
         var data = $("#templateTypeTable table").DataTable().row(idx).data();
-        if (confirm(SanteDB.locale.getString("org.santedb.emr.admin.templates.toggle.confirm"))) {
+        if (confirm(SanteDB.locale.getString("ui.emr.admin.templates.toggle.confirm"))) {
             try {
                 SanteDB.display.buttonWait(`#DataTemplateDefinitionenable${idx}`, true);
                 SanteDB.display.buttonWait(`#DataTemplateDefinitiondisable${idx}`, true);
@@ -74,7 +69,7 @@ angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$
                 });
 
                 await SanteDB.resources.dataTemplateDefinition.patchAsync(id, null, patch);
-                toastr.success(SanteDB.locale.getString("org.santedb.emr.admin.templates.save.success"));
+                toastr.success(SanteDB.locale.getString("ui.emr.admin.templates.save.success"));
                 $("#templateTypeTable table").DataTable().draw();
             }
             catch (e) {

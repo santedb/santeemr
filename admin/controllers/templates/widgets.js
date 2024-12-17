@@ -14,7 +14,7 @@ function addDataTemplateFunctionsToScope($scope, $timeout) {
             var updatedScope = await SanteDB.resources.dataTemplateDefinition.updateAsync($scope.editObject.id, $scope.editObject);
 
             SanteDB.display.getParentScopeVariable($scope, 'loadTemplate')($scope.editObject.id);
-            toastr.success(SanteDB.locale.getString("org.santedb.emr.admin.templates.save.success"));
+            toastr.success(SanteDB.locale.getString("ui.emr.admin.templates.save.success"));
         }
         catch (e) {
             $scope.$root.errorHandler(e);
@@ -29,6 +29,9 @@ angular.module('santedb').controller('ViewTemplatePropertiesController', ["$scop
 
     async function checkDuplicate(query) {
         try {
+            if ($scope.scopedObject.id) {
+                query.id = `!${$scope.scopedObject.id}`;
+            }
             query._includeTotal = true;
             query._count = 0;
             query._upstream = true;
@@ -55,7 +58,24 @@ angular.module('santedb').controller('ViewTemplatePropertiesController', ["$scop
         }
     });
 
+    $scope.saveTemplateDefinition = async function (form) {
+        if (form.$invalid) {
+            return;
+        }
+
+        try {
+            await SanteDB.resources.dataTemplateDefinition.updateAsync($scope.editObject.id, $scope.editObject);
+            toastr.success(SanteDB.locale.getString("ui.emr.admin.templates.save.success"));
+            await SanteDB.display.getParentScopeVariable($scope, "loadTemplate")($scope.editObject.id);
+        }
+        catch (e) {
+            $rootScope.errorHandler(e);
+        }
+    }
+
 }]).controller("EmrEditTemplateModelController", ["$scope", "$rootScope", "$timeout", "$interval", function ($scope, $rootScope, $timeout, $interval) {
+
+    var _editor = null;
 
     addDataTemplateFunctionsToScope($scope, $timeout);
 
@@ -87,5 +107,36 @@ angular.module('santedb').controller('ViewTemplatePropertiesController', ["$scop
     }
 
     $scope.$watch("panel.view", bindAceEditor);
+
+    $scope.saveTemplateDefinition = async function (form) {
+        try {
+            if ($scope.panel.editForm.$dirty) {
+                var patch = new Patch({
+                    appliesTo: {
+                        id: $scope.scopedObject.id,
+                        type: "DataTemplateDefinition"
+                    },
+                    change: [
+                        {
+                            op: PatchOperationType.Replace,
+                            path: "template.content",
+                            value: _editor.getValue()
+                        }
+                    ]
+                })
+                await SanteDB.resources.dataTemplateDefinition.patchAsync($scope.scopedObject.id, null, patch);
+                toastr.success(SanteDB.locale.getString("ui.emr.admin.templates.save.success"));
+                $scope.panel.editForm.$setPristine();
+            }
+            await SanteDB.display.getParentScopeVariable($scope, "loadTemplate")($scope.scopedObject.id);
+        }
+        catch (e) {
+            $rootScope.errorHandler(e);
+        }
+    }
+
+}]).controller("EmrEditTemplateViewController", ["$scope", "$rootScope", "$timeout", "$interval", function ($scope, $rootScope, $timeout, $interval) {
+
+
 
 }]);

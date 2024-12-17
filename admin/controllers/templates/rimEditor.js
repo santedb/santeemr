@@ -115,6 +115,7 @@ function RimAceEditor(controlName, templateDefinition) {
                             break;
                         case "paren.rparen":
                             consumeObjectTokens(tokenIterator);
+                            consumeTokenName(tokenIterator); // Get the token name
                             break;
                         case "string":
                             lastString = currentToken.value;
@@ -163,7 +164,7 @@ function RimAceEditor(controlName, templateDefinition) {
                     }
                     else {
                         // All properties can have a Model 
-                        schemaComplete.properties.filter(o => nonObjectTypes.indexOf(o.type) == -1 && !o.classifierValues).forEach(r => {
+                        schemaComplete.properties.filter(o => o.delayLoadable).forEach(r => {
                             schemaComplete.properties.push({
                                 name: `${r.name}`,
                                 type: "Guid",
@@ -371,7 +372,7 @@ function RimAceEditor(controlName, templateDefinition) {
                                 }
                             ]
                         })
-                        SanteDB.resources.dataTemplateDefinition.patchAsync(templateDefinition.id, null, templateDefinition);
+                        SanteDB.resources.dataTemplateDefinition.patchAsync(templateDefinition.id, null, patch);
                         _editorDirty = false;
                         toastr.success(SanteDB.locale.getString("ui.admin.emr.templates.save.success"));
                         _saveHandlers.forEach(o => o());
