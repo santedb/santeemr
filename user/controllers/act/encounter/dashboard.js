@@ -34,9 +34,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
             }
         }
     }
-    $scope.filterByFlowState = null;
-    $scope.filterByType = null;
-    $scope.filterFlow = [];
+   
     $scope.filterType = [];
 
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
@@ -56,14 +54,14 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
     }
     $scope.doCancel = cancelEncounter;
 
-    $scope.doDischarge = async function(r, idx) {
+    $scope.doDischarge = async function (r, idx) {
 
         try {
             SanteDB.display.buttonWait(`#waitingRoomList_action_discharge_${idx}`, true);
             var encounter = await SanteDB.resources.patientEncounter.getAsync(r, "full");
             await SanteEMR.showDischarge(encounter, $timeout);
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
         finally {
@@ -79,7 +77,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
                 r.flowConceptModel = _loadedFlowStates[extensionValue] || await SanteDB.application.resolveReferenceExtensionAsync(extensionValue);
                 _loadedFlowStates[extensionValue] = r.flowConceptModel;
 
-                if (!$scope.filterFlow.find(f => f.id === extensionValue)) {
+                if (!$scope.filterFlow.find(f => f.id === extensionValue) && r.statusConcept != StatusKeys.Completed) {
                     $scope.filterFlow.push({
                         name: r.flowConceptModel.mnemonic,
                         id: extensionValue,
@@ -88,11 +86,12 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
                         icon: 'fas fa-fw fa-circle',
                     });
                 }
-                if(!$scope.filterType.find(f => f.id === r.typeConcept)) {
+               
+                if (!$scope.filterType.find(f => f.id === r.typeConcept)) {
                     $scope.filterType.push({
                         name: r.typeConcept,
                         id: r.typeConcept,
-                        label: SanteDB.display.renderConcept(r.typeConceptModel), 
+                        label: SanteDB.display.renderConcept(r.typeConceptModel),
                         action: $scope.doFilterType,
                         icon: 'fas fa-fw fa-circle'
                     });
@@ -109,6 +108,8 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
 
     $scope.doFilterFlow = function (parm, index) {
         $("#actionList_1 button").removeClass("active");
+        $scope.filterByActState = null;
+        $scope.filterByActDate = null;
         if (parm != $scope.filterByFlowState) {
             $scope.filterByFlowState = parm;
             $($("#actionList_1 button")[index]).addClass("active");
@@ -120,7 +121,24 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
         }
     }
 
-    
+
+    $scope.doFilterReleased = function (parm, index) {
+        $("#actionList_1 button").removeClass("active");
+        $scope.filterByFlowState = null;
+        if (!$scope.filterByActState) {
+            $scope.filterByActState = StatusKeys.Completed;
+            $scope.filterByActDate = ':(age)<1d';
+            $($("#actionList_1 button")[index]).addClass("active");
+            $("#actionList_button_1").html($($("#actionList_1 button")[index]).html());
+        }
+        else {
+            $scope.filterByActState = null;
+            $scope.filterByActDate = null;
+            $("#actionList_button_1").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterFlow")}`);
+        }
+    }
+
+
     $scope.doFilterType = function (parm, index) {
         $("#actionList_2 button").removeClass("active");
         if (parm != $scope.filterByType) {
@@ -133,5 +151,16 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
             $("#actionList_button_2").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterType")}`);
         }
     }
+
+    $scope.filterByFlowState = null;
+    $scope.filterByType = null;
+    $scope.filterFlow = [
+        {
+            name: 'Released',
+            label: 'ui.emr.encounter.waitingRoom.filter.released',
+            icon: 'fas fa-fw fa-arrow-turn-down fa-rotate-90',
+            action: $scope.doFilterReleased
+        }
+    ];
 
 }])

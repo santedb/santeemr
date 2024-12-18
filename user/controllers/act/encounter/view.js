@@ -26,6 +26,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             var targetStates = await SanteDB.resources.concept.findAsync({
                 conceptSet: 'D46D45B3-4DB3-4641-ADFC-84A80B7D1637', // EMREncounterTags
                 "id||relationship[StateFlow].source": stateId,
+                "relationship[MemberOf].targetConcept": encounter.typeConcept,
                 _includeTotal: false
             });
             encounter._nextStates = targetStates.resource.map(state => {

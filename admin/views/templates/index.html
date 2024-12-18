@@ -1,0 +1,97 @@
+<!--
+ - Copyright (C) 2021-2023 SanteSuite Inc and the SanteSuite Contributors (see NOTICES)
+Portions Copyright (C) 2019-2021 Fyfe Software Inc.
+Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ - 
+ - 
+ - Licensed under the Apache License, Version 2.0 (the "License"); you 
+ - may not use this file except in compliance with the License. You may 
+ - obtain a copy of the License at 
+ - 
+ - http://www.apache.org/licenses/LICENSE-2.0 
+ - 
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ - License for the specific language governing permissions and limitations under 
+ - the License.
+ - 
+ - User: justin
+ - Date: 2018-11-14
+ -->
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script>~/controllers/templates/index.js</sdb:script>
+    <sdb:state name="santedb-admin.emr.templates.index" abstract="false">
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3</sdb:demand>
+        <sdb:url>/</sdb:url>
+        <sdb:view>
+            <sdb:controller>EmrTemplateIndexController</sdb:controller>
+            <sdb:title lang="en">Library</sdb:title>
+        </sdb:view>
+    </sdb:state>
+    <h5><i class="fas fa-fw fa-project-diagram"></i> {{ 'ui.emr.admin.templates.title' | i18n }}</h5>
+    <small class="m-2">{{ 'ui.emr.admin.templates.help' | i18n }}</small>
+    <entity-table class="m-2" id="templateTypeTable" stateless="true" type="DataTemplateDefinition" search-field="name"
+        i18n-prefix="'ui.model.dataTemplateDefinition.'" properties="[ 'name', 'version', 'status', 'views' ]"
+        render="{ 'status' : renderStatus, 'views' : renderViews, 'name' : renderName }" actions="[
+            { name: 'new', sref: 'santedb-admin.emr.templates.create', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-primary', icon: 'fa fa-plus' },
+            { name: 'upload', action: 'uploadTemplate', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-info', icon: 'fa fa-upload' }
+        ]" no-deleted="true" item-actions="[ 
+            { name: 'view', sref: 'santedb-admin.emr.templates.view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-info', icon: 'fa fa-eye' },
+            { name: 'download', action: 'downloadTemplate', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.500', className: 'btn-primary', icon: 'fa fa-download', when: '!r.isReadonly' },
+            { name: 'enable', action: 'toggleActive', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-success', icon: 'fa fa-arrow-up', when: '!r.active' },
+            { name: 'disable', action: 'toggleActive', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-warning', icon: 'fa fa-arrow-down', when: 'r.active' },
+            { name: 'remove', action: 'removeTemplate', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-danger', icon: 'fa fa-times-circle' }
+        ]" item-action-text-class="'d-none d-lg-inline'">
+    </entity-table>
+
+    <div class="modal" data-backdrop="static" id="uploadTemplateModal">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="returnModalTitle">
+                        <i class="fa fa-fw fa-upload"></i> {{
+                        'ui.emr.admin.templates.upload.title' |
+                        i18n }}
+                    </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
+                </div>
+                <form name="uploadTemplateForm" novalidate="novalidate" ng-submit="doUploadTemplate(uploadTemplateForm)">
+                    <div class="modal-body">
+                        <div class="container-fluid">
+                            <div class="form-group row">
+                                <div class="col-12">
+                                    {{ 'ui.emr.admin.templates.upload.help' | i18n }}
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-xs-12 col-md-3 required">
+                                    {{ 'ui.emr.admin.templates.upload.file' | i18n }}
+                                    <hint-popover hint-title="ui.emr.admin.templates.upload.file" />
+                                </label>
+                                <div class="col-xs-12 col-md-9">
+                                    <input type="file" class="form-control" name="uploadFile" valid-file="valid-file" 
+                                        ng-model="uploadFile" required="required" accept=".xml" id="sourceFile" />    
+                                    <div class="text-danger" ng-if="uploadTemplateForm.uploadFile.$error.required">
+                                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                            <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
+                        <button type="submit" id="btnSubmit" ng-disabled="uploadTemplateForm.$invalid"
+                            class="btn btn-primary">
+                            <i class="fa fa-check"></i> {{ 'ui.action.upload' | i18n }}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

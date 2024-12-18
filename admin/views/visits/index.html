@@ -1,0 +1,53 @@
+<!--
+ - Copyright (C) 2021-2023 SanteSuite Inc and the SanteSuite Contributors (see NOTICES)
+Portions Copyright (C) 2019-2021 Fyfe Software Inc.
+Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ - 
+ - 
+ - Licensed under the Apache License, Version 2.0 (the "License"); you 
+ - may not use this file except in compliance with the License. You may 
+ - obtain a copy of the License at 
+ - 
+ - http://www.apache.org/licenses/LICENSE-2.0 
+ - 
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ - License for the specific language governing permissions and limitations under 
+ - the License.
+ - 
+ - User: justin
+ - Date: 2018-11-14
+ -->
+ <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script>~/controllers/visits/index.js</sdb:script>
+    <sdb:state name="santedb-admin.emr.visits.index" abstract="false">
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.0.7</sdb:demand>
+        <sdb:url>/</sdb:url>
+        <sdb:view>
+            <sdb:controller>EmrAdminVisitTypesController</sdb:controller>
+            <sdb:title lang="en">Library</sdb:title>
+        </sdb:view>
+    </sdb:state>
+    <h5><i class="fas fa-fw fa-project-diagram"></i> {{ 'ui.emr.admin.visitTypes.title' | i18n }}</h5>
+    <small class="m-2">{{ 'ui.emr.admin.visitTypes.help' | i18n }}</small>
+    <entity-table class="m-2" id="visitTypeTable" type="Concept" search-field="name.value" i18n-prefix="'ui.model.visitTypes.'"
+        default-query="{
+            conceptSet: '42764da0-17be-11eb-adc1-0242ac120002',
+            _viewModel: 'fastview'
+        }"
+        item-supplement="[ loadFlow ]"
+        properties="[ 'name', 'mnemonic', 'flow' ]"
+        actions="[
+            { name: 'create', sref: 'santedb-admin.emr.visits.create', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.7', className: 'btn-primary', icon: 'fa fa-plus' }
+        ]"
+        render="{ 'name': 'renderName', 'flow' : 'renderFlow' }"
+        no-deleted="true"
+        item-actions="[ 
+            { name: 'edit', sref: 'santedb-admin.emr.visits.edit', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.7', className: 'btn-info', icon: 'fa fa-pencil' },
+            { name: 'remove', action: 'removeVisitType', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.7', className: 'btn-danger', icon: 'fa fa-times-circle' }
+        ]"
+        item-action-text-class="'d-none d-lg-inline'"
+        >
+    </entity-table>
+</div>

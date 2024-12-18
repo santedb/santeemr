@@ -393,6 +393,7 @@
      <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
      <string name="org.santedb.emr.dashboard.waitingRoom">Waiting Room</string>
      <string name="org.santedb.emr.encounter.dashboard.title">Visit Dashboard</string>
+     <string name="ui.emr.encounter.waitingRoom.filter.released">Released / Discharged</string>
      <string name="ui.emr.encounter.save.success">Visit has been updated successfully</string>
      <string name="ui.emr.encounter.discharge.title">End Visit / Discharge</string>
      <string name="ui.emr.encounter.discharge.instructions">Validate the following actions occurred during the visit, and they are accurate. If an action was not performed un-select it.</string>

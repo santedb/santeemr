@@ -1,0 +1,202 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
+    <sdb:script static="false">~/controllers/templates/widgets.js</sdb:script>
+    <sdb:widget order="10" name="org.santedb.emr.admin.templates.properties.info" type="Panel" size="Large"
+        context="org.santedb.emr.admin.templates.properties">
+        <sdb:icon>fas fa-fw fa-bars</sdb:icon>
+        <sdb:views>
+            <sdb:view type="Edit">
+                <sdb:guard>!scopedObject.isReadonly</sdb:guard>
+            </sdb:view>
+        </sdb:views>
+    </sdb:widget>
+
+    <div ng-controller="ViewTemplatePropertiesController" class="container">
+        <div ng-if="panel.view !== 'Edit'">
+            <div class="row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.mnemonic' | i18n }}
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    <code>{{ scopedObject.mnemonic }}</code>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.oid' | i18n }}
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    {{ scopedObject.oid }}
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.name' | i18n }}
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    {{ scopedObject.name }}
+                </div>
+            </div>
+            <div class="row" ng-if="scopedObject.description">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.description' | i18n }}
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    <pre>{{ scopedObject.description }}</pre>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.version' | i18n }}
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    rev.{{ scopedObject.version }} (<i class="fas fa-fw fa-clock"></i> {{
+                    scopedObject.meta.lastModified | extDate }})
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.author' | i18n }}
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    <ul class="list-unstyled">
+                        <li ng-repeat="aut in scopedObject.author track by $index">
+                            <i class="fas fa-fw fa-users"></i> {{ aut}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.scope' | i18n }}
+                </label>
+                <div class="col-sm-12 col-md-9">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="scp in scopedObject.scopeModel track by $index">
+                            {{ scp | concept }}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <form ng-if="panel.view === 'Edit'" name="panel.editForm" ng-submit="saveTemplateDefinition(panel.editForm)"
+            novalidate="novalidate">
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label required" for="mnemonic">
+                    {{ 'ui.model.dataTemplateDefinition.mnemonic' | i18n }}
+                    <hint-popover hint-title="ui.model.dataTemplateDefinition.mnemonic" />
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    <input type="text" pattern="^([a-zA-Z][a-zA-Z0-9]*\.?)+$" name="mnemonic" autocomplete="__away"
+                        required="reqiured" class="form-control" ng-model="editObject.mnemonic" />
+                    <div class="text-danger" ng-if="panel.editForm.mnemonic.$error.required">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+                    <div class="text-danger" ng-if="panel.editForm.mnemonic.$error.pattern">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
+                    </div>
+                    <div class="text-danger" ng-if="panel.editForm.mnemonic.$error.duplicate">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label required" for="oid">
+                    {{ 'ui.model.dataTemplateDefinition.oid' | i18n }}
+                    <hint-popover hint-title="ui.model.dataTemplateDefinition.oid" />
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    <input type="text" pattern="^([0-9]+\.)+?[0-9]+$" name="oid" autocomplete="__away"
+                        required="required" class="form-control" ng-model="editObject.oid" />
+                    <div class="text-danger" ng-if="panel.editForm.oid.$error.required">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+                    <div class="text-danger" ng-if="panel.editForm.oid.$error.pattern">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
+                    </div>
+                    <div class="text-danger" ng-if="panel.editForm.oid.$error.duplicate">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label required" for="name">
+                    {{ 'ui.model.dataTemplateDefinition.name' | i18n }}
+                    <hint-popover hint-title="ui.model.dataTemplateDefinition.name" />
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    <input type="text" name="name" maxlength="256" autocomplete="__away" required="required"
+                        class="form-control" ng-model="editObject.name" />
+                    <div class="text-danger" ng-if="panel.editForm.name.$error.required">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row" ng-if="scopedObject.description">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.description' | i18n }}
+                    <hint-popover hint-title="ui.model.dataTemplateDefinition.description" />
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    <textarea class="form-control" maxlength="2048" ng-model="editObject.description">
+                    </textarea>
+                    {{ 2048 - editObject.description.length }} {{ 'ui.common.charsRemain' | i18n }}
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.author' | i18n }}
+                    <hint-popover hint-title="ui.model.dataTemplateDefinition.author" />
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="aut in editObject.author track by $index">
+                            <div class="input-group">
+                                <input type="text" class="form-control" ng-model="editObject.author[$index]" />
+                                <div class="input-group-addon">
+                                    <button class="btn btn-danger" ng-click="editObject.author.splice($index, 1)"
+                                        type="button">
+                                        <i class="fas fa-fw fa-times-circle"></i> {{ 'ui.action.remove' | i18n }}
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <button class="btn btn-success text-center" type="button"
+                                ng-click="editObject.author.push('')">
+                                <i class="fas fa-plus-circle fa-fw"></i> {{ 'ui.action.add' | i18n }}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.scope' | i18n }}
+                    <hint-popover hint-title="ui.model.dataTemplateDefinition.scope" />
+                </label>
+                <div class="col-sm-12 col-md-9">
+                    <ul class="list-group">
+                        <li class="list-group-item" ng-repeat="scp in editObject.scopes track by $index">
+                            <div class="input-group">
+                                <concept-select class="form-control" concept-set="'EncounterType'"
+                                    add-concept="[ '54b52119-1709-4098-8911-5df6d6c84140' ]"
+                                    ng-model="editObject.scopes[$index]" required="required" />
+                                <div class="input-group-addon">
+                                    <button class="btn btn-danger" ng-click="editObject.scopes.splice($index, 1)"
+                                        type="button">
+                                        <i class="fas fa-fw fa-times-circle"></i> {{ 'ui.action.remove' | i18n }}
+                                    </button>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <button class="btn btn-success" type="button" ng-click="editObject.scopes.push('')">
+                                <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n}}
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
