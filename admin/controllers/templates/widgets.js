@@ -135,8 +135,99 @@ angular.module('santedb').controller('ViewTemplatePropertiesController', ["$scop
         }
     }
 
-}]).controller("EmrEditTemplateViewController", ["$scope", "$rootScope", "$timeout", "$interval", function ($scope, $rootScope, $timeout, $interval) {
+}]).controller("EmrEditTemplateViewController", ["$scope", "$rootScope", "$timeout", "$interval", "$compile", function ($scope, $rootScope, $timeout, $interval, $compile) {
 
+    var _editors = {};
+    var _needRefresh= false;
 
+    function bindViewEditors(id) {
 
+    }
+
+    $scope.hasView = (v) => $scope.editObject.views && $scope.editObject.views.find(o => o.type == v);
+    $scope.addView = function (v) {
+        $scope.editObject.views = $scope.editObject.views || [];
+        $scope.editObject.views.push({ type: v, contentType: 'div' });
+        $scope.panel.editForm.$setDirty();
+        $timeout(() => {
+            $(`#viewTab${v}`).click();
+        }, 500);
+        bindTabEvents(v);
+    }
+
+    function updatePreview(viewTab) {
+        var content = $compile(_editors[viewTab].getValue())($scope);
+        $(`#view${viewTab}Preview`).html(content);
+    }
+
+    function bindTabEvents(viewTab) {
+
+        var id = `#viewTab${viewTab}`;
+
+        if ($(id).length > 0) {
+            $(id).on("shown.bs.tab", function () {
+
+                if (!_editors[viewTab]) {
+                    _editors[viewTab] = new HtmlViewAceEditor(`view${viewTab}Editor`, $scope.editObject, viewTab);
+                    _editors[viewTab].onChange(() => {
+                        _needRefresh = true;
+                        $scope.panel.editForm.$setDirty();
+                    });
+                    validateInterval = $interval(() => {
+                        if (_needRefresh) {
+                            _needRefresh = false;
+                            updatePreview(viewTab);
+                        }
+                    }, 5000);
+                    updatePreview(viewTab);
+                    _editors[viewTab].onSave(() => $scope.panel.editForm.$setPristine());
+                }
+            });
+
+        }
+        else {
+            setTimeout(() => bindTabEvents(viewTab), 250);
+
+        }
+
+    }
+
+    async function bindViewEditors(n, o) {
+
+        if (n === "Edit") {
+            $scope.ownerForm = $scope.panel.editForm;
+            if (ace && $("#formViews").length == 1) {
+                await SanteDB.resources.dataTemplateDefinition.checkoutAsync($scope.scopedObject.id, true);
+                $scope.scopedObject.views.forEach(v => bindTabEvents(v.type));
+
+            }
+            else {
+                setTimeout(() => bindViewEditors(n, o), 500);
+            }
+        }
+    }
+
+    $scope.$watch("panel.view", bindViewEditors);
+
+    function renderViews(object) {
+        $scope.act = $scope.scopedObject.filledJson;
+        if (object && object.views) {
+            object.views.forEach(v => {
+                var divEle = $(`#preview${v.type}`);
+                if (divEle.length > 0) {
+                    var content = $compile(v.content)($scope);
+                    divEle.html(content);
+                }
+                else {
+                    setTimeout(() => renderViews(object), 500);
+                }
+            });
+        }
+
+    }
+    $scope.$watch("scopedObject", function (n, o) {
+        if (n && n.views) {
+            renderViews(n);
+        }
+    })
 }]);
