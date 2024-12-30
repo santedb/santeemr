@@ -1,5 +1,20 @@
 angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$rootScope", "$state", "$timeout", function ($scope, $rootScope, $state, $timeout) {
 
+
+    async function checkDuplicate(query) {
+        try {
+            query._includeTotal = true;
+            query._count = 0;
+            query._upstream = true;
+            var duplicate = await SanteDB.resources.dataTemplateDefinition.findAsync(query);
+            return duplicate.size == 0;
+        }
+        catch (e) {
+            console.warn(e);
+            return false;
+        }
+    }
+
     $scope.renderStatus = function (tpl) {
         var retVal = "";
         if (tpl.active) {
@@ -43,10 +58,38 @@ angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$
         };
     }
 
+    $scope.$watch("newTemplate.mnemonic", async function (n, o) {
+        if (n && n != o) {
+            var isDup = await checkDuplicate({ mnemonic: n });
+            $timeout(() => $scope.createTemplateForm.mnemonic.$setValidity("duplicate", isDup));
+        }
+    });
+
+    $scope.$watch("newTemplate.oid", async function (n, o) {
+        if (n && n != o) {
+            var isDup = await checkDuplicate({ mnemonic: n });
+            $timeout(() => $scope.createTemplateForm.oid.$setValidity("duplicate", isDup));
+        }
+    });
+
     $scope.uploadTemplate = function () {
         $("#uploadTemplateModal").modal('show');
     }
 
+    $scope.createTemplate = function() {
+        $scope.newTemplate = {
+            "$type": "DataTemplateDefinition",
+            "version": 1,
+            "active": false,
+            "scopes": [],
+            "template": {
+                "type":"content",
+                "content": '{ "$type": "Act" }'
+            }
+        };
+
+        $("#createTemplateModal").modal('show');
+    }
     $scope.toggleActive = async function (id, idx) {
         var data = $("#templateTypeTable table").DataTable().row(idx).data();
         if (confirm(SanteDB.locale.getString("ui.emr.admin.templates.toggle.confirm"))) {
@@ -99,6 +142,28 @@ angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$
             }
         }
     }
+    $scope.doCreateTemplate = async function(form) {
+        if(form.$invalid) {
+            return;
+        }
+
+        try {
+            SanteDB.display.buttonWait("#btnSubmit", true);
+            var submission = angular.copy($scope.newTemplate);
+            submission = await SanteDB.resources.dataTemplateDefinition.insertAsync(submission);
+
+            // Toast success and nav
+            toastr.success(SanteDB.locale.getString("ui.emr.admin.template.create.success"));
+            $state.go("santedb-admin.emr.templates.view", { id: submission.id });
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnSubmit", false);
+        }
+    }
+
     $scope.doUploadTemplate = function (form) {
         if (form.$invalid) return;
 

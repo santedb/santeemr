@@ -17,12 +17,12 @@
  */
 
 /**
- * @summary A RIM based editor
+ * @summary An HTML/SDL view based editor
  * @param {*} controlName The name of the control to which the ACE language editor is to be attached
  * @param {*} templateDefinition The initial text of the ACE editor
  * @param {*} viewType The type of view that this operating on
  */
-function HtmlViewAceEditor(controlName, templateDefinition, viewType) {
+function ViewAceEditor(controlName, templateDefinition, viewType) {
 
     var view = templateDefinition.views.find(o => o.type == viewType);
     var _editor;
@@ -31,6 +31,7 @@ function HtmlViewAceEditor(controlName, templateDefinition, viewType) {
     var _validationDirty = false;
     var _changeHandler = null;
     var _tooltipElement = document.createElement("div");
+    var _uuidRegex = /.*?([a-fA-F0-9]{8}\-(?:[a-fA-F0-9]{4}\-){3}[a-fA-F0-9]{12}).*/;
     var _exceptionExtract = /line\s(\d+),\sposition\s(\d+)/ig;
 
     // Require
@@ -39,7 +40,7 @@ function HtmlViewAceEditor(controlName, templateDefinition, viewType) {
     var { HoverTooltip } = ace.require("ace/tooltip");
     var { TokenIterator } = ace.require("ace/token_iterator");
 
-    // RIM based auto complete
+    // HTML helper based auto complete
     function _htmlCompletor() {
 
 
@@ -51,11 +52,152 @@ function HtmlViewAceEditor(controlName, templateDefinition, viewType) {
 
     };
 
+    // SIMPLE data view completor
+    function _svdCompletor() {
+
+        function consumeComment(tokenIterator) {
+            while (tokenIterator.stepBackward()) {
+                switch (tokenIterator.getCurrentToken().type) {
+                    case "comment.start.xml":
+                        return;
+                }
+            }
+        }
+
+        function consumeToStartTag(tokenIterator, closingTag) {
+
+            while (tokenIterator.stepBackward()) {
+                var currentToken = tokenIterator.getCurrentToken();
+                switch (currentToken.type) {
+                    case "meta.tag.punctuation.tag-close.xml":
+                        var tagInfo = consumeTag(tokenIterator);
+                        if (tagInfo.isEndTag) {
+                            consumeToStartTag(tokenIterator, tagInfo);
+                        }
+                        if (tagInfo.localName == closingTag.localName) {
+                            return;
+                        }
+                        break;
+                }
+            }
+        }
+
+        function consumeTag(tokenIterator) {
+            var currentToken = tokenIterator.getCurrentToken();
+            // if (currentToken.type === "meta.tag.punctuation.tag-close.xml" ) {
+            //     tokenIterator.stepBackward();
+            //     currentToken = tokenIterator.getCurrentToken();
+            // }
+
+            var retVal = { attributes: [] };
+            var currentAttribute = null;
+            do {
+                currentToken = tokenIterator.getCurrentToken();
+                switch (currentToken.type) {
+                    case "meta.tag.punctuation.end-tag-open.xml":
+                        retVal.isEndTag = true;
+                    case "meta.tag.punctuation.tag-open.xml":
+                        return retVal;
+                    case "meta.tag.tag-name.xml":
+                        retVal.localName = currentToken.value;
+                        break;
+                    case "entity.other.attribute-name.xml":
+                        currentAttribute.name = currentToken.value;
+                        retVal.attributes.push(currentAttribute);
+                        currentAttribute = null;
+                        break;
+                    case "string.attribute-value.xml":
+                        currentAttribute = {
+                            value: currentToken.value
+                        };
+                        break;
+                }
+            } while (tokenIterator.stepBackward());
+        }
+
+        async function getSchemaCompleteData(session, row, column) {
+            try {
+                var _scopedList = null;
+
+                var tokenIterator = new TokenIterator(session, row, column);
+                // Var token extractor - 
+                var tagStack = [];
+                var currentPath = "";
+                var startToken = tokenIterator.getCurrentToken();
+                while (tokenIterator.stepBackward()) {
+                    var currentToken = tokenIterator.getCurrentToken();
+
+                    switch (currentToken.type) {
+                        case "meta.tag.punctuation.tag-close.xml":
+                        case "meta.tag.tag-name.xml":
+                            var tagInfo = consumeTag(tokenIterator);
+
+                            if (tagInfo.isEndTag) {
+                                consumeToStartTag(tokenIterator, tagInfo);
+                            }
+                            else {
+                                tagStack.push(tagInfo);
+                                currentPath = `/${tagInfo.localName}${currentPath}`;
+                            }
+                            break;
+                        case "comment.end.xml":
+                            consumeComment(tokenIterator);
+                            break;
+                        case "entity.other.attribute-name.xml":
+                            if(startToken.type === "string.attribute-value.xml" && currentPath == "") {
+                                currentPath = `@${currentToken.value}`;
+                            }
+                            break;
+                    }
+                }
+
+                var options = await SanteDB.resources.dataTemplateDefinition.invokeOperationAsync(null, "xsd-complete", {
+                    "path" : currentPath, 
+                    "type" : "SimplifiedViewDefinition"
+                });
+
+                if(options) {
+                    switch(startToken.type) {
+                        case "entity.other.attribute-name.xml":
+                            return options.filter(o=>o.attribute);
+                        case "meta.tag.tag-name.xml":
+                        case "text.tag-open.xml":
+                            return options.filter(o=>!o.attribute);
+                        default: 
+                            return options;
+                    }
+                }
+                else {
+                    return [];
+                }
+            } catch (e) {
+                console.error(e);
+                return [];
+            }
+        }
+
+        this.getCompletions = async function (editor, session, pos, prefix, callback) {
+            var completions = await getSchemaCompleteData(session, pos.row, pos.column);
+            callback(null, 
+                completions.map((c) => {
+                    return {
+                        value: c.name, 
+                        caption: c.name,
+                        scope: 1,
+                        docHTML: `<strong><i class="fas fa-fw fa-${c.attribute ? "at" : c.enum ? "hashtag" : "code"} text-secondary"></i> ${c.name}</strong> (${c.type}) - <span class="text-secondary">${c.collection ? "(0..*)" : "1..1" }</span> <p>${c.documentation || "No Documentation"}</p>`,
+                        meta: c.type,
+                        snippet: c.namespace ? `${c.name} xmlns="${c.namespace}"` : null
+                    }
+                })
+            )
+        }
+    }
+
     function _initializeEditor(controlName, templateDefinition) {
         // Initialize the editor
         _editor = ace.edit(controlName, {
             theme: "ace/theme/sqlserver",
-            mode: "ace/mode/html",
+            mode: view.contentType == "div" ? "ace/mode/html" : "ace/mode/xml",
             wrap: true,
             maxLines: window.innerHeight / 27,
             minLines: 20,
@@ -71,7 +213,7 @@ function HtmlViewAceEditor(controlName, templateDefinition, viewType) {
                 _changeHandler(_editor.getValue());
             }
         });
-        _completor = new _htmlCompletor();
+        _completor = view.contentType == "div" ? new _htmlCompletor() : new _svdCompletor();
         LanguageTools.setCompleters([_completor]);
         _addSaveKeyboardShortcut();
         _addHelpTooltip();
@@ -104,7 +246,7 @@ function HtmlViewAceEditor(controlName, templateDefinition, viewType) {
                             {
                                 row: exception[1],
                                 column: exception[2],
-                                text: root.message, 
+                                text: root.message,
                                 type: "error"
                             }
                         ]);
@@ -234,6 +376,37 @@ function HtmlViewAceEditor(controlName, templateDefinition, viewType) {
     }
     this.gotoIssue = function (issue) {
         _editor.gotoLine(issue.row + 1, issue.column);
+    }
+    this.setIssueException = function (e) {
+        var root = e.getRootCause();
+        _editor.getSession().clearAnnotations();
+        if (root.$type == "XmlException") {
+            var exception = _exceptionExtract.exec(root.message);
+            if(!exception) { // HACK: Sometimes the regex doesn't parse
+                exception = [ null, 1, 1 ];
+            }
+            _editor.getSession().setAnnotations([
+                {
+                    row: parseInt(exception[1]) - 1,
+                    column: exception[2],
+                    text: root.message,
+                    type: "error"
+                }
+            ]);
+        }
+        else {
+            _editor.getSession().setAnnotations([
+                {
+                    row: 0, 
+                    column: 1,
+                    text: root.message,
+                    type: "error"
+                }
+            ]);
+        }
+    }
+    this.destroy = function() {
+        _editor.destroy();
     }
 
 }

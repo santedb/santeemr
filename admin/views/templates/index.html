@@ -34,7 +34,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
     <entity-table class="m-2" id="templateTypeTable" stateless="true" type="DataTemplateDefinition" search-field="name"
         i18n-prefix="'ui.model.dataTemplateDefinition.'" properties="[ 'name', 'version', 'status', 'views' ]"
         render="{ 'status' : renderStatus, 'views' : renderViews, 'name' : renderName }" actions="[
-            { name: 'new', sref: 'santedb-admin.emr.templates.create', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-primary', icon: 'fa fa-plus' },
+            { name: 'new', action: 'createTemplate', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-primary', icon: 'fa fa-plus' },
             { name: 'upload', action: 'uploadTemplate', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-info', icon: 'fa fa-upload' }
         ]" no-deleted="true" item-actions="[ 
             { name: 'view', sref: 'santedb-admin.emr.templates.view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.15.3', className: 'btn-info', icon: 'fa fa-eye' },
@@ -45,53 +45,7 @@ Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
         ]" item-action-text-class="'d-none d-lg-inline'">
     </entity-table>
 
-    <div class="modal" data-backdrop="static" id="uploadTemplateModal">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="returnModalTitle">
-                        <i class="fa fa-fw fa-upload"></i> {{
-                        'ui.emr.admin.templates.upload.title' |
-                        i18n }}
-                    </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">
-                            <i class="fa fa-times"></i>
-                        </span>
-                    </button>
-                </div>
-                <form name="uploadTemplateForm" novalidate="novalidate" ng-submit="doUploadTemplate(uploadTemplateForm)">
-                    <div class="modal-body">
-                        <div class="container-fluid">
-                            <div class="form-group row">
-                                <div class="col-12">
-                                    {{ 'ui.emr.admin.templates.upload.help' | i18n }}
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="control-label col-xs-12 col-md-3 required">
-                                    {{ 'ui.emr.admin.templates.upload.file' | i18n }}
-                                    <hint-popover hint-title="ui.emr.admin.templates.upload.file" />
-                                </label>
-                                <div class="col-xs-12 col-md-9">
-                                    <input type="file" class="form-control" name="uploadFile" valid-file="valid-file" 
-                                        ng-model="uploadFile" required="required" accept=".xml" id="sourceFile" />    
-                                    <div class="text-danger" ng-if="uploadTemplateForm.uploadFile.$error.required">
-                                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                            <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
-                        <button type="submit" id="btnSubmit" ng-disabled="uploadTemplateForm.$invalid"
-                            class="btn btn-primary">
-                            <i class="fa fa-check"></i> {{ 'ui.action.upload' | i18n }}</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <!-- #include virtual="~/views/templates/partials/createTemplateModal.html"-->
+    <!-- #include virtual="~/views/templates/partials/uploadTemplateModal.html"-->
+
 </div>
