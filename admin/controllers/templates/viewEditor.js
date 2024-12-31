@@ -32,7 +32,7 @@ function ViewAceEditor(controlName, templateDefinition, viewType) {
     var _changeHandler = null;
     var _tooltipElement = document.createElement("div");
     var _uuidRegex = /.*?([a-fA-F0-9]{8}\-(?:[a-fA-F0-9]{4}\-){3}[a-fA-F0-9]{12}).*/;
-    var _exceptionExtract = /line\s(\d+),\sposition\s(\d+)/ig;
+    var _exceptionExtract = /^(.*?)\.\sLine\s(\d+)\,\sposition\s(\d+)\.$/;
 
     // Require
     var LanguageTools = ace.require("ace/ext/language_tools");
@@ -387,8 +387,8 @@ function ViewAceEditor(controlName, templateDefinition, viewType) {
             }
             _editor.getSession().setAnnotations([
                 {
-                    row: parseInt(exception[1]) - 1,
-                    column: exception[2],
+                    row: parseInt(exception[2]) - 1,
+                    column: exception[3],
                     text: root.message,
                     type: "error"
                 }
