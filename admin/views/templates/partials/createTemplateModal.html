@@ -1,0 +1,119 @@
+
+<div class="modal" data-backdrop="static" id="createTemplateModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTemplateModalTitle">
+                    <i class="fas fa-fw fa-plus-circle"></i> 
+                    {{ 'ui.emr.admin.templates.create.title' | i18n }}
+                </h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fa fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <form name="createTemplateForm" novalidate="novalidate" ng-submit="doCreateTemplate(createTemplateForm)">
+                <div class="modal-body">
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-3 control-label required" for="mnemonic">
+                            {{ 'ui.model.dataTemplateDefinition.mnemonic' | i18n }}
+                            <hint-popover hint-title="ui.model.dataTemplateDefinition.mnemonic" />
+                        </label>
+                        <div class="col-sm-12 col-md-9 pt-2">
+                            <input type="text" pattern="^([a-zA-Z][a-zA-Z0-9]*\.?)+$" name="mnemonic" autocomplete="__away"
+                                required="reqiured" class="form-control" ng-model="newTemplate.mnemonic" />
+                            <div class="text-danger" ng-if="createTemplateForm.mnemonic.$error.required">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                            </div>
+                            <div class="text-danger" ng-if="createTemplateForm.mnemonic.$error.pattern">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
+                            </div>
+                            <div class="text-danger" ng-if="createTemplateForm.mnemonic.$error.duplicate">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-3 control-label required" for="oid">
+                            {{ 'ui.model.dataTemplateDefinition.oid' | i18n }}
+                            <hint-popover hint-title="ui.model.dataTemplateDefinition.oid" />
+                        </label>
+                        <div class="col-sm-12 col-md-9 pt-2">
+                            <input type="text" pattern="^([0-9]+\.)+?[0-9]+$" name="oid" autocomplete="__away"
+                                required="required" class="form-control" ng-model="newTemplate.oid" />
+                            <div class="text-danger" ng-if="createTemplateForm.oid.$error.required">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                            </div>
+                            <div class="text-danger" ng-if="createTemplateForm.oid.$error.pattern">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.pattern' | i18n }}
+                            </div>
+                            <div class="text-danger" ng-if="createTemplateForm.oid.$error.duplicate">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-3 control-label required" for="name">
+                            {{ 'ui.model.dataTemplateDefinition.name' | i18n }}
+                            <hint-popover hint-title="ui.model.dataTemplateDefinition.name" />
+                        </label>
+                        <div class="col-sm-12 col-md-9 pt-2">
+                            <input type="text" name="name" maxlength="256" autocomplete="__away" required="required"
+                                class="form-control" ng-model="newTemplate.name" />
+                            <div class="text-danger" ng-if="createTemplateForm.name.$error.required">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-if="scopedObject.description">
+                        <label class="col-sm-12 col-md-3 control-label">
+                            {{ 'ui.model.dataTemplateDefinition.description' | i18n }}
+                            <hint-popover hint-title="ui.model.dataTemplateDefinition.description" />
+                        </label>
+                        <div class="col-sm-12 col-md-9 pt-2">
+                            <textarea class="form-control" maxlength="2048" ng-model="newTemplate.description">
+                            </textarea>
+                            {{ 2048 - newTemplate.description.length }} {{ 'ui.common.charsRemain' | i18n }}
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-12 col-md-3 control-label">
+                            {{ 'ui.model.dataTemplateDefinition.scope' | i18n }}
+                            <hint-popover hint-title="ui.model.dataTemplateDefinition.scope" />
+                        </label>
+                        <div class="col-sm-12 col-md-9">
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="scp in newTemplate.scopes track by $index">
+                                    <div class="input-group">
+                                        <concept-select class="form-control" concept-set="'EncounterType'"
+                                            add-concept="[ '54b52119-1709-4098-8911-5df6d6c84140' ]"
+                                            ng-model="newTemplate.scopes[$index]" required="required" />
+                                        <div class="input-group-addon">
+                                            <button class="btn btn-danger" ng-click="newTemplate.scopes.splice($index, 1)"
+                                                type="button">
+                                                <i class="fas fa-fw fa-times-circle"></i> {{ 'ui.action.remove' | i18n }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item">
+                                    <button class="btn btn-success" type="button" ng-click="newTemplate.scopes.push('')">
+                                        <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n}}
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                        <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
+                    <button type="submit" id="btnSubmit" ng-disabled="createTemplateForm.$invalid"
+                        class="btn btn-primary">
+                        <i class="fa fa-check"></i> {{ 'ui.action.save' | i18n }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

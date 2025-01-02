@@ -71,6 +71,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             if(encounter.extension && encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {
                 encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0] = await SanteDB.application.resolveReferenceExtensionAsync(encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0]);
             }
+            SanteDB.display.getScopeObject
             SanteDB.display.cascadeScopeObject($scope, ["encounter", "scopedObject"], encounter);
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.save.success"));
         }

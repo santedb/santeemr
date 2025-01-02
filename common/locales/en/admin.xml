@@ -70,4 +70,9 @@
     <string name="ui.emr.admin.templates.view.noViews">No Views are present in the template</string>
     <string name="ui.emr.admin.templates.save.success">Data template has been saved successfully</string>
     <string name="ui.emr.admin.templates.toggle.confirm">Are you sure you want to activate/deactivate this template?</string>
+    <string name="ui.emr.admin.templates.view.fdl">This view is defined using a simplified format. For more features switch to HTML</string>
+    <string name="ui.emr.admin.templates.view.fdl.switch">Switch to HTML</string>
+    <string name="ui.emr.admin.templates.view.convert.confirm">Are you sure you want to switch this view to HTML? This operation cannot be undone</string>
+    <string name="ui.emr.admin.templates.view.remove.confirm">Are you sure you want to remove this view from the template?</string>
+    <string name="ui.emr.admin.templates.create.title">Create Data Template</string>
 </resources>

@@ -1,7 +1,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
     <sdb:script static="false">~/controllers/templates/widgets.js</sdb:script>
     <sdb:script static="true">/org.santedb.admin/lib/ace/ace.min.js</sdb:script>
-    <sdb:script static="false">~/controllers/templates/rimEditor.js</sdb:script>
+    <sdb:script static="false">~/controllers/templates/viewEditor.js</sdb:script>
     <sdb:script static="false">/org.santedb.admin/lib/ace/ext-language_tools.js</sdb:script>
     <sdb:widget order="10" name="org.santedb.emr.admin.templates.view.edit" type="Panel" size="Large"
         context="org.santedb.emr.admin.templates.view">
@@ -11,6 +11,7 @@
                 <sdb:guard>!scopedObject.isReadonly</sdb:guard>
             </sdb:view>
         </sdb:views>
+        <sdb:guard>scopedObject !== null</sdb:guard>
     </sdb:widget>
 
     <div ng-controller="EmrEditTemplateViewController">
@@ -28,52 +29,118 @@
                         </button>
                     </h5>
                 </div>
-                <div class="collapse" ng-class="{ 'show' : $index === 0 }" data-parent="#viewAccordion" id="view{{$index}}Collapse">
-                    <div class="card-body" ng-switch="view.contentType" ng-init="act = scopedObject.filledJson">
-                        <div ng-switch-when="ref">
-                            <div class="card">
-                                <div class="card-header alert-info p-1">
-                                    <a href="{{view.content}}" target="_blank"><i class="fas fa-fw fa-file"></i> {{ view.content }}</a>
-                                </div>
-                                <div class="card-body">
-                                    <ng-include src="view.content" />
-                                </div>
+                <div class="collapse" ng-class="{ 'show' : $index === 0 }" data-parent="#viewAccordion"
+                    id="view{{$index}}Collapse">
+                    <div class="card-body" ng-init="act = scopedObject.filledJson">
+                        <div class="card">
+                            <div ng-if="view.contentType == 'ref'" class="card-header alert-info p-1">
+                                <a href="{{view.content}}" target="_blank"><i class="fas fa-fw fa-file"></i> {{
+                                    view.content }}</a>
                             </div>
-                        </div>
-                        <div ng-switch-when="div">
-                            <div class="card">
-                                <div class="card-body" ng-bind-html="view.content">
-                                </div>
+                            <div class="card-body">
+                                <ng-include src="getViewUrl(view.type)" />
                             </div>
-                        </div>
-                        <div ng-switch-default="default">
-                            DEFAULT
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <form name="panel.editForm" ng-submit="saveTemplateDefinition(panel.editForm)" ng-if="panel.view === 'Edit'"
-         novalidate="novalidate">
+            novalidate="novalidate">
             <ul class="nav nav-tabs" role="tablist" id="formViews">
-                <li class="nav-item" ng-class="{ 'active' : $index === 0 }" role="presentation" ng-repeat="view in scopedObject.views track by $index">
-                    <a class="nav-link active" href="javascript:" data-target="#view{{view.type}}" data-toggle="tab">
+                <li class="nav-item" role="presentation" ng-repeat="view in editObject.views track by $index">
+                    <a class="nav-link btn-link " id="viewTab{{view.type}}"
+                        data-target="#view{{view.type}}" data-toggle="tab">
                         <i class="far fa-fw fa-window-maximize"></i> {{ view.type }}
+                        <button class="btn btn-danger btn-sm" type="button" ng-click="removeView($index)">
+                            <i class="fas fa-fw fa-times-circle"></i>
+                        </button>
                     </a>
                 </li>
-                <li class="nav-item" ng-class="{ 'active' : !scopedObject.views }" role="presentation" ng-if="scopedObject.views.length !== 4">
-                    <a class="nav-link active" href="javascript:" data-target="#newView" data-toggle="tab">
-                        <i class="fas fa-fw fa-asterisk"></i> {{ 'ui.action.new' | i18n }}
-                    </a>
+                <li ng-if="editObject.views.length !== 4">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">{{ 'ui.action.new' | i18n }}</span>
+                        </div>
+                        <select class="form-control" ng-model="newView">
+                            <option ng-if="!hasView('Entry')" value="Entry">Entry</option>
+                            <option ng-if="!hasView('BackEntry')" value="BackEntry">Back Entry</option>
+                            <option ng-if="!hasView('DetailView')" value="DetailView">Detail View</option>
+                            <option ng-if="!hasView('SummaryView')" value="SummaryView">Summary View</option>
+                        </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-sm btn-primary" ng-disabled="!newView" ng-click="addView(newView)">
+                                <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n }}
+                            </button>
+                        </div>
+                    </div>
                 </li>
             </ul>
             <div class="tab-content">
-                <div class="tab-panel content-fluid" ng-class="{ 'active' : !scopedObject.views  }">
-                    <label class="col-sm-12 col-md-3 control-label">
-                        {{ 'ui.emr.admin.templates'}}
-                    </label>
+                <div class="tab-pane" role="tab" id="view{{view.type}}"
+                    ng-repeat="view in editObject.views track by $index">
+                    <div class="container-fluid">
+                        <div class="row" ng-if="view.contentType == 'svd' &amp;&amp; !view._dismiss">
+                            <div class="col-12 alert alert-info d-flex p-0 mt-1">
+                                <span class="flex-grow-1">
+                                <i class="fas fa-fw fa-code"></i> {{ 'ui.emr.admin.templates.view.fdl' | i18n }}
+                            </span>
+                            <div class="btn-group">
+                                <button type="button" ng-click="convertHtml(view)" class="btn btn-sm btn-outline-primary">
+                                    <i class="fas fa-fw fa-arrows-left-right-to-line"></i> {{ 'ui.emr.admin.templates.view.fdl.switch' | i18n }}
+                                </button>
+                                <button type="button" ng-click="view._dismiss = true" class="btn btn-sm btn-outline-danger">
+                                    <i class="fas fa-fw fa-minus-circle"></i> {{ 'ui.action.dismiss' | i18n }}
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12 col-xl-8">
+                                <div id="view{{view.type}}Editor"
+                                    style="height: calc(100vh - 200px); max-height:calc(100vh - 200px)">
+                                </div>
+                            </div>
+                            <div class="d-none d-xl-block col-4 bg-dark">
+                                <div class="bg-light m-2 w-100 h-100">
+                                    <ul class="overflow-auto list-group">
+                                        <li class="list-group-item">
+                                            <div class="d-flex justify-content-left">
+                                                <!-- PROPOSE Should allow users to select an override -->
+                                                <div class="actProposeControl editOnly"
+                                                    ng-if="act.moodConcept == 'acf7baf2-221f-4bc2-8116-ceb5165be079' || act.relationship.Fulfills[0].targetModel.moodConcept == 'acf7baf2-221f-4bc2-8116-ceb5165be079'">
+                                                    <label class="checkbox-container">
+                                                        <input type="checkbox" class="checkbox-control"
+                                                            disabled="disabled" />
+                                                        <span></span>
+                                                    </label>
+                                                </div>
+                                                <!-- Render the main act entry content -->
+                                                <div class="flex-grow-1 actEntryComponent">
+                                                    <div>
+                                                        <div id="view{{view.type}}Preview"></div>
+                                                    </div>
+                                                </div>
+                                                <div class="actMoveToHistory editOnly"
+                                                    ng-if="act.moodConcept == 'acf7baf2-221f-4bc2-8116-ceb5165be079' || act.relationship.Fulfills[0].targetModel.moodConcept == 'acf7baf2-221f-4bc2-8116-ceb5165be079'">
+                                                    <button type="button" disabled="disabled" class="btn btn-info">
+                                                        <i class="fas fa-fw fa-clock-rotate-left"></i>
+                                                    </button>
+                                                </div>
+                                                <div class="actRemoveItem editOnly"
+                                                    ng-if="!(ac.moodConcept == 'acf7baf2-221f-4bc2-8116-ceb5165be079' || ac.relationship.Fulfills[0].targetModel.moodConcept == 'acf7baf2-221f-4bc2-8116-ceb5165be079')">
+                                                    <button type="button" disbaled="disabled" class="btn btn-danger">
+                                                        <i class="fas fa-fw fa-times-circle"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="tab-pane" role="tab" id="view{{view.type}}" ng-repeat="view in scopedObject.views track by $index"></div>
             </div>
         </form>
     </div>

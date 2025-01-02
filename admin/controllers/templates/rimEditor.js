@@ -38,7 +38,6 @@ function RimAceEditor(controlName, templateDefinition) {
     ];
     const _syntaxErrorRegex = /^(.*)\(line\s(\d+)\scolumn\s(\d+)\).*$/;
     const jsonTypeExtractor = /"\$type"\s*\:\s*\"(\w+)\"/mi;
-    const nonObjectTypes = ["Boolean", "DateTime", "DateTimeOffset", "String", "Guid", "Int32", "Int16", "Int64", "Byte", "BatchOperationType"];
 
     // Require
     var LanguageTools = ace.require("ace/ext/language_tools");
@@ -374,7 +373,7 @@ function RimAceEditor(controlName, templateDefinition) {
                         })
                         SanteDB.resources.dataTemplateDefinition.patchAsync(templateDefinition.id, null, patch);
                         _editorDirty = false;
-                        toastr.success(SanteDB.locale.getString("ui.admin.emr.templates.save.success"));
+                        toastr.success(SanteDB.locale.getString("ui.emr.admin.templates.save.success"));
                         _saveHandlers.forEach(o => o());
                     }
                     catch (e) {
