@@ -23,6 +23,18 @@
  */
 function RimAceEditor(controlName, templateDefinition) {
 
+    const _sysVars = {
+        "Guid" : [
+            { name: "Current Patient UUID", value: "{{ $recordTargetId }}", type: "Variable", documentation: "The patient for the current encounter/visit"},
+            { name: "Current Facility UUID", value: "{{ $facilityId }}", type: "Variable", documentation: "The current/default facility the user has logged into"},
+            { name: "Current User UUID", value: "{{ $userEntityId }}", type: "Variable", documentation: "The current UserEntity which is logged in"}
+        ],
+        "DateTimeOffset" : [
+            { name: "Current Time", value: " {{ $now }}", type: "Variable", documentation: "The current system time" },
+            { name: "Current Date", value: " {{ $today }}", type: "Variable", documentation: "The current day (minus the time)" }
+        ]
+    };
+
     var _editor;
     var _completor;
     var _saveHandlers = [];
@@ -101,6 +113,7 @@ function RimAceEditor(controlName, templateDefinition) {
                 var tokenPath = [];
                 var lastString = null;
                 var cObjectType = null;
+                var lastVariable = null;
                 while (tokenIterator.stepBackward()) {
                     var currentToken = tokenIterator.getCurrentToken();
                     switch (currentToken.type) {
@@ -122,6 +135,9 @@ function RimAceEditor(controlName, templateDefinition) {
                         case "variable":
                             if (currentToken.value == '"$type"') {
                                 cObjectType = lastString.replaceAll("\"", "");
+                            }
+                            else {
+                                lastVariable = currentToken.value;
                             }
                     }
                 }
@@ -284,9 +300,21 @@ function RimAceEditor(controlName, templateDefinition) {
                     _scopedList = _basicTypes;
                 } else if (_scopedList) {
                     var fnVar = variableName === undefined ? null : _scopedList.find(c => c.name == variableName.name);
-                    if (fnVar && fnVar.values) {
-                        _scopedList = Object.keys(fnVar.values).map(o => { return { name: fnVar.values[o], value: o, type: "Concept" } });
+                    if (fnVar) {
+                        if(fnVar.values) {
+                            _scopedList = Object.keys(fnVar.values).map(o => { return { name: fnVar.values[o], value: o, type: "Concept" } });
+                        }
+                        else {
+                            _scopedList = [];
+                        }
+
+                        for(var i in _sysVars[fnVar.type] ||  [])
+                        {
+                            _scopedList.push(_sysVars[fnVar.type][i]);
+                        }
+                       
                     }
+
                 }
             }
 
