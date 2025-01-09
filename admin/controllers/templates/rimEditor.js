@@ -24,12 +24,12 @@
 function RimAceEditor(controlName, templateDefinition) {
 
     const _sysVars = {
-        "Guid" : [
-            { name: "Current Patient UUID", value: "{{ $recordTargetId }}", type: "Variable", documentation: "The patient for the current encounter/visit"},
-            { name: "Current Facility UUID", value: "{{ $facilityId }}", type: "Variable", documentation: "The current/default facility the user has logged into"},
-            { name: "Current User UUID", value: "{{ $userEntityId }}", type: "Variable", documentation: "The current UserEntity which is logged in"}
+        "Guid": [
+            { name: "Current Patient UUID", value: "{{ $recordTargetId }}", type: "Variable", documentation: "The patient for the current encounter/visit" },
+            { name: "Current Facility UUID", value: "{{ $facilityId }}", type: "Variable", documentation: "The current/default facility the user has logged into" },
+            { name: "Current User UUID", value: "{{ $userEntityId }}", type: "Variable", documentation: "The current UserEntity which is logged in" }
         ],
-        "DateTimeOffset" : [
+        "DateTimeOffset": [
             { name: "Current Time", value: " {{ $now }}", type: "Variable", documentation: "The current system time" },
             { name: "Current Date", value: " {{ $today }}", type: "Variable", documentation: "The current day (minus the time)" }
         ]
@@ -286,7 +286,7 @@ function RimAceEditor(controlName, templateDefinition) {
 
         var _basicTypes = Object.keys(SanteDB.resources).filter(o => SanteDB.resources[o] instanceof ResourceWrapper).map(o => { return { name: SanteDB.resources[o].getResource(), type: "Resource" } });
         var _completeCache = {};
-    
+
         this.getCompletions = async function (editor, session, pos, prefix, callback) {
 
             var tokenIterator = new TokenIterator(session, pos.row, pos.column);
@@ -301,18 +301,47 @@ function RimAceEditor(controlName, templateDefinition) {
                 } else if (_scopedList) {
                     var fnVar = variableName === undefined ? null : _scopedList.find(c => c.name == variableName.name);
                     if (fnVar) {
-                        if(fnVar.values) {
+                        var modelVar = _scopedList.find(c => c.name == `${variableName.name}Model`);
+                        if (fnVar.values) {
                             _scopedList = Object.keys(fnVar.values).map(o => { return { name: fnVar.values[o], value: o, type: "Concept" } });
                         }
                         else {
                             _scopedList = [];
                         }
 
-                        for(var i in _sysVars[fnVar.type] ||  [])
-                        {
+                        for (var i in _sysVars[fnVar.type] || []) {
                             _scopedList.push(_sysVars[fnVar.type][i]);
                         }
-                       
+
+                        // For GUID we need to also provide lookup data - so let's do that
+                        if (!fnVar.values && modelVar) {
+                            var query = { _count: 10, _includeTotal: false };
+                            switch (modelVar.type) {
+                                case Concept.name:
+                                    query["name.value||mnemonic"] = `~${token.value.replaceAll("\"", "")}`;
+                                    break;
+                                case Entity.name:
+                                    query["name.component.value"] = `~${token.value.replaceAll("\"", "")}`;
+                                    break;
+                            }
+
+                            var api = SanteDB.resources[modelVar.type.toCamelCase()];
+                            if (Object.keys(query).length > 2 && api) {
+                                if (api) {
+                                    var matches = await api.findAsync(query, "dropdown");
+                                    if (matches.resource) {
+                                        matches.resource.map(r => {
+                                            return {
+                                                name: r.$type == "Concept" ? SanteDB.display.renderConcept(r) : SanteDB.display.renderEntityName(r.name),
+                                                value: r.id,
+                                                type: r.$type, 
+                                                documentation: r.mnemonic
+                                            }
+                                        }).forEach(r=>_scopedList.push(r));
+                                    }
+                                }
+                            }
+                        }
                     }
 
                 }
