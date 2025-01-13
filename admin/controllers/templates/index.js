@@ -1,3 +1,4 @@
+/// <reference path="../../.ref/js/santedb-model.js" />
 angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$rootScope", "$state", "$timeout", function ($scope, $rootScope, $state, $timeout) {
 
 
@@ -121,6 +122,42 @@ angular.module('santedb').controller("EmrTemplateIndexController", ["$scope", "$
             finally {
                 SanteDB.display.buttonWait(`#DataTemplateDefinitionenable${idx}`, false);
                 SanteDB.display.buttonWait(`#DataTemplateDefinitiondisable${idx}`, false);
+            }
+        }
+    }
+
+    $scope.restoreTemplate = async function(id, idx) {
+        if (confirm(SanteDB.locale.getString("ui.emr.admin.templates.restore.confirm"))) {
+            try {
+                SanteDB.display.buttonWait(`#DataTemplateDefinitionrestore${idx}`, true);
+
+                var patch = new Patch({
+                    appliesTo: {
+                        type: "DataTemplateDefinition",
+                        id: id
+                    },
+                    change: [
+                        {
+                            op: PatchOperationType.Remove,
+                            path: "obsoletionTime",
+                            value: null
+                        },
+                        {
+                            op: PatchOperationType.Remove, 
+                            path: "obsoletedBy",
+                            value: null
+                        }
+                    ]
+                });
+                await SanteDB.resources.dataTemplateDefinition.patchAsync(id, null, patch);
+                toastr.success(SanteDB.locale.getString("ui.emr.admin.templates.restore.success"));
+                $("#templateTypeTable table").DataTable().draw();
+            }
+            catch (e) {
+                $rootScope.errorHandler(e);
+            }
+            finally {
+                SanteDB.display.buttonWait(`#DataTemplateDefinitionrestore${idx}`, false);
             }
         }
     }
