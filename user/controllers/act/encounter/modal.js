@@ -258,7 +258,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             // TODO: Show appointment booking modal if there is a next step
             $timeout(() => {
                 $("#dischargeModal").modal('hide');
-                $("#waitingRoomList").EntityList.refresh();
+                $("#waitingRoomList")[0].EntityList.refresh();
             });
 
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.discharge.success"));

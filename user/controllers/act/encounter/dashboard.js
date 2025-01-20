@@ -25,7 +25,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
                 }
 
                 await SanteDB.resources.bundle.insertAsync(submissionBundle);
-                $("#waitingRoomList").EntityList.refresh();
+                $("#waitingRoomList")[0].EntityList.refresh();
                 toastr.success(SanteDB.locale.getString("ui.emr.encounter.cancel.success"));
 
             }
