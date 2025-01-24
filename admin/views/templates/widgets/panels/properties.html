@@ -36,6 +36,14 @@
                     {{ scopedObject.name }}
                 </div>
             </div>
+            <div class="row">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.dataTemplateDefinition.public' | i18n }}
+                </label>
+                <div class="col-sm-12 col-md-9 pt-2">
+                    {{ scopedObject.public }}
+                </div>
+            </div>
             <div class="row" ng-if="scopedObject.description">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.dataTemplateDefinition.description' | i18n }}
@@ -98,6 +106,14 @@
                         <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
                     </div>
                 </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-9 offset-md-3 checkbox-container">
+                    <input type="checkbox" class="checkbox-control" ng-model="editObject.public" />
+                    <span></span>
+                    {{ 'ui.model.dataTemplateDefinition.public' | i18n }}
+                    <hint-popover hint-title="ui.model.dataTemplateDefinition.public.hint" />
+                </label>
             </div>
             <div class="form-group row">
                 <label class="col-sm-12 col-md-3 control-label required" for="oid">

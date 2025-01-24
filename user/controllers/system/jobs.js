@@ -50,9 +50,9 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
             case "Cancelled":
                 return `<span class="badge badge-warning badge-pill"><i class="fas fa-info-circle"></i> ${SanteDB.locale.getString("ui.state.cancelled")}</span>`;
             case "Aborted":
-                return `<span class="badge badge-danger badge-pill"><i class="fas fa-exlamation-triange"></i> ${SanteDB.locale.getString("ui.state.abort")}</span>`;
+                return `<span class="badge badge-danger badge-pill"><i class="fas fa-exlamation-triange"></i> ${SanteDB.locale.getString("ui.state.abort")}</span><br/><small>{{ '${(job.status ||  '').replaceAll("'","\\'")}' | leftEllipsis: 30 }}</small>`;
             case "Stopped":
-                return `<span class="badge badge-danger badge-pill"><i class="fas fa-exlamation-triange"></i> ${SanteDB.locale.getString("ui.state.stop")}</span>`;
+                return `<span class="badge badge-danger badge-pill"><i class="fas fa-exlamation-triange"></i> ${SanteDB.locale.getString("ui.state.stop")}</span><br/><small>{{ '${(job.status ||  '').replaceAll("'","\\'")}' | leftEllipsis: 30 }}</small>`;
             default:
                 return `<span class="badge badge-info badge-pill"><i class="fas fa-clock"></i> ${SanteDB.locale.getString("ui.state.notrun")}</span>`;
         }

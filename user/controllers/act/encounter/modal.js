@@ -195,7 +195,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
     // Set the appropriate discharge dispositions etc.
     $scope.$watch("encounter", function (n, o) {
-        if (n && (!o || o.id != n.id)) {
+        if (n && (!o || o._tmpId != n._tmpId)) {
 
             // Set the status of the encounter and everything else
             n.statusConcept = StatusKeys.Completed;
@@ -231,7 +231,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             $scope.encounter.stopTime = new Date();
             
             // Save the discharge
-            var savedEncounter = await SanteEMR.saveVisitAsync($scope.encounter);
+            var savedEncounter = await SanteEMR.saveVisitAsync($scope.encounter, "Discharger");
 
             // Was this part of a pathway or CDSS proposal? 
             if ($scope.encounter.relationship.Fulfills &&

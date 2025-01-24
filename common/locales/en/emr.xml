@@ -396,7 +396,11 @@
      <string name="ui.emr.encounter.waitingRoom.filter.released">Released / Discharged</string>
      <string name="ui.emr.encounter.save.success">Visit has been updated successfully</string>
      <string name="ui.emr.encounter.discharge.title">End Visit / Discharge</string>
-     <string name="ui.emr.encounter.discharge.instructions">Validate the following actions occurred during the visit, and they are accurate. If an action was not performed un-select it.</string>
+     <string name="ui.emr.encounter.discharge.actions">Actions Performed During Visit</string>
+     <string name="ui.emr.encounter.discharge.actions.instructions">Validate the following actions occurred during the visit, and they are accurate. If an action was not performed un-select it.</string>
+     <string name="ui.emr.encounter.discharge.issues">Detected Problems</string>
+     <string name="ui.emr.encounter.discharge.issues.instructions">Review the detected issues below ensure that they are resolved prior to discharge.</string>
+     
      <string name="ui.emr.encounter.component.notTouched">It appears this action was not completed (or has incomplete data). If you end the visit you will be attributed as completing the action</string>
      <string name="ui.emr.encounter.discharge.bookAppointment.confirm">This patient has upcoming events in their careplan. Do you want to view the next scheduled appointment now?</string>
      <!-- Visits -->

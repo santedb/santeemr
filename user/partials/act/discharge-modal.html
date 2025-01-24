@@ -21,36 +21,45 @@
                             <div ng-if="!encounter">
                                 <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
                             </div>
-                            <div ng-if="encounter" class="container-fluid">
-                                <div class="row">
-                                    <div class="col-12">
-                                        {{ 'ui.emr.encounter.discharge.instructions' | i18n }}
-                                    </div>
+                            <div ng-if="encounter" class="d-flex flex-column">
+                                <h5>{{ 'ui.emr.encounter.discharge.actions' | i18n }}</h5>
+                                <div class="p-2">
+                                    {{ 'ui.emr.encounter.discharge.actions.instructions' | i18n }}
                                 </div>
-                                <div class="row">
-                                    <div class="col-12">
-                                        <ul class="list-unstyled ml-2">
-                                            <li ng-repeat="comp in encounter.relationship.HasComponent track by $index"
-                                                ng-if="comp.targetModel.tag.isBackEntry[0] != 'True'">
-                                                <label class="checkbox-container" ng-init="act = comp.targetModel">
-                                                    <input type="checkbox" class="checkbox-control"
-                                                        ng-model="comp.targetModel.operation"
-                                                        ng-true-value="'InsertOrUpdate'" ng-false-value="'Delete'" />
-                                                    <span></span>
-                                                    <!-- <i class="fas fa-fw fa-circle"></i> -->
-                                                    <ng-include
-                                                        src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)"></ng-include>
-                                                </label>
-                                                <div class="text-info ml-10"
-                                                    ng-if="comp.targetModel.operation == 'InsertOrUpdate' &amp;&amp; !(comp.targetModel.previousVersion || comp.targetModel.participation &amp;&amp; comp.targetModel.participation.Performer)">
-                                                    <i class="fas fa-fw fa-lightbulb"></i> {{
-                                                    'ui.emr.encounter.component.notTouched' | i18n }}
-                                                </div>
-                                            </li>
-                                        </ul>
+                                <ul class="list-unstyled ml-2">
+                                    <li ng-repeat="comp in encounter.relationship.HasComponent track by $index"
+                                        ng-if="comp.targetModel.tag.isBackEntry[0] != 'True'">
+                                        <label class="checkbox-container" ng-init="act = comp.targetModel">
+                                            <input type="checkbox" class="checkbox-control"
+                                                ng-model="comp.targetModel.operation"
+                                                ng-true-value="'InsertOrUpdate'" ng-false-value="'Delete'" />
+                                            <span></span>
+                                            <!-- <i class="fas fa-fw fa-circle"></i> -->
+                                            <ng-include
+                                                src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)"></ng-include>
+                                        </label>
+                                        <div class="text-info ml-10"
+                                            ng-if="comp.targetModel.operation == 'InsertOrUpdate' &amp;&amp; !(comp.targetModel.previousVersion || comp.targetModel.participation &amp;&amp; comp.targetModel.participation.Performer)">
+                                            <i class="fas fa-fw fa-lightbulb"></i> {{
+                                            'ui.emr.encounter.component.notTouched' | i18n }}
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div ng-if="issues.length &gt; 0" class="d-flex flex-column">
+                                    <h5><i class="fas fa-fw fa-lightbulb"></i> {{ 'ui.emr.encounter.discharge.issues' | i18n }}</h5>
+                                    <div class="p-2">
+                                        {{ 'ui.emr.encounter.discharge.issues.instructions' | i18n }}
                                     </div>
+                                    <ul class="list-group ml-2">
+                                        <li ng-repeat="issue in issues track by $index"
+                                            class="list-group-item" 
+                                            ng-class="{ 'list-group-item-danger': issue.priority == 'Error', 'list-group-item-warning': issue.priority == 'Warning', 'list-group-item-info' : issue.priority == 'Information' }">
+                                            <i class="fas fa-fw" ng-class="{ 'fa-exclamation-triangle' : issue.priority == 'Error', 'fa-info-circle' : issue.priority == 'Warning' || issue.priority == 'Information' }"></i>
+                                            {{ issue.text }}
+                                        </li>
+                                    </ul>
                                 </div>
-                                <div class="form-group row">
+                                <div class="form-group row mt-2">
                                     <label class="control-label required col-sm-12 col-md-3">
                                         {{ 'ui.model.patientEncounter.dischargeDisposition' | i18n }}
                                         <hint-popover hint-title="ui.model.paitentEncounter.dischargeDisposition" />

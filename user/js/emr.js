@@ -3,7 +3,7 @@
 // Convert an age to a date
 function ageToDate(age, onDate) {
 
-    return moment(onDate).subtract({years: age}).startOf('day').toDate();
+    return moment(onDate).subtract({ years: age }).startOf('day').toDate();
 }
 
 /// Convert a date to an age
@@ -52,6 +52,54 @@ const TEMPLATE_IDS = {
  */
 function SanteEMRWrapper() {
 
+    const _IGNORE_RELATIONSHIPS = [
+        BatchOperationType.Delete,
+        BatchOperationType.DeleteInt,
+        BatchOperationType.Ignore,
+        BatchOperationType.IgnoreInt
+    ]
+
+    /**
+     * 
+     * @param {Bundle} submissionBundle The bundle to set the performers on
+     * @param {Guid} thisUserId The UUID of the current user to attribute
+     * @param {String} thisUsersParticipationType The participation this user has
+     * @returns 
+     */
+    function _setVisitPerformers(submissionBundle, thisUserId, thisUsersParticipationType) {
+
+        // For each entry which is being updated set the performer
+        submissionBundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1).forEach(act => {
+            act.participation = act.participation || {};
+
+            var participationType = "Performer";
+            act.participation = act.participation || {};
+
+            if (act.$type != PatientEncounter.name) {
+                act.actTime = act.stopTime = act.stopTime || new Date();
+                
+                // We already have a performer
+                if(act.participation.Performer) {
+                    participationType = "SecondaryPerformer";
+                }
+                if (act.tag && act.tag.isBackEntry && act.tag.isBackEntry[0] != "True") {
+                    participationType = "DataEnterer";
+                }
+            }
+            else {
+                participationType = thisUsersParticipationType || "Performer";
+            }
+
+            act.participation[participationType] = act.participation[participationType] || [];
+            if (act.participation[participationType].find(o => o.player == thisUserId) == null) {
+                act.participation[participationType].push(new ActParticipation({
+                    player: thisUserId
+                }));
+            }
+
+        });
+        return submissionBundle;
+    }
 
     /**
      * @method
@@ -63,10 +111,10 @@ function SanteEMRWrapper() {
     async function _bundleVisit(encounter) {
         encounter = new PatientEncounter(angular.copy(encounter));
         // Process extensions
-        if(encounter.extension) {
+        if (encounter.extension) {
             Object.keys(encounter.extension).forEach(url => {
                 encounter.extension[url] = encounter.extension[url].map(ext => {
-                    if(ext.$type) // reference
+                    if (ext.$type) // reference
                     {
                         return SanteDB.application.encodeReferenceExtension(ext.$type, ext.id);
                     }
@@ -78,15 +126,15 @@ function SanteEMRWrapper() {
         encounter.operation = BatchOperationType.UpdateInt;
 
         encounter = await prepareActForSubmission(encounter);
-        var bundle = bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills" ]);
-        encounter = bundle.resource.find(o=>o.$type == PatientEncounter.name);
+        var bundle = bundleRelatedObjects(encounter, ["Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills"]);
+        encounter = bundle.resource.find(o => o.$type == PatientEncounter.name);
         // remove components which have a deleted target
-        if(encounter.relationship && encounter.relationship.HasComponent) {
-            encounter.relationship.HasComponent = encounter.relationship.HasComponent.filter(e=> {
-                return bundle.resource.find(o=>o.id == e.target && o.operation != BatchOperationType.Delete && o.operation != BatchOperationType.DeleteInt) != null;
+        if (encounter.relationship && encounter.relationship.HasComponent) {
+            encounter.relationship.HasComponent = encounter.relationship.HasComponent.filter(e => {
+                return bundle.resource.find(o => o.id == e.target && o.operation != BatchOperationType.Delete && o.operation != BatchOperationType.DeleteInt) != null;
             });
         }
-        return bundle;        
+        return bundle;
     }
 
     /**
@@ -95,15 +143,17 @@ function SanteEMRWrapper() {
      * @param {PatientEncounter} encounter The encounter containing data to be analysed
      * @returns {Array} The array of detected issues
      */
-    this.analyzeVisit = async function(encounter) {
+    this.analyzeVisit = async function (encounter) {
         try {
             var bundle = await _bundleVisit(encounter);
+            bundle.resource = bundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1);
+            bundle.resource.forEach(act => { act.interpretationConcept = null });
             var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
                 target: bundle
             });
             return result;
         }
-        catch(e) {
+        catch (e) {
             throw new Exception("EmrException", "Could not analyze the submitted visit", null, e);
         }
     }
@@ -114,9 +164,9 @@ function SanteEMRWrapper() {
      * @param {string} patientId The patient identifier to show the checkin modal for
      * @param {string} encounterId The encounter identifier to be selected as the start encounter
      */
-    this.showCheckin = function(patientId, encounterId) {
+    this.showCheckin = function (patientId, encounterId) {
         var checkinModal = angular.element("#checkinModal");
-        if(checkinModal == null) {
+        if (checkinModal == null) {
             console.warn("Have not included the checkin-modal.html file");
             return;
         }
@@ -132,32 +182,40 @@ function SanteEMRWrapper() {
      * @param {string} encounter The encounter or encounter id to be discharged
      * @param {timeout} $timeout The scope timeout service
      */
-    this.showDischarge = function(encounter, $timeout) {
-        
+    this.showDischarge = async function (encounter, $timeout) {
+
         var dischargeModal = angular.element("#dischargeModal");
-        if(dischargeModal == null) {
+        if (dischargeModal == null) {
             console.warn("Have not included the discharge-modal.html file");
+            return;
         }
 
-        SanteEMR.analyzeVisit(encounter).then(r => {
-            var enc = angular.copy(encounter);
-            enc._issues = r;
+        try {
+            
+            var analyzeResult = await SanteEMR.analyzeVisit(encounter);
             var scope = dischargeModal.scope();
+            var enc = angular.copy(encounter);
+            enc._tmpId = SanteDB.application.newGuid();
             $timeout(() => {
                 scope.encounter = enc;
+                scope.issues = analyzeResult.issue;
                 $("#dischargeModal").modal('show');
-            })
-        });
+            });
+
+        }
+        catch (e) {
+            throw new Exception("EmrException", "Error showing discharge details", null, e);
+        }
     }
 
-    /**
+    /** 
      * @method
      * @memberof SanteEMRWrapper
      * @param {string} encounter The encounter object to show the modal for
      */
-    this.showRequeue = function(encounter) {
+    this.showRequeue = function (encounter) {
         var requeueModal = angular.element("#returnModal");
-        if(requeueModal == null) {
+        if (requeueModal == null) {
             console.warn("Have not included the return-waiting-modal.html file");
             return;
         }
@@ -185,15 +243,15 @@ function SanteEMRWrapper() {
         return patient;
     }
 
-    
+
     /**
      * @summary Resolves the template icon for the specified act/entity template
      * @param {string} templateId The template mnemonic to resolve the icon for
      * @returns The resolved icon 
      */
-    this.resolveTemplateIcon = function(templateId) {
+    this.resolveTemplateIcon = function (templateId) {
         var template = SanteDB.application.getTemplateMetadata(templateId);
-        if(template) {
+        if (template) {
             return template.icon;
         }
         else {
@@ -206,10 +264,10 @@ function SanteEMRWrapper() {
      * @param {string} templateId The template mnemonic to resolve the summary for
      * @returns {String} The location of the summary template
      */
-    this.resolveSummaryTemplate = function(templateId) {
+    this.resolveSummaryTemplate = function (templateId) {
         var templateValue = SanteDB.application.resolveTemplateSummary(templateId);
-        if(templateValue == null) {
-            return  "/org.santedb.uicore/partials/act/noTemplate.html"
+        if (templateValue == null) {
+            return "/org.santedb.uicore/partials/act/noTemplate.html"
         }
         return templateValue;
     }
@@ -218,43 +276,20 @@ function SanteEMRWrapper() {
      * @summary Save the encounter 
      * @method
      * @param {PatientEncounter} encounter The encounter that is to be saved
+     * @param {String} thisUsersParticipationType The participation that this user has in the encounter
      * @returns {PatientEncounter} The updated encounter
      */
-    this.saveVisitAsync = async function(encounter) {
+    this.saveVisitAsync = async function (encounter, thisUsersParticipationType) {
         try {
 
             var submissionBundle = await _bundleVisit(encounter);
             // Is the current user listed as a performer?
             var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
-            
-            // For each entry which is being updated set the performer
-            submissionBundle.resource.filter(act => act.operation != BatchOperationType.IgnoreInt  && act.operation != BatchOperationType.Ignore &&
-                act.operation != BatchOperationType.Delete && act.operation != BatchOperationType.DeleteInt
-            ).forEach(act => {
-                act.participation = act.participation || {};
-
-                if(act.$type != PatientEncounter.name) {
-                    act.actTime = act.stopTime = act.stopTime || new Date();
-                }
-                var participationType = "Performer";
-                if(act.tag && act.tag.isBackEntry && act.tag.isBackEntry[0] != "True") {
-                    participationType = "DataEnterer";
-                }
-
-                act.participation = act.participation || {};
-                act.participation[participationType] = act.participation[participationType] || [];
-                if(act.participation[participationType].find(o=>o.player == myUserId) == null) {
-                    act.participation[participationType].push(new ActParticipation({
-                        player: myUserId
-                    }));
-                }
-
-            });
-
+            submissionBundle = _setVisitPerformers(submissionBundle, myUserId, thisUsersParticipationType);
             submissionBundle = await SanteDB.resources.bundle.insertAsync(submissionBundle);
-            return submissionBundle.resource.find(o=>o.$type == "PatientEncounter");
+            return submissionBundle.resource.find(o => o.$type == "PatientEncounter");
         }
-        catch(e) {
+        catch (e) {
             throw new Exception("EmrException", e.message, null, e);
         }
     }
@@ -269,7 +304,7 @@ function SanteEMRWrapper() {
      * @param {ActParticipation} informantPtcpt The informant / guardian on the act
      * @returns {PatientEncounter} The constructed and saved {@link:PatientEncounter}
      */
-    this.startVisitAsync = async function(templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt) {
+    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt) {
         try {
 
             var submission = new Bundle({ resource: [] });
@@ -291,7 +326,7 @@ function SanteEMRWrapper() {
             encounter.startTime = encounter.actTime = new Date();
             encounter.statusConcept = StatusKeys.Active;
             encounter.extension = encounter.extension || {};
-            encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL] = [ SanteDB.application.encodeReferenceExtension(Concept.name, ENCOUNTER_FLOW.CHECKED_IN) ];
+            encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL] = [SanteDB.application.encodeReferenceExtension(Concept.name, ENCOUNTER_FLOW.CHECKED_IN)];
 
             // Set the status 
 
@@ -313,7 +348,7 @@ function SanteEMRWrapper() {
                 });
                 encounter.relationship.HasComponent.push(ar);
 
-                if(!comp.targetModel.tag || !comp.targetModel.tag.isBackEntry) {
+                if (!comp.targetModel.tag || !comp.targetModel.tag.isBackEntry) {
                     comp.targetModel.stopTime = null;
                     comp.targetModel.actTime = comp.targetModel.startTime = encounter.startTime;
                 }
@@ -340,34 +375,34 @@ function SanteEMRWrapper() {
                 }
             });
 
-            if(informantPtcpt) {
+            if (informantPtcpt) {
                 encounter.participation = encounter.participation || {};
                 encounter.participation.Informant = encounter.participation.Informant || [];
                 encounter.participation.Informant.push(informantPtcpt);
-                if(informantPtcpt.playerModel && informantPtcpt.player != informantPtcpt.playerModel.id ) {
+                if (informantPtcpt.playerModel && informantPtcpt.player != informantPtcpt.playerModel.id) {
                     delete informantPtcpt.playerModel;
                 }
             }
-            
-            encounter = await prepareActForSubmission(encounter);
-            submission =  bundleRelatedObjects(encounter, [ "Informant", "RecordTarget", "Location", "Authororiginator" ]);
 
-            if(informantPtcpt && informantPtcpt.playerModel && informantPtcpt.player == informantPtcpt.playerModel.id ) {
-                    informantPtcpt.playerModel = await prepareEntityForSubmission(informantPtcpt.playerModel, true);
-                    submission.resource.push(informantPtcpt.playerModel);
-                    submission.resource.push(new EntityRelationship(
-                        informantPtcpt.playerModel.relationship.$other[0]
-                    ));
-                    delete informantPtcpt.playerModel.relationship.$other;
-                    delete informantPtcpt.playerModel;
-                
+            encounter = await prepareActForSubmission(encounter);
+            submission = bundleRelatedObjects(encounter, ["Informant", "RecordTarget", "Location", "Authororiginator"]);
+
+            if (informantPtcpt && informantPtcpt.playerModel && informantPtcpt.player == informantPtcpt.playerModel.id) {
+                informantPtcpt.playerModel = await prepareEntityForSubmission(informantPtcpt.playerModel, true);
+                submission.resource.push(informantPtcpt.playerModel);
+                submission.resource.push(new EntityRelationship(
+                    informantPtcpt.playerModel.relationship.$other[0]
+                ));
+                delete informantPtcpt.playerModel.relationship.$other;
+                delete informantPtcpt.playerModel;
+
             }
-            
+
             // Now we want to submit
             var submittedBundle = await SanteDB.resources.bundle.insertAsync(submission);
-            return submittedBundle.resource.find(o=>o.$type == "PatientEncounter");
+            return submittedBundle.resource.find(o => o.$type == "PatientEncounter");
         }
-        catch(e) {
+        catch (e) {
             throw new Exception("EmrException", e.message, null, e);
         }
     }
@@ -377,27 +412,27 @@ function SanteEMRWrapper() {
      * @param {string} proposedEncounterId The proposed encounter identifier from which the care plan should be fetched
      * @returns {CarePlan} The care plan that the proposed encounter id belongs
      */
-    this.getCarePlanFromEncounter = async function(proposedEncounterId) {
+    this.getCarePlanFromEncounter = async function (proposedEncounterId) {
         try {
             var cps = await SanteDB.resources.carePlan.findAsync({
-                "relationship[HasComponent].target": proposedEncounterId, 
+                "relationship[HasComponent].target": proposedEncounterId,
                 "statusConcept": StatusKeys.Active,
                 _includeTotal: false,
                 _count: 1
             }, "fastview");
 
-            if(cps.resource) {
+            if (cps.resource) {
                 return cps.resource[0];
             }
             else {
                 return null;
             }
         }
-        catch(e) {
+        catch (e) {
             throw new Exception("EmrException", "Failed to fetch careplan", null, e);
         }
     }
-    
+
 }
 
 /**
@@ -407,11 +442,10 @@ function SanteEMRWrapper() {
 var SanteEMR = new SanteEMRWrapper();
 
 // Helper functions
-Patient.prototype.age = function(measure) {
+Patient.prototype.age = function (measure) {
     return moment().diff(this.dateOfBirth, measure || 'years', false);
 }
 
-Patient.prototype.hasCondition = function(conditionTypeConcept)
-{
+Patient.prototype.hasCondition = function (conditionTypeConcept) {
 
 }

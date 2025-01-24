@@ -1,3 +1,26 @@
 {
-    
-}
+    "$type": "SubstanceAdministration",
+    "template" : "50ac9b2d-e560-4b75-ac77-921bf0eceee8",
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+    "classConcept": "932A3C7E-AD77-450A-8A1F-030FC2855450",
+    "typeConcept": "0331e13f-f471-4fbd-92dc-66e0a46239d5",
+    "actTime": "{{ $now }}",
+    "doseSequence": 0,
+    "doseQuantity": 1.0,
+    "doseUnit": "a4fc5c93-31c2-4f87-990e-c5a4e5ea2e76",
+    "participation": {
+        "Location": [{
+            "player": "{{ $facilityId }}"
+        }],
+        "Authororiginator": [{
+            "player": "{{ $userEntityId }}"
+        }],
+        "RecordTarget": [{
+            "player": "{{ $recordTargetId }}"
+        }],
+            "Product": [{}]
+    },
+    "tag": {
+      "$cascade:HasComponent:*" : ["RecordTarget","Authororiginator","Location"]
+    }
+  }
