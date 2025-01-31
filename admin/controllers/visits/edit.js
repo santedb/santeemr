@@ -50,7 +50,7 @@ angular.module('santedb').controller('EmrEditVisitTypesController', ["$scope", "
     $scope.$watch("visitType.flowStates.length", function (n, o) {
         if (n && n != o) {
 
-            var mermaidStr = "stateDiagram-v2\r\n\tdirection lr\r\n";
+            var mermaidStr = "stateDiagram-v2\r\n";
             var tMap = $scope.visitType.flowStates.map(o => SanteDB.display.renderConcept(o));
             tMap.forEach((t, i) => mermaidStr += `\t${i}: ${t}\r\n`);
             $scope.visitType.flowStates.forEach(state => {

@@ -126,6 +126,7 @@ function SanteEMRWrapper() {
         encounter.operation = BatchOperationType.UpdateInt;
 
         encounter = await prepareActForSubmission(encounter);
+        /** @type {Bundle} */
         var bundle = bundleRelatedObjects(encounter, ["Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills"]);
         encounter = bundle.resource.find(o => o.$type == PatientEncounter.name);
         // remove components which have a deleted target
@@ -134,6 +135,8 @@ function SanteEMRWrapper() {
                 return bundle.resource.find(o => o.id == e.target && o.operation != BatchOperationType.Delete && o.operation != BatchOperationType.DeleteInt) != null;
             });
         }
+
+        bundle.correlationId = encounter.id;
         return bundle;
     }
 
@@ -181,8 +184,9 @@ function SanteEMRWrapper() {
      * @memberof SanteEMRWrapper
      * @param {string} encounter The encounter or encounter id to be discharged
      * @param {timeout} $timeout The scope timeout service
+     * @param {Function} afterAction After the modal closes, the action to execute
      */
-    this.showDischarge = async function (encounter, $timeout) {
+    this.showDischarge = async function (encounter, $timeout, afterAction) {
 
         var dischargeModal = angular.element("#dischargeModal");
         if (dischargeModal == null) {
@@ -191,11 +195,17 @@ function SanteEMRWrapper() {
         }
 
         try {
-            
             var analyzeResult = await SanteEMR.analyzeVisit(encounter);
             var scope = dischargeModal.scope();
             var enc = angular.copy(encounter);
             enc._tmpId = SanteDB.application.newGuid();
+            
+            if(afterAction) {
+                $("#dischargeModal").on("hidden.bs.modal", function(e) {
+                    afterAction();
+                    $("#dischargeModal").off("hidden.bs.modal");
+                });
+            }
             $timeout(() => {
                 scope.encounter = enc;
                 scope.issues = analyzeResult.issue;
@@ -316,9 +326,8 @@ function SanteEMRWrapper() {
                 userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
             });
 
-
             var encounter = new PatientEncounter(template);
-            encounter.id = encounter.id || SanteDB.application.newGuid();
+            submission.correlationId = encounter.id = encounter.id || SanteDB.application.newGuid();
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
             encounter.relationship.Fulfills = fulfills;

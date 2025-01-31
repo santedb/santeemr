@@ -21,6 +21,26 @@
  */
 angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$rootScope", "$state", "$stateParams", "$timeout", function ($scope, $rootScope, $state, $stateParams, $timeout) {
 
+    async function getCdsAlerts(patientId){
+        try {
+            var issues = await SanteDB.resources.patient.invokeOperationAsync(patientId, "analyze", { _excludePropose: true });
+            var issueTypes = {};
+            issues.issue.forEach(o=> issueTypes[o.type] = null);
+            await Promise.all(
+                Object.keys(issueTypes).map(async (f) => {
+                    var concept = await SanteDB.resources.concept.getAsync(f === EmptyGuid ? '1a4ff986-f54f-11e8-8eb2-f2801f1b9fd1' : f);
+                    issues.issue.filter(i => i.type === f).forEach(i => i.typeModel = concept);
+                    return concept;
+                })
+            );
+
+            return issues.issue.filter(i => i.id !== "error.cdss.exception");
+        }
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+    }
+
     // Loads the specified patient
     async function loadPatient(id) {
         try {
@@ -42,6 +62,26 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                 $scope.patient._currentEncounter = encounter.resource[0];
             }
 
+            // Detect any alerts from the CDSS 
+            var issues = await getCdsAlerts(id);
+            $timeout(() => {
+                $scope.cdssAlerts = {
+                    priority: issues.sort((a, b) => {
+                        switch(a.priority) {
+                            case "Information": a.priorityVal = 1; break;
+                            case "Warning": a.priorityVal = 2; break;
+                            case "Error": a.priortyVal = 3; break;
+                        }
+                        switch(b.priority) {
+                            case "Information": b.priorityVal = 1; break;
+                            case "Warning": b.priorityVal = 2; break;
+                            case "Error": b.priortyVal = 3; break;
+                        }
+                        return a.priortyVal > b.priorityVal ? -1 : 1;
+                    })[0].priority,
+                    issues: issues
+                };
+            })
         }
         catch (e) {
 

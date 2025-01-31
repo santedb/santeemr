@@ -423,5 +423,5 @@
          <string name="ui.emr.observation.height.method.lying">Lying (Length)</string>
          <string name="ui.emr.observation.height.method.standing">Standing (Height)</string>
          <string name="org.santedb.emr.widget.patient.cdsAlerts">CDSS Alerts &amp; Notices</string>
-
+        <string name="ui.emr.patient.header.cdssIssuesDetected">This Patient Has CDSS Alerts - Please Review Prior to Providing Care</string>
 </resources>
