@@ -1,5 +1,5 @@
 /// <reference path="../../../.ref/js/santedb.js"/>
-angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope', '$rootScope', function ($scope, $rootScope) {
+angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope', '$rootScope', '$timeout', function ($scope, $rootScope, $timeout) {
 
 
     $scope.showBarcode = function(barcodeDomain) {
@@ -8,44 +8,24 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
     }
     // Actually pull 
     $scope.update = async function (form) {
-
         // TODO: Update the address to the targetAddressId if it is present in the address.
         if (form.$invalid) {
             return false;
         }
 
         // Now post the changed update object 
-        try {
+        try {            
             var submissionObject = angular.copy($scope.editObject);
-            submissionObject.determinerConcept = DeterminerKeys.Specific;
-            await correctEntityInformation(submissionObject);
-
+            submissionObject = await prepareEntityForSubmission(submissionObject);
+            
             // Bundle to be submitted
-            var bundle = new Bundle({ id:SanteDB.application.newGuid(),  resource: [submissionObject] });
-
-            // Now have any of our relationships changed?
-            if (submissionObject.relationship) {
-                var changedRels = Object.keys(submissionObject.relationship).map(o => submissionObject.relationship[o].targetModel).flat();
-                changedRels.filter(o => o && o.$edited).forEach(function (object) {
-                    correctEntityInformation(object);
-                    bundle.resource.push(object);
-                })
-            }
-
-            await SanteDB.resources.bundle.updateAsync(bundle.id,  bundle);
-
-            var pscope = $scope;
-            while (pscope.$parent.scopedObject)
-                pscope = pscope.$parent;
-            pscope.scopedObject = await SanteDB.resources.patient.getAsync($scope.scopedObject.id, "full"); // re-fetch the patient
-            pscope.editObject = angular.copy(pscope.scopedObject);
+            var bundle = new Bundle({ resource: [submissionObject] });
+            
+            await SanteDB.resources.bundle.insertAsync(bundle);
+            var updated = await SanteDB.resources.patient.getAsync($scope.scopedObject.id, "full"); // re-fetch the patient
+            $timeout(() => $scope.scopedObject = updated);
             toastr.success(SanteDB.locale.getString("ui.model.patient.saveSuccess"));
             form.$valid = true;
-
-            try {
-                pscope.$apply();
-            }
-            catch (e) { }
         }
         catch (e) {
             $rootScope.errorHandler(e);
@@ -107,12 +87,12 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
                         id._codeUrl = `/hdsi/Patient/${n.id}/_code?_format=santedb-vrp`;
                     })
                 });
-
-
+                
             // Look up domicile
             if ($rootScope.system.config.application.setting['input.address'] == "select" && $scope.editObject.address) {
                 var promises = Object.keys($scope.editObject.address).map(async function (prop) {
-                    var addr = $scope.editObject.address[prop];
+                    var addr = $scope.editObject.address[prop]?.[0];                    
+
                     // query by census tract if possible
                     var query = {
                         _count: 2

@@ -1,19 +1,19 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
     <!-- TODO: History Entry -->
-    <div class="form-group row">
-        <label class="col-12 font-weight-bold">
+    <div class="form-group row mb-0">
+        <label class="col-3 text-right font-weight-bold my-auto">
             {{ act.typeConceptModel | concept }}
         </label>
-        <div class="col-12">
-            <div class="input-group">
+        <div class="col-9">
+            <div class="input-group mb-0">
                 <input type="number" min="0" name="weightValue" ng-model="act.value" required="required"
-                    cdss-interactive="act" class="form-control" />
+                    cdss-interactive="act" class="form-control h-auto col-md-3" />
                 <div class="input-group-append">
                     <label class="required input-group-text">
                         {{ 'ui.model.observation.unitOfMeasure' | i18n }}
                     </label>
                 </div>
-                <concept-select concept-set="'UnitOfMeasureWeight'" required="required" class="form-control"
+                <concept-select concept-set="'UnitOfMeasureWeight'" required="required" class="form-control h-auto"
                     name="weightUnit" ng-model="act.unitOfMeasure" />
                 <div class="input-group-append">
                     <span ng-switch="act.interpretationConcept" class="input-group-text">
@@ -39,7 +39,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-12">
+        <div class="col-9 offset-md-3">
             <div class="text-danger"
                 ng-if="$parent.$parent.ownerForm.weightValue.$error.required || $parent.$parent.ownerForm.weightUnit.$error.required">
                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
