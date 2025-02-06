@@ -202,8 +202,11 @@ function SanteEMRWrapper() {
             
             if(afterAction) {
                 $("#dischargeModal").on("hidden.bs.modal", function(e) {
-                    afterAction();
+                    if(scope.encounter._persisted) {
+                        afterAction();
+                    }
                     $("#dischargeModal").off("hidden.bs.modal");
+
                 });
             }
             $timeout(() => {
@@ -297,6 +300,7 @@ function SanteEMRWrapper() {
             var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
             submissionBundle = _setVisitPerformers(submissionBundle, myUserId, thisUsersParticipationType);
             submissionBundle = await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            encounter._persisted = true;
             return submissionBundle.resource.find(o => o.$type == "PatientEncounter");
         }
         catch (e) {
