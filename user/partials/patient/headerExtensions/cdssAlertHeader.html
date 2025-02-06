@@ -1,0 +1,42 @@
+<div xmlns="http://www.w3.org/1999/xhtml" style="transition: 0.5s ease-in"
+    class="m-0 p-1 alert d-flex flex-column" ng-if="cdssAlerts"
+    ng-class="{ 'alert-info': cdssAlerts.priority == 'Information', 'alert-warning' : cdssAlerts.priority == 'Warning', 'alert-danger' : cdssAlerts.priority == 'Error' }"
+    >
+    <div class="d-flex justify-items-between">
+        <div class="flex-grow-1 my-0 mx-2 p-2">
+            <i class="fas fa-fw fa-lightbulb"></i>
+            {{ 'ui.emr.patient.header.cdssIssuesDetected' | i18n: { nAlerts: cdssAlerts.issues.length } }}
+        </div>
+        <button type="button" class="btn collapse-indicator my-0 mx-2"
+            ng-class="{ 'btn-info': cdssAlerts.priority == 'Information', 'btn-warning' : cdssAlerts.priority == 'Warning', 'btn-danger' : cdssAlerts.priority == 'Error' }"
+            aria-expanded="false" data-toggle="collapse"
+            data-target="#cdssIssueCollapse">
+            {{ 'ui.action.show' | i18n }}
+            <i class="fas fa-fw fa-chevron-right"></i>
+        </button>
+    </div>
+    <ul class="list-group collapse" id="cdssIssueCollapse">
+        <li ng-repeat="iss in cdssAlerts.issues track by $index" class="list-group-item d-flex justify-items-between"
+            ng-class="{ 'list-group-item-info': iss.priority == 'Information', 'list-group-item-warning' : iss.priority == 'Warning', 'list-group-item-danger' : iss.priority == 'Error' }">
+
+            <div class="badge mx-2"
+                ng-class="{ 'badge-info': iss.priority == 'Information', 'badge-warning' : iss.priority == 'Warning', 'badge-danger' : iss.priority == 'Error' }">
+                <i class="fa fa-fw" ng-class="{
+                        'fa-circle-info' : iss.type == '1a4ff986-f54f-11e8-8eb2-f2801f1b9fd1' || iss.type == '00000000-0000-0000-0000-000000000000',
+                        'fa-shield' : iss.type == '1a4ff454-f54f-11e8-8eb2-f2801f1b9fd1',
+                        'fa-database' : iss.type == '1a4ff6f2-f54f-11e8-8eb2-f2801f1b9fd1',
+                        'fa-list-check' : iss.type == '1a4ff850-f54f-11e8-8eb2-f2801f1b9fd1',
+                        'fa-repeat' : iss.type == '1a4ffab2-f54f-11e8-8eb2-f2801f1b9fd1',
+                        'fa-square-xmark': iss.type == '1a4ffcec-f54f-11e8-8eb2-f2801f1b9fd1',
+                        'fa-person-circle-exclamation' : iss.type == '1a4ffe40-f54f-11e8-8eb2-f2801f1b9fd1',
+                        'fa-user-shield' : iss.type == '1a4fff6c-f54f-11e8-8eb2-f2801f1b9fd1',
+                        'fa-building-shield' : iss.type == 'a799d33d-2326-4beb-aa27-6ff82bd0e217'
+                    }"></i>
+                {{ iss.typeModel | concept }}
+            </div>
+
+            <div class="flex-grow-1 mx-2"> {{ iss.text }} </div>
+
+        </li>
+    </ul>
+</div>

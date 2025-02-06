@@ -164,7 +164,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             var submissionBundle = new Bundle({ resource: [] });
             // First we want to strip off dependent objects
             var patient = new Patient(angular.copy($scope.entity));
-            patient.id = patient.id || SanteDB.application.newGuid();
+            submissionBundle.correlationId = patient.id = patient.id || SanteDB.application.newGuid();
 
 
             // We are updating an existing record - so we want to copy the identifier over - instruct the system to update the record and copy any additional information over

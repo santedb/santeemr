@@ -6,7 +6,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
         if (confirm(SanteDB.locale.getString("ui.emr.encounter.cancel.confirm"))) {
             try {
 
-                var submissionBundle = new Bundle({ resource: [] });
+                var submissionBundle = new Bundle({ resource: [], correlationId: encounterId });
                 submissionBundle.resource.push(new PatientEncounter({
                     id: encounterId,
                     operation: BatchOperationType.DeleteInt
@@ -25,7 +25,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
                 }
 
                 await SanteDB.resources.bundle.insertAsync(submissionBundle);
-                $("#waitingRoomList").EntityList.refresh();
+                $("#waitingRoomList")[0].EntityList.refresh();
                 toastr.success(SanteDB.locale.getString("ui.emr.encounter.cancel.success"));
 
             }
@@ -59,7 +59,9 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
         try {
             SanteDB.display.buttonWait(`#waitingRoomList_action_discharge_${idx}`, true);
             var encounter = await SanteDB.resources.patientEncounter.getAsync(r, "full");
-            await SanteEMR.showDischarge(encounter, $timeout);
+            await SanteEMR.showDischarge(encounter, $timeout, () => {
+                $("#waitingRoomList")[0].EntityList.refresh();
+            });
         }
         catch (e) {
             $rootScope.errorHandler(e);

@@ -44,6 +44,13 @@
                 ng-if="$parent.$parent.ownerForm.weightValue.$error.required || $parent.$parent.ownerForm.weightUnit.$error.required">
                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
             </div>
+            <ul class="list-unstyled" ng-if="$parent.$parent.ownerForm.weightValue.$cdss">
+                <li ng-repeat="issue in $parent.$parent.ownerForm.weightValue.$cdss track by $index"
+                    ng-class="{ 'text-danger' : issue.priority == 'Error', 'text-warning' : issue.priority == 'Warning', 'text-info' : issue.priority == 'Information' }">
+                    <i class="fas fa-fw" ng-class="{ 'fa-exclamation-triangle' : issue.priority == 'Error', 'fa-info-circle' : issue.priority == 'Warning' || issue.priority == 'Information' }"></i> 
+                        {{ issue.text }}
+                </li>
+            </ul>
         </div>
     </div>
 </div>

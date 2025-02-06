@@ -42,7 +42,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
                 return `<span class="badge badge-success badge-pill"><i class="fas fa-check"></i> ${SanteDB.locale.getString("ui.state.complete")}</span>`;
             case "Running":
                 if (job.status) {
-                    return `<span class="badge badge-primary badge-pill"><i class="fas fa-play"></i> ${SanteDB.locale.getString("ui.state.running")} (${Math.round(job.progress * 100)}%)</span><br/><small>${job.status}</small>`;
+                    return `<span class="badge badge-primary badge-pill"><i class="fas fa-play"></i> ${SanteDB.locale.getString("ui.state.running")} (${Math.round(job.progress * 100)}%)</span><small class="d-block">${job.status || ''}</small>`;
                 }
                 else {
                     return `<span class="badge badge-primary badge-pill"><i class="fas fa-play"></i> ${SanteDB.locale.getString("ui.state.running")}</span>`;
@@ -50,9 +50,9 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
             case "Cancelled":
                 return `<span class="badge badge-warning badge-pill"><i class="fas fa-info-circle"></i> ${SanteDB.locale.getString("ui.state.cancelled")}</span>`;
             case "Aborted":
-                return `<span class="badge badge-danger badge-pill"><i class="fas fa-exlamation-triange"></i> ${SanteDB.locale.getString("ui.state.abort")}</span>`;
+                return `<span class="badge badge-danger badge-pill"><i class="fas fa-exlamation-triange"></i> ${SanteDB.locale.getString("ui.state.abort")}</span><small class="d-block">${job.status || ''}</div>`;
             case "Stopped":
-                return `<span class="badge badge-danger badge-pill"><i class="fas fa-exlamation-triange"></i> ${SanteDB.locale.getString("ui.state.stop")}</span>`;
+                return `<span class="badge badge-danger badge-pill"><i class="fas fa-exlamation-triange"></i> ${SanteDB.locale.getString("ui.state.stop")}</span><div class="d-block">${job.status || ''}</div>`;
             default:
                 return `<span class="badge badge-info badge-pill"><i class="fas fa-clock"></i> ${SanteDB.locale.getString("ui.state.notrun")}</span>`;
         }
@@ -61,7 +61,7 @@ angular.module('santedb').controller('JobAdminController', ["$scope", "$rootScop
     $scope.renderName = function(job) {
         retVal = job.name;
         if(job.description) {
-            retVal += `<br/><small class='text-secondary'>${job.description}</small>`;
+            retVal += `<div class='text-secondary' >${job.description}</div>`;
         }
         return retVal;
     }

@@ -40,12 +40,6 @@ body.fixed-nav {
   padding-top: 56px;
 }
 
-.content-wrapper {
-  min-height: calc(100vh - 112px);
-  padding-top: 1rem;
-  max-height: calc(100vh - 112px)
-}
-
 .scroll-to-top {
   position: fixed;
   right: 15px;
@@ -844,4 +838,22 @@ table.dataTable thead .sorting_desc_disabled {
 .text-gray {
   color: #aaaaaa;
   
+}
+
+@media only screen and (max-width: 1200px) {
+  .content-wrapper { 
+    margin-top: 3.5rem;
+    overflow-y: auto;
+    max-height: calc(100vh - 112px - 3rem);
+    min-height: calc(100vh - 112px - 3rem);
+  }
+}
+@media only screen and (min-width: 1200px) {
+  
+  .content-wrapper {
+    min-height: calc(100vh - 112px);
+    padding-top: 1rem;
+    max-height: calc(100vh - 112px)
+  }
+
 }

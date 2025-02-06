@@ -53,8 +53,13 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     $scope.doQueue = () => SanteEMR.showRequeue($scope.scopedObject);
     $scope.doDischarge = async () => {
         try {
+
+            var rct = $scope.scopedObject.participation.RecordTarget[0].player;
+
             SanteDB.display.buttonWait("#btnActEditdischarge", true);
-            await SanteEMR.showDischarge($scope.scopedObject, $timeout);
+            await SanteEMR.showDischarge($scope.scopedObject, $timeout, () => {
+                $state.go("santedb-emr.patient.view", { id: rct });
+            });
         }
         finally {
             SanteDB.display.buttonWait("#btnActEditdischarge", false);
