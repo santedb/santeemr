@@ -19,9 +19,6 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
         }) != -1;
     }
 
-    
-
-
     // Update the specified objects
     $scope.update = async function (form) {
         if (!form.$valid) return;
