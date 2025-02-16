@@ -9,7 +9,6 @@
     <div ng-controller="EmrPatientRegisterWidgetController" class="container">
         <name-edit is-required="true" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
             name="patientName" model="scopedObject.name.OfficialRecord" data-quality-id="name" />
-
         <div class="row">
             <div class="col-md-9 offset-md-3 col-sm-12"
                 ng-if="panel.editForm['patientName'].$error['dq'] || panel.editForm.dataQualityIssues['name']"
