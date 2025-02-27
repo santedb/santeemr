@@ -68,7 +68,7 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
         }
     }
 
-    $scope.$watch("panel.view", async function(n, o) {        
+    $scope.$watch("panel.view", async function(n, o) {   
         if (n == 'Edit') {
             if ($scope.editObject) {
                 $scope.editObject.multipleBirthIndicator = !!$scope.editObject.multipleBirthOrder;
@@ -85,11 +85,14 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
     // Watch will look for scoped object to load and will set necessary shortcut objects for the view 
     $scope.$watch("scopedObject", async function (n, o) {
         if (n && n != null) {
-
             delete ($scope.editObject); // Delete the current edit object
             $scope.editObject = angular.copy(n);
             
-            if (!$scope.editObject.address['TemporaryAddress']) {
+            if ($scope.editObject.address['HomeAddress'][0].component['_AddressPlaceRef']) {
+                delete $scope.editObject.address['HomeAddress'][0].component['_AddressPlaceRef']
+            }
+            
+            if (!$scope.editObject.address?.['TemporaryAddress']) {
                 $scope.editObject.address['TemporaryAddress'] = [
                     {
                         "component": {

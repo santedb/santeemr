@@ -880,3 +880,7 @@ table.dataTable thead .sorting_desc_disabled {
   border-color: #dee2e6;
   border-style: solid;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}

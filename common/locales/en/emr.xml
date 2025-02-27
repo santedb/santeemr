@@ -98,6 +98,7 @@
     <string name="ui.emr.patient.$other.differsFromPatient">Different address than the registrant</string>
     <string name="ui.emr.patient.register.upgradePerson">There is an existing non-patient record which will be upgraded when this entity is saved</string>
     <string name="ui.emr.patient.register.duplicateDetected">A patient with this identifier already exists - please validate your entry and try again</string>
+    <string name="ui.emr.patient.ageOrDate">Age or Date</string>
 
     <string name="ui.emr.search.online">Could not locate this data on the local environment, do you
         want to search the central server?</string>
