@@ -48,7 +48,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
     initializeView(templateId);
 
-    var validateInterval = $interval(detectDataQualityIssues, 10000);
+    var validateInterval = $interval(detectDataQualityIssues, 2000);
 
     // Confirm navigation away in browser
     window.onbeforeunload = function () {
