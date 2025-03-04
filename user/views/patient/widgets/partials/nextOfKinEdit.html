@@ -1,5 +1,4 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-
     <div ng-if="rel._inverse">
         <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinView.html" -->
     </div>
@@ -8,57 +7,219 @@
         <div ng-switch-when="Patient">
             <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinView.html" -->
         </div>
+
         <div ng-switch-default="">
-            <name-edit is-required="rel._active" control-prefix="'nok' + rel.id" owner-form="panel.editForm"
+            <identifier-list-edit owner-form="panel.editForm" name="nok{{ rel.id }}Id"
+                model="rel.targetModel.identifier"
+                control-prefix="'nok' + rel.id"
+                create-mode="true"
+                container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
+
+            <!-- Name -->
+            <name-edit is-required="true" control-prefix="'nok' + rel.id" owner-form="panel.editForm"
                 no-add="true" readonly="readonly" no-type="true" simple-entry="true" model="rel.targetModel.name" />
+
+            <!-- Date of Birth -->
             <div class="form-group row">
-                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.dateOfBirth' | i18n }}</label>
-                <div class="col-sm-12 col-md-9">
+                <label class="col-sm-12 col-md-3 control-label required">{{ rel.targetModel.dateOfBirthPrecision == 1 ? 'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}<hint-popover hint-title="ui.model.patient.dateOfBirth" /></label>
+
+                <div class="col-sm-12 col-md-8">
                     <div class="input-group m-0">
-                        <input class="form-control" ng-change="$root.synchronizeAge(rel.targetModel, false)"
-                            ng-model="rel.targetModel.age" type="number" />
-                        <div class="input-group-append">
-                            <div class="input-group-text">
-                                {{ 'ui.emr.patient.ageOrDate' | i18n }}
+                        <div class="input-group mb-0">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text p-0 px-2">
+                                    <div class="checkbox-container">
+                                        <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision" ng-true-value="1" ng-false-value="3" class="checkbox-control"/>
+                                        <span></span>
+                                        {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                                    </div>
+                                </label>
+                            </div>
+
+                            <input name="nok{{ rel.id }}Age" required="required" ng-if="rel.targetModel.dateOfBirthPrecision == 1"
+                                ng-change="rel.targetModel.dateOfBirth = ageToDate(rel.targetModel.age)" type="number"
+                                ng-model="rel.targetModel.age" min="0" class="form-control" />
+
+                            <input name="nok{{ rel.id }}Dob" data-quality-id="dob" required="required" ng-if="rel.targetModel.dateOfBirthPrecision == 3"
+                                ng-change="rel.targetModel.age = dateToAge(rel.targetModel.dateOfBirth)"
+                                type="date" ng-model="rel.targetModel.dateOfBirth" min="1900-01-01"
+                                max="{{ $root.page.today | date: 'yyyy-MM-dd' }}" class="form-control" />
+
+                            <div class="input-group-append" ng-if="rel.targetModel.dateOfBirthPrecision == 1">
+                                <span class="input-group-text p-0 px-2">
+                                    {{ 'ui.emr.patient.ageInYears' | i18n }}
+                                </span>
+                            </div>
+
+                            <div class="input-group-append" ng-if="rel.targetModel.dateOfBirthPrecision == 3">
+                                <span class="input-group-text p-0 px-2">
+                                    {{ rel.targetModel.dateOfBirth | age }}
+                                </span>
                             </div>
                         </div>
-                        <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control d-none d-sm-block" type="date"
-                            ng-model="rel.targetModel.dateOfBirth" name="nok{{rel.id}}dob"
-                            ng-change="$root.synchronizeAge(rel.targetModel, true)" />
-                        <div class="input-group-append d-none d-sm-block">
-                            <label class="input-group-text">
-                                <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision" ng-true-value="1"
-                                    ng-false-value="3" />
-                                {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
-                            </label>
-                        </div>
                     </div>
-                    <div class="text-danger d-none d-sm-block" ng-if="panel.editForm['nok' + rel.id + 'dob'].$invalid">
-                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n}}
+
+                    <!-- Errors -->
+                    <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'Dob'].$error['required'] || panel.editForm['nok' + rel.id + 'Age'].$error['required']">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                     </div>
-                </div>
-                <div class="col-sm-12 d-block d-sm-none offset-md-3">
-                    <div class="input-group m-0">
-                        <input max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control" type="date"
-                            ng-model="rel.targetModel.dateOfBirth" name="nok{{rel.id}}dob"
-                            ng-change="$root.synchronizeAge(rel.targetModel, true)" />
-                        <div class="input-group-append">
-                            <label class="input-group-text">
-                                <input type="checkbox" ng-model="rel.targetModel.dateOfBirthPrecision" ng-true-value="1"
-                                    ng-false-value="3" />
-                                {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
-                            </label>
-                        </div>
+
+                    <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'Dob'].$error['max']">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { max: $root.page.today } }}
                     </div>
-                    <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'dob'].$invalid">
-                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n}}
+
+                    <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'Age'].$error['min']">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: 0 } }}
+                    </div>
+
+                    <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'Dob'].$error['dq'] || panel.editForm.dataQualityIssues['dob']"
+                        ng-class="{ 'text-primary': rel.targetModel._dataQualityIssues['dob'].priority == 'Information', 'text-warning': rel.targetModel._dataQualityIssues['dob'].priority == 'Warning' }">
+                            <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: rel.targetModel._dataQualityIssues['dob'].text } }} 
+                            
+                            <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['dob'].dismiss()">
+                                {{ 'ui.action.dismiss' | i18n }}
+                            </button>
                     </div>
                 </div>
             </div>
-            <telecom-edit single-edit="'MobileContact'" model="rel.targetModel.telecom" />
+
+            <!-- Gender -->
+            <div class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label required">{{ 'ui.model.patient.genderConcept' | i18n }}</label>
+
+                <div class="col-sm-12 col-md-8">
+                    <concept-select ng-disabled="isBirthValidated" class="form-control" required="required" name="nok{{ rel.id }}birthGender"
+                        concept-set="'AdministrativeGenderCode'" ng-model="rel.targetModel.genderConcept" />
+
+                    <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'birthGender'].$invalid">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Telecom -->
+            <telecom-edit owner-form="panel.editForm" name="nok{{ rel.id }}Telecom"
+                model="rel.targetModel.telecom" allowed-types="[ 'MobileContact' ]"
+                required-types="[ !rel.targetModel.deceasedIndicator ? 'MobileContact' : null ]" />
+            
+            <!-- Address -->
             <address-edit is-required="false" control-prefix="'nok' + rel.id" owner-form="panel.editForm"
                 no-add="true" no-type="true" simple-entry="true" model="rel.targetModel.address" />
 
+            <!-- Occupation -->
+            <div ng-if="$root.system.config.application.setting['forbid.person.occupation']  != 'true'" class="form-group row">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.occupation' | i18n }}</label>
+                
+                <div class="col-sm-12 col-md-8">
+                    <concept-select add-concept="['6052712a-340e-4480-ad6b-409ba320db4f','61d8f65c-747e-4a99-982f-a42ac5437473']"
+                        ng-model="rel.targetModel.occupation"
+                        concept-set="'OccupationType'"
+                        class="form-control" />
+                </div>
+            </div>
+
+            <!-- VIP Status -->
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true'">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.vipStatus' | i18n }} <hint-popover hint-title="ui.model.person.vipStatus" /></label>
+                
+                <div class="col-sm-12 col-md-8">
+                    <concept-select name="vipStatus" concept-set="'VeryImportantPersonStatus'"
+                        ng-model="rel.targetModel.vipStatus" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']"
+                        class="form-control" data-quality-id="vipStatus" />
+
+                    <div class="text-danger"
+                        ng-if="panel.editForm.vipStatus.$error['dq'] || panel.editForm.dataQualityIssues['vipStatus']"
+                        ng-class="{ 'text-primary': rel.targetModel._dataQualityIssues['vipStatus'].priority == 'Information', 'text-warning': rel.targetModel._dataQualityIssues['vipStatus'].priority == 'Warning' }">
+                        <i class="fas fa-info-circle"></i> 
+                        {{ 'ui.error.dataQuality' | i18n: { text: rel.targetModel._dataQualityIssues['vipStatus'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['vipStatus'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nationality -->
+            <div class="form-group row"
+                ng-if="$root.system.config.application.setting['forbid.person.nationality'] != 'true'">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.nationality' | i18n }} <hint-popover hint-title="ui.model.person.nationality" /></label>
+
+                <div class="col-sm-12 col-md-8">
+                    <entity-search data-quality-id="nationality" type="'Concept'" ng-model="rel.targetModel.nationality"
+                        name="nationality"
+                        ng-required="$root.system.config.application.setting['required.person.nationality'] == 'true'"
+                        search-field="'name.value'" filter="{ 'conceptSet': '7f4e7366-a0e6-4a5e-b2b1-82187447e792' }" />
+
+                    <div class="text-danger" ng-if="panel.editForm.nationality.$error['required']">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+
+                    <div class="text-danger"
+                        ng-if="panel.editForm.nationality.$error['dq'] || panel.editForm.dataQualityIssues['nationality']"
+                        ng-class="{ 'text-primary': rel.targetModel._dataQualityIssues['nationality'].priority == 'Information', 'text-warning': rel.targetModel._dataQualityIssues['nationality'].priority == 'Warning' }">
+                        <i class="fas fa-info-circle"></i> 
+                        {{ 'ui.error.dataQuality' | i18n: { text: rel.targetModel._dataQualityIssues['nationality'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['nationality'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Citizenship -->
+            <div class="form-group row"
+                ng-if="$root.system.config.application.setting['forbid.person.citizenship'] != 'true'">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.relationship.Citizen' | i18n }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" /></label>
+
+                <div class="col-sm-12 col-md-8">
+                    <entity-search type="'Place'" ng-model="rel.targetModel.relationship.Citizen"
+                        ng-required="$root.system.config.application.setting['required.person.citizenship'] == 'true'"
+                        name="citizenship" multiple="multiple" search-field="'name.component.value'"
+                        data-quality-id="citizenship" value-property="'target'"
+                        filter="{ 'classConcept': '48b2ffb3-07db-47ba-ad73-fc8fb8502471' }" />
+
+                    <div class="text-danger" ng-if="panel.editForm.citizenship.$error['required']">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+
+                    <div class="text-danger"
+                        ng-if="panel.editForm.citizenship.$error['dq'] || panel.editForm.dataQualityIssues['citizenship']"
+                        ng-class="{ 'text-primary': rel.targetModel._dataQualityIssues['citizenship'].priority == 'Information', 'text-warning': rel.targetModel._dataQualityIssues['citizenship'].priority == 'Warning' }">
+                        <i class="fas fa-info-circle"></i> 
+                        {{ 'ui.error.dataQuality' | i18n: { text: rel.targetModel._dataQualityIssues['citizenship'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['citizenship'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employers -->
+            <div class="form-group row"
+                ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true' &amp;&amp; rel.targetModel.age &gt;= 14">
+                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Employee' | i18n }} <hint-popover hint-title="ui.model.person.relationship.Employee" /></label>
+
+                <div class="col-sm-12 col-md-8">
+                    <entity-search type="'Organization'" ng-model="rel.targetModel.relationship.Employee"
+                        ng-required="$root.system.config.application.setting['required.person.employee'] == 'true'"
+                        name="employee" multiple="multiple" search-field="'name.component.value'"
+                        data-quality-id="employee" value-property="'target'" />
+
+                    <div class="text-danger" ng-if="panel.editForm.employee.$error['required']">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+
+                    <div class="text-danger"
+                        ng-if="panel.editForm.employee.$error['dq'] || panel.editForm.dataQualityIssues['employee']"
+                        ng-class="{ 'text-primary': rel.targetModel._dataQualityIssues['employee'].priority == 'Information', 'text-warning': rel.targetModel._dataQualityIssues['employee'].priority == 'Warning' }">
+                        <i class="fas fa-info-circle"></i> 
+                        {{ 'ui.error.dataQuality' | i18n: { text: rel.targetModel._dataQualityIssues['employee'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['employee'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

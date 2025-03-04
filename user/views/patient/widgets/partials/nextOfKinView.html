@@ -4,92 +4,199 @@
             <span class="p-2">
                 {{ 'ui.emr.nok.structured' | i18n }}
             </span>
-            <a class="btn btn-info" ui-sref="{ id: rel.targetModel.id }"><i
-                    class="fas fa-arrow-right"></i> {{ 'ui.action.view' | i18n }}</a>
+
+            <a class="btn btn-info" ui-sref="{ id: rel.targetModel.id }">
+                <i class="fas fa-arrow-right"></i> {{ 'ui.action.view' | i18n }}
+            </a>
 
         </div>
     </div>
+
+    <!-- Identifier -->
     <div class="row">
-        <label class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.name' | i18n }}</label>
-        <div class="col-md-9 col-sm-12 pt-2">
+        <label class="col-md-3 col-sm-12 control-label" ng-if="rel.targetModel.identifier">
+            {{ 'ui.model.patient.identifier' | i18n }}
+        </label>
+
+        <div class="col-md-9 col-sm-12 my-auto" ng-if="rel.targetModel.identifier">
             <ul class="list-group">
-                <li class="d-flex align-items-center"
-                    ng-repeat="(n, name) in rel.targetModel.name">
-                    {{ name | name }} <span
-                        class="badge badge-light">{{ name[0].useModel | concept }}</span></li>
-            </ul>
-        </div>
-        <label class="col-md-3 col-sm-12 control-label" ng-if="rel.targetModel.identifier">{{ 'ui.model.patient.identifier' | i18n }}</label>
-        <div class="col-md-9 col-sm-12 pt-2"
-        ng-if="rel.targetModel.identifier">
-            <ul class="list-group">
-                <li class="d-flex align-items-center"
-                    ng-repeat="(n, id) in rel.targetModel.identifier">
+                <li class="d-flex align-items-center" ng-repeat="(n, id) in rel.targetModel.identifier">
                     <span ng-repeat="i in id track by $index">
-                    {{ i.value }} <span class="badge badge-info">{{ i.domainModel.name }}</span></span></li>
+                        <span class="badge badge-info">{{ i.domainModel.name }}</span> {{ i.value }}
+                    </span>
+                </li>
             </ul>
         </div>
-        <label class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.dateOfBirth' | i18n }}</label>
-        <div class="col-md-9 col-sm-12 pt-2"
-            ng-if="rel.targetModel.dateOfBirth">
+    </div>
+
+    <!-- Name -->
+    <div class="row">
+        <label class="col-md-3 col-sm-12 control-label">
+            {{ 'ui.model.entity.name' | i18n }}
+        </label>
+
+        <div class="col-md-9 col-sm-12 my-auto">
+            <ul class="list-group">
+                <li class="d-flex align-items-center" ng-repeat="(n, name) in rel.targetModel.name">
+                    <span class="badge badge-dark mr-1">{{ name[0].useModel | concept }}</span> {{ name | name }}
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Date of Birth -->
+    <div class="row">
+        <label class="col-md-3 col-sm-12 control-label">
+            {{ 'ui.model.entity.dateOfBirth' | i18n }}
+        </label>
+
+        <div class="col-md-9 col-sm-12 my-auto" ng-if="rel.targetModel.dateOfBirth">
+            <span ng-if="rel.targetModel.dateOfBirthPrecision === 1">
+                ({{ 'ui.model.patient.dateOfBirth.approx' | i18n }})
+            </span>
+
             {{ rel.targetModel.dateOfBirth | extDate: rel.targetModel.dateOfBirthPrecision }}
             <span ng-if="!rel.targetModel.deceasedDate">
-                (
-                {{ rel.targetModel.dateOfBirth | age }}
-                )</span>
+                ({{ rel.targetModel.dateOfBirth | age }})
+            </span>
         </div>
-        <div class="col-md-9 col-sm-12 pt-2"
-            ng-if="!rel.targetModel.dateOfBirth">
+
+        <div class="col-md-9 col-sm-12 my-auto" ng-if="!rel.targetModel.dateOfBirth">
             {{ 'ui.unknown' | i18n}}
         </div>
-        <label
-            class="col-md-3 col-sm-12 control-label">{{ 'ui.model.patient.genderConcept' | i18n }}</label>
-        <div class="col-md-9 col-sm-12 pt-2"
-            ng-if="rel.targetModel.genderConceptModel">
-            <i class="fas"
-                ng-class="{ 'fa-male' : rel.targetModel.genderConceptModel.mnemonic == 'Male' , 'fa-female' :  rel.targetModel.genderConceptModel.mnemonic == 'Female' }"></i>
-            {{ rel.targetModel.genderConceptModel | concept }}
+    </div>
+
+    <!-- Gender -->
+    <div class="row">
+        <label class="col-md-3 col-sm-12 control-label">
+            {{ 'ui.model.patient.genderConcept' | i18n }}
+        </label>
+
+        <div class="col-md-9 col-sm-12 my-auto" ng-if="rel.targetModel.genderConceptModel">
+            <i class="fas" ng-class="{ 'fa-male' : rel.targetModel.genderConceptModel.mnemonic == 'Male' , 'fa-female' :  rel.targetModel.genderConceptModel.mnemonic == 'Female' }"></i>{{ rel.targetModel.genderConceptModel | concept }}
         </div>
-        <div class="col-md-9 col-sm-12"
-            ng-if="!rel.targetModel.genderConceptModel">
+
+        <div class="col-md-9 col-sm-12 my-auto" ng-if="!rel.targetModel.genderConceptModel">
             {{ 'ui.unknown' | i18n}}
         </div>
-        <label class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.address' | i18n }}</label>
-        <div class="col-md-9 col-sm-12">
+    </div>
+
+    <!-- Address -->
+    <div class="row" ng-if="rel.targetModel.address.length > 0">
+        <label class="col-md-3 col-sm-12 control-label">
+            {{ 'ui.model.entity.address' | i18n }}
+        </label>
+
+        <div class="col-md-9 col-sm-12 my-auto">
             <div ng-if="rel.targetModel.address">
                 <ul class="list-group">
-                    <li class="d-flex align-items-center"
-                        ng-repeat="(n, address) in rel.targetModel.address">
-                        {{ address | address }} <span
-                            class="badge badge-light">{{ address.useModel | concept }}</span>
+                    <li class="d-flex align-items-center" ng-repeat="(n, address) in rel.targetModel.address">
+                        {{ address | address }} <span class="badge badge-light">{{ address.useModel | concept }}</span>
                     </li>
                 </ul>
             </div>
+
             <div ng-if="!rel.targetModel.address">
                 {{ 'ui.unknown' | i18n }}
             </div>
         </div>
-        <label class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.telecom' | i18n }}</label>
-        <div class="col-md-9 col-sm-12"
-            ng-repeat="(k,tel) in rel.targetModel.telecom track by $index"
-            ng-class="{ 'offset-md-3': $index > 0 }">
-            <a href="{{tel.value}}" target="_blank">{{tel.value}} <span
-                    class="badge badge-pill badge-info">{{ tel.useModel | concept }}</span></a>
+    </div>
+
+    <!-- Telecom -->
+    <div class="row">
+        <label class="col-md-3 col-sm-12 control-label">
+            {{ 'ui.model.entity.telecom' | i18n }}
+        </label>
+
+        <div ng-repeat="(k,tel) in rel.targetModel.telecom track by $index"
+            ng-class="{ 'offset-md-3': $index > 0 }"
+            class="col-md-9 col-sm-12 my-auto">
+                <a href="{{tel[0].value}}" target="_blank">
+                    <span class="badge badge-pill badge-info">{{ tel[0].useModel | concept }}</span> {{tel[0].value}}
+                </a>
         </div>
     </div>
-        <div ng-if="rel.targetModel.deceasedDate" class="row">
-            <label class="col-sm-3 col-12 control-label">{{ 'ui.model.patient.deceased' | i18n }}</label>
-            <div class="col-sm-9 col-12">
-                {{ rel.targetModel.deceasedDate | extDate: rel.targetModel.deceasedDatePrecision }}
-                ( {{ rel.targetModel.dateOfBirth | age: 'y':rel.targetModel.deceasedDate }} )
+
+    <!-- Deceased Details -->
+    <div ng-if="rel.targetModel.deceasedDate">
+        <!-- Deceased Date -->
+        <div class="row">
+            <label class="col-sm-3 col-12 control-label">
+                {{ 'ui.model.patient.deceased' | i18n }}
+            </label>
+    
+            <div class="col-sm-9 col-12 my-auto">
+                {{ rel.targetModel.deceasedDate | extDate: (rel.targetModel.deceasedDatePrecision || 'D') }}
+                ({{ rel.targetModel.dateOfBirth | age: 'y':rel.targetModel.deceasedDate }})
             </div>
         </div>
-        <div ng-if="rel.targetModel.deceasedDate &amp;&amp; rel.targetModel.relationship.PlaceOfDeath.targetModel" class="row">
-            <label class="col-sm-3 col-12 control-label">{{ 'ui.model.patient.placeOfDeath' | i18n }}</label>
-            <div class="col-sm-9 col-12">
+
+        <!-- Place of Death -->
+        <div ng-if="rel.targetModel.relationship.PlaceOfDeath.targetModel" class="row">
+            <label class="col-sm-3 col-12 control-label">
+                {{ 'ui.model.patient.placeOfDeath' | i18n }}
+            </label>
+    
+            <div class="col-sm-9 col-12 my-auto">
                 <i class="fas"
                     ng-class="{ 'fa-hospital-alt' : rel.targetModel.relationship.PlaceOfDeath.targetModel.classConcept == 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' , 'fa-map-marked' : rel.targetModel.relationship.PlaceOfDeath.targetModel.classConcept != 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c'}"></i>
                 {{ rel.targetModel.relationship.PlaceOfDeath.targetModel.name | name }} <br />
                 <small> ({{ rel.targetModel.relationship.PlaceOfDeath.targetModel.address | address }})</small>
             </div>
-    </div></div>
+        </div>
+    </div>
+
+    <!-- Occupation -->
+    <div ng-if="rel.targetModel.occupationModel" class="row">
+        <label class="col-sm-3 col-xs-12 control-label">
+            {{ 'ui.model.person.occupation' | i18n }}
+        </label>
+
+        <div class="col-sm-9 col-xs-12 my-auto">
+            {{ rel.targetModel.occupationModel | concept }}
+        </div>
+    </div>
+
+    <!-- VIP Status -->
+    <div ng-if="rel.targetModel.vipStatusModel" class="row text-light bg-info">
+        <label class="col-sm-3 col-xs-12 control-label">
+            {{ 'ui.model.patient.vipStatus' | i18n }}
+        </label>
+
+        <div class="col-sm-9 col-xs-12 my-auto">
+            {{ rel.targetModel.vipStatusModel | concept }}
+        </div>
+    </div>
+
+    <!-- Nationality -->
+    <div ng-if="rel.targetModel.nationalityModel" class="row">
+        <label class="col-sm-3 col-xs-12 control-label">
+            {{ 'ui.model.person.nationality' | i18n }}
+        </label>
+
+        <div class="col-sm-9 col-xs-12 my-auto">
+            {{ rel.targetModel.nationalityModel | concept }}
+        </div>
+    </div>
+
+    <!-- Relationships -->
+    <div ng-repeat="(k,v) in rel.targetModel.relationship"
+        ng-if="k == 'Citizen' || k == 'Employer' || k == 'Caregiver' || k == 'CoverageSponsor' || k == 'Student'"
+        class="row">
+        <label class="col-sm-3 col-xs-12 control-label">
+            {{ 'ui.model.entity.relationship.' + k | i18n }}
+        </label>
+
+        <div ng-if="v.targetModel" class="col-sm-9 col-xs-12 my-auto">
+            {{ v.targetModel.name | name }}
+        </div>
+
+        <div ng-if="v.length" class="col-sm-9 col-xs-12 my-auto">
+            <ul class="list-group">
+                <li ng-repeat="i in v track by $index">
+                    {{ i.targetModel.name | name }}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
