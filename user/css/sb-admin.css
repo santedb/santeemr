@@ -866,21 +866,31 @@ table.dataTable thead .sorting_desc_disabled {
   }
 }
 @media only screen and (min-width: 1200px) {
-  
   .content-wrapper {
     min-height: calc(100vh - 112px);
     padding-top: 1rem;
     max-height: calc(100vh - 112px)
   }
-
 }
 
-.base-demographics-tab .tab-pane {
+.disabled-tab-pane-overlay {
+  background-color: #aaaaaaa1;
+  z-index: 100;
+}
+
+.base-demographics-tab .tab-pane,
+.next-of-kin-tab .tab-pane {
   border-width: 0 1px 1px 1px;
   border-color: #dee2e6;
   border-style: solid;
 }
 
 .cursor-pointer {
+  pointer-events: auto;
   cursor: pointer;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
 }

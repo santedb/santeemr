@@ -16,12 +16,12 @@
                 container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
 
             <!-- Name -->
-            <name-edit is-required="true" control-prefix="'nok' + rel.id" owner-form="panel.editForm"
+            <name-edit is-required="rel.operation != 'Delete'" control-prefix="'nok' + rel.id" owner-form="panel.editForm"
                 no-add="true" readonly="readonly" no-type="true" simple-entry="true" model="rel.targetModel.name" />
 
             <!-- Date of Birth -->
             <div class="form-group row">
-                <label class="col-sm-12 col-md-3 control-label required">{{ rel.targetModel.dateOfBirthPrecision == 1 ? 'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}<hint-popover hint-title="ui.model.patient.dateOfBirth" /></label>
+                <label ng-class="{'required': rel.operation != 'Delete'}" class="col-sm-12 col-md-3 control-label">{{ rel.targetModel.dateOfBirthPrecision == 1 ? 'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}<hint-popover hint-title="ui.model.patient.dateOfBirth" /></label>
 
                 <div class="col-sm-12 col-md-8">
                     <div class="input-group m-0">
@@ -36,24 +36,18 @@
                                 </label>
                             </div>
 
-                            <input name="nok{{ rel.id }}Age" required="required" ng-if="rel.targetModel.dateOfBirthPrecision == 1"
+                            <input name="nok{{ rel.id }}Age" ng-required="rel.operation != 'Delete'" ng-if="rel.targetModel.dateOfBirthPrecision == 1"
                                 ng-change="rel.targetModel.dateOfBirth = ageToDate(rel.targetModel.age)" type="number"
                                 ng-model="rel.targetModel.age" min="0" class="form-control" />
 
-                            <input name="nok{{ rel.id }}Dob" data-quality-id="dob" required="required" ng-if="rel.targetModel.dateOfBirthPrecision == 3"
+                            <input name="nok{{ rel.id }}Dob" data-quality-id="dob" ng-required="rel.operation != 'Delete'" ng-if="rel.targetModel.dateOfBirthPrecision == 3"
                                 ng-change="rel.targetModel.age = dateToAge(rel.targetModel.dateOfBirth)"
                                 type="date" ng-model="rel.targetModel.dateOfBirth" min="1900-01-01"
                                 max="{{ $root.page.today | date: 'yyyy-MM-dd' }}" class="form-control" />
 
-                            <div class="input-group-append" ng-if="rel.targetModel.dateOfBirthPrecision == 1">
+                            <div class="input-group-append" >
                                 <span class="input-group-text p-0 px-2">
-                                    {{ 'ui.emr.patient.ageInYears' | i18n }}
-                                </span>
-                            </div>
-
-                            <div class="input-group-append" ng-if="rel.targetModel.dateOfBirthPrecision == 3">
-                                <span class="input-group-text p-0 px-2">
-                                    {{ rel.targetModel.dateOfBirth | age }}
+                                    {{ rel.targetModel.dateOfBirthPrecision == 1 ? ('ui.emr.patient.ageInYears' | i18n) : (rel.targetModel.dateOfBirth | age) }}
                                 </span>
                             </div>
                         </div>
@@ -85,10 +79,10 @@
 
             <!-- Gender -->
             <div class="form-group row">
-                <label class="col-sm-12 col-md-3 control-label required">{{ 'ui.model.patient.genderConcept' | i18n }}</label>
+                <label ng-class="{'required': rel.operation != 'Delete'}" class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.genderConcept' | i18n }}</label>
 
                 <div class="col-sm-12 col-md-8">
-                    <concept-select ng-disabled="isBirthValidated" class="form-control" required="required" name="nok{{ rel.id }}birthGender"
+                    <concept-select ng-disabled="isBirthValidated" class="form-control" required="{{rel.operation != 'Delete' ? 'required' : ''}}" name="nok{{ rel.id }}birthGender"
                         concept-set="'AdministrativeGenderCode'" ng-model="rel.targetModel.genderConcept" />
 
                     <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'birthGender'].$invalid">
@@ -100,7 +94,7 @@
             <!-- Telecom -->
             <telecom-edit owner-form="panel.editForm" name="nok{{ rel.id }}Telecom"
                 model="rel.targetModel.telecom" allowed-types="[ 'MobileContact' ]"
-                required-types="[ !rel.targetModel.deceasedIndicator ? 'MobileContact' : null ]" />
+                required-types="[ !rel.targetModel.deceasedIndicator &amp;&amp; rel.operation != 'Delete' ? 'MobileContact' : null ]" />
             
             <!-- Address -->
             <address-edit is-required="false" control-prefix="'nok' + rel.id" owner-form="panel.editForm"

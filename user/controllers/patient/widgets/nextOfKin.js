@@ -1,7 +1,8 @@
 /// <reference path="../../../.ref/js/santedb.js" />
 
 angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
-    $scope.removeNewRelative = removeNewRelative;
+    $scope.revertRemoveRelative = revertRemoveRelative;
+    $scope.removeRelative = removeRelative;
     $scope.addNewRelative = addNewRelative;
     $scope.excludeRelationshipTypes = [];
     $scope.getTabPaneId = getTabPaneId;
@@ -40,16 +41,43 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
         relationships.push(newRelative);
         
         delete ($scope.editObject); // Delete the current edit object
-        $scope.editObject = relationships;        
+        $scope.editObject = relationships;  
+              
+        $scope.requiresRelationship = false;
     }
 
-    function removeNewRelative(relationship) {        
-        const relationships = angular.copy($scope.editObject).filter((rel) => {
-            return rel.id != relationship.id;
-        });
+    function revertRemoveRelative(relationship) {      
+        $scope.requiresRelationship = false;
+        relationship.operation = 'Update';
+    }
 
-        delete ($scope.editObject); // Delete the current edit object
-        $scope.editObject = relationships;  
+    function removeRelative(relationship) {            
+        if (canRelationshipBeRemoved()) {
+            if (relationship.$id) {          
+                relationship.operation = 'Delete';
+            } else {
+                const relationships = angular.copy($scope.editObject).filter((rel) => {
+                    return rel.id != relationship.id;
+                });
+        
+                delete ($scope.editObject); // Delete the current edit object
+                $scope.editObject = relationships;  
+            }
+        }
+    }
+
+    function canRelationshipBeRemoved() {
+        if (dateToAge($scope.scopedObject.dateOfBirth) < 16) {
+            const activeRelationships = $scope.editObject.filter((rel) => {
+                return rel.operation != 'Delete' || !rel.$id
+            });
+
+            $scope.requiresRelationship = activeRelationships.length == 1;
+            
+            return activeRelationships.length > 1;
+        }
+
+        return true;
     }
 
     function getTabPaneId(relationship, index) {
@@ -160,7 +188,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
     });
 
     // Scoped object
-    $scope.$watch("scopedObject", async function (n, o) {
+    $scope.$watch("scopedObject", async function (n, o) {        
         if (n) {            
             try {
                 if (n.relationship) {
