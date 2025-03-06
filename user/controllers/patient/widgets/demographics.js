@@ -33,14 +33,17 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
 
     // Add identifier
     $scope.addIdentifier = function (id) {
-        if (!$scope.panel.editForm.$valid) return;
-        else {
+        if (!$scope.panel.editForm.$valid) {
+            return;
+        } else {
             var authority = id.domainModel.domainName;
             var existing = $scope.editObject.identifier[authority];
+
             if (!existing) // no identifiers in this domain
                 $scope.editObject.identifier[authority] = existing = [];
             else if (!Array.isArray(existing)) // Has only one => turn into array
                 $scope.editObject.identifier[authority] = existing = [existing];
+
             id.id = SanteDB.application.newGuid();
             existing.push(angular.copy(id));
             delete (id.domainModel);
@@ -51,7 +54,6 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
 
     // Remove identifier
     $scope.removeIdentifier = function (authority, id) {
-
         if (confirm(SanteDB.locale.getString("ui.model.entity.identifier.authority.remove.confirm"))) {
             var idList = $scope.editObject.identifier[authority];
             if (!Array.isArray(idList))
