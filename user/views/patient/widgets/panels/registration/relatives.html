@@ -1,11 +1,11 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container p-0">
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container">
     <sdb:widget order="200" name="org.santedb.emr.widget.patient.register.relatives" headerClass="alert-info" size="Large"
         type="Panel" context="org.santedb.emr.patient.register">
         <sdb:icon>fas fa-people-arrows</sdb:icon>
         <sdb:description lang="en">Patient Next of Kin Entry</sdb:description>
     </sdb:widget>
-    <div ng-controller="EmrPatientRegisterWidgetController" class="accordion">
 
+    <div ng-controller="EmrPatientRegisterWidgetController" class="accordion">
         <!-- Relationship Type -->
         <div class="form-group row">
             <label class="col-md-3 col-sm-12 control-label"
@@ -13,7 +13,7 @@
                     {{ 'ui.model.entity.relationship.relationshipType' | i18n }} <hint-popover hint-title="ui.model.entity.relationship.relationshipType" />
             </label>
 
-            <div class="col-sm-12 col-md-9">
+            <div class="col-sm-12 col-md-8">
                 <concept-select ng-if="!scopedObject.age || scopedObject.age &lt; 18" name="nokRelationshipType"
                     ng-required="scopedObject.relationship.Mother[0].operation == 'Delete' || scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                     concept-set="'ChildFamilyMember'" class="form-control"
@@ -54,7 +54,7 @@
                     <hint-popover hint-title="ui.model.patient.dateOfBirth" />
                 </label>
 
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-8">
                     <div class="input-group m-0">
                         <div class="input-group mb-0">
                             <div class="input-group-prepend">
@@ -108,7 +108,7 @@
                     {{ 'ui.model.patient.genderConcept' | i18n }}
                 </label>
 
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-8">
                     <concept-select class="form-control" required="required" name="nokBirthGender"
                         concept-set="'AdministrativeGenderCode'"
                         ng-model="scopedObject.relationship.$other[0].targetModel.genderConcept" />
@@ -149,7 +149,7 @@
                     {{ 'ui.model.person.occupation' | i18n }} <hint-popover hint-title="ui.model.person.occupation" />
                 </label>
 
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-8">
                     <concept-select name="nokOccupation" ng-required="$root.system.config.application.setting['forbid.person.occupation'] == 'required'" concept-set="'OccupationType'" ng-model="scopedObject.relationship.$other[0].targetModel.occupation" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
                     
                     <div class="text-danger" ng-if="panel.editForm.nokOccupation.$error['required']">
@@ -164,7 +164,7 @@
                     {{ 'ui.model.person.vipStatus' | i18n }} <hint-popover hint-title="ui.model.person.vipStatus" />
                 </label>
 
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-8">
                     <concept-select name="nokVipStatus" concept-set="'VeryImportantPersonStatus'" ng-model="scopedObject.relationship.$other[0].targetModel.vipStatus" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
                 </div>
             </div>
@@ -175,7 +175,7 @@
                     {{ 'ui.model.person.nationality' | i18n }} <hint-popover hint-title="ui.model.person.nationality" />
                 </label>
 
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-8">
                     <entity-search type="'Concept'"
                         name="nokNationality"
                         ng-model="scopedObject.relationship.$other[0].targetModel.nationality"
@@ -194,7 +194,7 @@
                     {{ 'ui.model.entity.relationship.Citizen' | i18n }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" />
                 </label>
 
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-8">
                     <entity-search type="'Place'" ng-model="scopedObject.relationship.$other[0].targetModel.relationship.Citizen"
                         name="nokCitizen"
                         multiple="multiple" search-field="'name.component.value'" value-property="'target'"
@@ -213,7 +213,7 @@
                     {{ 'ui.model.person.relationship.Employee' | i18n }} <hint-popover hint-title="ui.model.person.relationship.Employee" />
                 </label>
 
-                <div class="col-sm-12 col-md-9">
+                <div class="col-sm-12 col-md-8">
                     <entity-search type="'Organization'" ng-model="scopedObject.relationship.$other[0].targetModel.relationship.Employee"
                         multiple="multiple" search-field="'name.component.value'" value-property="'target'"
                         name="nokEmployee" 
