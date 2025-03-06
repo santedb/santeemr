@@ -250,5 +250,32 @@
             </div>
         </div>
 
+        <div class="form-group row"
+            ng-if="$root.system.config.application.setting['forbid.person.school'] != 'true'">
+            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Student' | i18n
+                }} <hint-popover hint-title="ui.model.person.relationship.Student" /></label>
+            <div class="col-sm-12 col-md-9">
+                <entity-search type="'Organization'" ng-model="scopedObject.relationship.Student"
+                    ng-required="$root.system.config.application.setting['required.person.school'] == 'true' || scopedObject.age &gt;= 2 &amp;&amp; scopedObject.age &lt;= 17"
+                    name="student" multiple="multiple" search-field="'name.component.value'"
+                    data-quality-id="student" value-property="'target'" 
+                    filter="{ 'typeConcept.conceptSet' : 'a7474e08-4b3a-4f69-8928-b4e352d7c1d3' }"
+                    default-results="{ 'address.component[PlaceRef].value' : [ scopedObject.address.HomeAddress[0].component.PlaceRef[0] ] }"
+                    />
+                <div class="text-danger" ng-if="panel.editForm.student.$error['required']">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+                <div class="text-danger"
+                    ng-if="panel.editForm.student.$error['dq'] || panel.editForm.dataQualityIssues['student']"
+                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['student'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['student'].priority == 'Warning' }">
+                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
+                    scopedObject._dataQualityIssues['student'].text } }} <button type="button"
+                        class="btn btn-link btn-sm d-inline"
+                        ng-click="panel.editForm.dataQualityIssues['student'].dismiss()">{{
+                        'ui.action.dismiss' | i18n }}</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
