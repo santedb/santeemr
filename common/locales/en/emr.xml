@@ -117,6 +117,7 @@
     <string name="ui.emr.system.info.cpuInfo"># CPU Threads</string>
     <string name="ui.emr.system.info.memory">Used Memory</string>
     <string name="ui.emr.system.info.uptime">Uptime / Running Time</string>
+    <string name="ui.emr.system.info.device">Device Name</string>
     <string name="ui.emr.system.applets.title">Installed Applets</string>
     <string name="ui.emr.system.applets.name">Name</string>
     <string name="ui.emr.system.applets.version">Version</string>
@@ -425,4 +426,7 @@
          <string name="ui.emr.observation.height.method.standing">Standing (Height)</string>
          <string name="org.santedb.emr.widget.patient.cdsAlerts">CDSS Alerts &amp; Notices</string>
         <string name="ui.emr.patient.header.cdssIssuesDetected">This Patient Has CDSS Alerts - Please Review Prior to Providing Care</string>
+
+        <!-- Dashboard -->
+        <string name="ui.emr.dashboard.title">My Dashboard</string>
 </resources>

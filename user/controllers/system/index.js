@@ -27,6 +27,7 @@ angular.module('santedb').controller('SystemInfoController', ["$scope", "$rootSc
     SanteDB.application.getAppInfoAsync({ updates: false })
         .then(function(d) {
             $scope.info = d;
+            $scope.info._device = SanteDB.configuration.getDeviceId();
             $scope.isLocalLoading = false;
             $scope.$apply();
         })
