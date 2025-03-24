@@ -34,8 +34,60 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
             }
         }
     }
+
+    async function initializeView() {
+        try {
+            
+            var filterByLocation = await SanteDB.authentication.getCurrentFacilityId();
+
+            var typeFilter = await SanteDB.resources.concept.invokeOperationAsync(null, "xref-use", {
+                "xr-resource" : "PatientEncounter",
+                "xr-query": `participation[Location].player=${filterByLocation}&moodConcept=EC74541F-87C4-4327-A4B9-97F325501747&statusConcept=${StatusKeys.Active}&statusConcept=${StatusKeys.Completed}`,
+                "xr-select": "typeConcept"
+            });
+
+            var flowFilter = await SanteDB.resources.concept.findAsync({
+                "conceptSet" : "d46d45b3-4db3-4641-adfc-84a80b7d1637", 
+                "relationship[MemberOf].targetConcept" : typeFilter.resource?.map(o=>o.id),
+                "_orderBy": "mnemonic:asc"
+            }, "min");
+
+            $timeout(() => {
+                $scope.filterByLocation = filterByLocation;
+                $scope.filterFlow = flowFilter.resource?.map(f => {
+                    return {
+                        name: f.mnemonic,
+                        id: [ btoa(`2^${f.id.toLowerCase()}`), btoa(`2^${f.id.toUpperCase()}`) ],
+                        label: SanteDB.display.renderConcept(f),
+                        action: $scope.doFilterFlow,
+                        icon: 'fas fa-fw fa-circle'
+                    };
+                }) || [];
+                $scope.filterFlow.push({
+                    name: 'Released',
+                    label: 'ui.emr.encounter.waitingRoom.filter.released',
+                    icon: 'fas fa-fw fa-arrow-turn-down fa-rotate-90',
+                    action: $scope.doFilterReleased
+                });
+
+                $scope.filterType = typeFilter.resource?.map(r => {
+                    return {
+                        name: r.mnemonic,
+                        id: r.id,
+                        label: SanteDB.display.renderConcept(r),
+                        action: $scope.doFilterType,
+                        icon: 'fas fa-fw fa-circle'
+                    }
+                })
+            })
+
+        }
+        catch(e) {
+            console.warn(e);
+        }
+    }
    
-    $scope.filterType = [];
+    initializeView();
 
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
@@ -78,28 +130,6 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
                 var extensionValue = r.extension[ENCOUNTER_FLOW.EXTENSION_URL][0];
                 r.flowConceptModel = _loadedFlowStates[extensionValue] || await SanteDB.application.resolveReferenceExtensionAsync(extensionValue);
                 _loadedFlowStates[extensionValue] = r.flowConceptModel;
-
-                if (!$scope.filterFlow.find(f => f.id === extensionValue) && r.statusConcept != StatusKeys.Completed) {
-                    $scope.filterFlow.push({
-                        name: r.flowConceptModel.mnemonic,
-                        id: extensionValue,
-                        label: SanteDB.display.renderConcept(r.flowConceptModel),
-                        action: $scope.doFilterFlow,
-                        icon: 'fas fa-fw fa-circle',
-                    });
-                }
-               
-                if (!$scope.filterType.find(f => f.id === r.typeConcept)) {
-                    $scope.filterType.push({
-                        name: r.typeConcept,
-                        id: r.typeConcept,
-                        label: SanteDB.display.renderConcept(r.typeConceptModel),
-                        action: $scope.doFilterType,
-                        icon: 'fas fa-fw fa-circle'
-                    });
-                }
-
-
                 return r;
             }
         }
@@ -109,60 +139,52 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
     }
 
     $scope.doFilterFlow = function (parm, index) {
-        $("#actionList_1 button").removeClass("active");
+        $("#waitingRoomListactionList_1 button").removeClass("active");
         $scope.filterByActState = null;
         $scope.filterByActDate = null;
         if (parm != $scope.filterByFlowState) {
             $scope.filterByFlowState = parm;
-            $($("#actionList_1 button")[index]).addClass("active");
-            $("#actionList_button_1").html($($("#actionList_1 button")[index]).html());
+            $($("#waitingRoomListactionList_1 button")[index]).addClass("active");
+            $("#waitingRoomListactionList_button_1").html($($("#waitingRoomListactionList_1 button")[index]).html());
         }
         else {
             $scope.filterByFlowState = null;
-            $("#actionList_button_1").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterFlow")}`);
+            $("#waitingRoomListactionList_button_1").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterFlow")}`);
         }
     }
 
 
     $scope.doFilterReleased = function (parm, index) {
-        $("#actionList_1 button").removeClass("active");
+        $("#waitingRoomListactionList_1 button").removeClass("active");
         $scope.filterByFlowState = null;
         if (!$scope.filterByActState) {
             $scope.filterByActState = StatusKeys.Completed;
             $scope.filterByActDate = ':(age)<1d';
-            $($("#actionList_1 button")[index]).addClass("active");
-            $("#actionList_button_1").html($($("#actionList_1 button")[index]).html());
+            $($("#waitingRoomListactionList_1 button")[index]).addClass("active");
+            $("#waitingRoomListactionList_button_1").html($($("#waitingRoomListactionList_1 button")[index]).html());
         }
         else {
             $scope.filterByActState = null;
             $scope.filterByActDate = null;
-            $("#actionList_button_1").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterFlow")}`);
+            $("#waitingRoomListactionList_button_1").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterFlow")}`);
         }
     }
 
 
     $scope.doFilterType = function (parm, index) {
-        $("#actionList_2 button").removeClass("active");
+        $("#waitingRoomListactionList_2 button").removeClass("active");
         if (parm != $scope.filterByType) {
             $scope.filterByType = parm;
-            $($("#actionList_2 button")[index]).addClass("active");
-            $("#actionList_button_2").html($($("#actionList_2 button")[index]).html());
+            $($("#waitingRoomListactionList_2 button")[index]).addClass("active");
+            $("#waitingRoomListactionList_button_2").html($($("#waitingRoomListactionList_2 button")[index]).html());
         }
         else {
             $scope.filterByType = null;
-            $("#actionList_button_2").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterType")}`);
+            $("#waitingRoomListactionList_button_2").html(`<i class='fas fa-fw fa-filter'></i> ${SanteDB.locale.getString("ui.action.filterType")}`);
         }
     }
 
     $scope.filterByFlowState = null;
     $scope.filterByType = null;
-    $scope.filterFlow = [
-        {
-            name: 'Released',
-            label: 'ui.emr.encounter.waitingRoom.filter.released',
-            icon: 'fas fa-fw fa-arrow-turn-down fa-rotate-90',
-            action: $scope.doFilterReleased
-        }
-    ];
-
+    
 }])

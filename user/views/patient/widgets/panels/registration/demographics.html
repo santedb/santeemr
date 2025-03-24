@@ -7,47 +7,55 @@
     </sdb:widget>
 
     <div ng-controller="EmrPatientRegisterWidgetController" class="container">
-        <name-edit is-required="true" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
-            name="patientName" model="scopedObject.name.OfficialRecord" data-quality-id="name" />
-
-        <div class="row">
-            <div class="col-md-9 offset-md-3 col-sm-12"
-                ng-if="panel.editForm['patientName'].$error['dq'] || panel.editForm.dataQualityIssues['name']"
-                ng-class="{ 'text-primary': panel.editForm.dataQualityIssues['name'].priority == 'Information', 'text-warning': panel.editForm.dataQualityIssues['name'].priority == 'Warning', 'text-danger' :  panel.editForm.dataQualityIssues['name'].priority == 'Error'}">
-                <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['name'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['name'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
+        <!-- Name -->
+        <ng-container>
+            <name-edit is-required="true" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
+                name="patientName" model="scopedObject.name.OfficialRecord" data-quality-id="name" />
+                
+            <div class="row">
+                <div class="col-md-9 offset-md-3 col-sm-12" ng-if="panel.editForm['patientName'].$error['dq'] || panel.editForm.dataQualityIssues['name']"
+                    ng-class="{ 'text-primary': panel.editForm.dataQualityIssues['name'].priority == 'Information', 'text-warning': panel.editForm.dataQualityIssues['name'].priority == 'Warning', 'text-danger' :  panel.editForm.dataQualityIssues['name'].priority == 'Error'}">
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['name'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['name'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
+                </div>
             </div>
-        </div>
+        </ng-container>
+        
+        <!-- Date of Birth -->
         <div class="form-group row">
-            <label class="col-sm-12 col-md-3 control-label required">{{ scopedObject.dateOfBirthPrecision == 1 ? 'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}
+            <label class="col-sm-12 col-md-3 control-label required">
+                {{ scopedObject.dateOfBirthPrecision == 1 ? 'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}
                 <hint-popover hint-title="ui.model.patient.dateOfBirth" />
             </label>
-            <div class="col-sm-12 col-md-9">
+
+            <div class="col-sm-12 col-md-8">
                 <div class="input-group m-0">
                     <div class="input-group mb-0">
                         <div class="input-group-prepend">
-                            <label class="input-group-text">
+                            <label class="input-group-text p-0 px-2">
                                 <div class="checkbox-container">
-                                    <input type="checkbox" ng-model="scopedObject.dateOfBirthPrecision" ng-true-value="1"
-                                    ng-false-value="3" class="checkbox-control"/>
+                                    <input type="checkbox" ng-model="scopedObject.dateOfBirthPrecision" ng-true-value="1" ng-false-value="3" class="checkbox-control"/>
                                     <span></span>
                                     {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
                                 </div>
                             </label>
                         </div>
+
                         <input name="patientAge" required="required" ng-if="scopedObject.dateOfBirthPrecision == 1"
                             ng-change="scopedObject.dateOfBirth = ageToDate(scopedObject.age)" type="number"
                             ng-model="scopedObject.age" min="0" class="form-control" />
+
                         <input name="patientDob" data-quality-id="dob" required="required" ng-if="scopedObject.dateOfBirthPrecision == 3"
                             ng-change="scopedObject.age = dateToAge(scopedObject.dateOfBirth)"
                             type="date" ng-model="scopedObject.dateOfBirth" min="1900-01-01"
                             max="{{ $root.page.today | date: 'yyyy-MM-dd' }}" class="form-control" />
-                        <div class="input-group-append" ng-if="scopedObject.dateOfBirthPrecision == 1">
-                            <span class="input-group-text">{{ 'ui.emr.patient.ageInYears' | i18n }}</span>
-                            <span class="input-group-text">{{ 'ui.model.patient.dateOfBirth.approx' | i18n }} {{
-                                scopedObject.dateOfBirth | extDate: scopedObject.dateOfBirthPrecision }}</span>
-                        </div>
-                        <div class="input-group-append" ng-if="scopedObject.dateOfBirthPrecision == 3">
-                            <span class="input-group-text">{{ scopedObject.dateOfBirth | age }}</span>
+
+                        <div class="input-group-append" >
+                            <span class="input-group-text p-0 px-2">
+                                {{ scopedObject.dateOfBirthPrecision == 1 ? ('ui.emr.patient.ageInYears' | i18n) : (scopedObject.dateOfBirth | age) }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -70,60 +78,74 @@
                 </div>
             </div>
         </div>
+
+        <!-- Gender -->
         <div class="form-group row">
-            <label class="col-sm-12 col-md-3 control-label required">{{ 'ui.model.patient.genderConcept' | i18n
-                }}</label>
-            <div class="col-sm-12 col-md-9">
+            <label class="col-sm-12 col-md-3 control-label required">
+                {{ 'ui.model.patient.genderConcept' | i18n }}
+            </label>
+
+            <div class="col-sm-12 col-md-8">
                 <concept-select data-quality-id="gender" class="form-control" required="required" name="birthGender"
                     concept-set="'AdministrativeGenderCode'" ng-model="scopedObject.genderConcept" />
+
                 <div class="text-danger" ng-if="panel.editForm['birthGender'].$error['required']">
                     <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div 
-                    ng-if="panel.editForm['birthGender'].$error['dq'] || panel.editForm.dataQualityIssues['gender']"
+
+                <div ng-if="panel.editForm['birthGender'].$error['dq'] || panel.editForm.dataQualityIssues['gender']"
                     ng-class="{ 'text-primary': panel.editForm.dataQualityIssues['gender'].priority == 'Information', 'text-warning': panel.editForm.dataQualityIssues['gender'].priority == 'Warning', 'text-danger' :  panel.editForm.dataQualityIssues['gender'].priority == 'Error'}">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['gender'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['gender'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['gender'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['gender'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
                 </div>
             </div>
         </div>
+
+        <!-- Multiple Birth Order -->
         <div class="form-group row" ng-if="!scopedObject.age || scopedObject.age &lt;= 12">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.multipleBirthOrder' | i18n }}</label>
-            <div class="col-sm-12 col-md-9">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.patient.multipleBirthOrder' | i18n }}
+            </label>
+
+            <div class="col-sm-12 col-md-8">
                 <div class="input-group m-0">
                     <div class="input-group-prepend">
                         <label class="input-group-text">
                             <input type="checkbox" ng-model="scopedObject.multipleBirthIndicator" ng-change="scopedObject.multipleBirthOrder = '0'" />
                         </label>
                     </div>
+
                     <select class="form-control" name="birthOrder" ng-required="scopedObject.multipleBirthIndicator"
                         ng-model="scopedObject.multipleBirthOrder" ng-disabled="!scopedObject.multipleBirthIndicator">
-                        <option value="0">{{ 'ui.model.patient.multipleBirthOrder.0' | i18n }}</option>
-                        <option value="1">{{ 'ui.model.patient.multipleBirthOrder.1' | i18n }}</option>
-                        <option value="2">{{ 'ui.model.patient.multipleBirthOrder.2' | i18n }}</option>
-                        <option value="3">{{ 'ui.model.patient.multipleBirthOrder.3' | i18n }}</option>
-                        <option value="4">{{ 'ui.model.patient.multipleBirthOrder.4' | i18n }}</option>
-                        <option value="5">{{ 'ui.model.patient.multipleBirthOrder.5' | i18n }}</option>
+                            <option value="0">{{ 'ui.model.patient.multipleBirthOrder.0' | i18n }}</option>
+                            <option value="1">{{ 'ui.model.patient.multipleBirthOrder.1' | i18n }}</option>
+                            <option value="2">{{ 'ui.model.patient.multipleBirthOrder.2' | i18n }}</option>
+                            <option value="3">{{ 'ui.model.patient.multipleBirthOrder.3' | i18n }}</option>
+                            <option value="4">{{ 'ui.model.patient.multipleBirthOrder.4' | i18n }}</option>
+                            <option value="5">{{ 'ui.model.patient.multipleBirthOrder.5' | i18n }}</option>
                     </select>
                 </div>
+
                 <div class="text-danger" ng-if="panel.editForm['birthOrder'].$invalid">
                     {{ 'ui.error.required' | i18n }}</div>
             </div>
         </div>
 
+        <!-- Birthplace -->
         <div class="form-group row">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.birthplace' | i18n }}</label>
-            <div class="col-sm-12 col-md-9">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.patient.birthplace' | i18n }}
+            </label>
+
+            <div class="col-sm-12 col-md-8">
                 <entity-search type="'Place'" group-by="'address.Direct.component.State'" name="birthplace" data-quality-id="birthplace"
                     ng-model="scopedObject.relationship.Birthplace[0].target" search-field="'name.component.value'"
                     filter="{ 'statusConcept': 'c8064cbd-fa06-4530-b430-1a52f1530c27' }" />
-                <div
-                    ng-if="panel.editForm['birthplace'].$error['dq'] || panel.editForm.dataQualityIssues['birthplace']" 
+
+                <div ng-if="panel.editForm['birthplace'].$error['dq'] || panel.editForm.dataQualityIssues['birthplace']" 
                     ng-class="{ 'text-primary': panel.editForm.dataQualityIssues['birthplace'].priority == 'Information', 'text-warning': panel.editForm.dataQualityIssues['birthplace'].priority == 'Warning', 'text-danger' :  panel.editForm.dataQualityIssues['birthplace'].priority == 'Error'}">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['birthplace'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['birthplace'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['birthplace'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['birthplace'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>

@@ -98,6 +98,7 @@
     <string name="ui.emr.patient.$other.differsFromPatient">Different address than the registrant</string>
     <string name="ui.emr.patient.register.upgradePerson">There is an existing non-patient record which will be upgraded when this entity is saved</string>
     <string name="ui.emr.patient.register.duplicateDetected">A patient with this identifier already exists - please validate your entry and try again</string>
+    <string name="ui.emr.patient.ageOrDate">Age or Date</string>
 
     <string name="ui.emr.search.online">Could not locate this data on the local environment, do you
         want to search the central server?</string>
@@ -116,6 +117,7 @@
     <string name="ui.emr.system.info.cpuInfo"># CPU Threads</string>
     <string name="ui.emr.system.info.memory">Used Memory</string>
     <string name="ui.emr.system.info.uptime">Uptime / Running Time</string>
+    <string name="ui.emr.system.info.device">Device Name</string>
     <string name="ui.emr.system.applets.title">Installed Applets</string>
     <string name="ui.emr.system.applets.name">Name</string>
     <string name="ui.emr.system.applets.version">Version</string>
@@ -424,4 +426,7 @@
          <string name="ui.emr.observation.height.method.standing">Standing (Height)</string>
          <string name="org.santedb.emr.widget.patient.cdsAlerts">CDSS Alerts &amp; Notices</string>
         <string name="ui.emr.patient.header.cdssIssuesDetected">This Patient Has CDSS Alerts - Please Review Prior to Providing Care</string>
+
+        <!-- Dashboard -->
+        <string name="ui.emr.dashboard.title">My Dashboard</string>
 </resources>

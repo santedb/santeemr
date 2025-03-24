@@ -70,15 +70,15 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                         switch(a.priority) {
                             case "Information": a.priorityVal = 1; break;
                             case "Warning": a.priorityVal = 2; break;
-                            case "Error": a.priortyVal = 3; break;
+                            case "Error": a.priorityVal = 3; break;
                         }
                         switch(b.priority) {
                             case "Information": b.priorityVal = 1; break;
                             case "Warning": b.priorityVal = 2; break;
-                            case "Error": b.priortyVal = 3; break;
+                            case "Error": b.priorityVal = 3; break;
                         }
-                        return a.priortyVal > b.priorityVal ? -1 : 1;
-                    })[0].priority,
+                        return a.priorityVal > b.priorityVal ? -1 : 1;
+                    })[0]?.priority,
                     issues: issues
                 };
             })

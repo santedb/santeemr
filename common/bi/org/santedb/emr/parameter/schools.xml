@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ - Copyright 2021-2024 SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ - Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ - Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ - 
+ - Licensed under the Apache License, Version 2.0 (the "License"); you 
+ - may not use this file except in compliance with the License. You may 
+ - obtain a copy of the License at 
+ - 
+ - http://www.apache.org/licenses/LICENSE-2.0 
+ - 
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ - License for the specific language governing permissions and limitations under 
+ - the License.
+ -->
+<BiParameterDefinition xmlns="http://santedb.org/bi"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://santedb.org/bi http://santedb.org/schema/v3.0/BusinessIntelligence.xsd"
+  id="org.santedb.emr.bi.parameter.schools" name="schools"
+  label="ui.santedb.emr.bi.parameter.schools" type="uuid" status="active">
+  <meta>
+    <authors>
+      <add>Justin Fyfe (SanteSuite Inc.) &lt;justin@fyfesoftware.ca></add>
+    </authors>
+    <annotation lang="en">
+      <div xmlns="http://www.w3.org/1999/xhtml">
+        <p>Parameter for schools</p>
+      </div>
+    </annotation>
+  </meta>
+  <query>
+    <dataSources>
+      <add ref="#org.santedb.bi.dataSource.main" name="main" />
+    </dataSources>
+    <definitions>
+      <add>
+        <providers>
+          <invariant>npgsql</invariant>
+        </providers>
+        <![CDATA[
+          SELECT EVT.ENT_ID AS ID, VAL AS VALUE
+          FROM
+            ORG_TBL OT 
+            INNER JOIN ENT_VRSN_TBL EVT USING (ent_vrsn_id)
+            INNER JOIN ENT_NAME_TBL NT ON (NT.ENT_ID = EVT.ENT_ID AND NT.OBSLT_VRSN_SEQ_ID IS NULL AND NT.USE_CD_ID = '1EC9583A-B019-4BAA-B856-B99CAF368656')
+            INNER JOIN ENT_NAME_CMP_TBL CT USING (NAME_ID)
+          WHERE 
+            EVT.typ_cd_id IN (SELECT cd_id FROM CD_SET_MEM_ASSOC_TBL WHERE set_id = 'a7474e08-4b3a-4f69-8928-b4e352d7c1d3')
+            AND EVT.HEAD 
+            AND EVT.OBSLT_UTC IS NULL
+            
+        ]]>
+      </add>
+      <add>
+        <providers>
+          <invariant>sqlite</invariant>
+        </providers>
+        <![CDATA[
+          SELECT EVT.ENT_ID AS ID, VAL AS VALUE
+          FROM
+            ORG_TBL OT 
+            INNER JOIN ENT_VRSN_TBL EVT USING (ent_vrsn_id)
+            INNER JOIN ENT_NAME_TBL NT ON (NT.ENT_ID = EVT.ENT_ID AND NT.OBSLT_VRSN_SEQ_ID IS NULL AND NT.USE_CD_ID = x'3A58C91E19B0AA4BB856B99CAF368656')
+            INNER JOIN ENT_NAME_CMP_TBL CT USING (NAME_ID)
+          WHERE 
+            EVT.typ_cd_id IN (SELECT cd_id FROM CD_SET_MEM_ASSOC_TBL WHERE set_id = x'084E47A73A4B694F8928B4E352D7C1D3')
+            AND EVT.HEAD 
+            AND EVT.OBSLT_UTC IS NULL
+        ]]>
+      </add>
+      
+    </definitions>
+  </query>
+</BiParameterDefinition>

@@ -33,6 +33,10 @@
                             {{ info.appInfo.santedb.info }} <br/><small class="text-secondary">{{ info.appInfo.santedb.copyright }}</small>
                         </div>
                         <div class="col-md-12 col-lg-6">
+                            <label class="control-label">{{ 'ui.emr.system.info.device' | i18n }}: </label>
+                            {{ info._device }}
+                        </div>
+                        <div class="col-md-12 col-lg-6">
                             <label class="control-label">{{ 'ui.emr.system.info.version' | i18n }}: </label>
                             {{ info.appInfo.santedb.version }}
                         </div>

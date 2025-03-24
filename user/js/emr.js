@@ -462,3 +462,37 @@ Patient.prototype.age = function (measure) {
 Patient.prototype.hasCondition = function (conditionTypeConcept) {
 
 }
+
+
+
+$(window).bind("touchstart", function(downEvent) {
+    var downTouch = downEvent.originalEvent.touches[0];
+    var direction = { x: 0, y: 0 };
+
+    $(window).bind("touchmove", function(moveEvent) {
+        var moveTouch = moveEvent.originalEvent.touches[0];
+        direction.x = moveTouch.pageX > downTouch.pageX ? 1 : -1;
+        direction.y = moveTouch.pageY > downTouch.pageY ? 1 : -1;
+    });
+
+    $(window).bind("touchend", function(endEvent) {
+        $(window).unbind("touchmove");
+        $(window).unbind("touchend");
+
+        $(downEvent.target).trigger("swipe", { 
+            swipeLeft: direction.x < 0, 
+            swipeRight: direction.x > 0,
+            swipeDown: direction.y > 0, 
+            swipeUp: direction.y < 0
+        });
+    
+    });
+
+})
+
+// Determine if this device is a touch device
+window.isTouchDevice = function() {
+    return (('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0));
+}

@@ -13,7 +13,7 @@
     </sdb:widget>
 
     <div ng-controller="EmrPatientViewWidgetController">
-        <div ng-repeat="(domain, idgrp) in scopedObject.identifier" ng-if="panel.view != 'Edit'">
+        <div ng-repeat="(domain, idgrp) in scopedObject.identifier" ng-if="panel.view != 'Edit'" class="mb-3">
             <div class="card border-info m-0 w-100" ng-repeat="id in idgrp">
                 <div class="card-body">
                     <h5 class="card-title p-0 m-0">{{ id.value }} <small class="text-muted">{{ id.domainModel.name
@@ -24,39 +24,40 @@
                 </div>
             </div>
         </div>
-        <form autocomplete="off" ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)"
-            method="dialog" novalidate="novalidate">
-            <identifier-list-edit owner-form="panel.editForm" model="editObject.identifier"
-                container-class="editObject.classConcept" name="patientIdentifier" />
+
+        <form autocomplete="off" ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)" method="dialog" novalidate="novalidate">
+            <identifier-list-edit container-class="scopedObject.classConcept" 
+                model="editObject.identifier"
+                owner-form="panel.editForm" 
+                name="patientIdentifier"  />
         </form>
 
-        <div class="modal" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="barcodeModalTitle"
-            aria-hidden="true" data-backdrop="static">
+        <div class="modal" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="barcodeModalTitle" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="barcodeModalTitle">
                             <i class="fa fa-fw fa-barcode"></i> {{ 'ui.barcode' | i18n }}
                         </h5>
+
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="fa fa-times"></i>
                             </span>
                         </button>
                     </div>
-                    <div class="modal-body" ng-if="bcDomain">
-                        <img src="/hdsi/Patient/{{scopedObject.id}}/_code?_format=code128&amp;_domain={{bcDomain}}"
-                            style="width:100%" />
 
+                    <div class="modal-body" ng-if="bcDomain">
+                        <img ng-src="/hdsi/Patient/{{scopedObject.id}}/_code?_format=code128&amp;_domain={{bcDomain}}" style="width:100%"/>
                     </div>
+
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                            <i class="fa fa-times"></i> {{ 'ui.action.close' | i18n }}</button>
+                            <i class="fa fa-times"></i> {{ 'ui.action.close' | i18n }}
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>

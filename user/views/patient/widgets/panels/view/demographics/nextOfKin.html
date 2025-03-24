@@ -4,66 +4,121 @@
         type="Panel" context="org.santedb.emr.patient.view.demographics">
         <sdb:icon>fas fa-people-arrows</sdb:icon>
         <sdb:description lang="en">Patient Next of Kin</sdb:description>
-        <sdb:view type="Edit">
-            <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.1</sdb:demand>
-        </sdb:view>
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.3</sdb:demand>
+        <sdb:views>
+            <sdb:view type="Edit">
+                <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.1</sdb:demand>
+            </sdb:view>
+        </sdb:views>
     </sdb:widget>
+
     <div ng-controller="EmrPatientNextOfKinController">
+        <div ng-if="panel.view == 'Edit' &amp;&amp; requiresRelationship" class="text-danger mb-2">
+            <i class="fa fa-exclamation-triangle text-danger"></i>
+            {{ 'ui.model.entity.relationship.requiresRelationship' | i18n }}
+        </div>
+
         <ul class="nav nav-tabs" role="tablist" id="demographicEditTabs">
-            <li class="nav-item"
-                ng-repeat="rel in relationships track by $index" role="presentation">
-                <a class="nav-link" ng-class="{'active': $index == 0}" data-target="#{{rel.relationshipTypeModel.mnemonic}}{{$index}}relative"
-                    data-toggle="tab">
-                    <span ng-if="rel.relationshipTypeModel">
-                        <i class="fa fa-user-friends"></i> 
-                        <span ng-if="rel._inverse"> {{ 'ui.model.entityRelationship.inverse.prefix' | i18n }}</span>
-                        {{ rel.relationshipTypeModel | concept }}
-                        <span ng-if="rel._inverse"> {{ 'ui.model.entityRelationship.inverse.suffix' | i18n }}</span>
-                        <i class="fa fa-exclamation-triangle text-danger" ng-if="tabHasError('nok' + rel.id)"></i>
-                    </span>
+            <li class="nav-item cursor-pointer" ng-if="panel.view != 'Edit'" ng-repeat="rel in relationships track by $index" role="presentation">
+                <a data-target="#{{rel.relationshipTypeModel.mnemonic}}{{$index}}relative"
+                    ng-class="{'active': $index == 0}" 
+                    data-toggle="tab"
+                    class="nav-link" >
+                        <span ng-if="rel.relationshipTypeModel">
+                            <i class="fa fa-user-friends"></i> 
+                            <span ng-if="rel._inverse">
+                                {{ 'ui.model.entityRelationship.inverse.prefix' | i18n }}
+                            </span>
+
+                            {{ rel.relationshipTypeModel | concept }}
+
+                            <span ng-if="rel._inverse"> 
+                                {{ 'ui.model.entityRelationship.inverse.suffix' | i18n }}
+                            </span>
+                            
+                            <i class="fa fa-exclamation-triangle text-danger" ng-if="tabHasError('nok' + rel.id)"></i>
+                        </span>
                 </a>
             </li>
-            <li class="active nav-item" role="presentation" ng-if="panel.view == 'Edit'">
-                <a class="nav-link" data-target="#otherRelative" data-toggle="tab" ng-init="rel = newRelationship">
-                    <i class="fa fa-asterisk"></i>
-                    <span ng-if="!newRelationship.relationshipTypeModel"> {{ 'ui.action.new' | i18n }}</span>
-                    <span ng-if="newRelationship.relationshipTypeModel"> {{ 'ui.action.new' | i18n }} {{ newRelationship.relationshipTypeModel |  concept }}</span>
-                    <i class="fa fa-exclamation-triangle text-danger" ng-if="tabHasError('nok' + rel.id)"></i>
 
+            <li class="nav-item"  ng-if="panel.view == 'Edit'" ng-repeat="rel in editObject track by $index" role="presentation">
+                <a data-target="#{{ getTabPaneId(rel, $index) }}"
+                    ng-class="{'active': $index == 0, 'text-line-through': rel.operation == 'Delete', 'disabled': rel.operation == 'Delete'}" 
+                    data-toggle="tab"
+                    class="nav-link cursor-pointer" >
+                        <span ng-if="rel.$id">
+                            <i class="fa fa-exclamation-triangle text-danger mr-1" ng-if="tabHasError('nok' + rel.id)"></i>
+
+                            <i class="fa fa-user-friends"></i> 
+
+                            <span ng-if="rel._inverse">
+                                {{ 'ui.model.entityRelationship.inverse.prefix' | i18n }}
+                            </span>
+
+                            {{ rel.relationshipTypeModel | concept }}
+                            
+                            <span ng-if="rel._inverse"> 
+                                {{ 'ui.model.entityRelationship.inverse.suffix' | i18n }}
+                            </span>
+
+                            <i ng-if="rel.operation == 'Delete'" class="fa fa-rotate-left ml-1 cursor-pointer" ng-click="revertRemoveRelative(rel)"></i>
+                        </span>
+                        
+                        <span ng-if="!rel.$id">
+                            <i class="fa fa-exclamation-triangle text-danger" ng-if="tabHasError('nok' + rel.id)"></i>
+                            
+                            {{ 'ui.model.entityRelationship.new' | i18n }}
+                        </span>
+
+                        <i class="fa fa-times ml-1" ng-click="removeRelative(rel)"></i>
+                </a>
+            </li>
+
+            <li class="active nav-item" role="presentation" ng-if="panel.view == 'Edit'">
+                <a class="nav-link border-bottom-0 h-100" ng-click="addNewRelative()">
+                    <i class="fa fa-plus mt-1"></i>
                 </a>
             </li>
         </ul>
-        <div class="tab-content" ng-if="panel.view != 'Edit'">
-            <div role="tabpanel" class="tab-pane fade" id="{{rel.relationshipTypeModel.mnemonic}}{{$index}}relative"
+
+        <div class="tab-content next-of-kin-tab" ng-if="panel.view != 'Edit'">
+            <div role="tabpanel" class="tab-pane fade" id="{{ getTabPaneId(rel, $index) }}"
                 ng-repeat="rel in relationships track by $index" ng-class="{'active show': $index == 0}">
-                <div class="container mt-2">
+                <div class="container py-3">
                     <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinView.html" -->
                 </div>
             </div>
         </div>
-        <form autocomplete="off"  ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)" method="dialog"
-            novalidate="novalidate">
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane fade" id="{{rel.relationshipTypeModel.mnemonic}}{{$index}}relative"
-                ng-repeat="rel in relationships track by $index" ng-class="{'active show': $index == 0}">
-                <div class="container mt-2">
-                    <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinEdit.html" -->
-                </div>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="otherRelative">
-                <div class="container mt-2" ng-init="rel = newRelationship">
-                    <div class="form-group row">
-                        <label
-                            class="col-md-3 col-sm-12 control-label">{{ 'ui.model.entity.relationship.relationshipType' | i18n }}</label>
-                        <div class="col-md-9 col-sm-12">
-                            <concept-select concept-set="'FamilyMember'" 
-                                exclude-concepts="excludeRelationshipTypes"
-                                ng-model="rel.relationshipTypeModel" class="form-control" ng-change="rel._active = true" />
-                        </div>
+
+        <form autocomplete="off" ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)" method="dialog" novalidate="novalidate">
+            <div class="tab-content next-of-kin-tab">
+                <div role="tabpanel" class="tab-pane fade" id="{{ getTabPaneId(rel, $index) }}" ng-repeat="rel in editObject track by $index" ng-class="{'active show': $index == 0}">
+                    <div ng-if="rel.operation == 'Delete'" class="disabled-tab-pane-overlay h-100 w-100 position-absolute">
                     </div>
-                    <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinEdit.html" -->
+
+                    <div class="container py-3">
+                        <div ng-if="!rel.$id" class="form-group row">
+                            <label class="col-md-3 col-sm-12 control-label required">{{ 'ui.model.entity.relationship.relationshipType' | i18n }}</label>
+                        
+                            <div class="col-md-8 col-sm-12">
+                                <concept-select concept-set="dateToAge(scopedObject.dateOfBirth) &lt; 18 ? 'ChildFamilyMember' : 'FamilyMember'"
+                                    exclude-concepts="excludeRelationshipTypes"
+                                    name="nok{{ rel.id }}relationshipType"
+                                    ng-model="rel.relationshipType" 
+                                    ng-change="rel._active = true" 
+                                    class="form-control" 
+                                    required="required" />
+                                
+                                <div class="text-danger" ng-if="panel.editForm['nok' + rel.id + 'relationshipType'].$invalid">
+                                    <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- #include virtual="~/views/patient/widgets/partials/nextOfKinEdit.html" -->
+                    </div>
                 </div>
-            </div>
+
             </div>
         </form>
     </div>

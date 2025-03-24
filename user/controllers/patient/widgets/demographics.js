@@ -1,7 +1,5 @@
 /// <reference path="../../../.ref/js/santedb.js"/>
 angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope', '$rootScope', '$timeout', function ($scope, $rootScope, $timeout) {
-
-
     $scope.showBarcode = function(barcodeDomain) {
         $scope.bcDomain = barcodeDomain;
         $("#barcodeModal").modal('show');
@@ -35,14 +33,17 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
 
     // Add identifier
     $scope.addIdentifier = function (id) {
-        if (!$scope.panel.editForm.$valid) return;
-        else {
+        if (!$scope.panel.editForm.$valid) {
+            return;
+        } else {
             var authority = id.domainModel.domainName;
             var existing = $scope.editObject.identifier[authority];
+
             if (!existing) // no identifiers in this domain
                 $scope.editObject.identifier[authority] = existing = [];
             else if (!Array.isArray(existing)) // Has only one => turn into array
                 $scope.editObject.identifier[authority] = existing = [existing];
+
             id.id = SanteDB.application.newGuid();
             existing.push(angular.copy(id));
             delete (id.domainModel);
@@ -53,7 +54,6 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
 
     // Remove identifier
     $scope.removeIdentifier = function (authority, id) {
-
         if (confirm(SanteDB.locale.getString("ui.model.entity.identifier.authority.remove.confirm"))) {
             var idList = $scope.editObject.identifier[authority];
             if (!Array.isArray(idList))
@@ -70,12 +70,44 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
         }
     }
 
+    $scope.$watch("panel.view", async function(n, o) {   
+        if (n == 'Edit') {
+            if ($scope.editObject) {
+                $scope.editObject.multipleBirthIndicator = !!$scope.editObject.multipleBirthOrder;
+                
+                if ($scope.editObject.extension) {
+                    $scope.isBirthValidated = !!$scope.editObject.extension['http://santedb.org/extensions/core/birthValidated']?.[0];
+                }
+
+                $scope.editObject.age = dateToAge($scope.editObject.dateOfBirth)
+            }
+        }
+    });
+
     // Watch will look for scoped object to load and will set necessary shortcut objects for the view 
     $scope.$watch("scopedObject", async function (n, o) {
         if (n && n != null) {
-
             delete ($scope.editObject); // Delete the current edit object
             $scope.editObject = angular.copy(n);
+            
+            if ($scope.editObject.address['HomeAddress'][0].component['_AddressPlaceRef']) {
+                delete $scope.editObject.address['HomeAddress'][0].component['_AddressPlaceRef']
+            }
+            
+            if (!$scope.editObject.address?.['TemporaryAddress']) {
+                $scope.editObject.address['TemporaryAddress'] = [
+                    {
+                        "component": {
+                            "$other": []
+                        },
+                        "use": AddressUseKeys.TemporaryAddress,
+                        "useModel": {
+                            "id": AddressUseKeys.TemporaryAddress,
+                            "mnemonic": "TemporaryAddress"
+                        }
+                    }
+                ];
+            }
 
             // Correct identifiers to all be arrays
             if (n.identifier)
@@ -87,45 +119,6 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
                         id._codeUrl = `/hdsi/Patient/${n.id}/_code?_format=santedb-vrp`;
                     })
                 });
-                
-            // Look up domicile
-            if ($rootScope.system.config.application.setting['input.address'] == "select" && $scope.editObject.address) {
-                var promises = Object.keys($scope.editObject.address).map(async function (prop) {
-                    var addr = $scope.editObject.address[prop]?.[0];                    
-
-                    // query by census tract if possible
-                    var query = {
-                        _count: 2
-                    };
-                    if (addr.component && addr.component.CensusTract)
-                        query["identifier.value"] = addr.component.CensusTract;
-                    else {
-                        // Query by full address
-                        Object.keys(addr.component).forEach(function (prop) {
-                            if (addr.component[prop] != "" && addr.component[prop] != "?")
-                                query[`address.component[${prop}].value`] = addr.component[prop];
-                        });
-                    }
-
-                    // Now query 
-                    var results = await SanteDB.resources.place.findAsync(query);
-                    if (results.total == 1 || results.resource.length == 1) {
-                        addr.targetId = results.resource[0].id;
-                    }
-                });
-                await Promise.all(promises);
-            }
-            else if (!$scope.editObject.address) {
-                $scope.editObject.address = {
-                    "HomeAddress": {
-                        "useModel": {
-                            "id": AddressUseKeys.HomeAddress,
-                            "mnemonic": "HomeAddress"
-                        }
-                    }
-                }
-            }
-
         }
     });
 

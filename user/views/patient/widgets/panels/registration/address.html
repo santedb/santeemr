@@ -4,7 +4,7 @@
         <sdb:icon>fas fa-home</sdb:icon>
         <sdb:description lang="en">Patient Address Entry</sdb:description>
     </sdb:widget>
-    <address-edit is-required="true" model="scopedObject.address" no-type="true" owner-form="editForm" no-add="true" data-quality-id="address"
+    <address-edit keep-panels-open="true" is-required="true" model="scopedObject.address" no-type="true" owner-form="editForm" no-add="true" data-quality-id="address"
         name="patientAddress" simple-entry="false" catchment-area-for="$root.system.config.facility" />
     <div class="text-danger" ng-if="panel.editForm['patientAddress'].$error['dq']" 
         ng-class="{ 'text-primary': panel.editForm.dataQualityIssues['patientAddress'].priority == 'Informational', 'text-warning': panel.editForm.dataQualityIssues['patientAddress'].priority == 'Warning' }">
