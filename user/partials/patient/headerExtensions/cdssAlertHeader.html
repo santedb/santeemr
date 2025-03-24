@@ -1,5 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml" style="transition: 0.5s ease-in"
-    class="m-0 p-1 alert d-flex flex-column" ng-if="cdssAlerts"
+    class="m-0 p-1 alert d-flex flex-column" ng-if="cdssAlerts.priority"
     ng-class="{ 'alert-info': cdssAlerts.priority == 'Information', 'alert-warning' : cdssAlerts.priority == 'Warning', 'alert-danger' : cdssAlerts.priority == 'Error' }"
     >
     <div class="d-flex justify-items-between">
