@@ -21,7 +21,7 @@
  * Date: 2019-9-27
  */
 
-function bindSearchScopeCommonFunctions($scope, $state) {
+function bindSearchScopeCommonFunctions($scope, $state, $timeout) {
 
     // Item supplement which determines if the patientin question has an encounter active
     $scope.patientHasOpenEncounter = SanteEMR.patientHasOpenEncounter;
@@ -44,6 +44,30 @@ function bindSearchScopeCommonFunctions($scope, $state) {
         }
         catch(e) {
             SanteDB.display.getRootScope($scope).errorHandler(e);
+        }
+    }
+
+    $scope.doDischarge = async function (r, idx) {        
+        try {
+            SanteDB.display.buttonWait(`#searchList_action_discharge_${idx}`, true);
+
+            var encounter = (await SanteDB.resources.patientEncounter.findAsync({
+                "participation[RecordTarget].player": r,
+                "statusConcept": StatusKeys.Active,
+                "moodConcept": ActMoodKeys.Eventoccurrence,
+                _count: 1,
+                _includeTotal: true
+            }, "full")).resource[0];            
+
+            await SanteEMR.showDischarge(encounter, $timeout, () => {
+                $("#searchList")[0].EntityList.refresh();
+            });
+        }
+        catch (e) {
+            SanteDB.display.getRootScope($scope).errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait(`#searchList_action_discharge_${idx}`, false);
         }
     }
 
@@ -110,7 +134,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     initializeView();
 
     // Bind any common scope searching functions to the scope
-    bindSearchScopeCommonFunctions($scope, $state);
+    bindSearchScopeCommonFunctions($scope, $state, $timeout);
 
     // Initial view
     $scope.search = {
@@ -173,7 +197,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     .controller('EmrAdvancedPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
 
         // Bind any common scope searching functions to the scope
-        bindSearchScopeCommonFunctions($scope, $state);
+        bindSearchScopeCommonFunctions($scope, $state, $timeout);
 
         $scope.$watch("searchForm", function (n, o) {
             if (n && !o || n && n.$pristine && !n.$invalid) {
