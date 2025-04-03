@@ -29,7 +29,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
         try {
             templateId = templateId || "org.santedb.emr.patient";
-            var _entityTemplate = await SanteDB.application.getTemplateContentAsync(templateId);
+            var _entityTemplate = await SanteDB.application.getTemplateContentAsync(templateId, {
+                facilityId: await SanteDB.authentication.getCurrentFacilityId()
+            });
             $timeout(() => {
                 $scope.entity = angular.copy(_entityTemplate);
                 $scope.entity.$otherData = [];
@@ -65,10 +67,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         if (n && n != o) {
             try {
                 if ($scope.entity.address.HomeAddress[0].component &&
-                    $scope.entity.address.HomeAddress[0].component._AddressPlaceRef &&
-                    $scope.entity.address.HomeAddress[0].component._AddressPlaceRef[0]
+                    $scope.entity.address.HomeAddress[0].component.PlaceRef &&
+                    $scope.entity.address.HomeAddress[0].component.PlaceRef[0]
                 ) {
-                    var dsdl = await SanteDB.resources.place.findAsync({ "classConcept": EntityClassKeys.ServiceDeliveryLocation, "relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source": $scope.entity.address.HomeAddress[0].component._AddressPlaceRef, _count: 1, _includeTotal: true });
+                    var dsdl = await SanteDB.resources.place.findAsync({ "classConcept": EntityClassKeys.ServiceDeliveryLocation, "relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source": $scope.entity.address.HomeAddress[0].component.PlaceRef, _count: 1, _includeTotal: true });
                     if (dsdl.totalResults == 1) // one result!
                     {
                         $timeout(() => {

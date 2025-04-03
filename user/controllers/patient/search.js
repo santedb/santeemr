@@ -124,7 +124,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     } else {
         $scope.goSearch = function (searchForm, upstream) {
             if (searchForm.$invalid) return;
-            $state.go("santedb-emr.patient.search", { q: $scope.search.value, o: upstream === true });
+            $state.go("santedb-emr.patient.search", { q: $scope.search.value });
         }
     }
 

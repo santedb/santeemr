@@ -90,8 +90,8 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
             delete ($scope.editObject); // Delete the current edit object
             $scope.editObject = angular.copy(n);
             
-            if ($scope.editObject.address['HomeAddress'][0].component['_AddressPlaceRef']) {
-                delete $scope.editObject.address['HomeAddress'][0].component['_AddressPlaceRef']
+            if ($scope.editObject.address['HomeAddress'][0].component['PlaceRef']) {
+                delete $scope.editObject.address['HomeAddress'][0].component['PlaceRef']
             }
             
             if (!$scope.editObject.address?.['TemporaryAddress']) {
