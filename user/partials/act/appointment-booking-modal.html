@@ -1,0 +1,52 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+  <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
+  <div ng-controller="EmrDischargeEncounterController">
+      <div class="modal" id="appointmentBookingModal" role="dialog" aria-labelledby="appointment-booking-modal-title" aria-hidden="true"
+          data-backdrop="static">
+          <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <h5 class="modal-title" id="appointment-booking-modal-title">
+                          <i class="fa fa-fw fa-calendar"></i>
+                          {{ 'ui.emr.encounter.discharge.bookAppointment.title' | i18n }}
+                      </h5>
+
+                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">
+                              <i class="fa fa-times"></i>
+                          </span>
+                      </button>
+                  </div>
+
+                  <div class="modal-body">
+                      <div ng-if="!encounter">
+                          <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+                      </div>
+
+                      <div ng-if="encounter" class="d-flex flex-column">
+                          <h5 class="my-0">
+                              <i class="fas fa-fw" ng-class="resolveTemplateIcon(encounter.templateModel.mnemonic)"></i> 
+                              {{ encounter.templateModel.mnemonic | i18n }} <small>{{ encounter.startTime | extDate: 'D' }} - {{ encounter.stopTime | extDate: 'D' }}</small>
+                          </h5>
+
+                          <ul class="ml-2">
+                              <li ng-repeat="comp in encounter.relationship.HasComponent track by $index" ng-init="act = comp.targetModel">
+                                  <i class="fas fa-fw"
+                                      ng-class="resolveTemplateIcon(comp.targetModel.templateModel.mnemonic)"></i>
+                                  <ng-include class="d-inline"
+                                      src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)" />
+                              </li>
+                          </ul>
+                      </div>
+                  </div>
+
+                  <div class="modal-footer">
+                      <button class="btn btn-secondary" type="button" data-dismiss="modal">
+                          <i class="fa fa-check"></i> {{ 'ui.emr.ok' | i18n}}
+                      </button>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>

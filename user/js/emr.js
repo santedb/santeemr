@@ -187,8 +187,8 @@ function SanteEMRWrapper() {
      * @param {Function} afterAction After the modal closes, the action to execute
      */
     this.showDischarge = async function (encounter, $timeout, afterAction) {
-
         var dischargeModal = angular.element("#dischargeModal");
+
         if (dischargeModal == null) {
             console.warn("Have not included the discharge-modal.html file");
             return;
@@ -198,21 +198,26 @@ function SanteEMRWrapper() {
             var analyzeResult = await SanteEMR.analyzeVisit(encounter);
             var scope = dischargeModal.scope();
             var enc = angular.copy(encounter);
-            enc._tmpId = SanteDB.application.newGuid();
+            enc._tmpId = SanteDB.application.newGuid();            
             
             if(afterAction) {
                 $("#dischargeModal").on("hidden.bs.modal", function(e) {
-                    if(scope.encounter._persisted) {
+                    const isAfterActionDeferred = !!$(this).data('deferAction');       
+                    $(this).removeData('deferAction');             
+
+                    if(!isAfterActionDeferred && scope.encounter._persisted) {
                         afterAction();
                     }
-                    $("#dischargeModal").off("hidden.bs.modal");
 
+                    $("#dischargeModal").off("hidden.bs.modal");
                 });
             }
+
             $timeout(() => {
                 scope.encounter = enc;
                 scope.issues = analyzeResult.issue;
                 $("#dischargeModal").modal('show');
+                $("#dischargeModal").data('after-action', afterAction);
             });
 
         }
@@ -235,6 +240,35 @@ function SanteEMRWrapper() {
 
         requeueModal.scope().encounter = encounter;
         $("#returnModal").modal('show');
+    }
+
+    /** 
+     * @method
+     * @memberof SanteEMRWrapper
+     * @param {string} encounter The encounter object to show details for
+     */
+    this.showAppointmentBooking = function (encounter, $timeout, afterAction) {
+        var appointmentBookingModal = angular.element("#appointmentBookingModal");
+        var scope = appointmentBookingModal.scope();
+
+        if (appointmentBookingModal == null) {
+            console.warn("Have not included the return-waiting-modal.html file");
+            return;
+        }
+        
+        if(afterAction) {
+            $("#appointmentBookingModal").on("hidden.bs.modal", function(e) {
+                afterAction();
+               
+                $("#appointmentBookingModal").off("hidden.bs.modal");
+            });
+        }
+
+        $timeout(() => {
+            scope.encounter = encounter;
+            $("#appointmentBookingModal").modal('show');
+            $("#appointmentBookingModal").data('after-action', afterAction);
+        });
     }
 
     /**
@@ -262,7 +296,7 @@ function SanteEMRWrapper() {
      * @param {string} templateId The template mnemonic to resolve the icon for
      * @returns The resolved icon 
      */
-    this.resolveTemplateIcon = function (templateId) {
+    this.resolveTemplateIcon = function (templateId) {        
         var template = SanteDB.application.getTemplateMetadata(templateId);
         if (template) {
             return template.icon;
@@ -433,7 +467,7 @@ function SanteEMRWrapper() {
                 _includeTotal: false,
                 _count: 1
             }, "fastview");
-
+            
             if (cps.resource) {
                 return cps.resource[0];
             }

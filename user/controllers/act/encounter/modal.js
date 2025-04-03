@@ -219,7 +219,8 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
     });
 
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
-
+    $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
+    
     $scope.saveDischarge = async function (formData) {
         if (formData.$invalid) {
             return;
@@ -237,8 +238,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             if ($scope.encounter.relationship.Fulfills &&
                 $scope.encounter.relationship.Fulfills[0].targetModel.moodConcept == ActMoodKeys.Propose
             ) {
-
-                var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
+                var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);                
 
                 if (careplan) {
                     // Regenerate the careplan
@@ -248,21 +248,22 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
                     var today = new Date().trunc();
 
-                    var nextProposedAction = careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0];
-                    if (nextProposedAction && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
-                        SanteEMR.showAppointmentBooking(nextProposedAction);
+                    var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id}, "full");
+                    
+                    if (nextProposedAction.resource[0] && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
+                        const afterAction = $("#dischargeModal").data('after-action'); 
+                        $("#dischargeModal").data('deferAction', true);
+                        
+                        SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);  
                     }
                 }
+            } 
 
-            }
-            // TODO: Show appointment booking modal if there is a next step
-            $timeout(() => {
+            $timeout(() => {                
                 $("#dischargeModal").modal('hide');
-                $("#waitingRoomList")[0].EntityList.refresh();
             });
 
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.discharge.success"));
-
         }
         catch (e) {
             $rootScope.errorHandler(e);
