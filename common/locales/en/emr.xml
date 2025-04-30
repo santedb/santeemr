@@ -448,4 +448,7 @@
 
         <!-- Dashboard -->
         <string name="ui.emr.dashboard.title">My Dashboard</string>
+
+        <!-- Template -->
+         <string name="ui.emr.encounter.act.substanceAdministration.iz">Immunization</string>
 </resources>

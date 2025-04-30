@@ -368,9 +368,10 @@ function SanteEMRWrapper() {
      * @param {ActRelationship} fulfills An array of {@link:ActRelationship} objects which represent the encounter in the care plan that this visit fulfills
      * @param {ActRelationship} fulfillmentComponents An array of {@link:ActRelationship} objects which reprensets the proposals from the stored care plan which this visit is fulfilling
      * @param {ActParticipation} informantPtcpt The informant / guardian on the act
+     * @param {PatientEncounter} templateData Data which should be copied / pushed to the template
      * @returns {PatientEncounter} The constructed and saved {@link:PatientEncounter}
      */
-    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt) {
+    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt, templateData) {
         try {
 
             var submission = new Bundle({ resource: [] });
@@ -383,6 +384,14 @@ function SanteEMRWrapper() {
             });
 
             var encounter = new PatientEncounter(template);
+
+            // Copy fields 
+            if(templateData) {
+                Object.keys(templateData).forEach(field => {
+                    var tplValue = templateData[field];
+                    encounter[field] = tplValue;
+                });
+            }
             submission.correlationId = encounter.id = encounter.id || SanteDB.application.newGuid();
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];

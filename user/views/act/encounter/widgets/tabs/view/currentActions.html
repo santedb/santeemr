@@ -31,10 +31,9 @@
             <act-edit owner-form="encounterForm" model="scopedObject" no-add="false" no-header="true" readonly="{{ scopedObject.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' }}"
                 no-override="false" actions="[
                 { name: 'cancel', className: 'btn-danger', icon: 'fas fa-fw fa-times-circle', action: 'doCancel', when: '!r.previousVersion' },
-                { name: 'save', type: 'submit', className: 'btn-primary', icon: 'fas fa-fw fa-floppy-disk' },
-                { name: 'wait', action: 'doQueue', className: 'btn-secondary', icon: 'fas fa-fw fa-person-walking-arrow-loop-left', _children: scopedObject._nextStates
-                },
-                { name: 'discharge', action: 'doDischarge', className: 'btn-success', icon: 'fas fa-fw fa-person-walking-arrow-right' }
+                { name: 'save', type: 'submit', className: 'btn-primary', icon: 'fas fa-fw fa-floppy-disk', validOnly: true },
+                { name: 'wait', action: 'doQueue', className: 'btn-secondary', icon: 'fas fa-fw fa-person-walking-arrow-loop-left', _children: scopedObject._nextStates },
+                { name: 'discharge', action: 'doDischarge', className: 'btn-success', icon: 'fas fa-fw fa-person-walking-arrow-right', validOnly: true }
                 ]" no-remove="false" />
         </form>
     </div>

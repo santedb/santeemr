@@ -15,6 +15,91 @@
  - License for the specific language governing permissions and limitations under
  - the License.
  -->
-<div xmlns="http://www.w3.org/1999/xhtml">
-    PLACEHOLDER FOR SUBSTANCE ADMINISTRATION
+<div xmlns="http://www.w3.org/1999/xhtml" class="d-flex flex-column justify-content-start">
+    <label class="font-weight-bold mb-1">
+        <i class="fas fa-fw fa-syringe"></i>
+        {{ act.typeConceptModel | concept }}
+
+        <!-- Has not been user added -->
+        <span ng-if="!act.tag.$userAdded">: {{ act.participation.Product[0].playerModel.name.Assigned | name }} {{
+            'ui.model.substanceAdministration.doseSequence' | i18n }}
+            <!-- If not complete - then the use rcan override the dose sequence -->
+            <a ng-click="act._overrideDose = true"
+                ng-if="!act._overrideDose &amp;&amp; act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'">{{
+                act.doseSequence | number: 0 }}</a>
+            <span ng-if="act.targetModel.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">{{ act.doseSequence |
+                number: 0 }}</span>
+        </span>
+
+    </label>
+    <div ng-if="act.tag.isBackEntry" class="container-fluid">
+        <div class="row">
+            <label class="control-label col-sm-12 col-md-3">{{ 'ui.model.act.actTime.date' | i18n }} <hint-popover
+                    hint-title="ui.model.act.actTime.date" /></label>
+            <div class="col-sm-12 col-md-9">
+                <div class="input-group">
+                    <input type="date" class="form-control" 
+                    max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd'}}"
+                    min="{{ act.relationship.Fulfills[0].targetModel.startTime || act._getEncounter().participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
+                    ng-model="act.actTime" required="required" name="{{ act.id }}time" />
+                    <div class="input-group-append">
+                        <span class="input-group-text">
+                            <strong class="mr-1">{{ 'ui.model.act.relationship.Fulfills.target.actTime' | i18n }} </strong>
+                            {{ act.relationship.Fulfills[0].targetModel.startTime | humanDate: 'D' }}
+                        </span>
+                    </div>
+                </div>
+                <div ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'time'].$error.required"
+                    class="text-danger">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div ng-if="act.tag.$userAdded" class="container-fluid">
+        <div class="row">
+            <div class="col">
+                TODO: <ul>
+                    <li>Input for Antigen</li>
+                    <li>Input for Lot #</li>
+                    <li>Input for Dose Sequence #</li>
+                    <li>Input for Related / Consumed Items</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div ng-if="!act.tag.isBackEntry &amp;&amp; !act.tag.$userAdded" class="container-fluid">
+        <div class="row">
+            <label class="control-label col-sm-12 col-md-4 col-lg-2 required">{{ 'ui.model.substanceAdministration.Consumable.lotNumber' | i18n }}</label>
+            <div class="col-sm-12 col-md-8 col-lg-4">
+                <entity-select required="required" class="form-control" name="{{ act.id }}lot" 
+                    ng-model="act.participation.Consumable[0].target" auto-select-singles="true"
+                    entity-type="'ManufacturedMaterial'"
+                    filter="{
+                        'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
+                        'statusConcept' : 'C8064CBD-FA06-4530-B430-1A52F1530C27',
+                        'relationship[HeldEntity].source.participation[Tracker].act.relationship[HasComponent].target' : act._getEncounter().id,
+                        'relationship[Instance].source.relationship[HasGeneralization].target' : act.participation.Product[0].player
+                    }" 
+                    display="item.lotNumber" >
+                </entity-select>
+            </div>
+            <label class="control-label col-sm-12 col-md-4 col-lg-2 required" ng-repeat-start="used in act.participation.Product[0].playerModel.relationship.UsedEntity track by $index">
+                {{ used.targetModel.name | name: 'Assigned' }}
+            </label>
+            <div ng-repeat-end="" class="col-sm-12 col-md-8 col-lg-4">
+                <entity-select required="required" class="form-control" name="{{ act.id }}lot" 
+                    ng-model="act.participation.Consumable[$index + 1].target" auto-select-singles="true"
+                    entity-type="'ManufacturedMaterial'"
+                    filter="{
+                        'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
+                        'statusConcept' : 'C8064CBD-FA06-4530-B430-1A52F1530C27',
+                        'relationship[HeldEntity].source.participation[Tracker].act.relationship[HasComponent].target' : act._getEncounter().id,
+                        'relationship[Instance].source.relationship[HasGeneralization].target' : used.target
+                    }" 
+                    display="item.lotNumber" >
+                </entity-select>
+            </div>
+        </div>
+    </div>
 </div>
