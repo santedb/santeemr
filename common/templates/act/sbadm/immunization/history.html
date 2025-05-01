@@ -15,6 +15,34 @@
  - License for the specific language governing permissions and limitations under
  - the License.
  -->
-<div xmlns="http://www.w3.org/1999/xhtml">
-    PLACEHOLDER FOR IMMUNIZATION BACKENTRY {{ acts.length }} ACTS
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <div ng-controller="HistoricalImmunizationEntryController">
+        <table class="table table-striped" style="border: 1px solid #dee2e6;">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="text-center" ng-repeat="i in immunizationHistoryTable.cols track by $index">
+                        {{i}}
+                    </th>
+                </tr>
+            </thead>
+    
+            <tbody>
+                <tr ng-repeat="(ag, dose) in immunizationHistoryTable.data track by $index" ng-init="rowIndex = $index">
+                    <th class="align-middle">{{ag}}</th>
+    
+                    <td class="text-center align-middle" ng-repeat="adm in dose track by $index" ng-init="colIndex = $index; editForm = panel">
+                        <div class="d-inline-flex" ng-if="adm._urgency == 'pastdue' || adm._urgency == 'now'">
+                            <act-edit owner-form="panel.editForm" 
+                                no-override="true" 
+                                no-header="true" 
+                                no-remove="true" 
+                                no-add="true" 
+                                model="adm" />
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

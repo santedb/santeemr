@@ -284,7 +284,7 @@
             ng-if="$root.system.config.application.setting['forbid.person.school'] != 'true'">
             <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Student' | i18n
                 }} <hint-popover hint-title="ui.model.person.relationship.Student" /></label>
-            <div class="col-sm-12 col-md-9">
+            <div class="col-sm-12 col-md-8">
                 <entity-search type="'Organization'" ng-model="scopedObject.relationship.Student"
                     ng-required="$root.system.config.application.setting['required.person.school'] == 'true' || scopedObject.age &gt;= 2 &amp;&amp; scopedObject.age &lt;= 17"
                     name="student" multiple="multiple" search-field="'name.component.value'"

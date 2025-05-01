@@ -27,23 +27,39 @@
 
     <div ng-controller="EmrPatientSearchController">
         
-    <form novalidate="novalidate" ng-submit="goSearch(searchForm)" autocomplete="off" name="searchForm">
+    <form class="mt-2" novalidate="novalidate" ng-submit="goSearch(searchForm)" autocomplete="off" name="searchForm">
         <div class="form-group row">
-            <div class="col-10 offset-1">
-                <div class="input-group">
-                    <div class="input-group-prepend d-none d-md-block">
-                        <h5 class="card-title text-muted m-1 py-2"><i class="fas fa-fw fa-search"></i></h5>
+            <div class="col-12">
+                <div class="input-group mb-3" style="min-height: 50px;">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text p-3" id="basic-addon1">
+                            <i class="fas fa-fw fa-search"></i>
+                        </span>
                     </div>
-                    <input required="required" type="text" ng-model="search.value" class="form-control"
-                        placeholder="{{ 'ui.emr.patient.search.placeholder' | i18n }}" autocomplete="__away"
-                        autofocus="true" />
+                
+                    <input placeholder="{{ 'ui.emr.patient.search.placeholder' | i18n }}"
+                        class="form-control h-auto"
+                        ng-model="search.value" 
+                        required="required" 
+                        id="txtSearchInput" 
+                        autocomplete="off" 
+                        autofocus="true" 
+                        type="text" />
+
                     <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" ng-click="scanSearch()">
-                            <i class="fas fa-qrcode"></i> <span class="d-none d-md-inline">{{ 'ui.action.scan' | i18n }}</span>
-                        </button>
-                        <button class="btn btn-primary" id="btnSearch" type="submit" ng-disabled="searchForm.$invalid">
-                            <i class="fas fa-search"></i> <span class="d-none d-md-inline">{{ 'ui.action.search' | i18n }}</span>
-                        </button>
+                        <span class="input-group-text cursor-pointer px-4" ng-click="scanSearch()">
+                            <i class="fas fa-qrcode"></i> 
+                            
+                            <span class="d-none d-md-inline">
+                                {{ 'ui.action.scan' | i18n }}
+                            </span>
+                        </span>
+                        
+                        <span class="input-group-text cursor-pointer px-4 bg-primary" ng-click="goSearch(searchForm)">
+                            <i class="fas fa-search"></i> 
+                            
+                            <span class="d-none d-md-inline">{{ 'ui.action.search' | i18n }}</span>
+                        </span>
                     </div>
                 </div>
             </div>

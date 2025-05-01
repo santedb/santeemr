@@ -160,8 +160,6 @@ fieldset > legend {
 }
 
 div.search-card-relative {
-    border: solid 1px var(--secondary);
-    border-radius: 5px;
     padding: 0.25em
 }
 

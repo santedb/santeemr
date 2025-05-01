@@ -246,41 +246,37 @@
                 </ul>
             </div>
         </nav>
-        <div class="content-wrapper overflow-auto py-1">
+
+        <div class="content-wrapper overflow-auto">
             <div class="container-fluid" >
-                <div class="row">
-                    <div class="col-md-12">
-                        <!-- success -->
-                        <div class="alert alert-success" ng-repeat="succ in $root.success track by $index">
-                            <i class="fa fa-check"></i>
-                            <span ng-bind-html="succ"></span>
-                            <button type="button" class="close" aria-label="Close" ng-click="removeSuccess($index)">
-                                <span aria-hidden="true">
-                                    <i class="fa fa-times"></i>
-                                </span>
-                            </button>
-                        </div>
-                        <!-- alert-->
-                        <div class="alert alert-danger" ng-repeat="err in $root.errors track by $index">
-                            <i class="fa fa-exclamation-triangle"></i>
-                            <span ng-bind-html="err"></span>
-                            <button type="button" class="close" aria-label="Close" ng-click="removeAlert($index)">
-                                <span aria-hidden="true">
-                                    <i class="fa fa-times"></i>
-                                </span>
-                            </button>
-                        </div>
-                        <div ng-if="$root.refValues.facilityName">
-                            <breadcrumbs root-node="{ title: $root.refValues.facilityName, state: 'santedb-emr.dashboard' }" />
-                        </div>
-                    </div>
+                <!-- success -->
+                <div class="alert alert-success" ng-repeat="succ in $root.success track by $index">
+                    <i class="fa fa-check"></i>
+                    <span ng-bind-html="succ"></span>
+                    <button type="button" class="close" aria-label="Close" ng-click="removeSuccess($index)">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="w-100 mx-auto px-0">
-                            <ui-view />
-                        </div>
-                    </div>
+
+                <!-- alert-->
+                <div class="alert alert-danger" ng-repeat="err in $root.errors track by $index">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    <span ng-bind-html="err"></span>
+                    <button type="button" class="close" aria-label="Close" ng-click="removeAlert($index)">
+                        <span aria-hidden="true">
+                            <i class="fa fa-times"></i>
+                        </span>
+                    </button>
+                </div>
+
+                <div ng-if="$root.refValues.facilityName">
+                    <breadcrumbs root-node="{ title: $root.refValues.facilityName, state: 'santedb-emr.dashboard' }" />
+                </div>
+                
+                <div class="w-100 mx-auto px-0">
+                    <ui-view />
                 </div>
             </div>
             <!-- /.container-fluid-->

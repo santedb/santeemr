@@ -17,11 +17,12 @@
  -->
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
     <sdb:script static="false">~/controllers/act/encounter/dashboard.js</sdb:script>
-    <sdb:widget name="org.santedb.emr.patient.dashboard.recentPatients" type="Panel"
+    <sdb:widget name="org.santedb.emr.patient.dashboard.recentPatients" type="Panel" headerClass="alert-info"
         context="org.santedb.emr.patient.dashboard" order="100" size="Large">
         <sdb:icon>fas fa-bookmark</sdb:icon>
         <sdb:description lang="en">Recent Patients</sdb:description>
     </sdb:widget>
+    
     <div ng-controller="EmrPatientDashboardController">
         <entity-list 
             id="recentPatientList" 

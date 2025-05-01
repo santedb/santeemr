@@ -26,7 +26,10 @@
         </sdb:view>
     </sdb:state>
     
-    <h1>{{ 'ui.emr.dashboard.title' | i18n }}</h1>
+    <h1 class="mb-3">
+        {{ 'ui.emr.dashboard.title' | i18n }}
+    </h1>
+    
     <widget-panels context-name="'org.santedb.emr.dashboard'" can-customize="true" scoped-object="dashboardScope"/>
 
     <!-- #include virtual="~/partials/act/appointment-booking-modal.html" -->

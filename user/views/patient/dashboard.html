@@ -25,9 +25,13 @@
         </sdb:view>
         <sdb:title lang="en">Dashboard</sdb:title>
     </sdb:state>
+
     <div class="row">
-        <h1>{{ 'org.santedb.emr.patient.dashboard.title' | i18n }}</h1>
+        <div class="col-12 mb-1">
+            <h1>{{ 'org.santedb.emr.patient.dashboard.title' | i18n }}</h1>
+        </div>
     </div>
+
     <widget-panels context-name="'org.santedb.emr.patient.dashboard'"></widget-panels>
 
 </div>

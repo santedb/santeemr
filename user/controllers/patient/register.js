@@ -19,7 +19,7 @@
  */
 
 // Get unique identifiers on load 
-angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", "$rootScope", "$state", "$transitions", "$interval", "$timeout", function ($scope, $rootScope, $state, $transitions, $interval, $timeout) {
+angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", "$rootScope", "$state", "$transitions", "$interval", "$timeout", "$window", function ($scope, $rootScope, $state, $transitions, $interval, $timeout, $window) {
 
 
     const IGNORE_RELATIONSHIP = [
@@ -163,6 +163,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             }
         });
 
+    }
+
+    $scope.cancelEdit = () => {
+        $window.history.back();        
     }
 
     // Register the patient

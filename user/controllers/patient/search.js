@@ -152,14 +152,15 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
     // Perform the search and populate the results
     function performSearch(search, upstream) {
+        console.log('???????????????search');
+        console.log(search);
+        
         $scope.filter = {
             _any: search.value,
             _upstream: upstream,
-            _viewModel: 'fastview',
             _orderBy: 'modifiedOn:desc'
         };
     }
-
 
     $scope.searchLocal = function (searchForm) {
         if (searchForm.$invalid) return;
@@ -168,6 +169,10 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
     $scope.searchOnline = function () {
         performSearch($scope.search, true);
+    }
+
+    $scope.navigateToSRef = (sRef) => {
+        $state.go(sRef); 
     }
 
     $scope.scanSearch = async function () {
@@ -293,11 +298,11 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 _viewModel: 'fastview',
                 _orderBy: 'modifiedOn:desc',
                 _upstream: upstream
-            };
-
+            };            
 
             // Prepare the search parameters
             var searchObject = angular.copy($scope.search);
+
             Object.keys(searchObject)
                 .filter(f => !f.startsWith('_'))
                 .forEach(f => {
@@ -364,15 +369,15 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             if ($scope.searchForm.$invalid && !$scope.validateParameterCount()) {
                 return;
             }
+            
             performSearch($scope.search, true);
         }
 
-        $scope.searchLocal = function (searchForm) {
+        $scope.searchLocal = function (searchForm) {            
             if (searchForm.$invalid && !$scope.validateParameterCount()) {
                 return;
             }
 
             performSearch($scope.search);
         }
-
     }]);

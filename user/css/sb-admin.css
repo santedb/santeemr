@@ -487,6 +487,10 @@ body.sidenav-toggled #mainNav.static-top #sidenavToggler i {
   }
 }
 
+.card.widget-card:first-child {
+  background: #f8f9fa;
+}
+
 .card-body-icon {
   position: absolute;
   z-index: 0;
@@ -878,13 +882,6 @@ table.dataTable thead .sorting_desc_disabled {
   z-index: 100;
 }
 
-.base-demographics-tab .tab-pane,
-.next-of-kin-tab .tab-pane {
-  border-width: 0 1px 1px 1px;
-  border-color: #dee2e6;
-  border-style: solid;
-}
-
 .cursor-pointer {
   pointer-events: auto;
   cursor: pointer;
@@ -893,4 +890,8 @@ table.dataTable thead .sorting_desc_disabled {
 a.disabled {
   pointer-events: none;
   cursor: default;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
 }

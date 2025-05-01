@@ -48,10 +48,9 @@
     <string name="ui.emr.patient.recent">Recent Patients</string>
     <string name="ui.emr.patient.search">Search Patients</string>
     <string name="ui.emr.patient.search.results">Results</string>
-    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address,
-        Identification, or Telephone</string>
+    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address, Identification, or Telephone</string>
     <string name="ui.emr.patient.search.online">Include patients from the central server (out of my
-        catchment)</string>
+catchment)</string>
     <string name="ui.emr.patient.upstream.edit">You cannot edit the details of this patient as they
         exist only on the central server. Download a copy of the resource first</string>
     <string name="ui.emr.patient.ageInYears">years old</string>
@@ -437,7 +436,7 @@
        <string name="ui.emr.patient.carePaths.recompute.success">Care pathway has been successfully re-computed</string>
        
        <!-- Search -->
-        <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Search by Name / Identifier</string>
+        <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Name or Identifier</string>
 
         <!-- Observation Labels -->
          <string name="ui.emr.observation.height.method">Method</string>
