@@ -87,7 +87,7 @@ function SanteEMRWrapper() {
     function _setVisitPerformers(submissionBundle, thisUserId, thisUsersParticipationType) {
 
         // For each entry which is being updated set the performer
-        submissionBundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1).forEach(act => {
+        submissionBundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1 && act.statusConcept == StatusKeys.Completed).forEach(act => {
             act.participation = act.participation || {};
 
             var participationType = "Performer";
@@ -98,6 +98,9 @@ function SanteEMRWrapper() {
                 
                 // We already have a performer
                 if(act.participation.Performer) {
+                    if(act.participation.Performer.find(p=>p.player == thisUserId)) {
+                        return;
+                    }
                     participationType = "SecondaryPerformer";
                 }
                 if (act.tag && act.tag.isBackEntry && act.tag.isBackEntry[0] != "True") {
@@ -427,10 +430,11 @@ function SanteEMRWrapper() {
                     comp.targetModel.actTime = comp.targetModel.startTime = encounter.startTime;
                 }
 
+                
                 comp.targetModel.id = comp.targetModel.id || ar.target;
                 comp.targetModel.moodConcept = encounter.moodConcept;
                 delete comp.targetModel.moodConceptModel;
-                comp.targetModel.statusConcept = encounter.statusConcept;
+                //comp.targetModel.statusConcept = encounter.statusConcept;
                 delete comp.targetModel.statusConceptModel;
 
                 // Fulfillment for the target model

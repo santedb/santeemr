@@ -28,6 +28,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
                 var fetchedData = await Promise.all([
                     SanteDB.resources.patient.getAsync(n, "full"),
+                    // Find the careplan
                     SanteDB.resources.carePlan.findAsync({
                         "participation[RecordTarget].player": n,
                         "relationship[HasComponent].target.actTime": [
@@ -37,6 +38,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         _orderBy: "actTime:desc",
                         _includeTotal: false
                     }, 'full'),
+                    // Find appointments 
                     SanteDB.resources.patientEncounter.findAsync({
                         "participation[RecordTarget].player": n,
                         moodConcept: ActMoodKeys.Appointment,
@@ -83,10 +85,16 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     if (tArray.length > 0) {
                         $scope._proposedActs = tArray[0].resource.map(cp => {
 
-                            var act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => {
-                                return (enc.startTime || enc.actTime).trunc() <= today && (enc.stopTime || enc.actTime).trunc() >= today || // start and stop time are in bound
-                                    enc.actTime.isoWeek() == today.isoWeek() && enc.actTime.getFullYear() == today.getFullYear()
-                            });
+                            var act = null;
+                            if ($scope.encounterId) { // The user clicked a specific encounter
+                                act = cp.relationship.HasComponent.map(o=>o.targetModel).find(enc => enc.id == $scope.encounterId);
+                            }
+                            else {
+                                act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => {
+                                    return (enc.startTime || enc.actTime).trunc() <= today && (enc.stopTime || enc.actTime).trunc() >= today || // start and stop time are in bound
+                                        enc.actTime.isoWeek() == today.isoWeek() && enc.actTime.getFullYear() == today.getFullYear()
+                                });
+                            }
                             act.pathway = cp.pathway;
                             act.pathwayModel = cp.pathwayModel;
                             return act;
@@ -187,7 +195,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
 }]).controller('EmrReturnWaitingRoomController', ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 
-    
+
     $scope.saveEncounter = async function (form) {
         if (form.$invalid) {
             return;
@@ -220,17 +228,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             delete n.statusConceptModel;
             if (n.relationship && n.relationship.HasComponent) {
                 n.relationship.HasComponent.forEach(comp => {
-                    if (comp.targetModel.previousVersion ||
-                        comp.targetModel.participation &&
-                        comp.targetModel.participation.Performer
-                    ) {
-                        comp.targetModel.statusConcept = StatusKeys.Completed;
-                        delete comp.targetModel.statusConceptModel;
-                        comp.targetModel.operation = BatchOperationType.InsertOrUpdate;
-                    }
-                    else {
-                        comp.targetModel.operation = BatchOperationType.Delete;
-                    }
+                    delete comp.targetModel.statusConceptModel;
                 })
             }
         }
@@ -238,7 +236,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
-    
+
     $scope.saveDischarge = async function (formData) {
         if (formData.$invalid) {
             return;
@@ -248,7 +246,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             SanteDB.display.buttonWait("#btnSubmit", true);
 
             $scope.encounter.stopTime = new Date();
-            
+
             // Save the discharge
             var savedEncounter = await SanteEMR.saveVisitAsync($scope.encounter, "Discharger");
 
@@ -256,7 +254,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             if ($scope.encounter.relationship.Fulfills &&
                 $scope.encounter.relationship.Fulfills[0].targetModel.moodConcept == ActMoodKeys.Propose
             ) {
-                var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);                
+                var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
 
                 if (careplan) {
                     // Regenerate the careplan
@@ -266,18 +264,18 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
                     var today = new Date().trunc();
 
-                    var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id}, "full");
-                    
+                    var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({ id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id }, "full");
+
                     if (nextProposedAction.resource[0] && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
-                        const afterAction = $("#dischargeModal").data('after-action'); 
+                        const afterAction = $("#dischargeModal").data('after-action');
                         $("#dischargeModal").data('deferAction', true);
-                        
-                        SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);  
+
+                        SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);
                     }
                 }
-            } 
+            }
 
-            $timeout(() => {                
+            $timeout(() => {
                 $("#dischargeModal").modal('hide');
             });
 

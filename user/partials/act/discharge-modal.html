@@ -48,15 +48,15 @@
                                         ng-if="comp.targetModel.tag.isBackEntry[0] != 'True'">
                                         <label class="checkbox-container" ng-init="act = comp.targetModel">
                                             <input type="checkbox" class="checkbox-control"
-                                                ng-model="comp.targetModel.operation"
-                                                ng-true-value="'InsertOrUpdate'" ng-false-value="'Delete'" />
+                                                ng-model="comp.targetModel.statusConcept" ng-readonly="readonly"
+                                                ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'"/>
                                             <span></span>
                                             <!-- <i class="fas fa-fw fa-circle"></i> -->
                                             <ng-include
                                                 src="resolveSummaryTemplate(comp.targetModel.templateModel.mnemonic)"></ng-include>
                                         </label>
                                         <div class="text-info ml-10"
-                                            ng-if="comp.targetModel.operation == 'InsertOrUpdate' &amp;&amp; !(comp.targetModel.previousVersion || comp.targetModel.participation &amp;&amp; comp.targetModel.participation.Performer)">
+                                            ng-if="comp.targetModel.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' &amp;&amp; !(comp.targetModel.participation &amp;&amp; comp.targetModel.participation.Performer)">
                                             <i class="fas fa-fw fa-lightbulb"></i> {{
                                             'ui.emr.encounter.component.notTouched' | i18n }}
                                         </div>

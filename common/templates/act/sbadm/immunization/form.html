@@ -73,7 +73,7 @@
             <label class="control-label col-sm-12 col-md-4 col-lg-2 required">{{ 'ui.model.substanceAdministration.Consumable.lotNumber' | i18n }}</label>
             <div class="col-sm-12 col-md-8 col-lg-4">
                 <entity-select required="required" class="form-control" name="{{ act.id }}lot" 
-                    ng-model="act.participation.Consumable[0].target" auto-select-singles="true"
+                    ng-model="act.participation.Consumable[0].player" auto-select-singles="true"
                     entity-type="'ManufacturedMaterial'"
                     filter="{
                         'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
@@ -89,7 +89,7 @@
             </label>
             <div ng-repeat-end="" class="col-sm-12 col-md-8 col-lg-4">
                 <entity-select required="required" class="form-control" name="{{ act.id }}lot" 
-                    ng-model="act.participation.Consumable[$index + 1].target" auto-select-singles="true"
+                    ng-model="act.participation.Consumable[$index + 1].player" auto-select-singles="true"
                     entity-type="'ManufacturedMaterial'"
                     filter="{
                         'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
@@ -99,6 +99,12 @@
                     }" 
                     display="item.lotNumber" >
                 </entity-select>
+            </div>
+            <label class="control-label col-sm-12 col-md-4 col-lg-2 required">
+                {{ 'ui.model.substanceAdministration.site' | i18n }}
+            </label>
+            <div class="control-label col-sm-12 col-md-8 col-lg-4">
+                <concept-select required="required" ng-model="act.site" concept-set="'AdministrationSite'" class="form-control"></concept-select>
             </div>
         </div>
     </div>
