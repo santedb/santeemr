@@ -21,6 +21,35 @@
 angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$rootScope", "$timeout", "$state", "$stateParams", function ($scope, $rootScope, $timeout, $state, $stateParams) {
 
     async function initializeView(encounterId) {
+
+        const careplanResponse = await SanteDB.resources.patient.invokeOperationAsync('576635b3-841e-4822-a856-9515fa8b963c', "generate-careplan", {
+            asEncounters: false,
+            library: "063fffad-fc37-4666-b949-4a96ae2a4fb9"
+        });
+
+        console.log('careplanResponse');
+        console.log(careplanResponse);
+
+        const heightWeightBackEntry = {},
+            today = new Date();
+
+
+        for (const act of careplanResponse.relationship.HasComponent) {
+            if ((act.targetModel.templateModel.mnemonic === 'org.santedb.emr.observation.heightLying' || 
+                act.targetModel.templateModel.mnemonic === 'org.santedb.emr.observation.weight') && act.targetModel.actTime < today) {
+                    const monthYearKey = `${act.targetModel.actTime.getFullYear()}-${act.targetModel.actTime.getMonth() + 1}`;
+
+                    if (!heightWeightBackEntry[monthYearKey]) {
+                        heightWeightBackEntry[monthYearKey] = [];
+                    }
+                    
+                    heightWeightBackEntry[monthYearKey].push(act);
+            }
+        }
+
+        console.log('(((((((heightWeightBackEntry)))))))');
+        console.log(heightWeightBackEntry);        
+        
         try {
             var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full");
 
@@ -105,4 +134,118 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             SanteDB.display.buttonWait("#btnActEditsave", false);
         }
     }
+}]).controller("HistoricalImmunizationEntryController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
+    $scope.test = 'WOOO!!!??'
+
+    
+
+    $scope.getIdentifier = (administrationAction) => {
+        const antigen = SanteDB.display.renderEntityName(administrationAction.participation.Product[0].playerModel.name, "Assigned");
+
+        const rowIndex = Object.keys($scope.table.data).indexOf(antigen);
+        const doseIndex = administrationAction.doseSequence;
+
+        return rowIndex + '-' + doseIndex;
+    }
+
+    $scope.isDisabled = function(administrationAction) {           
+        if (!administrationAction) {
+            return true;
+        }
+        
+        const antigenKey = SanteDB.display.renderEntityName(administrationAction.participation.Product[0].playerModel.name, "Assigned");
+      
+        const currentRowDoses = $scope.table.data[antigenKey];
+        
+    
+        const currentDoseSequence = administrationAction.doseSequence;
+        let minSequenceInRow = 0;
+    
+        for (let i = 0; i < currentRowDoses.length; i++) {
+            const dose = currentRowDoses[i];
+
+            if (dose) {
+                minSequenceInRow = dose.doseSequence;
+                break;
+            }
+        }
+    
+        // Enables the first dose in the sequence
+        if (currentDoseSequence === minSequenceInRow) {
+            return false;
+        }
+    
+        // If not the first dose, check if ALL preceding doses have dates
+        let allPrecedingAdministered = true;
+
+        for (let i = minSequenceInRow; i < currentDoseSequence; i++) {
+            const precedingDose = currentRowDoses[i];
+            
+            // Check if it's a valid dose, actually precedes the current one in sequence, and exists in the row
+            if (precedingDose && precedingDose.doseSequence < currentDoseSequence) {
+                // If a preceding dose is found WITHOUT a selected date, then the current dose cannot be enabled
+                if (!precedingDose.isSelected || !precedingDose.selectedDate) {
+                    allPrecedingAdministered = false;
+                    break;
+                }
+            }
+        }
+
+        // Disable if any preceding dose was not administered, otherwise enable.
+        return !allPrecedingAdministered;
+    };
+
+    $scope.dateSelectedUpdateColumn = (administrationAction) => {           
+        const antigen = SanteDB.display.renderEntityName(administrationAction.participation.Product[0].playerModel.name, "Assigned"),
+            doseIndex = administrationAction.doseSequence;
+
+        const currentAdm = $scope.table.data[antigen][doseIndex];
+
+        if (currentAdm) {
+            currentAdm.isSelected = !!administrationAction.selectedDate;
+        }
+    
+        if (administrationAction.selectedDate) {
+            // Iterate through all antigen rows
+            angular.forEach($scope.table.data, function(antigenSubstanceAdministrations, antigenKey) {
+                // Skip the current row
+                if (antigenKey === antigen) {
+                    return;
+                }
+    
+                const otherSubstanceAdmin = antigenSubstanceAdministrations[doseIndex];
+
+                console.log('--------------- otherSubstanceAdmin');
+                console.log(otherSubstanceAdmin);
+                console.log($scope.$parent.ownerForm);
+                
+                // Check if an immunization exists in the same column
+                if (otherSubstanceAdmin && (otherSubstanceAdmin._urgency === 'pastdue' || otherSubstanceAdmin._urgency === 'now')) {
+                    const rowIndex = Object.keys($scope.table.data).indexOf(antigenKey);
+
+                    const inputName =`vacc-history-date-${rowIndex}-${otherSubstanceAdmin.doseSequence}`;
+
+                    console.log('QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ - $scope.$parent.ownerForm[inputName]');
+                    console.log($scope.$parent.ownerForm[inputName]);
+                    
+                    
+                    // Check if the input field exists on the form and is pristine
+                    if ($scope.$parent.ownerForm[inputName] && $scope.$parent.ownerForm[inputName].$pristine) {
+                        otherSubstanceAdmin.selectedDate = administrationAction.selectedDate;
+                    }
+                }
+            });
+        }
+    };
+
+    function initialize() {
+        console.log('[[[[[[[[[[[[[[[[$scope]]]]]]]]]]]]]]]]');
+        console.log($scope);
+        console.log($scope.$parent.immunizationHistoryTable);
+
+        $scope.table = $scope.$parent.immunizationHistoryTable;
+        
+    }
+
+    initialize();
 }]);
