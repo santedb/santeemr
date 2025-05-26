@@ -416,7 +416,7 @@ function SanteEMRWrapper() {
                 _includeBackentry: true
             }, undefined, "min");
 
-            actions.relationship.HasComponent.forEach(comp => {
+            await Promise.all(actions.relationship.HasComponent.map(async comp => {
                 var ar = new ActRelationship({
                     relationshipType: comp.relationshipType,
                     target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
@@ -450,8 +450,32 @@ function SanteEMRWrapper() {
                             target: fulfillment.target
                         }));
                     }
+                    else {
+                        try {
+                            const fulfillment = await SanteDB.resources[comp.targetModel.$type.toCamelCase()].findAsync({
+                                _includeTotal: false, 
+                                moodConcept: ActMoodKeys.Propose,
+                                statusConcept: StatusKeys.Active,
+                                typeConcept: comp.targetModel.typeConcept,
+                                "protocol.protocol" : comp.targetModel.protocol[0].protocol,
+                                "protocol.sequence": comp.targetModel.protocol[0].sequence,
+                                _count: 1
+                            }, "min");
+
+                            if(fulfillment.resource) {
+                                comp.targetModel.relationship = comp.targetModel.relationship || {};
+                                comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
+                                comp.targetModel.relationship.Fulfills.push(new ActRelationship({
+                                    target: fulfillment.resource[0].id
+                                }));
+                            }
+                        }
+                        catch(e) {
+                            console.warn("Could not fetch fulfillment target", e);
+                        }
+                    }
                 }
-            });
+            }));
 
             if (informantPtcpt) {
                 encounter.participation = encounter.participation || {};

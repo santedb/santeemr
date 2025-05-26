@@ -43,14 +43,9 @@ function ViewAceEditor(controlName, templateDefinition, viewType) {
 
     // HTML helper based auto complete
     function _htmlCompletor() {
-
-
         this.getCompletions = async function (editor, session, pos, prefix, callback) {
-
             // TODO: Get completions
         }
-
-
     };
 
     // SIMPLE data view completor
@@ -409,5 +404,4 @@ function ViewAceEditor(controlName, templateDefinition, viewType) {
     this.destroy = function() {
         _editor.destroy();
     }
-
 }

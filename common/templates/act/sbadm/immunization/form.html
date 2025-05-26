@@ -45,7 +45,7 @@
                     <div class="input-group-append">
                         <span class="input-group-text">
                             <strong class="mr-1">{{ 'ui.model.act.relationship.Fulfills.target.actTime' | i18n }} </strong>
-                            {{ act.relationship.Fulfills[0].targetModel.startTime | humanDate: 'D' }}
+                            {{ act.relationship.Fulfills[0].targetModel.startTime || act.startTime | humanDate: 'D' }}
                         </span>
                     </div>
                 </div>
