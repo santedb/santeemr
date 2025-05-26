@@ -167,3 +167,7 @@ div.duplicate-list {
     max-height: 65vh; 
     overflow-y: scroll;
 }
+
+table {
+  border: 2px solid #dee2e6 !important;
+}
