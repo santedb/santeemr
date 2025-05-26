@@ -20,10 +20,10 @@
  *
  */
 function bindSearchScopeCommonFunctions($scope, $state, $timeout) {
-
     // Item supplement which determines if the patientin question has an encounter active
     $scope.patientHasOpenEncounter = SanteEMR.patientHasOpenEncounter;
     $scope.checkin = (o,i) => SanteEMR.showCheckin(o);
+
     $scope.goVisit = async function(id) {
         try {
             var encounter = await SanteDB.resources.patientEncounter.findAsync({
@@ -87,39 +87,38 @@ function bindSearchScopeCommonFunctions($scope, $state, $timeout) {
             SanteDB.display.buttonWait(`#searchList_action_download_${index}`, false);
         }
     }
-
 }
 
 angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
-
     var idDomainPatterns = [];
+
     async function initializeView() {
         try {
             var pattern = await SanteDB.resources.identityDomain.findAsync({ "validation": "!null", "scope": EntityClassKeys.Patient, "isUnique": true }, "fastView");
+            
             if (pattern.resource) {
                 idDomainPatterns = pattern.resource.map(o => new RegExp(o.validation));
 
                 // If the user enters a value that matches an identifier domain pattern use it
                 $scope.$watch("search.value", async function (n, o) {
                     if (n && n != o && idDomainPatterns.find(o => o.test(n))) {
-
                         // Test if there is only one result then load it - TODO: 
                         try {
                             var resCount = await SanteDB.resources.patient.findAsync({ _count: 1, _includeTotal: true, "identifier.value": n }, "fastView");
+
                             if (resCount.totalResults == 1) {
                                 SanteDB.application.callResourceViewer("Patient", null, { id: resCount.resource[0].id });
                             }
                             else {
+                                
                                 $timeout(() => performSearch({ value: n }));
                             }
                         }
                         catch (e) {
 
                         }
-
                     }
                 });
-
             }
 
             // set focus to search
@@ -152,9 +151,6 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
     // Perform the search and populate the results
     function performSearch(search, upstream) {
-        console.log('???????????????search');
-        console.log(search);
-        
         $scope.filter = {
             _any: search.value,
             _upstream: upstream,

@@ -33,9 +33,13 @@
     <icon>fas fa-tachometer-alt</icon>
     <text lang="en">Dashboard</text>
   </menuItem>
-  <menuItem context="ui.emr" launch="santedb-emr.patient.dashboard" asset="/org.santedb.emr/views/patient/dashboard.html" order="-100">
+  <menuItem context="ui.emr" order="-100">
     <icon>fas fa-hospital-user</icon>
     <text lang="en">Patients</text>
+    <menuItem context="ui.emr" launch="santedb-emr.patient.dashboard" asset="/org.santedb.emr/views/patient/dashboard.html" order="-100">
+      <icon>fas fa-hospital-user</icon>
+      <text lang="en">Dashboard</text>
+    </menuItem>
     <menuItem context="ui.emr" launch="santedb-emr.patient.search" asset="/org.santedb.emr/views/patient/search.html" order="-100">
       <icon>fas fa-search</icon>
       <text lang="en">Search</text>
@@ -57,9 +61,13 @@
       <text lang="en">Waiting Room</text>
     </menuItem>
   </menuItem>
-  <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/org.santedb.emr/views/system/index.html" order="1000">
+  <menuItem context="ui.emr" order="1000">
     <icon>fas fa-tablet</icon>
     <text lang="en">System</text>
+    <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/org.santedb.emr/views/system/index.html">
+      <icon>fas fa-tablet</icon>
+      <text lang="en">Dashboard</text>
+    </menuItem>
     <menuItem context="ui.emr" launch="santedb-emr.system.logs.index" asset="/org.santedb.emr/views/system/logs/index.html">
       <icon>fas fa-tasks</icon>
       <text lang="en">Logs</text>

@@ -39,7 +39,7 @@
                     <div class="card-body">
                         <fieldset class="container-fluid">
                             <legend>{{ 'ui.emr.patient.search.field.patient' | i18n }}
-                                <hint-popover hint-title="ui.emr.patient.search.field.patient" />
+                                <hint-popover hint-text-class="text-dark" hint-title="ui.emr.patient.search.field.patient" />
                             </legend>
 
                             <div class="form-group row">
@@ -92,39 +92,49 @@
                                         ng-change="validateParameterCount()" ng-model="search['genderConcept']"
                                         add-concept="['61d8f65c-747e-4a99-982f-a42ac5437473']" />
                                 </div>
+
+                                <!-- Date of Birth -->
                                 <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                     {{ 'ui.emr.patient.search.field.patient.dob' | i18n }}
                                     <hint-popover hint-title="ui.emr.patient.search.field.patient.dob" />
                                 </label>
+
                                 <div class="mt-1 col-12 col-sm-8 col-md-9 col-lg-4">
                                     <div class="input-group mb-0">
                                         <div class="input-group-prepend">
-                                            <label class="input-group-text">
-                                                <input type="checkbox" ng-model="search._approxAge" />
+                                            <label class="input-group-text p-0 px-2">
+                                                <input type="checkbox" class="mr-1" ng-model="search._approxAge" />
                                                 {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
                                             </label>
                                         </div>
+
                                         <input ng-if="search._approxAge" ng-change="validateParameterCount()"
                                             type="number" ng-model="search['dateOfBirth'][0]" min="0"
                                             max="{{ search['dateOfBirth'][1] || 130 }}" class="form-control" />
+
                                         <input ng-if="!search._approxAge" ng-change="validateParameterCount()"
                                             type="date" ng-model="search['dateOfBirth'][0]" min="1900-01-01"
                                             max="{{ (search['dateOfBirth'][1] || $root.page.maxEventTime) | date: 'yyyy-MM-dd' }}"
                                             class="form-control" />
+
                                         <div class="input-group-append">
-                                            <span class="input-group-text">-</span>
+                                            <span class="input-group-text p-0 px-2">-</span>
                                         </div>
+
                                         <input ng-if="search._approxAge" ng-change="validateParameterCount()"
                                             type="number" ng-model="search['dateOfBirth'][1]"
                                             min="{{search['dateOfBirth'][0] || 0}}" max="130" class="form-control" />
+
                                         <input ng-if="!search._approxAge" ng-change="validateParameterCount()"
                                             type="date" ng-model="search['dateOfBirth'][1]"
                                             min="{{ (search['dateOfBirth'][0] || '1900-01-01') | date: 'yyyy-MM-dd' }}"
                                             max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}"
                                             class="form-control" />
+
                                         <div class="input-group-append" ng-if="search._approxAge">
-                                            <span class="input-group-text">{{ 'ui.emr.patient.ageInYears' | i18n
-                                                }}</span>
+                                            <span class="input-group-text">
+                                                {{ 'ui.emr.patient.ageInYears' | i18n }}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -159,11 +169,10 @@
                         </fieldset>
                         <fieldset class="container-fluid">
                             <legend>{{ 'ui.emr.patient.search.field.relative' | i18n }}
-                                <hint-popover hint-title="ui.emr.patient.search.field.relative" />
-
+                                <hint-popover hint-text-class="text-dark" hint-title="ui.emr.patient.search.field.relative" />
                             </legend>
-                            <div class="form-group row">
 
+                            <div class="form-group row">
                                 <label class="mt-1 col-12 col-sm-4 col-md-3 col-lg-2 control-label">
                                     {{ 'ui.emr.patient.search.field.relative.name.given' | i18n }}
                                     <hint-popover hint-title="ui.emr.patient.search.field.relative.name" />
@@ -246,7 +255,7 @@
                                 ng-click="search['id'] = search['relationship[relationshipType.conceptSet=d3692f40-1033-48ea-94cb-31fc0f352a4e].target@Person.id'] = undefined">
                                 <i class="fas fa-undo"></i> {{ 'ui.action.reset' | i18n }}
                             </button>
-                            <button class="ml-1 btn btn-success"
+                            <button class="mx-2 btn btn-success"
                                 ng-if="$root.system.config.integration.mode == 'synchronize'" id="btnSearchOnline"
                                 type="button" ng-click="searchOnline()"
                                 ng-disabled="searchForm.$invalid || !$root.system.online">

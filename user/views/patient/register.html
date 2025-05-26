@@ -47,13 +47,13 @@
                     </div>
                     <div class="card-body">
                         <p>{{ 'ui.emr.patient.register.dataQuality.help' | i18n }}</p>
-                        <ul class="ml-2">
+                        <ul>
                             <li ng-repeat="(k,v) in editForm.dataQualityIssues" class="m-0 d-flex"
                             ng-class="{ 'alert alert-danger': v.priority == 'Error', 'alert alert-warning' : v.priority == 'Warning', 'alert alert-primary' : v.priority == 'Information' }">
-                                <div class="flex-grow-1"><strong><i class="fas fa-fw" ng-class="{ 'fa-exclamation-triangle': v.priority == 'Error', 'fa-exclamation-circle' : v.priority == 'Warning', 'fa-info-circle' : v.priority == 'Information' }"></i> {{ k }}</strong>: {{v.text}}</div>
+                                <div class="flex-grow-1 my-auto"><strong><i class="fas fa-fw" ng-class="{ 'fa-exclamation-triangle': v.priority == 'Error', 'fa-exclamation-circle' : v.priority == 'Warning', 'fa-info-circle' : v.priority == 'Information' }"></i> {{ k }}</strong>: {{v.text}}</div>
                                 <div class="btn-group">
-                                    <button type="button" class="btn btn-link btn-sm d-inline" ng-if="v.dismiss" ng-click="v.dismiss()">{{ 'ui.action.dismiss' | i18n }}</button> 
-                                    <button type="button" class="btn btn-link btn-sm d-inline" ng-if="v.goTo" ng-click="v.goTo()">{{ 'ui.action.goto' | i18n }}</button> 
+                                    <button type="button" class="btn btn-link d-inline" ng-if="v.dismiss" ng-click="v.dismiss()">{{ 'ui.action.dismiss' | i18n }}</button> 
+                                    <button type="button" class="btn btn-link d-inline" ng-if="v.goTo" ng-click="v.goTo()">{{ 'ui.action.goto' | i18n }}</button> 
                                 </div>
                             </li>
                         </ul>
