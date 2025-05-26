@@ -15,8 +15,23 @@
  - License for the specific language governing permissions and limitations under
  - the License.
  -->
-<div xmlns="http://www.w3.org/1999/xhtml">
-    PLACEHOLDER FOR HEIGHT BACKENTRY {{ acts.length }} ACTS
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" oc-lazy-load="{ name: 'EmrPatientHistoryViewController', files: ['/org.santedb.emr/controllers/patient/history.js'] }">
+    <h2>Historical Heights</h2>
 
-    {{ acts | json }}
+    <div ng-controller="EmrPatientHistoryViewController">
+        <table class="table table-striped">
+            <tr>
+               <th>Date</th> 
+               <th>Height</th> 
+            </tr>
+
+            <tr ng-repeat="(date, act) in heightWeightBackEntry">
+                <td>{{ date }}</td>
+    
+                <td>
+                    <input type="number" ng-model="act.value" />
+                </td>
+            </tr>
+        </table>
+    </div>
 </div>

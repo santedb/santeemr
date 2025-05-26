@@ -15,7 +15,7 @@
  - License for the specific language governing permissions and limitations under
  - the License.
  -->
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" oc-lazy-load="{ name: 'HistoricalImmunizationEntryController', files: ['/org.santedb.emr/controllers/act/encounter/view.js'] }">
     <div ng-controller="HistoricalImmunizationEntryController">
         <table class="table table-striped" style="border: 1px solid #dee2e6;">
             <thead>
@@ -33,12 +33,16 @@
     
                     <td class="text-center align-middle" ng-repeat="adm in dose track by $index" ng-init="colIndex = $index; editForm = panel">
                         <div class="d-inline-flex" ng-if="adm._urgency == 'pastdue' || adm._urgency == 'now'">
-                            <act-edit owner-form="panel.editForm" 
-                                no-override="true" 
-                                no-header="true" 
-                                no-remove="true" 
-                                no-add="true" 
-                                model="adm" />
+                            <input name="vacc-history-{{ $parent.$parent.$parent.getIdentifier(adm) }}" 
+                                ng-disabled="$parent.$parent.$parent.isDisabled(adm)" 
+                                ng-model="adm.isSelected" 
+                                type="checkbox" />
+
+                            <input ng-change="$parent.$parent.$parent.dateSelectedUpdateColumn(adm)"
+                                name="vacc-history-date-{{$parent.$parent.$parent.getIdentifier(adm)}}" 
+                                ng-disabled="$parent.$parent.$parent.isDisabled(adm)" 
+                                ng-model="adm.selectedDate"
+                                type="date" />
                         </div>
                     </td>
                 </tr>
