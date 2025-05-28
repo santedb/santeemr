@@ -21,13 +21,11 @@
     ///<![CDATA[
         var scope = angular.element('#deliveryOutcomeHandler').scope();
         scope.$watch("act.valueModel", function (n, o) {
-            console.info(n);
             if (n && n.id) {
                 if (n.id == '023859e6-1867-11eb-adc1-0242ac120002') {
                     var scp = scope;
                     while (!scp.act || !scp.act.participation || !scp.act.participation.Baby)
                         scp = scp.$parent;
-                    console.info(scp.act);
                     var baby = scp.act.participation.Baby[0].playerModel;
                     baby.deceasedDate = baby.dateOfBirth;
                     baby.deceasedDatePrecision = baby.dateOfBirthPrecision;
@@ -38,7 +36,6 @@
                     var scp = scope;
                     while (!scp.act || !scp.act.participation || !scp.act.participation.Baby)
                         scp = scp.$parent;
-                    console.info(scp.act);
                     var baby = scp.act.participation.Baby[0].playerModel;
                     delete (baby.deceasedDate);
                     delete (baby.deceasedDatePrecision);

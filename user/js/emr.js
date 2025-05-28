@@ -395,6 +395,7 @@ function SanteEMRWrapper() {
                     encounter[field] = tplValue;
                 });
             }
+
             submission.correlationId = encounter.id = encounter.id || SanteDB.application.newGuid();
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
@@ -432,9 +433,9 @@ function SanteEMRWrapper() {
 
                 
                 comp.targetModel.id = comp.targetModel.id || ar.target;
-                comp.targetModel.moodConcept = encounter.moodConcept;
+                comp.targetModel.moodConcept = encounter.moodConcept; // Ensure the mood concept matches the mood concept of the visit
                 delete comp.targetModel.moodConceptModel;
-                //comp.targetModel.statusConcept = encounter.statusConcept;
+                comp.targetModel.statusConcept = encounter.statusConcept; // Ensure that the status concept of the action matches the visit
                 delete comp.targetModel.statusConceptModel;
 
                 // Fulfillment for the target model

@@ -129,7 +129,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
         }
 
         try {
-            SanteDB.display.buttonWait("#btnSubmit", true);
+            SanteDB.display.buttonWait("#btnStartVisit", true);
 
             var templateId = null;
             var pathway = null;
@@ -169,7 +169,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             $rootScope.errorHandler(e);
         }
         finally {
-            SanteDB.display.buttonWait("#btnSubmit", false);
+            SanteDB.display.buttonWait("#btnStartVisit", false);
         }
     }
 
@@ -243,10 +243,17 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
         }
 
         try {
-            SanteDB.display.buttonWait("#btnSubmit", true);
+            SanteDB.display.buttonWait("#btnEndVisit", true);
 
             $scope.encounter.stopTime = new Date();
 
+            // Set the status of all items in the encounter
+            $scope.encounter.relationship.HasComponent?.forEach(comp => {
+                if(comp.targetModel.statusConcept !== StatusKeys.Completed) {
+                    comp.targetModel.operation = BatchOperationType.Delete;
+                }
+            });
+            
             // Save the discharge
             var savedEncounter = await SanteEMR.saveVisitAsync($scope.encounter, "Discharger");
 
@@ -285,7 +292,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             $rootScope.errorHandler(e);
         }
         finally {
-            SanteDB.display.buttonWait("#btnSubmit", false);
+            SanteDB.display.buttonWait("#btnEndVisit", false);
         }
     }
 }]);

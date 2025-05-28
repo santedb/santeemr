@@ -101,7 +101,7 @@ angular.module('santedb').controller('EmrEditVisitTypesController', ["$scope", "
                     mermaidStr += `\t${i} --> [*]\r\n`;
                 }
             })
-            console.info(mermaidStr);
+            (mermaidStr);
             mermaid.mermaidAPI.render("stateDiagram", mermaidStr, (svg) => {
                 $("#stateDiagramSvg").html(svg);
             });
