@@ -7,7 +7,7 @@ define library "SanteDB Core CDSS Fact Library"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0.13
+		version 3.0.14
 		doc This library contains core logic to extract common facts related to objects in SanteDB. It defines
 		doc no rules, protocols, or models, rather is intended to provide common facts about data to allow
 		doc users to more easily derive their own rules
@@ -152,9 +152,9 @@ define library "SanteDB Core CDSS Fact Library"
 		            participation[RecordTarget].source@CodedObservation.value=f36f692d-798b-4883-8d83-3ecf6c1571d0&
 		            participation[RecordTarget].source.isNegated=false$$),
 				hdsi($$participation[RecordTarget].source.typeConcept=260ffe90-7882-4b38-a7af-d2110e91e752&
-		            participation[RecordTarget].source.relationship[HasSubject].target.value=f36f692d-798b-4883-8d83-3ecf6c1571d0&
+		            participation[RecordTarget].source.relationship[HasSubject].target=f36f692d-798b-4883-8d83-3ecf6c1571d0&
 		            participation[RecordTarget].source.relationship[HasSubject].target.typeConcept=8a07a21f-50ff-4631-8e51-c54690fb1127&
-		            participation[RecordTarget].statusConcept=C8064CBD-FA06-4530-B430-1A52F1530C27$$)
+		            participation[RecordTarget].source.statusConcept=C8064CBD-FA06-4530-B430-1A52F1530C27$$)
 			)
 
 		end fact

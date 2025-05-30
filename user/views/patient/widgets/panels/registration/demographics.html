@@ -61,12 +61,12 @@
 
                         <input name="patientAge" required="required" ng-if="scopedObject.dateOfBirthPrecision == 1"
                             ng-change="scopedObject.dateOfBirth = ageToDate(scopedObject.age)" type="number"
-                            ng-model="scopedObject.age" min="0" class="form-control" />
+                            ng-model="scopedObject.age" min="0" class="form-control"  ng-model-options="{ updateOn: 'blur'}" />
 
                         <input name="patientDob" data-quality-id="dob" required="required" ng-if="scopedObject.dateOfBirthPrecision == 3"
                             ng-change="scopedObject.age = dateToAge(scopedObject.dateOfBirth)"
                             type="date" ng-model="scopedObject.dateOfBirth" min="1900-01-01"
-                            max="{{ $root.page.today | date: 'yyyy-MM-dd' }}" class="form-control" />
+                            max="{{ $root.page.today | date: 'yyyy-MM-dd' }}" class="form-control"  ng-model-options="{ updateOn: 'blur'}" />
 
                         <div class="input-group-append" >
                             <span class="input-group-text p-0 px-2">
@@ -103,7 +103,8 @@
 
             <div class="col-sm-12 col-md-8">
                 <concept-select data-quality-id="gender" class="form-control" required="required" name="birthGender"
-                    concept-set="'AdministrativeGenderCode'" ng-model="scopedObject.genderConcept" />
+                    concept-set="'AdministrativeGenderCode'" ng-model="scopedObject.genderConcept" 
+                    ng-model-options="{ updateOn: 'blur'}" />
 
                 <div class="text-danger" ng-if="panel.editForm['birthGender'].$error['required']">
                     <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
