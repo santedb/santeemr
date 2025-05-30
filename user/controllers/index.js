@@ -1,39 +1,40 @@
 /// <reference path="../.ref/js/santedb.js"/>
 /// <reference path="../.ref/js/santedb-model.js"/>
 /*
- * Portions Copyright 2015-2019 Mohawk College of Applied Arts and Technology
- * Portions Copyright 2019-2019 SanteSuite Contributors (See NOTICE)
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you 
- * may not use this file except in compliance with the License. You may 
- * obtain a copy of the License at 
- * 
- * http://www.apache.org/licenses/LICENSE-2.0 
- * 
+ * Copyright (C) 2021 - 2025, SanteSuite Inc. and the SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ * Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ * Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you
+ * may not use this file except in compliance with the License. You may
+ * obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
- * License for the specific language governing permissions and limitations under 
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
  * the License.
- * 
- * User: Justin Fyfe
- * Date: 2019-8-8
+ *
  */
 var _boundTransitionStart = false;
+// Start with nav collapsed
+$("body").addClass("sidenav-toggled");
 angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", "$transitions", "$timeout", function ($scope, $rootScope, $state, $templateCache, $interval, $transitions, $timeout) {
 
     var _lastTickle = null;
     var _isTickling = false;
     // Load helper properties
     async function loadHelperProperties() {
-        if($rootScope.refValues) { return; }
+        if ($rootScope.refValues) { return; }
         try {
             $rootScope.refValues = {};
             var templates = await SanteDB.application.getTemplateDefinitionsAsync();
-            var familialRelationships = await SanteDB.resources.conceptSet.invokeOperationAsync(null, "expand", { "_mnemonic" : "FamilyMember" });
+            var familialRelationships = await SanteDB.resources.conceptSet.invokeOperationAsync(null, "expand", { "_mnemonic": "FamilyMember" });
             var myFacility = await SanteDB.resources.place.getAsync(await SanteDB.authentication.getCurrentFacilityId(), "min");
             $timeout(() => {
-                $rootScope.refValues.FamilyMember = familialRelationships.resource.map(o=>o.mnemonic);
+                $rootScope.refValues.FamilyMember = familialRelationships.resource.map(o => o.mnemonic);
                 $rootScope.refValues.templates = templates;
                 $rootScope.refValues.facilityName = SanteDB.display.renderEntityName(myFacility.name);
                 $rootScope.refValues.facility = myFacility;
@@ -41,7 +42,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
 
         }
-        catch(e) {
+        catch (e) {
             console.warn("Could not load reference values");
         }
     }
@@ -65,7 +66,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     // Check for new tickles
     async function checkTickles() {
         try {
-            if(_isTickling) return; // already checking tickles - don't want to duplicate
+            if (_isTickling) return; // already checking tickles - don't want to duplicate
             _isTickling = true;
             var sourceTickles = await SanteDB.resources.tickle.findAsync({});
             var tickles = [], toasted = [];
@@ -74,7 +75,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
                 if (!t.type) return;
 
                 if ((t.type.indexOf && t.type.indexOf("Toast") > -1 || t.type & 4) && toasted.indexOf(t.text) == -1) {
-                    
+
                     toasted.push(t.text);
 
                     if (t.type.indexOf && t.type.indexOf("Danger") > -1 || t.type & 2)
@@ -126,12 +127,58 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
     async function loadMenus() {
         try {
             var menus = await SanteDB.application.getMenusAsync("ui.emr");
-            $timeout(() => $scope.menuItems = menus);
+            $timeout(() => {
+                $scope.menuItems = menus;
+                $timeout(() => setNavRail(), 500);
+            });
         }
         catch (e) {
             toastr.warning(SanteDB.locale.getString("ui.admin.menuError"));
             console.error(e);
         }
+    }
+
+    /// Sets the navigation rail to peek
+    function setNavRail() {
+
+        var railTimer = null;
+        var railLogicFn = function (event) {
+            if ($("body").hasClass("sidenav-toggled")) {
+                var navItem = $(".navbar-sidenav");
+                $("body").removeClass("sidenav-toggled");
+                navItem.addClass("navbar-peek");
+                $("*", navItem).addClass("navbar-peek");
+
+                if (event.type == "mouseover") {
+                    $(window).bind("mousemove", function (e) {
+                        var target = $(e.target);
+                        if (!target.hasClass("navbar-peek")) {
+                            $(".navbar-peek").removeClass("navbar-peek");
+                            $("body").addClass("sidenav-toggled");
+                            $(window).unbind("mousemove");
+                        }
+                    });
+                }
+
+            }
+        }
+
+
+        $(".navbar-sidenav").on('mouseover', function (e) {
+            if (!window.isTouchDevice()) {
+                railLogicFn(e);
+            }
+        });
+
+        $(".navbar-sidenav").on("swipe", function (e, d) {
+            console.info(d, e);
+            if (d.swipeRight) {
+                railLogicFn(e);
+            } else if(d.swipeLeft && $(e.target).hasClass("navbar-peek")) {
+                $(".navbar-peek").removeClass("navbar-peek");
+                $("body").addClass("sidenav-toggled");
+            }
+        })
     }
 
     initializeSideNavTriggers();
@@ -172,7 +219,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             checkConflicts();
             checkMail();
         }
-        else if(ov) {
+        else if (ov) {
             $scope.menuItems = null;
             $state.go("login");
         }

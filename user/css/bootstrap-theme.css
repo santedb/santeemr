@@ -181,9 +181,10 @@ h6 {
     padding: 35px 35px; }
   .card .card-block-small {
     padding: 15px 15px; }
-  .card:hover {
+  /* .card:hover {
     -webkit-box-shadow: 0 0 25px -5px #9e9c9e;
-            box-shadow: 0 0 25px -5px #9e9c9e; }
+            box-shadow: 0 0 25px -5px #9e9c9e; 
+  } */
 
 
 

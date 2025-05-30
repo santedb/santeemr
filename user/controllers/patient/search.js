@@ -2,30 +2,28 @@
 /// <reference path="../../.ref/js/santedb-model.js"/>
 /// <reference path="../../js/emr.js"/>
 /*
- * Portions Copyright 2015-2019 Mohawk College of Applied Arts and Technology
- * Portions Copyright 2019-2019 SanteSuite Contributors (See NOTICE)
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you 
- * may not use this file except in compliance with the License. You may 
- * obtain a copy of the License at 
- * 
- * http://www.apache.org/licenses/LICENSE-2.0 
- * 
+ * Copyright (C) 2021 - 2025, SanteSuite Inc. and the SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ * Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ * Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you
+ * may not use this file except in compliance with the License. You may
+ * obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
- * License for the specific language governing permissions and limitations under 
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
  * the License.
- * 
- * User: Justin Fyfe
- * Date: 2019-9-27
+ *
  */
-
-function bindSearchScopeCommonFunctions($scope, $state) {
-
+function bindSearchScopeCommonFunctions($scope, $state, $timeout) {
     // Item supplement which determines if the patientin question has an encounter active
     $scope.patientHasOpenEncounter = SanteEMR.patientHasOpenEncounter;
     $scope.checkin = (o,i) => SanteEMR.showCheckin(o);
+
     $scope.goVisit = async function(id) {
         try {
             var encounter = await SanteDB.resources.patientEncounter.findAsync({
@@ -47,6 +45,30 @@ function bindSearchScopeCommonFunctions($scope, $state) {
         }
     }
 
+    $scope.doDischarge = async function (r, idx) {        
+        try {
+            SanteDB.display.buttonWait(`#searchList_action_discharge_${idx}`, true);
+
+            var encounter = (await SanteDB.resources.patientEncounter.findAsync({
+                "participation[RecordTarget].player": r,
+                "statusConcept": StatusKeys.Active,
+                "moodConcept": ActMoodKeys.Eventoccurrence,
+                _count: 1,
+                _includeTotal: true
+            }, "full")).resource[0];            
+
+            await SanteEMR.showDischarge(encounter, $timeout, () => {
+                $("#searchList")[0].EntityList.refresh();
+            });
+        }
+        catch (e) {
+            SanteDB.display.getRootScope($scope).errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait(`#searchList_action_discharge_${idx}`, false);
+        }
+    }
+
     $scope.downloadPatient = async function (patientId, index) {
         if (!patientId) return;
 
@@ -65,39 +87,38 @@ function bindSearchScopeCommonFunctions($scope, $state) {
             SanteDB.display.buttonWait(`#searchList_action_download_${index}`, false);
         }
     }
-
 }
 
 angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
-
     var idDomainPatterns = [];
+
     async function initializeView() {
         try {
             var pattern = await SanteDB.resources.identityDomain.findAsync({ "validation": "!null", "scope": EntityClassKeys.Patient, "isUnique": true }, "fastView");
+            
             if (pattern.resource) {
                 idDomainPatterns = pattern.resource.map(o => new RegExp(o.validation));
 
                 // If the user enters a value that matches an identifier domain pattern use it
                 $scope.$watch("search.value", async function (n, o) {
                     if (n && n != o && idDomainPatterns.find(o => o.test(n))) {
-
                         // Test if there is only one result then load it - TODO: 
                         try {
                             var resCount = await SanteDB.resources.patient.findAsync({ _count: 1, _includeTotal: true, "identifier.value": n }, "fastView");
+
                             if (resCount.totalResults == 1) {
                                 SanteDB.application.callResourceViewer("Patient", null, { id: resCount.resource[0].id });
                             }
                             else {
+                                
                                 $timeout(() => performSearch({ value: n }));
                             }
                         }
                         catch (e) {
 
                         }
-
                     }
                 });
-
             }
 
             // set focus to search
@@ -110,7 +131,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     initializeView();
 
     // Bind any common scope searching functions to the scope
-    bindSearchScopeCommonFunctions($scope, $state);
+    bindSearchScopeCommonFunctions($scope, $state, $timeout);
 
     // Initial view
     $scope.search = {
@@ -124,7 +145,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     } else {
         $scope.goSearch = function (searchForm, upstream) {
             if (searchForm.$invalid) return;
-            $state.go("santedb-emr.patient.search", { q: $scope.search.value, o: upstream === true });
+            $state.go("santedb-emr.patient.search", { q: $scope.search.value });
         }
     }
 
@@ -133,11 +154,9 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
         $scope.filter = {
             _any: search.value,
             _upstream: upstream,
-            _viewModel: 'fastview',
             _orderBy: 'modifiedOn:desc'
         };
     }
-
 
     $scope.searchLocal = function (searchForm) {
         if (searchForm.$invalid) return;
@@ -146,6 +165,10 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
 
     $scope.searchOnline = function () {
         performSearch($scope.search, true);
+    }
+
+    $scope.navigateToSRef = (sRef) => {
+        $state.go(sRef); 
     }
 
     $scope.scanSearch = async function () {
@@ -173,7 +196,7 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
     .controller('EmrAdvancedPatientSearchController', ["$scope", "$rootScope", "$state", "$timeout", "$stateParams", function ($scope, $rootScope, $state, $timeout, $stateParams) {
 
         // Bind any common scope searching functions to the scope
-        bindSearchScopeCommonFunctions($scope, $state);
+        bindSearchScopeCommonFunctions($scope, $state, $timeout);
 
         $scope.$watch("searchForm", function (n, o) {
             if (n && !o || n && n.$pristine && !n.$invalid) {
@@ -271,11 +294,11 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
                 _viewModel: 'fastview',
                 _orderBy: 'modifiedOn:desc',
                 _upstream: upstream
-            };
-
+            };            
 
             // Prepare the search parameters
             var searchObject = angular.copy($scope.search);
+
             Object.keys(searchObject)
                 .filter(f => !f.startsWith('_'))
                 .forEach(f => {
@@ -342,15 +365,15 @@ angular.module('santedb').controller('EmrPatientSearchController', ["$scope", "$
             if ($scope.searchForm.$invalid && !$scope.validateParameterCount()) {
                 return;
             }
+            
             performSearch($scope.search, true);
         }
 
-        $scope.searchLocal = function (searchForm) {
+        $scope.searchLocal = function (searchForm) {            
             if (searchForm.$invalid && !$scope.validateParameterCount()) {
                 return;
             }
 
             performSearch($scope.search);
         }
-
     }]);

@@ -18,7 +18,11 @@
         "RecordTarget": [{
             "player": "{{ $recordTargetId }}"
         }],
-            "Product": [{}]
+        "Product": [
+            {
+                
+            }
+        ]
     },
     "tag": {
       "$cascade:HasComponent:*" : ["RecordTarget","Authororiginator","Location"]

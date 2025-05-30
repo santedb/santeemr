@@ -1,4 +1,21 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container p-0">
+<!--
+ - Copyright 2021-2025 SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ - Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ - Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ -
+ - Licensed under the Apache License, Version 2.0 (the "License"); you
+ - may not use this file except in compliance with the License. You may
+ - obtain a copy of the License at
+ -
+ - http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ - License for the specific language governing permissions and limitations under
+ - the License.
+ -->
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container">
     <sdb:widget order="100" name="org.santedb.emr.widget.patient.register.mother" headerClass="alert-info" size="Large"
         type="Panel" context="org.santedb.emr.patient.register">
         <sdb:icon>fas fa-person-breastfeeding</sdb:icon>
@@ -7,119 +24,127 @@
     </sdb:widget>
 
     <div ng-controller="EmrPatientRegisterWidgetController">
-
-        <div class="form-group row">
-            <label class="offset-md-3 col-md-9 col-sm-12 checkbox-container">
+        <!-- Is Unknown -->
+        <div class="form-group row mb-2">
+            <label class="offset-md-3 col-md-8 col-sm-12 mb-0">
                 <input type="checkbox" class="checkbox-control" ng-model="scopedObject.relationship.Mother[0].operation"
                     ng-true-value="'Delete'" ng-false-value="'InsertOrUpdate'" />
-                <span></span>
-                {{ 'ui.emr.patient.register.mother.unknown' | i18n }}
+
+                <span></span> {{ 'ui.emr.patient.register.mother.unknown' | i18n }}
             </label>
         </div>
+        
         <div ng-if="scopedObject.relationship.Mother[0].operation != 'Delete'">
-            <identifier-list-edit owner-form="panel.editForm" name="motherId"
-                model="scopedObject.relationship.Mother[0].targetModel.identifier"
-                create-mode="true"
-                container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
-
-            <name-edit is-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
-                name="mothersName" model="scopedObject.relationship.Mother[0].targetModel.name" />
-
-            <div class="form-group row">
-                <label class="col-sm-12 col-md-3 control-label required">{{
-                    scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1 ?
-                    'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}
-                    <hint-popover hint-title="ui.model.patient.dateOfBirth" />
-                </label>
-                <div class="col-sm-12 col-md-9">
-                    <div class="input-group m-0">
-                        <div class="input-group mb-0">
-                            <div class="input-group-prepend">
-                                <label class="input-group-text">
-                                    <div class="checkbox-container">
-                                        <input type="checkbox"
-                                            ng-model="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision"
-                                            ng-true-value="1" ng-false-value="3" class="checkbox-control" />
-                                        <span></span>
-                                        {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
-                                    </div>
-                                </label>
-                            </div>
-                            <input name="motherAge" ng-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
-                                ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1"
-                                ng-change="scopedObject.relationship.Mother[0].targetModel.dateOfBirth = ageToDate(scopedObject.relationship.Mother[0].targetModel.age)"
-                                type="number" ng-model="scopedObject.relationship.Mother[0].targetModel.age" min="0"
-                                class="form-control" />
-                            <input name="motherDob" ng-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
-                                ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 3"
-                                ng-change="scopedObject.relationship.Mother[0].targetModel.age = dateToAge(scopedObject.relationship.Mother[0].targetModel.dateOfBirth)"
-                                type="date" ng-model="scopedObject.relationship.Mother[0].targetModel.dateOfBirth"
-                                min="1900-01-01" max="{{ scopedObject.dateOfBirth | date: 'yyyy-MM-dd' }}"
-                                class="form-control" />
-                            <div class="input-group-append"
-                                ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1">
-                                <span class="input-group-text">{{ 'ui.emr.patient.ageInYears' | i18n }}</span>
-                                <span class="input-group-text">{{ 'ui.model.patient.dateOfBirth.approx' | i18n }} {{
-                                    scopedObject.relationship.Mother[0].targetModel.dateOfBirth | extDate:
-                                    scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision }}</span>
-                            </div>
-                            <div class="input-group-append"
-                                ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 3">
-                                <span class="input-group-text">{{
-                                    scopedObject.relationship.Mother[0].targetModel.dateOfBirth  | age }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-danger d-none d-sm-block"
-                        ng-if="panel.editForm['motherDob'].$invalid || panel.editForm['motherAge'].$invalid">
-                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group row">
+            <!-- Deceased Details -->
+            <div class="form-group row mb-2">
+                <!-- Is Deceased -->
                 <label class="col-md-3 col-sm-12 control-label">
-                    {{ 'ui.model.person.deceasedDate' | i18n }} <hint-popover
-                        hint-title="ui.model.person.deceasedDate" />
+                    {{ 'ui.model.person.deceasedDate' | i18n }} <hint-popover hint-title="ui.model.person.deceasedDate" />
                 </label>
-                <div class="col-md-9 col-sm-12">
-                    <label class="checkbox-container mt-2">
-                        <input type="checkbox"
-                            ng-model="scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
-                            class="checkbox-control" />
+
+                <div class="col-md-8 col-sm-12">
+                    <label class="checkbox-container">
+                        <input ng-model="scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
+                            class="checkbox-control" type="checkbox" />
+
                         <span></span> {{ 'ui.model.person.deceasedIndicator' | i18n }}
                     </label>
                 </div>
-                <div class="col-md-9 col-sm-12 offset-md-3"
+
+                <div class="col-md-8 col-sm-12 offset-md-3"
                     ng-if="scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
                     <div class="input-group">
 
                         <input ng-disabled="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
-                            class="form-control" type="date" name="motherDeceasedDate"
+                            class="form-control h-100" type="date" name="motherDeceasedDate"
                             ng-model="scopedObject.relationship.Mother[0].targetModel.deceasedDate"
                             ng-required="scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
-                            min="{{ scopedObject.dateOfBirth | date: 'yyyy-MM-dd' }}"
                             max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" />
+
                         <div class="input-group-append">
-                            <label class="input-group-text checkbox-container">
-                                    <input type="checkbox"
-                                        ng-model="scopedObject.relationship.Mother[0].targetModel.deceasedDatePrecision"
-                                        ng-true-value="1" ng-false-value="3" class="checkbox-control" />
-                                    <span></span>
-                                {{ 'ui.model.date.approx' | i18n }}
+                            <label class="input-group-text checkbox-container py-0">
+                                <input type="checkbox"
+                                    ng-model="scopedObject.relationship.Mother[0].targetModel.deceasedDatePrecision"
+                                    ng-true-value="1" ng-false-value="3" class="checkbox-control" />
+                                <span style="top: 0;"></span> {{ 'ui.model.date.approx' | i18n }}
                             </label>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- Identifiers -->
+            <identifier-list-edit owner-form="panel.editForm" name="motherId"
+                model="scopedObject.relationship.Mother[0].targetModel.identifier"
+                create-mode="true"
+                container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
+
+            <!-- Name -->
+            <name-edit is-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
+                name="mothersName" model="scopedObject.relationship.Mother[0].targetModel.name" />
+
+            <!-- Date of Birth -->
             <div class="form-group row">
-                <label class="col-md-3 col-sm-12 control-label">
-                    {{ 'ui.model.entity.address.HomeAddress' | i18n }} <hint-popover
-                        hint-title="ui.model.entity.address.HomeAddress" />
+                <label class="col-sm-12 col-md-3 control-label required">
+                    {{ scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1 ? 'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}
+                    <hint-popover hint-title="ui.model.patient.dateOfBirth" />
                 </label>
-                <div class="col-md-9 col-sm-12">
-                    <label class="checkbox-container mt-2">
+
+                <div class="col-sm-12 col-md-8">
+                    <div class="input-group m-0">
+                        <div class="input-group mb-0">
+                            <div class="input-group-prepend">
+                                <label class="input-group-text pb-1 pt-0">
+                                    <div class="checkbox-container">
+                                        <input type="checkbox"
+                                            ng-model="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision"
+                                            ng-true-value="1" ng-false-value="3" class="checkbox-control" />
+                                        <span></span> {{ 'ui.model.patient.dateOfBirth.approx' | i18n }}
+                                    </div>
+                                </label>
+                            </div>
+
+                            <input name="motherAge" ng-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
+                                ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1"
+                                ng-change="scopedObject.relationship.Mother[0].targetModel.dateOfBirth = ageToDate(scopedObject.relationship.Mother[0].targetModel.age)"
+                                type="number" ng-model="scopedObject.relationship.Mother[0].targetModel.age" min="0"
+                                class="form-control h-100" />
+
+                            <input name="motherDob" ng-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
+                                ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 3"
+                                ng-change="scopedObject.relationship.Mother[0].targetModel.age = dateToAge(scopedObject.relationship.Mother[0].targetModel.dateOfBirth)"
+                                type="date" ng-model="scopedObject.relationship.Mother[0].targetModel.dateOfBirth"
+                                min="1900-01-01" max="{{ scopedObject.dateOfBirth | date: 'yyyy-MM-dd' }}"
+                                class="form-control h-100" />
+
+                            <div class="input-group-append" ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 1">
+                                <span class="input-group-text">
+                                    {{ 'ui.emr.patient.ageInYears' | i18n }}
+                                </span>
+                            </div>
+
+                            <div class="input-group-append" ng-if="scopedObject.relationship.Mother[0].targetModel.dateOfBirthPrecision == 3">
+                                <span class="input-group-text">
+                                    {{ scopedObject.relationship.Mother[0].targetModel.dateOfBirth  | age }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="text-danger d-none d-sm-block" ng-if="panel.editForm['motherDob'].$invalid || panel.editForm['motherAge'].$invalid">
+                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Is Address Different Than Patient -->
+            <div class="form-group row mb-2">
+                <label class="col-md-3 col-sm-12 control-label">
+                    {{ 'ui.model.entity.address.HomeAddress' | i18n }} <hint-popover hint-title="ui.model.entity.address.HomeAddress" />
+                </label>
+
+                <div class="col-md-8 col-sm-12">
+                    <label class="checkbox-container">
                         <input type="checkbox" class="checkbox-control"
                             ng-model="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress[0]._differentThanPatient" />
                         <span></span>
@@ -127,81 +152,105 @@
                     </label>
                 </div>
             </div>
-            <address-edit
-                ng-if="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress[0]._differentThanPatient"
-                is-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" model="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress"
-                name="motherAddress" no-type="true" owner-form="editForm" no-add="true" simple-entry="true" />
 
-            <telecom-edit owner-form="panel.editForm" name="mothersTelecom"
-                model="scopedObject.relationship.Mother[0].targetModel.telecom" allowed-types="[ 'MobileContact' ]"
-                required-types="[ !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator ? 'MobileContact' : null ]" />
+            <!-- Address -->
+            <address-edit ng-if="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress[0]._differentThanPatient"
+                is-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" 
+                model="scopedObject.relationship.Mother[0].targetModel.address.HomeAddress"
+                owner-form="editForm" 
+                name="motherAddress" 
+                simple-entry="true" 
+                no-type="true" 
+                no-add="true" />
 
+            <!-- Telecom -->
+            <div class="form-group row">
+                <div class="col">
+                    <telecom-edit owner-form="panel.editForm" name="mothersTelecom"
+                        model="scopedObject.relationship.Mother[0].targetModel.telecom" allowed-types="[ 'MobileContact' ]"
+                        required-types="[ !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator ? 'MobileContact' : null ]" />
+                </div>
+            </div>
+
+            <!-- Occupation -->
             <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.occupation'] != 'true'">
-                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.occupation' | i18n }} <hint-popover
-                        hint-title="ui.model.person.occupation" /></label>
-                <div class="col-sm-12 col-md-9">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.person.occupation' | i18n }} <hint-popover hint-title="ui.model.person.occupation" />
+                </label>
+
+                <div class="col-sm-12 col-md-8">
                     <concept-select name="motherOccupation" ng-required="$root.system.config.application.setting['required.person.occupation'] == 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" concept-set="'OccupationType'" ng-model="scopedObject.relationship.Mother[0].targetModel.occupation" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+                    
                     <div class="text-danger" ng-if="panel.editForm.motherOccupation.$error['required']">
                         <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                     </div>
                 </div>
             </div>
             
+            <!-- VIP Status -->
             <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true'">
-                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.vipStatus' | i18n }} <hint-popover
-                        hint-title="ui.model.person.vipStatus" /></label>
-                <div class="col-sm-12 col-md-9">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.person.vipStatus' | i18n }} <hint-popover hint-title="ui.model.person.vipStatus" />
+                </label>
+
+                <div class="col-sm-12 col-md-8">
                     <concept-select name="motherVipStatus" concept-set="'VeryImportantPersonStatus'" ng-model="scopedObject.relationship.Mother[0].targetModel.vipStatus" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
                 </div>
             </div>
 
+            <!-- Nationality -->
             <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.nationality'] != 'true'">
-                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.nationality' | i18n }} <hint-popover
-                        hint-title="ui.model.person.nationality" /></label>
-                <div class="col-sm-12 col-md-9">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.person.nationality' | i18n }} <hint-popover hint-title="ui.model.person.nationality" />
+                </label>
+
+                <div class="col-sm-12 col-md-8">
                     <entity-search type="'Concept'"
                         name="motherNationality"
                         ng-model="scopedObject.relationship.Mother[0].targetModel.nationality"
                         ng-required="$root.system.config.application.setting['forbid.person.nationality'] == 'required' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                         search-field="'name.value'" filter="{ 'conceptSet': '7f4e7366-a0e6-4a5e-b2b1-82187447e792' }" />
-                        <div class="text-danger" ng-if="panel.editForm.motherNationality.$error['required']">
-                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                        </div>
+                            <div class="text-danger" ng-if="panel.editForm.motherNationality.$error['required']">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                            </div>
                 </div>
             </div>
 
+            <!-- Citizenship -->
             <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.citizenship'] != 'true'">
-                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.relationship.Citizen' | i18n
-                    }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" /></label>
-                <div class="col-sm-12 col-md-9">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.entity.relationship.Citizen' | i18n }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" />
+                </label>
+
+                <div class="col-sm-12 col-md-8">
                     <entity-search type="'Place'" ng-model="scopedObject.relationship.Mother[0].targetModel.relationship.Citizen"
                         multiple="multiple" search-field="'name.component.value'" value-property="'target'"
                         name="motherCitizen"
                         ng-required="$root.system.config.application.setting['required.person.citizenship'] == 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                         filter="{ 'classConcept': '48b2ffb3-07db-47ba-ad73-fc8fb8502471' }" />
-                        <div class="text-danger" ng-if="panel.editForm.motherCitizen.$error['required']">
-                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                        </div>
+                            <div class="text-danger" ng-if="panel.editForm.motherCitizen.$error['required']">
+                                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                            </div>
                 </div>
             </div>
 
-            
+            <!-- Employers -->
             <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true'">
-                <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Employee' | i18n
-                    }} <hint-popover hint-title="ui.model.person.relationship.Employee" /></label>
-                <div class="col-sm-12 col-md-9">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.person.relationship.Employee' | i18n }} <hint-popover hint-title="ui.model.person.relationship.Employee" />
+                </label>
+
+                <div class="col-sm-12 col-md-8">
                     <entity-search type="'Organization'" ng-model="scopedObject.relationship.Mother[0].targetModel.relationship.Employee"
                         multiple="multiple" search-field="'name.component.value'" value-property="'target'"
                         name="motherEmployee" 
-                        ng-required="$root.system.config.application.setting['required.person.employee'] == 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
-                        />
+                        ng-required="$root.system.config.application.setting['required.person.employee'] == 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" />
+                        
                         <div class="text-danger" ng-if="panel.editForm.motherEmployee.$error['required']">
                             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                         </div>
                 </div>
             </div>
-
         </div>
     </div>
-
 </div>

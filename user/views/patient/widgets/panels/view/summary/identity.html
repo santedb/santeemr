@@ -1,55 +1,80 @@
+<!--
+ - Copyright 2021-2025 SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ - Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ - Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ -
+ - Licensed under the Apache License, Version 2.0 (the "License"); you
+ - may not use this file except in compliance with the License. You may
+ - obtain a copy of the License at
+ -
+ - http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ - License for the specific language governing permissions and limitations under
+ - the License.
+ -->
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container p-0">
-    <sdb:script>~/controllers/patient/widgets/demographics.js</sdb:script> 
+    <sdb:script>~/controllers/patient/widgets/demographics.js</sdb:script>
     <sdb:widget order="1000" name="org.santedb.emr.widget.patient.identity" headerClass="alert-info" size="Medium"
         type="Panel" context="org.santedb.emr.patient.view.dashboard">
         <sdb:icon>fas fa-id-card-alt</sdb:icon>
-        <sdb:description lang="en">Shows identification for the patient, and allows for generating a barcode</sdb:description>
-        <sdb:view type="Edit">
-            <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.1</sdb:demand>
-        </sdb:view>
+        <sdb:description lang="en">Shows identification for the patient, and allows for generating a barcode
+        </sdb:description>
+        <sdb:views>
+            <sdb:view type="Edit">
+                <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.1</sdb:demand>
+            </sdb:view>
+        </sdb:views>
     </sdb:widget>
 
     <div ng-controller="EmrPatientViewWidgetController">
-        <div ng-repeat="(domain, idgrp) in scopedObject.identifier" ng-if="panel.view != 'Edit'">
+        <div ng-repeat="(domain, idgrp) in scopedObject.identifier" ng-if="panel.view != 'Edit'" class="mb-3">
             <div class="card border-info m-0 w-100" ng-repeat="id in idgrp">
                 <div class="card-body">
-                    <h5 class="card-title p-0 m-0">{{ id.value }} <small class="text-muted">{{ id.domainModel.name }}</small> 
-                    <button type="button" class="float-right btn btn-outline-primary" ng-click="showBarcode(domain)"><i class="fas fa-barcode fa-fw"></i></button></h5>
+                    <h5 class="card-title p-0 m-0">{{ id.value }} <small class="text-muted">{{ id.domainModel.name
+                            }}</small>
+                        <button type="button" class="float-right btn btn-outline-primary"
+                            ng-click="showBarcode(domain)"><i class="fas fa-barcode fa-fw"></i></button>
+                    </h5>
                 </div>
             </div>
         </div>
-        <form autocomplete="off" ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)"
-            method="dialog" novalidate="novalidate">
-            <identifier-list-edit owner-form="panel.editForm" model="scopedObject.identifier"
-                container-class="scopedObject.classConcept" name="patientIdentifier"  />
+
+        <form autocomplete="off" ng-if="panel.view == 'Edit'" name="panel.editForm" ng-submit="update(panel.editForm)" method="dialog" novalidate="novalidate">
+            <identifier-list-edit container-class="scopedObject.classConcept" 
+                model="editObject.identifier"
+                owner-form="panel.editForm" 
+                name="patientIdentifier"  />
         </form>
 
-        <div class="modal" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="barcodeModalTitle"
-            aria-hidden="true" data-backdrop="static">
+        <div class="modal" id="barcodeModal" tabindex="-1" role="dialog" aria-labelledby="barcodeModalTitle" aria-hidden="true" data-backdrop="static">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="barcodeModalTitle">
                             <i class="fa fa-fw fa-barcode"></i> {{ 'ui.barcode' | i18n }}
                         </h5>
+
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">
                                 <i class="fa fa-times"></i>
                             </span>
                         </button>
                     </div>
-                    <div class="modal-body" ng-if="bcDomain">
-                        <img src="/hdsi/Patient/{{scopedObject.id}}/_code?_format=code128&amp;_domain={{bcDomain}}" style="width:100%"/>
 
+                    <div class="modal-body" ng-if="bcDomain">
+                        <img ng-src="/hdsi/Patient/{{scopedObject.id}}/_code?_format=code128&amp;_domain={{bcDomain}}" style="width:100%"/>
                     </div>
+
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">
-                            <i class="fa fa-times"></i> {{ 'ui.action.close' | i18n }}</button>
+                            <i class="fa fa-times"></i> {{ 'ui.action.close' | i18n }}
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </div>

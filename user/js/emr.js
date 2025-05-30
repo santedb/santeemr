@@ -1,4 +1,22 @@
 /// <reference path="../.ref/js/santedb.js" />
+/*
+ * Copyright (C) 2021 - 2025, SanteSuite Inc. and the SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ * Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ * Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you
+ * may not use this file except in compliance with the License. You may
+ * obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
+ * the License.
+ *
+ */
 
 // Convert an age to a date
 function ageToDate(age, onDate) {
@@ -69,7 +87,7 @@ function SanteEMRWrapper() {
     function _setVisitPerformers(submissionBundle, thisUserId, thisUsersParticipationType) {
 
         // For each entry which is being updated set the performer
-        submissionBundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1).forEach(act => {
+        submissionBundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1 && act.statusConcept == StatusKeys.Completed).forEach(act => {
             act.participation = act.participation || {};
 
             var participationType = "Performer";
@@ -80,6 +98,9 @@ function SanteEMRWrapper() {
                 
                 // We already have a performer
                 if(act.participation.Performer) {
+                    if(act.participation.Performer.find(p=>p.player == thisUserId)) {
+                        return;
+                    }
                     participationType = "SecondaryPerformer";
                 }
                 if (act.tag && act.tag.isBackEntry && act.tag.isBackEntry[0] != "True") {
@@ -187,8 +208,8 @@ function SanteEMRWrapper() {
      * @param {Function} afterAction After the modal closes, the action to execute
      */
     this.showDischarge = async function (encounter, $timeout, afterAction) {
-
         var dischargeModal = angular.element("#dischargeModal");
+
         if (dischargeModal == null) {
             console.warn("Have not included the discharge-modal.html file");
             return;
@@ -198,21 +219,26 @@ function SanteEMRWrapper() {
             var analyzeResult = await SanteEMR.analyzeVisit(encounter);
             var scope = dischargeModal.scope();
             var enc = angular.copy(encounter);
-            enc._tmpId = SanteDB.application.newGuid();
+            enc._tmpId = SanteDB.application.newGuid();            
             
             if(afterAction) {
                 $("#dischargeModal").on("hidden.bs.modal", function(e) {
-                    if(scope.encounter._persisted) {
+                    const isAfterActionDeferred = !!$(this).data('deferAction');       
+                    $(this).removeData('deferAction');             
+
+                    if(!isAfterActionDeferred && scope.encounter._persisted) {
                         afterAction();
                     }
-                    $("#dischargeModal").off("hidden.bs.modal");
 
+                    $("#dischargeModal").off("hidden.bs.modal");
                 });
             }
+
             $timeout(() => {
                 scope.encounter = enc;
                 scope.issues = analyzeResult.issue;
                 $("#dischargeModal").modal('show');
+                $("#dischargeModal").data('after-action', afterAction);
             });
 
         }
@@ -235,6 +261,35 @@ function SanteEMRWrapper() {
 
         requeueModal.scope().encounter = encounter;
         $("#returnModal").modal('show');
+    }
+
+    /** 
+     * @method
+     * @memberof SanteEMRWrapper
+     * @param {string} encounter The encounter object to show details for
+     */
+    this.showAppointmentBooking = function (encounter, $timeout, afterAction) {
+        var appointmentBookingModal = angular.element("#appointmentBookingModal");
+        var scope = appointmentBookingModal.scope();
+
+        if (appointmentBookingModal == null) {
+            console.warn("Have not included the return-waiting-modal.html file");
+            return;
+        }
+        
+        if(afterAction) {
+            $("#appointmentBookingModal").on("hidden.bs.modal", function(e) {
+                afterAction();
+               
+                $("#appointmentBookingModal").off("hidden.bs.modal");
+            });
+        }
+
+        $timeout(() => {
+            scope.encounter = encounter;
+            $("#appointmentBookingModal").modal('show');
+            $("#appointmentBookingModal").data('after-action', afterAction);
+        });
     }
 
     /**
@@ -262,7 +317,7 @@ function SanteEMRWrapper() {
      * @param {string} templateId The template mnemonic to resolve the icon for
      * @returns The resolved icon 
      */
-    this.resolveTemplateIcon = function (templateId) {
+    this.resolveTemplateIcon = function (templateId) {        
         var template = SanteDB.application.getTemplateMetadata(templateId);
         if (template) {
             return template.icon;
@@ -316,9 +371,10 @@ function SanteEMRWrapper() {
      * @param {ActRelationship} fulfills An array of {@link:ActRelationship} objects which represent the encounter in the care plan that this visit fulfills
      * @param {ActRelationship} fulfillmentComponents An array of {@link:ActRelationship} objects which reprensets the proposals from the stored care plan which this visit is fulfilling
      * @param {ActParticipation} informantPtcpt The informant / guardian on the act
+     * @param {PatientEncounter} templateData Data which should be copied / pushed to the template
      * @returns {PatientEncounter} The constructed and saved {@link:PatientEncounter}
      */
-    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt) {
+    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt, templateData) {
         try {
 
             var submission = new Bundle({ resource: [] });
@@ -331,6 +387,15 @@ function SanteEMRWrapper() {
             });
 
             var encounter = new PatientEncounter(template);
+
+            // Copy fields 
+            if(templateData) {
+                Object.keys(templateData).forEach(field => {
+                    var tplValue = templateData[field];
+                    encounter[field] = tplValue;
+                });
+            }
+
             submission.correlationId = encounter.id = encounter.id || SanteDB.application.newGuid();
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
@@ -352,7 +417,7 @@ function SanteEMRWrapper() {
                 _includeBackentry: true
             }, undefined, "min");
 
-            actions.relationship.HasComponent.forEach(comp => {
+            await Promise.all(actions.relationship.HasComponent.map(async comp => {
                 var ar = new ActRelationship({
                     relationshipType: comp.relationshipType,
                     target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
@@ -366,10 +431,11 @@ function SanteEMRWrapper() {
                     comp.targetModel.actTime = comp.targetModel.startTime = encounter.startTime;
                 }
 
+                
                 comp.targetModel.id = comp.targetModel.id || ar.target;
-                comp.targetModel.moodConcept = encounter.moodConcept;
+                comp.targetModel.moodConcept = encounter.moodConcept; // Ensure the mood concept matches the mood concept of the visit
                 delete comp.targetModel.moodConceptModel;
-                comp.targetModel.statusConcept = encounter.statusConcept;
+                comp.targetModel.statusConcept = encounter.statusConcept; // Ensure that the status concept of the action matches the visit
                 delete comp.targetModel.statusConceptModel;
 
                 // Fulfillment for the target model
@@ -385,8 +451,32 @@ function SanteEMRWrapper() {
                             target: fulfillment.target
                         }));
                     }
+                    else {
+                        try {
+                            const fulfillment = await SanteDB.resources[comp.targetModel.$type.toCamelCase()].findAsync({
+                                _includeTotal: false, 
+                                moodConcept: ActMoodKeys.Propose,
+                                statusConcept: StatusKeys.Active,
+                                typeConcept: comp.targetModel.typeConcept,
+                                "protocol.protocol" : comp.targetModel.protocol[0].protocol,
+                                "protocol.sequence": comp.targetModel.protocol[0].sequence,
+                                _count: 1
+                            }, "min");
+
+                            if(fulfillment.resource) {
+                                comp.targetModel.relationship = comp.targetModel.relationship || {};
+                                comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
+                                comp.targetModel.relationship.Fulfills.push(new ActRelationship({
+                                    target: fulfillment.resource[0].id
+                                }));
+                            }
+                        }
+                        catch(e) {
+                            console.warn("Could not fetch fulfillment target", e);
+                        }
+                    }
                 }
-            });
+            }));
 
             if (informantPtcpt) {
                 encounter.participation = encounter.participation || {};
@@ -433,7 +523,7 @@ function SanteEMRWrapper() {
                 _includeTotal: false,
                 _count: 1
             }, "fastview");
-
+            
             if (cps.resource) {
                 return cps.resource[0];
             }
@@ -461,4 +551,38 @@ Patient.prototype.age = function (measure) {
 
 Patient.prototype.hasCondition = function (conditionTypeConcept) {
 
+}
+
+
+
+$(window).bind("touchstart", function(downEvent) {
+    var downTouch = downEvent.originalEvent.touches[0];
+    var direction = { x: 0, y: 0 };
+
+    $(window).bind("touchmove", function(moveEvent) {
+        var moveTouch = moveEvent.originalEvent.touches[0];
+        direction.x = moveTouch.pageX > downTouch.pageX ? 1 : -1;
+        direction.y = moveTouch.pageY > downTouch.pageY ? 1 : -1;
+    });
+
+    $(window).bind("touchend", function(endEvent) {
+        $(window).unbind("touchmove");
+        $(window).unbind("touchend");
+
+        $(downEvent.target).trigger("swipe", { 
+            swipeLeft: direction.x < 0, 
+            swipeRight: direction.x > 0,
+            swipeDown: direction.y > 0, 
+            swipeUp: direction.y < 0
+        });
+    
+    });
+
+})
+
+// Determine if this device is a touch device
+window.isTouchDevice = function() {
+    return (('ontouchstart' in window) ||
+     (navigator.maxTouchPoints > 0) ||
+     (navigator.msMaxTouchPoints > 0));
 }

@@ -55,6 +55,7 @@ input[type="checkbox"].checkbox-control~span {
     border: solid 1px #868e96;
     border-radius: 5px;
     margin:0em 0.25em 0em 0em;
+    top: 5px;
 }
 
 
@@ -84,8 +85,6 @@ input[type="radio"].checkbox-control~span {
 
 
 label.checkbox-container {
-    padding-left: 0.25em;
-    padding-top: 0.25em;
     position: relative;
 }
 
@@ -161,12 +160,14 @@ fieldset > legend {
 }
 
 div.search-card-relative {
-    border: solid 1px var(--secondary);
-    border-radius: 5px;
     padding: 0.25em
 }
 
 div.duplicate-list {
     max-height: 65vh; 
     overflow-y: scroll;
+}
+
+table {
+  border: 2px solid #dee2e6 !important;
 }

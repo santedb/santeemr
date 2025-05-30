@@ -1,4 +1,21 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container p-0">
+<!--
+ - Copyright 2021-2025 SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ - Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ - Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ -
+ - Licensed under the Apache License, Version 2.0 (the "License"); you
+ - may not use this file except in compliance with the License. You may
+ - obtain a copy of the License at
+ -
+ - http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ - License for the specific language governing permissions and limitations under
+ - the License.
+ -->
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container">
     <sdb:widget order="80" name="org.santedb.emr.widget.patient.register.facilities" headerClass="alert-info"
         size="Large" type="Panel" context="org.santedb.emr.patient.register">
         <sdb:icon>fas fa-hospital</sdb:icon>
@@ -6,43 +23,49 @@
     </sdb:widget>
 
     <div ng-controller="EmrPatientRegisterWidgetController">
-
+        <!-- Primary Facility -->
         <div class="form-group row">
             <label class="col-sm-12 col-md-3 control-label required">
-                {{ 'ui.model.patient.relationship.DedicatedServiceDeliveryLocation' | i18n }} <hint-popover
-                    hint-title="ui.model.patient.relationship.DedicatedServiceDeliveryLocation" />
+                {{ 'ui.model.patient.relationship.DedicatedServiceDeliveryLocation' | i18n }} <hint-popover hint-title="ui.model.patient.relationship.DedicatedServiceDeliveryLocation" />
             </label>
-            <div class="col-sm-12 col-md-9">
+
+            <div class="col-sm-12 col-md-8">
                 <entity-search type="'Place'" search-field="'name.component.value'"
-                    default-results="{ 'relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source' : scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
+                    default-results="{ 'relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source' : scopedObject.address.HomeAddress[0].component.PlaceRef[0], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
                     group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
                     filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }" 
                     required="required"
                     name="DedicatedServiceDeliveryLocation"
                     ng-model="scopedObject.relationship.DedicatedServiceDeliveryLocation[0].target" />
-                    <div class="text-danger" ng-if="panel.editForm.DedicatedServiceDeliveryLocation.$error['required']">
-                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                    </div>
+
+                <div class="text-danger" ng-if="panel.editForm.DedicatedServiceDeliveryLocation.$error['required']">
+                    <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
             </div>
         </div>
+
+        <!-- Incidental Facilities -->
         <div class="form-group row">
             <label class="col-sm-12 col-md-3 control-label">
-                {{ 'ui.model.patient.relationship.IncidentalServiceDeliveryLocation' | i18n }} <hint-popover
-                    hint-title="ui.model.patient.relationship.IncidentalServiceDeliveryLocation" />
+                {{ 'ui.model.patient.relationship.IncidentalServiceDeliveryLocation' | i18n }} <hint-popover hint-title="ui.model.patient.relationship.IncidentalServiceDeliveryLocation" />
             </label>
-            <div class="col-sm-12 col-md-9">
+
+            <div class="col-sm-12 col-md-8">
                 <entity-search type="'Place'" search-field="'name.component.value'"
-                    default-results="{ 'relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source' : [ scopedObject.address.HomeAddress[0].component._AddressPlaceRef[0], scopedObject.address.TemporaryAddress[0].component._AddressPlaceRef[0] ], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
+                    default-results="{ 'relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source' : [ scopedObject.address.HomeAddress[0].component.PlaceRef[0], scopedObject.address.TemporaryAddress[0].component.PlaceRef[0] ], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': scopedObject.address.HomeAddress[0].component.City[0] }"
                     group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
                     filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }" multiple="multiple"
                     ng-model="scopedObject.relationship.IncidentalServiceDeliveryLocation" value-property="'target'" />
             </div>
         </div>
+
+        <!-- Registration Facility -->
         <div class="form-group row">
             <label class="col-sm-12 col-md-3 control-label required">
                 {{ 'ui.model.patient.relationship.ServiceDeliveryLocation' | i18n }}
             </label>
-            <div class="col-sm-12 col-md-9">
+
+            <div class="col-sm-12 col-md-8">
                 <entity-search type="'Place'" search-field="'name.component.value'" readonly="readonly" disabled="disabled"
                     ng-model="scopedObject.relationship.ServiceDeliveryLocation[0].target" />
             </div>

@@ -1,3 +1,20 @@
+<!--
+ - Copyright 2021-2025 SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ - Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ - Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ -
+ - Licensed under the Apache License, Version 2.0 (the "License"); you
+ - may not use this file except in compliance with the License. You may
+ - obtain a copy of the License at
+ -
+ - http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ - License for the specific language governing permissions and limitations under
+ - the License.
+ -->
 <resources>
 
     <string name="ui.title">SanteEMR</string>
@@ -31,10 +48,9 @@
     <string name="ui.emr.patient.recent">Recent Patients</string>
     <string name="ui.emr.patient.search">Search Patients</string>
     <string name="ui.emr.patient.search.results">Results</string>
-    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address,
-        Identification, or Telephone</string>
+    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address, Identification, or Telephone</string>
     <string name="ui.emr.patient.search.online">Include patients from the central server (out of my
-        catchment)</string>
+catchment)</string>
     <string name="ui.emr.patient.upstream.edit">You cannot edit the details of this patient as they
         exist only on the central server. Download a copy of the resource first</string>
     <string name="ui.emr.patient.ageInYears">years old</string>
@@ -98,6 +114,7 @@
     <string name="ui.emr.patient.$other.differsFromPatient">Different address than the registrant</string>
     <string name="ui.emr.patient.register.upgradePerson">There is an existing non-patient record which will be upgraded when this entity is saved</string>
     <string name="ui.emr.patient.register.duplicateDetected">A patient with this identifier already exists - please validate your entry and try again</string>
+    <string name="ui.emr.patient.ageOrDate">Age or Date</string>
 
     <string name="ui.emr.search.online">Could not locate this data on the local environment, do you
         want to search the central server?</string>
@@ -106,6 +123,7 @@
     <string name="ui.emr.mail">Mail</string>
     <string name="ui.emr.mail.new">New Messages</string>
     <string name="ui.emr.alerts">Alerts</string>
+    <string name="ui.emr.ok">OK</string>
     <string name="ui.emr.navigateConfirmation">Are you sure you want to leave this page? Any changes
         will be lost</string>
     <!-- System Info View -->
@@ -116,6 +134,7 @@
     <string name="ui.emr.system.info.cpuInfo"># CPU Threads</string>
     <string name="ui.emr.system.info.memory">Used Memory</string>
     <string name="ui.emr.system.info.uptime">Uptime / Running Time</string>
+    <string name="ui.emr.system.info.device">Device Name</string>
     <string name="ui.emr.system.applets.title">Installed Applets</string>
     <string name="ui.emr.system.applets.name">Name</string>
     <string name="ui.emr.system.applets.version">Version</string>
@@ -403,6 +422,7 @@
      
      <string name="ui.emr.encounter.component.notTouched">It appears this action was not completed (or has incomplete data). If you end the visit you will be attributed as completing the action</string>
      <string name="ui.emr.encounter.discharge.bookAppointment.confirm">This patient has upcoming events in their careplan. Do you want to view the next scheduled appointment now?</string>
+     <string name="ui.emr.encounter.discharge.bookAppointment.title">Next Appointment Details</string>
      <!-- Visits -->
       <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
 
@@ -416,7 +436,7 @@
        <string name="ui.emr.patient.carePaths.recompute.success">Care pathway has been successfully re-computed</string>
        
        <!-- Search -->
-        <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Search by Name / Identifier</string>
+        <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Name or Identifier</string>
 
         <!-- Observation Labels -->
          <string name="ui.emr.observation.height.method">Method</string>
@@ -424,4 +444,10 @@
          <string name="ui.emr.observation.height.method.standing">Standing (Height)</string>
          <string name="org.santedb.emr.widget.patient.cdsAlerts">CDSS Alerts &amp; Notices</string>
         <string name="ui.emr.patient.header.cdssIssuesDetected">This Patient Has CDSS Alerts - Please Review Prior to Providing Care</string>
+
+        <!-- Dashboard -->
+        <string name="ui.emr.dashboard.title">My Dashboard</string>
+
+        <!-- Template -->
+         <string name="ui.emr.encounter.act.substanceAdministration.iz">Immunization</string>
 </resources>

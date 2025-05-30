@@ -1,3 +1,20 @@
+<!--
+ - Copyright 2021-2025 SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ - Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ - Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ -
+ - Licensed under the Apache License, Version 2.0 (the "License"); you
+ - may not use this file except in compliance with the License. You may
+ - obtain a copy of the License at
+ -
+ - http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ - License for the specific language governing permissions and limitations under
+ - the License.
+ -->
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid p-0">
     <sdb:script static="false">/org.santedb.uicore/js/santedb-ng-widget.js</sdb:script>
     <sdb:script static="false">~/controllers/patient/view.js</sdb:script>
@@ -14,8 +31,9 @@
     </div>
     <div ng-if="patient">
         <!-- #include virtual="/org.santedb.uicore/partials/patient/patientHeader.html" -->
-        <widget-tabs ng-if="!patient.tag.$upstream" context-name="'org.santedb.emr.patient.view'" scoped-object="patient"></widget-tabs>
+        <widget-tabs context-name="'org.santedb.emr.patient.view'" scoped-object="patient"></widget-tabs>
         <!-- #include virtual="~/partials/patient/patient-card.html" -->
     </div>
-    
+
+    <!-- #include virtual="~/partials/act/appointment-booking-modal.html" -->
 </div>

@@ -1,0 +1,7 @@
+basepath = "."
+locales = [ "en", "fr", "es", "sw" ]
+[[paths]]
+    reference="locales/en/admin.xml"
+    reference="locales/en/emr.xml"
+    l10n="locales/{locale}/admin.xml"
+    l10n="locales/{locale}/emr.xml"

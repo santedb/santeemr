@@ -1,5 +1,21 @@
-<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container p-0">
-
+<!--
+ - Copyright 2021-2025 SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ - Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ - Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ -
+ - Licensed under the Apache License, Version 2.0 (the "License"); you
+ - may not use this file except in compliance with the License. You may
+ - obtain a copy of the License at
+ -
+ - http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+ - WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ - License for the specific language governing permissions and limitations under
+ - the License.
+ -->
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container">
     <sdb:widget order="55" name="org.santedb.emr.widget.patient.register.extendedAttr" headerClass="alert-info"
         size="Large" type="Panel" context="org.santedb.emr.patient.register">
         <sdb:icon>fas fa-person-circle-exclamation</sdb:icon>
@@ -7,244 +23,285 @@
     </sdb:widget>
 
     <div ng-controller="EmrPatientRegisterWidgetController">
+        <!-- Occupation -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.occupation'] != 'true' &amp;&amp; scopedObject.age &gt;= 14">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.person.occupation' | i18n }} <hint-popover hint-title="ui.model.person.occupation" />
+            </label>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['forbid.person.occupation'] != 'true' &amp;&amp; scopedObject.age &gt;= 14">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.occupation' | i18n }} <hint-popover
-                    hint-title="ui.model.person.occupation" /></label>
-            <div class="col-sm-12 col-md-9">
+            <div class="col-sm-12 col-md-8">
                 <concept-select name="occupation" data-quality-id="occupation"
                     ng-required="$root.system.config.application.setting['required.person.occupation'] == 'true'"
                     concept-set="'OccupationType'" ng-model="scopedObject.occupation"
                     add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+
                 <div class="text-danger" ng-if="panel.editForm.occupation.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
+
                 <div class="text-danger"
                     ng-if="panel.editForm.occupation.$error['dq'] || panel.editForm.dataQualityIssues['occupation']"
                     ng-class="{ 'text-primary': scopedObject._dataQualityIssues['occupation'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['occupation'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['occupation'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['occupation'].dismiss()">{{ 'ui.action.dismiss' |
-                        i18n }}</button>
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['occupation'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['occupation'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
                 </div>
             </div>
         </div>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['allow.patient.educationLevel'] != 'false' &amp;&amp; scopedObject.age &gt;= 14">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.educationLevel' | i18n }} <hint-popover
-                    hint-title="ui.model.patient.educationLevel" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- Education -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['allow.patient.educationLevel'] != 'false' &amp;&amp; scopedObject.age &gt;= 14">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.patient.educationLevel' | i18n }} <hint-popover hint-title="ui.model.patient.educationLevel" />
+            </label>
+
+            <div class="col-sm-12 col-md-8">
                 <concept-select name="education" data-quality-id="education"
                     ng-required="$root.system.config.application.setting['required.patient.educationLevel'] == 'true'"
                     concept-set="'EducationLevel'" ng-model="scopedObject.educationLevel"
                     add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+
                 <div class="text-danger" ng-if="panel.editForm.education.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div class="text-danger"
-                    ng-if="panel.editForm.education.$error['dq'] || panel.editForm.dataQualityIssues['education']"
+
+                <div class="text-danger" ng-if="panel.editForm.education.$error['dq'] || panel.editForm.dataQualityIssues['education']"
                     ng-class="{ 'text-primary': scopedObject._dataQualityIssues['education'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['education'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['education'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['education'].dismiss()">{{ 'ui.action.dismiss' | i18n
-                        }}</button>
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['education'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['education'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
                 </div>
             </div>
         </div>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['allow.patient.maritalStatus']  != 'false' &amp;&amp; scopedObject.age &gt;= 14">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.maritalStatus' | i18n }} <hint-popover
-                    hint-title="ui.model.patient.maritalStatus" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- Marital Status -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['allow.patient.maritalStatus']  != 'false' &amp;&amp; scopedObject.age &gt;= 14">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.patient.maritalStatus' | i18n }} <hint-popover hint-title="ui.model.patient.maritalStatus" />
+            </label>
+            
+            <div class="col-sm-12 col-md-8">
                 <concept-select data-quality-id="maritalStatus" name="maritalStatus"
                     ng-required="$root.system.config.application.setting['required.patient.maritalStatus'] == 'true'"
                     concept-set="'MaritalStatus'" ng-model="scopedObject.maritalStatus"
                     add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+
                 <div class="text-danger" ng-if="panel.editForm.maritalStatus.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div class="text-danger"
-                    ng-if="panel.editForm.maritalStatus.$error['dq'] || panel.editForm.dataQualityIssues['maritalStatus']"
-                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['maritalStatus'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['maritalStatus'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['maritalStatus'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['maritalStatus'].dismiss()">{{ 'ui.action.dismiss' |
-                        i18n }}</button>
-                </div>
 
+                <div class="text-danger" ng-if="panel.editForm.maritalStatus.$error['dq'] || panel.editForm.dataQualityIssues['maritalStatus']"
+                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['maritalStatus'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['maritalStatus'].priority == 'Warning' }">
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['maritalStatus'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['maritalStatus'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
+                </div>
             </div>
         </div>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['allow.patient.livingArrangement'] != 'false'">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.livingArrangement' | i18n }}
-                <hint-popover hint-title="ui.model.patient.livingArrangement" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- Living Arrangements -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['allow.patient.livingArrangement'] != 'false'">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.patient.livingArrangement' | i18n }} <hint-popover hint-title="ui.model.patient.livingArrangement" />
+            </label>
+            
+            <div class="col-sm-12 col-md-8">
                 <concept-select data-quality-id="livingArrangement" name="livingArrangement"
                     ng-required="$root.system.config.application.setting['required.patient.livingArrangement'] == 'true'"
                     concept-set="'LivingArrangement'" ng-model="scopedObject.livingArrangement"
                     add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+
                 <div class="text-danger" ng-if="panel.editForm.livingArrangement.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div class="text-danger"
-                    ng-if="panel.editForm.livingArrangement.$error['dq'] || panel.editForm.dataQualityIssues['livingArrangement']"
-                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['livingArrangement'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['livingArrangement'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['livingArrangement'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['livingArrangement'].dismiss()">{{
-                        'ui.action.dismiss' | i18n }}</button>
 
+                <div class="text-danger" ng-if="panel.editForm.livingArrangement.$error['dq'] || panel.editForm.dataQualityIssues['livingArrangement']"
+                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['livingArrangement'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['livingArrangement'].priority == 'Warning' }">
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['livingArrangement'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['livingArrangement'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
                 </div>
             </div>
         </div>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['allow.patient.ethnicity'] != 'false'">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.ethnicity' | i18n }} <hint-popover
-                    hint-title="ui.model.patient.ethnicity" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- Ethnicity -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['allow.patient.ethnicity'] != 'false'">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.patient.ethnicity' | i18n }} <hint-popover hint-title="ui.model.patient.ethnicity" />
+            </label>
+
+            <div class="col-sm-12 col-md-8">
                 <concept-select name="ethnicity" data-quality-id="ethnicity"
                     ng-required="$root.system.config.application.setting['required.patient.ethnicity'] == 'true'"
                     concept-set="'Ethnicity'" ng-model="scopedObject.ethnicity"
                     add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+
                 <div class="text-danger" ng-if="panel.editForm.ethnicity.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div class="text-danger"
-                    ng-if="panel.editForm.ethnicity.$error['dq'] || panel.editForm.dataQualityIssues['ethnicity']"
+
+                <div class="text-danger" ng-if="panel.editForm.ethnicity.$error['dq'] || panel.editForm.dataQualityIssues['ethnicity']"
                     ng-class="{ 'text-primary': scopedObject._dataQualityIssues['ethnicity'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['ethnicity'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['ethnicity'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['ethnicity'].dismiss()">{{
-                        'ui.action.dismiss' | i18n }}</button>
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['ethnicity'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['ethnicity'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
                 </div>
             </div>
         </div>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['allow.patient.religion'] != 'false'">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.patient.religion' | i18n }} <hint-popover
-                    hint-title="ui.model.patient.religion" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- Religion -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['allow.patient.religion'] != 'false'">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.patient.religion' | i18n }} <hint-popover hint-title="ui.model.patient.religion" />
+            </label>
+            
+            <div class="col-sm-12 col-md-8">
                 <entity-search name="religion" data-quality-id="religion"
                     ng-required="$root.system.config.application.setting['required.patient.religion'] == 'true'"
                     type="'Concept'" filter="{ conceptSet : '2ec8f67f-0245-42ac-b310-566178b603c0' }"
                     ng-model="scopedObject.religion" class="form-control" />
+
                 <div class="text-danger" ng-if="panel.editForm.religion.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div class="text-danger"
-                    ng-if="panel.editForm.religion.$error['dq'] || panel.editForm.dataQualityIssues['religion']"
-                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['religion'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['religion'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['religion'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['religion'].dismiss()">{{
-                        'ui.action.dismiss' | i18n }}</button>
-                </div>
 
+                <div class="text-danger" ng-if="panel.editForm.religion.$error['dq'] || panel.editForm.dataQualityIssues['religion']"
+                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['religion'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['religion'].priority == 'Warning' }">
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['religion'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['religion'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
+                </div>
             </div>
         </div>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true'">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.vipStatus' | i18n }} <hint-popover
-                    hint-title="ui.model.person.vipStatus" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- VIP Status -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true'">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.person.vipStatus' | i18n }} <hint-popover hint-title="ui.model.person.vipStatus" />
+            </label>
+            
+            <div class="col-sm-12 col-md-8">
                 <concept-select name="vipStatus" concept-set="'VeryImportantPersonStatus'"
                     ng-model="scopedObject.vipStatus" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']"
                     class="form-control" data-quality-id="vipStatus" />
-                <div class="text-danger"
-                    ng-if="panel.editForm.vipStatus.$error['dq'] || panel.editForm.dataQualityIssues['vipStatus']"
+
+                <div class="text-danger" ng-if="panel.editForm.vipStatus.$error['dq'] || panel.editForm.dataQualityIssues['vipStatus']"
                     ng-class="{ 'text-primary': scopedObject._dataQualityIssues['vipStatus'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['vipStatus'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['vipStatus'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['vipStatus'].dismiss()">{{
-                        'ui.action.dismiss' | i18n }}</button>
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['vipStatus'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['vipStatus'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
                 </div>
             </div>
         </div>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['forbid.person.nationality'] != 'true'">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.nationality' | i18n }} <hint-popover
-                    hint-title="ui.model.person.nationality" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- Nationality -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.nationality'] != 'true'">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.person.nationality' | i18n }} <hint-popover hint-title="ui.model.person.nationality" />
+            </label>
+            
+            <div class="col-sm-12 col-md-8">
                 <entity-search data-quality-id="nationality" type="'Concept'" ng-model="scopedObject.nationality"
                     name="nationality"
                     ng-required="$root.system.config.application.setting['required.person.nationality'] == 'true'"
                     search-field="'name.value'" filter="{ 'conceptSet': '7f4e7366-a0e6-4a5e-b2b1-82187447e792' }" />
+
                 <div class="text-danger" ng-if="panel.editForm.nationality.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div class="text-danger"
-                    ng-if="panel.editForm.nationality.$error['dq'] || panel.editForm.dataQualityIssues['nationality']"
+
+                <div class="text-danger" ng-if="panel.editForm.nationality.$error['dq'] || panel.editForm.dataQualityIssues['nationality']"
                     ng-class="{ 'text-primary': scopedObject._dataQualityIssues['nationality'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['nationality'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['nationality'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['nationality'].dismiss()">{{
-                        'ui.action.dismiss' | i18n }}</button>
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['nationality'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['nationality'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
                 </div>
             </div>
         </div>
 
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['forbid.person.citizenship'] != 'true'">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.entity.relationship.Citizen' | i18n
-                }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- Citizenship -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.citizenship'] != 'true'">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.entity.relationship.Citizen' | i18n }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" />
+            </label>
+            
+            <div class="col-sm-12 col-md-8">
                 <entity-search type="'Place'" ng-model="scopedObject.relationship.Citizen"
                     ng-required="$root.system.config.application.setting['required.person.citizenship'] == 'true'"
                     name="citizenship" multiple="multiple" search-field="'name.component.value'"
                     data-quality-id="citizenship" value-property="'target'"
                     filter="{ 'classConcept': '48b2ffb3-07db-47ba-ad73-fc8fb8502471' }" />
+
                 <div class="text-danger" ng-if="panel.editForm.citizenship.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div class="text-danger"
-                    ng-if="panel.editForm.citizenship.$error['dq'] || panel.editForm.dataQualityIssues['citizenship']"
+
+                <div class="text-danger" ng-if="panel.editForm.citizenship.$error['dq'] || panel.editForm.dataQualityIssues['citizenship']"
                     ng-class="{ 'text-primary': scopedObject._dataQualityIssues['citizenship'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['citizenship'].priority == 'Warning' }">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['citizenship'].text } }} <button type="button"
-                        class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['citizenship'].dismiss()">{{
-                        'ui.action.dismiss' | i18n }}</button>
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['citizenship'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['citizenship'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
                 </div>
             </div>
         </div>
 
-        
-        <div class="form-group row"
-            ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true' &amp;&amp; scopedObject.age &gt;= 14">
-            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Employee' | i18n
-                }} <hint-popover hint-title="ui.model.person.relationship.Employee" /></label>
-            <div class="col-sm-12 col-md-9">
+        <!-- Employee Info -->
+        <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true' &amp;&amp; scopedObject.age &gt;= 14">
+            <label class="col-sm-12 col-md-3 control-label">
+                {{ 'ui.model.person.relationship.Employee' | i18n }} <hint-popover hint-title="ui.model.person.relationship.Employee" />
+            </label>
+            
+            <div class="col-sm-12 col-md-8">
                 <entity-search type="'Organization'" ng-model="scopedObject.relationship.Employee"
                     ng-required="$root.system.config.application.setting['required.person.employee'] == 'true'"
                     name="employee" multiple="multiple" search-field="'name.component.value'"
-                    data-quality-id="employee" value-property="'target'"
-                    />
+                    data-quality-id="employee" value-property="'target'" />
+
                 <div class="text-danger" ng-if="panel.editForm.employee.$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                <div class="text-danger"
-                    ng-if="panel.editForm.employee.$error['dq'] || panel.editForm.dataQualityIssues['employee']"
+
+                <div class="text-danger" ng-if="panel.editForm.employee.$error['dq'] || panel.editForm.dataQualityIssues['employee']"
                     ng-class="{ 'text-primary': scopedObject._dataQualityIssues['employee'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['employee'].priority == 'Warning' }">
+                        <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: scopedObject._dataQualityIssues['employee'].text } }} 
+                        <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['employee'].dismiss()">
+                            {{ 'ui.action.dismiss' | i18n }}
+                        </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group row"
+            ng-if="$root.system.config.application.setting['forbid.person.school'] != 'true'">
+            <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Student' | i18n
+                }} <hint-popover hint-title="ui.model.person.relationship.Student" /></label>
+            <div class="col-sm-12 col-md-8">
+                <entity-search type="'Organization'" ng-model="scopedObject.relationship.Student"
+                    ng-required="$root.system.config.application.setting['required.person.school'] == 'true' || scopedObject.age &gt;= 2 &amp;&amp; scopedObject.age &lt;= 17"
+                    name="student" multiple="multiple" search-field="'name.component.value'"
+                    data-quality-id="student" value-property="'target'" 
+                    filter="{ 'typeConcept.conceptSet' : 'a7474e08-4b3a-4f69-8928-b4e352d7c1d3' }"
+                    default-results="{ 'address.component[PlaceRef].value' : [ scopedObject.address.HomeAddress[0].component.PlaceRef[0] ] }"
+                    />
+                <div class="text-danger" ng-if="panel.editForm.student.$error['required']">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+                <div class="text-danger"
+                    ng-if="panel.editForm.student.$error['dq'] || panel.editForm.dataQualityIssues['student']"
+                    ng-class="{ 'text-primary': scopedObject._dataQualityIssues['student'].priority == 'Information', 'text-warning': scopedObject._dataQualityIssues['student'].priority == 'Warning' }">
                     <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
-                    scopedObject._dataQualityIssues['employee'].text } }} <button type="button"
+                    scopedObject._dataQualityIssues['student'].text } }} <button type="button"
                         class="btn btn-link btn-sm d-inline"
-                        ng-click="panel.editForm.dataQualityIssues['employee'].dismiss()">{{
+                        ng-click="panel.editForm.dataQualityIssues['student'].dismiss()">{{
                         'ui.action.dismiss' | i18n }}</button>
                 </div>
             </div>

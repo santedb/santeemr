@@ -1,23 +1,22 @@
 /// <reference path="../../.ref/js/santedb.js"/>
 /// <reference path="../../.ref/js/santedb-model.js"/>
 /*
- * Portions Copyright 2015-2019 Mohawk College of Applied Arts and Technology
- * Portions Copyright 2019-2019 SanteSuite Contributors (See NOTICE)
- * 
- * Licensed under the Apache License, Version 2.0 (the "License"); you 
- * may not use this file except in compliance with the License. You may 
- * obtain a copy of the License at 
- * 
- * http://www.apache.org/licenses/LICENSE-2.0 
- * 
+ * Copyright (C) 2021 - 2025, SanteSuite Inc. and the SanteSuite Contributors (See NOTICE.md for full copyright notices)
+ * Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
+ * Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you
+ * may not use this file except in compliance with the License. You may
+ * obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
- * License for the specific language governing permissions and limitations under 
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * License for the specific language governing permissions and limitations under
  * the License.
- * 
- * User: Justin Fyfe
- * Date: 2019-9-27
+ *
  */
 angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$rootScope", "$state", "$stateParams", "$timeout", function ($scope, $rootScope, $state, $stateParams, $timeout) {
 
@@ -70,15 +69,15 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                         switch(a.priority) {
                             case "Information": a.priorityVal = 1; break;
                             case "Warning": a.priorityVal = 2; break;
-                            case "Error": a.priortyVal = 3; break;
+                            case "Error": a.priorityVal = 3; break;
                         }
                         switch(b.priority) {
                             case "Information": b.priorityVal = 1; break;
                             case "Warning": b.priorityVal = 2; break;
-                            case "Error": b.priortyVal = 3; break;
+                            case "Error": b.priorityVal = 3; break;
                         }
-                        return a.priortyVal > b.priorityVal ? -1 : 1;
-                    })[0].priority,
+                        return a.priorityVal > b.priorityVal ? -1 : 1;
+                    })[0]?.priority,
                     issues: issues
                 };
             })

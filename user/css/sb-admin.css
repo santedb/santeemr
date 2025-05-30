@@ -187,8 +187,13 @@ body.fixed-nav {
     margin-top: 56px;
   }
   #mainNav .navbar-collapse .navbar-sidenav > .nav-item {
-    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
+    overflow-x: hidden;
+    text-wrap:unset;
+    white-space: nowrap;
     padding: 0;
+    transition: all 0.1s ease-out;
   }
   #mainNav .navbar-collapse .navbar-sidenav > .nav-item > .nav-link {
     padding: 1em;
@@ -200,7 +205,9 @@ body.fixed-nav {
   }
   #mainNav .navbar-collapse .navbar-sidenav > .nav-item .sidenav-second-level > li,
   #mainNav .navbar-collapse .navbar-sidenav > .nav-item .sidenav-third-level > li {
-    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
+    transition: all 0.1s ease-out;
   }
   #mainNav .navbar-collapse .navbar-sidenav > .nav-item .sidenav-second-level > li > a,
   #mainNav .navbar-collapse .navbar-sidenav > .nav-item .sidenav-third-level > li > a {
@@ -286,6 +293,7 @@ body.sidenav-toggled #mainNav.fixed-top #sidenavToggler i {
   transform: scaleX(-1);
   filter: FlipH;
   -ms-filter: 'FlipH';
+  
 }
 
 #mainNav.static-top .sidenav-toggler {
@@ -305,6 +313,9 @@ body.sidenav-toggled #mainNav.static-top #sidenavToggler i {
   transform: scaleX(-1);
   filter: FlipH;
   -ms-filter: 'FlipH';
+  -moz-transition: all 0.2s linear;
+    -webkit-transition: all 0.2s linear;
+    transition: all 0.2s linear;
 }
 
 .content-wrapper {
@@ -323,6 +334,7 @@ body.sidenav-toggled #mainNav.static-top #sidenavToggler i {
   .content-wrapper {
     margin-left: 250px;
     margin-top: 56px;
+    transition: all 0.1s ease-out;
   }
 }
 
@@ -337,10 +349,14 @@ body.sidenav-toggled #mainNav.static-top #sidenavToggler i {
 @media (min-width: 1200px) {
   body.sidenav-toggled .content-wrapper {
     margin-left: 75px;
+    transition: all 0.1s ease-out;
   }
 
   body.sidenav-toggled .navbar-sidenav {
-    width: 75px;
+    max-width: 75px;
+    min-width: 75px;
+    overflow-x: hidden;
+    transition: all 0.1s ease-out;
   }
 
   body.sidenav-toggled .navbar-sidenav .nav-link-text {
@@ -349,7 +365,9 @@ body.sidenav-toggled #mainNav.static-top #sidenavToggler i {
 
   body.sidenav-toggled .navbar-sidenav .nav-item,
   body.sidenav-toggled .navbar-sidenav .nav-link {
-    width: 75px !important;
+    max-width: 75px !important;
+    min-width: 75px !important;
+    transition: all 0.1s ease-out;
   }
 
   body.sidenav-toggled .navbar-sidenav .nav-item:after,
@@ -364,7 +382,6 @@ body.sidenav-toggled #mainNav.static-top #sidenavToggler i {
   body.sidenav-toggled .navbar-sidenav-tooltip.show {
     display: flex;
   }
-
 
   body.sidenav-toggled .navbar-collapse .navbar-sidenav .nav-link-collapse:after {
     display: inline;
@@ -468,6 +485,10 @@ body.sidenav-toggled #mainNav.static-top #sidenavToggler i {
   #mainNav.navbar-light .navbar-collapse .navbar-sidenav > .nav-item .sidenav-third-level {
     background: #f8f9fa;
   }
+}
+
+.card.widget-card:first-child {
+  background: #f8f9fa;
 }
 
 .card-body-icon {
@@ -849,11 +870,28 @@ table.dataTable thead .sorting_desc_disabled {
   }
 }
 @media only screen and (min-width: 1200px) {
-  
   .content-wrapper {
     min-height: calc(100vh - 112px);
     padding-top: 1rem;
     max-height: calc(100vh - 112px)
   }
+}
 
+.disabled-tab-pane-overlay {
+  background-color: #aaaaaaa1;
+  z-index: 100;
+}
+
+.cursor-pointer {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+
+.overflow-x-scroll {
+  overflow-x: scroll;
 }
