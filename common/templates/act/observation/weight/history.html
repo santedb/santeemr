@@ -25,11 +25,23 @@
                <th>Weight</th> 
             </tr>
 
-            <tr ng-repeat="(date, act) in heightWeightBackEntry">
-                <td>{{ date }}</td>
+            <tr ng-repeat="(date, obv) in heightWeightBackEntry">
+                <td class="align-middle">
+                    {{ date }}
+                </td>
     
-                <td>
-                    <input type="number" ng-model="act.value" />
+                <td class="align-middle">
+                    <label class="checkbox-container">
+                        <input name="isWeightEntryEnabled-{{ date }}" ng-model="obv.statusConcept" type="checkbox"
+                            class="checkbox-control" ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'"
+                            ng-false-value="null" />
+                        <span></span>
+                    </label>
+                    
+                    <input ng-disabled="obv.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" 
+                         name="weightEntry-{{ date }}"
+                         ng-model="obv.value"
+                         type="number" />
                 </td>
             </tr>
         </table>
