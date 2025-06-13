@@ -70,6 +70,7 @@
     <string name="ui.emr.patient.register.duplicates.input">Patient being Registered</string>
     <string name="ui.emr.patient.register.duplicates.detected">Potential Duplicates Detected</string>
     <string name="ui.emr.patient.register.requiredFieldMissing">Required Fields Missing</string>
+    <string name="ui.emr.patient.register.success">Patient has been successfully registered</string>
     <string name="ui.emr.patient.downloading">Downloading patient data from central</string>
 
     <string name="ui.emr.patient.register">Register Patient</string>

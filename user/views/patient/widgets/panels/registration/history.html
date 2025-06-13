@@ -1,0 +1,17 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container-fluid">
+
+    <sdb:widget order="100000" name="org.santedb.emr.widget.patient.register.history" headerClass="alert-secondary"
+        size="Large" type="Panel" context="org.santedb.emr.patient.register">
+        <sdb:icon>fas fa-list</sdb:icon>
+        <sdb:description lang="en">Clinical History Entry</sdb:description>
+        <sdb:guard>scopedObject.participation.RecordTarget</sdb:guard>
+    </sdb:widget>
+
+    <div ng-controller="EmrPatientRegisterClinicalHistoryController">
+        <ul class="overflow-auto list-group" ng-init="ownerForm = editForm">
+            <li class="list-group-item" ng-repeat="(tpl, acts) in entryActs track by $index">
+                <ng-include src="resolveBackentryTemplate(tpl)"></ng-include>
+            </li>
+        </ul>
+    </div>
+</div>
