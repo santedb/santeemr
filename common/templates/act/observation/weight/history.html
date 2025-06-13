@@ -21,8 +21,8 @@
     <div ng-controller="EmrPatientHistoryViewController">
         <table class="table table-striped">
             <tr>
-               <th>Date</th> 
-               <th>Weight</th> 
+               <th>{{ 'ui.emr.act.backEntry.date' | i18n}}</th> 
+               <th>{{ 'ui.emr.act.backEntry.observation.weight' | i18n }}</th> 
             </tr>
 
             <tr ng-repeat="(date, obv) in heightWeightBackEntry">

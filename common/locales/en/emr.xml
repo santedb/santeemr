@@ -16,7 +16,6 @@
  - the License.
  -->
 <resources>
-
     <string name="ui.title">SanteEMR</string>
     <string name="ui.directConnect">Direct Connect to Server</string>
     <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
@@ -48,9 +47,10 @@
     <string name="ui.emr.patient.recent">Recent Patients</string>
     <string name="ui.emr.patient.search">Search Patients</string>
     <string name="ui.emr.patient.search.results">Results</string>
-    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address, Identification, or Telephone</string>
+    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address,
+        Identification, or Telephone</string>
     <string name="ui.emr.patient.search.online">Include patients from the central server (out of my
-catchment)</string>
+        catchment)</string>
     <string name="ui.emr.patient.upstream.edit">You cannot edit the details of this patient as they
         exist only on the central server. Download a copy of the resource first</string>
     <string name="ui.emr.patient.ageInYears">years old</string>
@@ -71,7 +71,7 @@ catchment)</string>
     <string name="ui.emr.patient.register.duplicates.detected">Potential Duplicates Detected</string>
     <string name="ui.emr.patient.register.requiredFieldMissing">Required Fields Missing</string>
     <string name="ui.emr.patient.downloading">Downloading patient data from central</string>
-   
+
     <string name="ui.emr.patient.register">Register Patient</string>
     <string name="ui.emr.patient.registered">Submitted Data</string>
     <string name="ui.emr.patient.registered.none">No Patients Registered</string>
@@ -82,7 +82,7 @@ catchment)</string>
     <string name="org.santedb.emr.patient.dashboard.recentPatients">Recent Patients</string>
     <string name="org.santedb.emr.patient.dashboard.summary">Patient Summary</string>
     <string name="org.santedb.emr.patient.dashboard.duplicates">Possible Duplicate Records</string>
-    
+
     <!-- Patient View -->
     <string name="org.santedb.emr.widget.dashboard.patientSearch">Quick Search Patients</string>
     <string name="org.santedb.emr.widget.patient.demographics">Demographics</string>
@@ -94,8 +94,8 @@ catchment)</string>
     <string name="org.santedb.emr.widget.patient.careplans">Care Plans</string>
 
     <!-- VRP -->
-     <string name="ui.emr.vrp.title">Signed Digital ID Code</string>
-     <string name="ui.emr.vrp.help">Learn more aboout signed digital IDs</string>
+    <string name="ui.emr.vrp.title">Signed Digital ID Code</string>
+    <string name="ui.emr.vrp.help">Learn more aboout signed digital IDs</string>
     <!-- Patient Registration -->
     <string name="org.santedb.emr.widget.patient.register.demographics">Demographics</string>
     <string name="org.santedb.emr.widget.patient.register.identifier">Identification</string>
@@ -105,15 +105,20 @@ catchment)</string>
     <string name="org.santedb.emr.widget.patient.register.mother">Mother's Information</string>
     <string name="org.santedb.emr.widget.patient.register.facilities">Assigned Facilities</string>
     <string name="org.santedb.emr.widget.patient.register.extendedAttr">Additional Information</string>
-    <string name="ui.emr.patient.register.dataQuality.ignoreConfirm">There are one or more data quality issues with this record, do you still want to submit the registration?</string>
-    <string name="ui.emr.patient.register.mother.unknown">Mother is unknown (i.e. child is orphan, adopted, etc.)</string>
-    <string name="ui.emr.patient.register.relative.multipleMatches">Cannot auto-populate the {relativeType} information from identification as more than one match exists</string>
+    <string name="ui.emr.patient.register.dataQuality.ignoreConfirm">There are one or more data
+        quality issues with this record, do you still want to submit the registration?</string>
+    <string name="ui.emr.patient.register.mother.unknown">Mother is unknown (i.e. child is orphan,
+        adopted, etc.)</string>
+    <string name="ui.emr.patient.register.relative.multipleMatches">Cannot auto-populate the
+        {relativeType} information from identification as more than one match exists</string>
     <string name="ui.emr.patient.register.dataQuality">Data Quality Issues</string>
     <string name="ui.emr.patient.register.dataQuality.help"><![CDATA[<i class="fas fa-fw fa-cloud-rain"></i> We have detected some logical issues with your submission which may cause issues when using this registration information. Please review the issues and clear any errors prior to submitting the registration again.]]></string>
     <string name="ui.emr.patient.mother.differsFromPatient">Different address than the registrant</string>
     <string name="ui.emr.patient.$other.differsFromPatient">Different address than the registrant</string>
-    <string name="ui.emr.patient.register.upgradePerson">There is an existing non-patient record which will be upgraded when this entity is saved</string>
-    <string name="ui.emr.patient.register.duplicateDetected">A patient with this identifier already exists - please validate your entry and try again</string>
+    <string name="ui.emr.patient.register.upgradePerson">There is an existing non-patient record
+        which will be upgraded when this entity is saved</string>
+    <string name="ui.emr.patient.register.duplicateDetected">A patient with this identifier already
+        exists - please validate your entry and try again</string>
     <string name="ui.emr.patient.ageOrDate">Age or Date</string>
 
     <string name="ui.emr.search.online">Could not locate this data on the local environment, do you
@@ -396,58 +401,80 @@ catchment)</string>
     <string name="org.santedb.config.other">Other Settings</string>
 
     <!-- Checkin -->
-     <string name="ui.emr.encounter.checkin.title">Start Visit</string>
-     <string name="ui.emr.encounter.checkin.type.manual">Create New Visit</string>
-     <string name="ui.emr.encounter.checkin.type.proposed">From Care Plan</string>
-     <string name="ui.emr.encounter.checkin.success">Visit has been started successfully</string>
-     <string name="ui.emr.encounter.navigate.notFound">Active encounter could not be found. Please try refreshing the results and attempting your operation again.</string>
-     <string name="ui.emr.encounter.cancel.confirm">Are you sure you want to cancel this visit?</string>
-     <string name="ui.emr.encounter.cancel.success">Visit has been cancelled successfully</string>
-     <string name="ui.emr.encounter.checkin.informant">Guardian / Parent Present</string>
-     <string name="ui.emr.encounter.checkin.informant.other">Other</string>
-     <string name="ui.emr.encounter.completed">This visit has concluded and is in a readonly state</string>
-     <string name="ui.emr.encounter.return.title">Return To Waiting Room</string>
-     <string name="ui.emr.encounter.checkin.state">Status/Reason</string>
-     <string name="ui.emr.encounter.checkin.state.hint">Select the reason for returning the patient to the waiting room</string>
-     <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
-     <string name="org.santedb.emr.dashboard.waitingRoom">Waiting Room</string>
-     <string name="org.santedb.emr.encounter.dashboard.title">Visit Dashboard</string>
-     <string name="ui.emr.encounter.waitingRoom.filter.released">Released / Discharged</string>
-     <string name="ui.emr.encounter.save.success">Visit has been updated successfully</string>
-     <string name="ui.emr.encounter.discharge.title">End Visit / Discharge</string>
-     <string name="ui.emr.encounter.discharge.actions">Actions Performed During Visit</string>
-     <string name="ui.emr.encounter.discharge.actions.instructions">Validate the following actions occurred during the visit, and they are accurate. If an action was not performed un-select it.</string>
-     <string name="ui.emr.encounter.discharge.issues">Detected Problems</string>
-     <string name="ui.emr.encounter.discharge.issues.instructions">Review the detected issues below ensure that they are resolved prior to discharge.</string>
-     
-     <string name="ui.emr.encounter.component.notTouched">It appears this action was not completed (or has incomplete data). If you end the visit you will be attributed as completing the action</string>
-     <string name="ui.emr.encounter.discharge.bookAppointment.confirm">This patient has upcoming events in their careplan. Do you want to view the next scheduled appointment now?</string>
-     <string name="ui.emr.encounter.discharge.bookAppointment.title">Next Appointment Details</string>
-     <!-- Visits -->
-      <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
+    <string name="ui.emr.encounter.checkin.title">Start Visit</string>
+    <string name="ui.emr.encounter.checkin.type.manual">Create New Visit</string>
+    <string name="ui.emr.encounter.checkin.type.proposed">From Care Plan</string>
+    <string name="ui.emr.encounter.checkin.success">Visit has been started successfully</string>
+    <string name="ui.emr.encounter.navigate.notFound">Active encounter could not be found. Please
+        try refreshing the results and attempting your operation again.</string>
+    <string name="ui.emr.encounter.cancel.confirm">Are you sure you want to cancel this visit?</string>
+    <string name="ui.emr.encounter.cancel.success">Visit has been cancelled successfully</string>
+    <string name="ui.emr.encounter.checkin.informant">Guardian / Parent Present</string>
+    <string name="ui.emr.encounter.checkin.informant.other">Other</string>
+    <string name="ui.emr.encounter.completed">This visit has concluded and is in a readonly state</string>
+    <string name="ui.emr.encounter.return.title">Return To Waiting Room</string>
+    <string name="ui.emr.encounter.checkin.state">Status/Reason</string>
+    <string name="ui.emr.encounter.checkin.state.hint">Select the reason for returning the patient
+        to the waiting room</string>
+    <string name="org.santedb.emr.encounter.dashboard.waitingRoom">Waiting Room</string>
+    <string name="org.santedb.emr.dashboard.waitingRoom">Waiting Room</string>
+    <string name="org.santedb.emr.encounter.dashboard.title">Visit Dashboard</string>
+    <string name="ui.emr.encounter.waitingRoom.filter.released">Released / Discharged</string>
+    <string name="ui.emr.encounter.save.success">Visit has been updated successfully</string>
+    <string name="ui.emr.encounter.discharge.title">End Visit / Discharge</string>
+    <string name="ui.emr.encounter.discharge.actions">Actions Performed During Visit</string>
+    <string name="ui.emr.encounter.discharge.actions.instructions">Validate the following actions
+        occurred during the visit, and they are accurate. If an action was not performed un-select
+        it.</string>
+    <string name="ui.emr.encounter.discharge.issues">Detected Problems</string>
+    <string name="ui.emr.encounter.discharge.issues.instructions">Review the detected issues below
+        ensure that they are resolved prior to discharge.</string>
 
-      <!-- Care Paths -->
-       <string name="ui.emr.patient.carePaths.enroll.confirm">Are you sure you want to enroll this patient into the care pathway {pathway}?</string>
-       <string name="ui.emr.patient.carePaths.enroll.success">Patient enrolled in pathway successfully</string>
-       <string name="ui.emr.patient.carePaths.unenroll.confirm">Are you sure you want to un-enroll this patient from the {pathway} care pathway?</string>
-       <string name="ui.emr.patient.carePaths.unenroll.success">Patient has been removed from the care pathway</string>
-       <string name="ui.emr.patient.carePaths.acts.none">No upcoming encounters in this care pathway</string>
-       <string name="ui.emr.patient.carePaths.recompute.confirm">You are about to re-compute the care plan for {pathway}. This operation may take some time, and is often automatically performed after discharge. Are you sure you want to continue recomputation?</string>
-       <string name="ui.emr.patient.carePaths.recompute.success">Care pathway has been successfully re-computed</string>
-       
-       <!-- Search -->
-        <string name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Name or Identifier</string>
+    <string name="ui.emr.encounter.component.notTouched">It appears this action was not completed
+        (or has incomplete data). If you end the visit you will be attributed as completing the
+        action</string>
+    <string name="ui.emr.encounter.discharge.bookAppointment.confirm">This patient has upcoming
+        events in their careplan. Do you want to view the next scheduled appointment now?</string>
+    <string name="ui.emr.encounter.discharge.bookAppointment.title">Next Appointment Details</string>
+    <!-- Visits -->
+    <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
 
-        <!-- Observation Labels -->
-         <string name="ui.emr.observation.height.method">Method</string>
-         <string name="ui.emr.observation.height.method.lying">Lying (Length)</string>
-         <string name="ui.emr.observation.height.method.standing">Standing (Height)</string>
-         <string name="org.santedb.emr.widget.patient.cdsAlerts">CDSS Alerts &amp; Notices</string>
-        <string name="ui.emr.patient.header.cdssIssuesDetected">This Patient Has CDSS Alerts - Please Review Prior to Providing Care</string>
+    <!-- Care Paths -->
+    <string name="ui.emr.patient.carePaths.enroll.confirm">Are you sure you want to enroll this
+        patient into the care pathway {pathway}?</string>
+    <string name="ui.emr.patient.carePaths.enroll.success">Patient enrolled in pathway successfully</string>
+    <string name="ui.emr.patient.carePaths.unenroll.confirm">Are you sure you want to un-enroll this
+        patient from the {pathway} care pathway?</string>
+    <string name="ui.emr.patient.carePaths.unenroll.success">Patient has been removed from the care
+        pathway</string>
+    <string name="ui.emr.patient.carePaths.acts.none">No upcoming encounters in this care pathway</string>
+    <string name="ui.emr.patient.carePaths.recompute.confirm">You are about to re-compute the care
+        plan for {pathway}. This operation may take some time, and is often automatically performed
+        after discharge. Are you sure you want to continue recomputation?</string>
+    <string name="ui.emr.patient.carePaths.recompute.success">Care pathway has been successfully
+        re-computed</string>
 
-        <!-- Dashboard -->
-        <string name="ui.emr.dashboard.title">My Dashboard</string>
+    <!-- Search -->
+    <string
+        name="ui.table.search.field.participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.name.component.value">Name
+        or Identifier</string>
 
-        <!-- Template -->
-         <string name="ui.emr.encounter.act.substanceAdministration.iz">Immunization</string>
+    <!-- Observation Labels -->
+    <string name="ui.emr.observation.height.method">Method</string>
+    <string name="ui.emr.observation.height.method.lying">Lying (Length)</string>
+    <string name="ui.emr.observation.height.method.standing">Standing (Height)</string>
+    <string name="org.santedb.emr.widget.patient.cdsAlerts">CDSS Alerts &amp; Notices</string>
+    <string name="ui.emr.patient.header.cdssIssuesDetected">This Patient Has CDSS Alerts - Please
+        Review Prior to Providing Care</string>
+
+    <!-- Dashboard -->
+    <string name="ui.emr.dashboard.title">My Dashboard</string>
+
+    <!-- Template -->
+    <string name="ui.emr.encounter.act.substanceAdministration.iz">Immunization</string>
+
+    <!-- Back Entry Labels -->
+     <string name="ui.emr.act.backEntry.date">Date</string>
+     <string name="ui.emr.act.backEntry.observation.weight">Weight (kG)</string>
+     <string name="ui.emr.act.backEntry.observation.height">Height/Length (cm)</string>
 </resources>
