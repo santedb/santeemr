@@ -460,6 +460,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 }
             });
 
+            // JF - Fixes a bug where the bundle's re-organization for insert will place the substance administrations above 
+            //      the patient's registration - to be fixed in future release at the bundle processing stage
+            patient.participation.RecordTarget = []; 
 
             submissionBundle.resource.push(registrationAct);
 
