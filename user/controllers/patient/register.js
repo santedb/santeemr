@@ -78,9 +78,11 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     o.targetModel.route = NullReasonKeys.NoInformation;
                     o.targetModel.site = NullReasonKeys.NoInformation;
 
-                    // Set the act time to the original time if provided 
-                    if (o.targetModel.tag.$originalDate) {
-                        o.targetModel.actTime = new Date(o.targetModel.tag.$originalDate[0]).greaterOf(o.targetModel.startTime);
+                    if (o.targetModel.tag?.$originalDate) {
+                        o.targetModel.actTime = o.targetModel.startTime = new Date(o.targetModel.tag.$originalDate[0]);
+                    }
+                    else {
+                        o.targetModel.actTime = o.targetModel.startTime;
                     }
                     return new ActParticipation({ actModel: o.targetModel });
                 });
