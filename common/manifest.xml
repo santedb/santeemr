@@ -211,7 +211,7 @@
   <strings lang="en-ph" extern="~/locales/en/emr.xml">
     <string priority="2" />
   </strings>
-  <strings lang="en-uk" extern="~/locales/en/emr.xml">
+  <strings lang="en-gb" extern="~/locales/en/emr.xml">
     <string priority="2" />
   </strings>
   <strings lang="en-iso" extern="~/locales/en/emr.xml">
@@ -230,7 +230,7 @@
   <strings lang="en-ph" extern="~/locales/en/admin.xml">
     <string priority="2" />
   </strings>
-  <strings lang="en-uk" extern="~/locales/en/admin.xml">
+  <strings lang="en-gb" extern="~/locales/en/admin.xml">
     <string priority="2" />
   </strings>
   <strings lang="en-iso" extern="~/locales/en/admin.xml">
