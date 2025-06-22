@@ -59,7 +59,7 @@
                     ng-class="{ 'fa-genderless': item.genderConcept != '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; item.genderConcept != 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-male' : item.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' : item.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
                     <span class="ml-2 d-none d-md-inline">{{ item.genderConceptModel | concept }}</span></div>
                 <div class="mx-2 badge badge-secondary" ng-if="item.deceasedDate"><i
-                        class="fas fa-exclamation-circle"></i> {{ 'ui.model.patient.deceasedDate' | i18n }} ({{
+                        class="fas fa-exclamation-circle"></i> {{ 'ui.model.person.deceasedDate' | i18n }} ({{
                     item.deceasedDate | extDate: item.deceasedDatePrecision }})</div>
                 <div class="mx-2 badge badge-info" ng-if="item.tag.$upstream[0] == 'true'" title="{{ 'ui.emr.patient.search.tag.upstream' | i18n }}"><i
                         class="fas fa-cloud-meatball"></i> <span class="ml-2 d-none d-md-inline">{{ 'ui.emr.patient.search.tag.upstream' | i18n }}</span> </div>

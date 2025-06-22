@@ -467,7 +467,9 @@
     <string name="org.santedb.emr.widget.patient.cdsAlerts">CDSS Alerts &amp; Notices</string>
     <string name="ui.emr.patient.header.cdssIssuesDetected">This Patient Has CDSS Alerts - Please
         Review Prior to Providing Care</string>
-
+    <string name="ui.emr.patient.birthDetailsValidatedReadonlyWarning">This patient's profile indicates that their demographics have been validated via an official document (Birth Certificate, Immigration Card, Passport, etc.). Fields have been disabled to prevent alteration.</string>
+    <string name="ui.emr.patient.birthDetailsValidated">This patient's profile indicates that their demographics have been validated via an official document or system (such as Birth Certificate, Passport, Immigration Documents, etc.)</string>
+    <string name="ui.emr.patient.deceasedReadonly">This patient record has been flagged as a deceased patient. The profile for the patient is readonly. If the patient is known to not be deceased, please contact support</string>
     <!-- Dashboard -->
     <string name="ui.emr.dashboard.title">My Dashboard</string>
 
