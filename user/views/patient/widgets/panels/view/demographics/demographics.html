@@ -185,8 +185,11 @@
                                                     {{ 'ui.model.person.deceasedInd' | i18n }}
                                                 </label>
                                             </div>
-                                            <input ng-disabled="editObject.deceasedDatePrecision != 3" min="{{ editObject.dateOfBirth | date: 'yyyy-MM-dd' }}" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control"
-                                                type="date" ng-model="editObject.deceasedDate" />
+                                            <input ng-disabled="editObject.deceasedDatePrecision != 3" ng-required="editObject.deceasedDatePrecision == 3" min="{{ editObject.dateOfBirth | date: 'yyyy-MM-dd' }}" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control"
+                                                type="date" ng-model="editObject.deceasedDate" name="deceasedDateInput" />
+                                        </div>
+                                         <div class="text-danger" ng-if="panel.editForm['deceasedDateInput'].$error.required">
+                                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                                         </div>
                                     </div>
                                 </div>
