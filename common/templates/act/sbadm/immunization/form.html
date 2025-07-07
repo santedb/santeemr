@@ -42,7 +42,7 @@
                     name="{{ act.id }}time"
                     max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd'}}"
                     min="{{ act.relationship.Fulfills[0].targetModel.startTime || act._getEncounter().participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
-                    ng-model="act.actTime" required="required" name="{{ act.id }}time" />
+                    ng-model="act.actTime" required="required"  />
                     <div class="input-group-append">
                         <span class="input-group-text">
                             <strong class="mr-1">{{ 'ui.model.act.relationship.Fulfills.target.actTime' | i18n }} </strong>
