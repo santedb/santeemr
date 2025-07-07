@@ -51,8 +51,9 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                     'relationship[HasComponent].source@CarePlan.pathway||relationship[Fulfills].target.relationship[HasComponent].source@CarePlan.pathway': path.id,
                     'participation[RecordTarget].player': $scope.scopedObject.id,
                     'statusConcept': [ StatusKeys.New, StatusKeys.Active ],
-                    'actTime': `<${moment().add(monthLimit || 0, 'month').format("YYYY-MM-DD")}`,
+                    'actTime': `>${moment().add(-monthLimit || 2, 'month').format("YYYY-MM-DD")}`,
                     _orderBy: 'actTime:asc',
+                    _count: 4,
                     _includeTotal: false
                 };
 

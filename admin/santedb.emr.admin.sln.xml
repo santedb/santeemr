@@ -28,5 +28,6 @@
     <dependency id="org.santedb.config.init" />
     <dependency id="org.santedb.i18n.en" />
     <dependency id="org.santedb.emr.admin" />
+    <dependency id="org.santedb.emr.common" />
   </info>
 </AppletManifest>

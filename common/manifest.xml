@@ -49,6 +49,11 @@
     <description>Newborn Information</description>
   </template>
 
+  
+  <errors>
+    <add code="403" asset="/org.santedb.emr.common/views/error/elevate.html"/>
+  </errors>
+
   <!-- Observation Templates -->
   <template mnemonic="org.santedb.emr.observation.cod" public="true">
     <definition>/org.santedb.emr.common/templates/act/observation/cod/definition.json</definition>
@@ -206,7 +211,7 @@
   <strings lang="en-ph" extern="~/locales/en/emr.xml">
     <string priority="2" />
   </strings>
-  <strings lang="en-uk" extern="~/locales/en/emr.xml">
+  <strings lang="en-gb" extern="~/locales/en/emr.xml">
     <string priority="2" />
   </strings>
   <strings lang="en-iso" extern="~/locales/en/emr.xml">
@@ -225,7 +230,7 @@
   <strings lang="en-ph" extern="~/locales/en/admin.xml">
     <string priority="2" />
   </strings>
-  <strings lang="en-uk" extern="~/locales/en/admin.xml">
+  <strings lang="en-gb" extern="~/locales/en/admin.xml">
     <string priority="2" />
   </strings>
   <strings lang="en-iso" extern="~/locales/en/admin.xml">

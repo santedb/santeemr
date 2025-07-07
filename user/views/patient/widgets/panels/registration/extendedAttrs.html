@@ -281,7 +281,7 @@
         </div>
 
         <div class="form-group row"
-            ng-if="$root.system.config.application.setting['forbid.person.school'] != 'true'">
+            ng-if="$root.system.config.application.setting['forbid.person.school'] != 'true' &amp;&amp; scopedObject.age &gt; 4">
             <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Student' | i18n
                 }} <hint-popover hint-title="ui.model.person.relationship.Student" /></label>
             <div class="col-sm-12 col-md-8">

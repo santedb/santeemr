@@ -33,7 +33,7 @@
                     <td class="text-center align-middle" ng-repeat="adm in dose track by $index">
                         <div class="d-inline-flex" ng-if="adm.doseSequence !== undefined">
                             <label class="checkbox-container">
-                                <input name="vacc-history-{{ ag }}-{{ dose.doseSequence }}" ng-disabled="adm.startTime &gt; $root.page.minEventTime || 
+                                <input name="vacc-history-{{ ag }}-{{ dose.doseSequence }}-enabled" ng-disabled="adm.actTime &gt; $root.page.minEventTime || 
                                         dose[$index - 1] &amp;&amp; dose[$index - 1].statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' || 
                                         !adm.tag.isBackEntry" ng-model="adm.statusConcept" type="checkbox"
                                     class="checkbox-control" ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'"
@@ -51,6 +51,14 @@
                         <div class="text-danger"
                             ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.required">
                             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                        </div>
+                        <div class="text-danger"
+                            ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.min">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: (adm.startTime || adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime) } }}
+                        </div>
+                        <div class="text-danger"
+                            ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.max">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { max: (adm.startTime || adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime) } }}
                         </div>
                     </td>
                 </tr>

@@ -39,13 +39,14 @@
             <div class="col-sm-12 col-md-9">
                 <div class="input-group">
                     <input type="date" class="form-control" 
+                    name="{{ act.id }}time"
                     max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd'}}"
                     min="{{ act.relationship.Fulfills[0].targetModel.startTime || act._getEncounter().participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
-                    ng-model="act.actTime" required="required" name="{{ act.id }}time" />
+                    ng-model="act.actTime" required="required"  />
                     <div class="input-group-append">
                         <span class="input-group-text">
                             <strong class="mr-1">{{ 'ui.model.act.relationship.Fulfills.target.actTime' | i18n }} </strong>
-                            {{ act.relationship.Fulfills[0].targetModel.startTime || act.startTime | humanDate: 'D' }}
+                            {{ act.tag.$originalDate[0] || act.relationship.Fulfills[0].targetModel.startTime || act.startTime | humanDate: 'D' }}
                         </span>
                     </div>
                 </div>
@@ -72,7 +73,7 @@
         <div class="row">
             <label class="control-label col-sm-12 col-md-4 col-lg-2 required">{{ 'ui.model.substanceAdministration.Consumable.lotNumber' | i18n }}</label>
             <div class="col-sm-12 col-md-8 col-lg-4">
-                <entity-select required="required" class="form-control" name="{{ act.id }}lot" 
+                <entity-select required="required" is-required="true" class="form-control" name="{{ act.id }}lot" 
                     ng-model="act.participation.Consumable[0].player" auto-select-singles="true"
                     entity-type="'ManufacturedMaterial'"
                     filter="{
@@ -83,12 +84,16 @@
                     }" 
                     display="item.lotNumber" >
                 </entity-select>
+                <div ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'lot'].$error.required"
+                    class="text-danger">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
             </div>
             <label class="control-label col-sm-12 col-md-4 col-lg-2 required" ng-repeat-start="used in act.participation.Product[0].playerModel.relationship.UsedEntity track by $index">
                 {{ used.targetModel.name | name: 'Assigned' }}
             </label>
             <div ng-repeat-end="" class="col-sm-12 col-md-8 col-lg-4">
-                <entity-select required="required" class="form-control" name="{{ act.id }}lot" 
+                <entity-select required="required" is-required="true" class="form-control" name="{{ act.id }}{{$index}}lot" 
                     ng-model="act.participation.Consumable[$index + 1].player" auto-select-singles="true"
                     entity-type="'ManufacturedMaterial'"
                     filter="{
@@ -99,12 +104,20 @@
                     }" 
                     display="item.lotNumber" >
                 </entity-select>
+                <div ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + $index + 'lot'].$error.required"
+                    class="text-danger">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
             </div>
             <label class="control-label col-sm-12 col-md-4 col-lg-2 required">
                 {{ 'ui.model.substanceAdministration.site' | i18n }}
             </label>
             <div class="control-label col-sm-12 col-md-8 col-lg-4">
-                <concept-select required="required" ng-model="act.site" concept-set="'AdministrationSite'" class="form-control"></concept-select>
+                <concept-select name="{{ act.id }}site" required="required" ng-model="act.site" concept-set="'AdministrationSite'" class="form-control"></concept-select>
+                <div ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'site'].$error.required"
+                    class="text-danger">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
             </div>
         </div>
     </div>

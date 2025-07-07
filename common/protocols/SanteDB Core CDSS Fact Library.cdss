@@ -7,7 +7,7 @@ define library "SanteDB Core CDSS Fact Library"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0.13
+		version 3.0.2004
 		doc This library contains core logic to extract common facts related to objects in SanteDB. It defines
 		doc no rules, protocols, or models, rather is intended to provide common facts about data to allow
 		doc users to more easily derive their own rules
@@ -169,7 +169,8 @@ define library "SanteDB Core CDSS Fact Library"
 	define logic "SanteDB Core CDSS for Acts"
 		having id <org.santedb.cdss.core.act>
 		having status active
-		having context Act		with metadata
+		having context Act when hdsi($$ participation[RecordTarget].player.classConcept=bacd9c6f-3fa9-481e-9636-37457962804d $$)
+		with metadata
 			version 3.0-alpha
 			doc Core CDSS facts for all Acts
 		end metadata

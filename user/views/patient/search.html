@@ -110,7 +110,7 @@
                     type="Patient" 
                     display="grid" 
                     item-actions="[
-                        { name: 'check-in', action: 'checkin', className: 'btn-md btn-secondary', when: '!item.tag.$hasEncounter', icon: 'fas fa-person-circle-plus' },
+                        { name: 'check-in', action: 'checkin', className: 'btn-md btn-secondary', when: '!item.tag.$hasEncounter &amp;&amp; item.deceasedDate == null', icon: 'fas fa-person-circle-plus'},
                         { name: 'visit', action: 'goVisit', className: 'btn-md btn-info', when: 'item.tag.$hasEncounter', icon: 'fa-solid fa-person-shelter'},
                         { name: 'discharge', action: 'doDischarge', className: 'btn-md btn-success', when: 'item.tag.$hasEncounter', icon: 'fa-solid fa-person-walking-arrow-right'},
                         { name: 'download', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', action: 'downloadPatient', className: 'btn-md btn-info', icon: 'fas fa-cloud-download', when: 'item.tag.$upstream' },

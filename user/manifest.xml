@@ -25,10 +25,6 @@
     <dependency id="org.santedb.uicore"/>
   </info>
 
-  <errors>
-    <add code="403" asset="/org.santedb.emr/views/error/elevate.html"/>
-  </errors>
-
   <menuItem context="ui.emr" launch="santedb-emr.dashboard"  asset="/org.santedb.emr/views/dashboard.html" order="-100">
     <icon>fas fa-tachometer-alt</icon>
     <text lang="en">Dashboard</text>

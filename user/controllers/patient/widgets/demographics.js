@@ -94,7 +94,12 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
                 $scope.editObject.multipleBirthIndicator = !!$scope.editObject.multipleBirthOrder;
                 
                 if ($scope.editObject.extension) {
-                    $scope.isBirthValidated = !!$scope.editObject.extension['http://santedb.org/extensions/core/birthValidated']?.[0];
+                    $scope.isBirthValidated = $scope.editObject.extension['http://santedb.org/extensions/core/birthValidated']?.[0] == BooleanExtensionValues.true;
+                }
+                else {
+                    $scope.editObject.extension = {
+                        'http://santedb.org/extensions/core/birthValidated': [ BooleanExtensionValues.false ]
+                    }
                 }
 
                 $scope.editObject.age = dateToAge($scope.editObject.dateOfBirth)
@@ -108,9 +113,9 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
             delete ($scope.editObject); // Delete the current edit object
             $scope.editObject = angular.copy(n);
             
-            if ($scope.editObject.address['HomeAddress'][0].component['PlaceRef']) {
-                delete $scope.editObject.address['HomeAddress'][0].component['PlaceRef']
-            }
+            // if ($scope.editObject.address['HomeAddress'][0].component['PlaceRef']) {
+            //     delete $scope.editObject.address['HomeAddress'][0].component['PlaceRef']
+            // }
             
             if (!$scope.editObject.address?.['TemporaryAddress']) {
                 $scope.editObject.address['TemporaryAddress'] = [
