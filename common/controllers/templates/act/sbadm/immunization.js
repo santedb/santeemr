@@ -65,31 +65,33 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
                 }
     
                 const otherSubstanceAdmin = antigenSubstanceAdministrations[doseIndex];
-                
-                // Check if an immunization exists in the same column
-                if (otherSubstanceAdmin && (otherSubstanceAdmin._urgency === 'pastdue' || otherSubstanceAdmin._urgency === 'now')) {
-                    const inputName =`vacc-history-${antigenKey}-${otherSubstanceAdmin.doseSequence}`,
-                        input = $scope.$parent.ownerForm[inputName];
 
-                    // Check if the input field exists on the form and is pristine
-                    if (!input?.$pristine) {
-                        return;
-                    }
-                
-                    // Will not set the date if it doesn't align with the min/max requirements
-                    if (input.$$attr.min != '') {
-                        if (!moment(administrationAction.actTime).isAfter(input.$$attr.min)) {
+                // Check if an immunization exists, has not yet been saved, and is pastdue or due now
+                if (otherSubstanceAdmin && 
+                    otherSubstanceAdmin.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' && 
+                    (otherSubstanceAdmin._urgency === 'pastdue' || otherSubstanceAdmin._urgency === 'now')) {
+                        const inputName =`vacc-history-${antigenKey}-${otherSubstanceAdmin.doseSequence}`,
+                            input = $scope.$parent.ownerForm[inputName];
+
+                        // Check if the input field exists on the form and is pristine
+                        if (!input?.$pristine) {
                             return;
                         }
-                    }
                     
-                    if (input.$$attr.max != '') {
-                        if (!moment(administrationAction.actTime).isBefore(input.$$attr.max)) {
-                            return;
+                        // Will not set the date if it doesn't align with the min/max requirements
+                        if (input.$$attr.min != '') {
+                            if (!moment(administrationAction.actTime).isAfter(input.$$attr.min)) {
+                                return;
+                            }
                         }
-                    }
-                
-                    otherSubstanceAdmin.actTime = administrationAction.actTime;    
+                        
+                        if (input.$$attr.max != '') {
+                            if (!moment(administrationAction.actTime).isBefore(input.$$attr.max)) {
+                                return;
+                            }
+                        }
+                    
+                        otherSubstanceAdmin.actTime = administrationAction.actTime;    
                 }
             });
         }
