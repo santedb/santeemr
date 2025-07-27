@@ -468,7 +468,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
             submissionBundle = scrubModelProperties(submissionBundle);
 
-            var submissionResult = await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            var submissionResult = await SanteDB.resources.bundle.insertAsync(submissionBundle, undefined, undefined, true);
             toastr.success(SanteDB.locale.getString("ui.emr.patient.register.success"));
 
             if ($scope.entity.$then == "another") {
