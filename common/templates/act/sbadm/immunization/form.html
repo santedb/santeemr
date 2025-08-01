@@ -97,7 +97,7 @@
                     display="item.lotNumber" >
                 </entity-select>
 
-                <div ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'lot'].$error.required"
+                <div ng-if="!(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'lot'].$pristine &amp;&amp; (ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'lot'].$error.required"
                     class="text-danger">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
