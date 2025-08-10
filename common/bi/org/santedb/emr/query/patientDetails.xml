@@ -1,0 +1,157 @@
+<BiQueryDefinition xmlns="http://santedb.org/bi"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://santedb.org/bi http://santedb.org/schema/v3.0/BusinessIntelligence.xsd"
+    id="org.santedb.emr.bi.query.patient.details"
+    label="EMR Patient Details">
+
+    <dataSources>
+        <add name="main" ref="#org.santedb.bi.dataSource.main" />
+    </dataSources>
+    <parameters>
+        <add ref="#org.santedb.bi.core.parameter.common.date.from" name="dob-from" type="date" />
+        <add ref="#org.santedb.bi.core.parameter.common.date.to" name="dob-to" type="date" />
+        <add ref="#org.santedb.bi.core.parameter.common.date.from" name="reg-from" type="date" />
+        <add ref="#org.santedb.bi.core.parameter.common.date.to" name="reg-to" type="date" />
+        <add ref="#org.santedb.bi.core.parameter.patient.gender" name="gender" type="uuid" />
+        <add name="facilityId" ref="#org.santedb.bi.core.parameter.common.facility" type="uuid" />
+    </parameters>
+
+    <definitions>
+        <add>
+            <providers>
+                <invariant>npgsql</invariant>
+            </providers>
+            <materialize
+                name="org_santedb_emr_bi_query_patient_details">
+                <![CDATA[ 
+                SELECT 
+	EVT.ent_id, 
+	EVT.crt_utc ,
+	PSN.dob AS pat_dob,
+	EXTRACT(DAY FROM (EVT.crt_utc::DATE + '1 day'::INTERVAL) - PSN.dob) AS age_at_reg,
+	CASE WHEN PT.mb_ord IS NOT NULL THEN TRUE ELSE FALSE END AS pat_multi_birth,
+	CASE WHEN PSN.dob_prec = 'Y' THEN TRUE ELSE FALSE END AS pat_approx_dob,
+	PSN.dcsd_utc AS pat_dcsd_utc,
+	CASE WHEN PSN.dcsd_prec = 'Y' THEN TRUE ELSE FALSE END AS pat_approx_dcsd,
+	PSN.gndr_cd_id AS pat_gndr_cd_id,
+	PSN.nat_cd_id AS pat_nat_cd_id,
+	PSN.vip_sts_cd_id AS pat_vip_sts_cd_id, 
+	ADRC.val AS pat_addr_plc,
+	CASE WHEN MTHE.ent_id IS NULL THEN FALSE ELSE TRUE END AS has_mthr,
+	CASE WHEN MTHP.dcsd_utc IS NOT NULL THEN TRUE ELSE FALSE END AS mth_dcsd,
+	ROUND((EXTRACT(YEAR FROM AGE(PSN.dob, MTHP.dob)) * 12 + EXTRACT(MONTH FROM AGE(PSN.dob, MTHP.dob))) / 12) AS mth_age_at_birth,
+	MTHP.nat_cd_id AS mth_nat_cd_id,
+	DSDLR.trg_ent_id AS pat_sdl_id
+FROM 
+	pat_tbl PT 
+	INNER JOIN psn_tbl PSN USING (ent_vrsn_id)
+	INNER JOIN ent_vrsn_tbl EVT USING (ent_vrsn_id)
+	LEFT JOIN ent_addr_tbl ADR ON (ADR.ent_id = evt.ent_id AND ADR.obslt_vrsn_seq_id IS NULL AND ADR.use_cd_id = '493c3e9d-4f65-4e4d-9582-c9008f4f2eb4')
+	LEFT JOIN ent_addr_cmp_tbl ADRC ON (ADRC.addr_id = ADR.addr_id AND ADRC.typ_cd_id = 'a314f427-2b6d-4948-9146-a5f700973899')
+	LEFT JOIN ent_rel_tbl MTHR ON (MTHR.src_ent_id = EVT.ent_id AND MTHR.obslt_vrsn_seq_id IS NULL AND MTHR.rel_typ_cd_id = '29ff64e5-b564-411a-92c7-6818c02a9e48')
+	LEFT JOIN ent_vrsn_tbl MTHE ON (MTHE.ent_id = MTHR.trg_ent_id AND MTHE.head)
+	LEFT JOIN psn_tbl MTHP ON (MTHP.ent_vrsn_id = MTHE.ent_vrsn_id)
+	LEFT JOIN ent_rel_tbl DSDLR ON (DSDLR.src_ent_id = EVT.ent_id AND DSDLR.rel_typ_cd_id = '455f1772-f580-47e8-86bd-b5ce25d351f9' AND DSDLR.obslt_vrsn_seq_id IS NULL)
+WHERE 
+	EVT.obslt_utc IS NULL 
+	AND EVT.sts_cd_id IN ('c34fcbf1-e0fe-4989-90fd-0dc49e1b9685', 'C8064CBD-FA06-4530-B430-1A52F1530C27') -- active OR new
+                ]]>
+            </materialize>
+            <![CDATA[ 
+            SELECT 
+                ent_id,
+                crt_utc,
+                pat_dob,
+                age_at_reg,
+                pat_multi_birth,
+                pat_approx_dob,
+                pat_dcsd_utc,
+                pat_approx_dcsd,
+                pat_gndr_cd_id,
+                pat_nat_cd_id,
+                pat_vip_sts_cd_id,
+                pat_addr_plc,
+                has_mthr,
+                mth_dcsd,
+                mth_age_at_birth,
+                mth_nat_cd_id,
+                pat_sdl_id
+            FROM 
+                org_santedb_emr_bi_query_patient_details
+            WHERE 
+                pat_dob BETWEEN CAST(coalesce(${dob-from}, '0001-01-01') AS DATE) and CAST(coalesce(${dob-to}, current_date) AS DATE)   
+                AND crt_utc BETWEEN CAST(coalesce(${reg-from}, '0001-01-01') AS DATE) and CAST(coalesce(${reg-to}, current_date) AS DATE)    
+                and (${gender}::UUID IS NULL OR pat_gndr_cd_id = ${gender}::UUID)
+                AND (${facilityId}::UUID IS NULL OR pat_sdl_id = ${facilityId}::UUID)
+            ]]>
+        </add>
+        <add>
+            <providers>
+                <invariant>sqlite</invariant>
+            </providers>
+            <materialize
+                name="org_santedb_emr_bi_query_patient_details">
+                <![CDATA[ 
+                SELECT 
+                    EVT.ent_id, 
+                    EVT.crt_utc ,
+                    PSN.dob AS pat_dob,
+                    TRUNC(EVT.crt_utc / 86400 - PSN.dob / 86400) AS age_at_reg,
+                    CASE WHEN PT.mb_ord IS NOT NULL THEN TRUE ELSE FALSE END AS pat_multi_birth,
+                    CASE WHEN PSN.dob_prec = 'Y' THEN TRUE ELSE FALSE END AS pat_approx_dob,
+                    PSN.dcsd_utc AS pat_dcsd_utc,
+                    CASE WHEN PSN.dcsd_prec = 'Y' THEN TRUE ELSE FALSE END AS pat_approx_dcsd,
+                    PSN.gndr_cd_id AS pat_gndr_cd_id,
+                    PSN.nat_cd_id AS pat_nat_cd_id,
+                    PSN.vip_sts_cd_id AS pat_vip_sts_cd_id, 
+                    ADRC.val AS pat_addr_plc,
+                    CASE WHEN MTHE.ent_id IS NULL THEN FALSE ELSE TRUE END AS has_mthr,
+                    CASE WHEN MTHP.dcsd_utc IS NOT NULL THEN TRUE ELSE FALSE END AS mth_dcsd,
+                    ROUND((((PSN.DOB / 86400) - (MTHP.DOB / 86400)) / 365.2424))  AS mth_age_at_birth,
+                    MTHP.nat_cd_id AS mth_nat_cd_id,
+                    DSDLR.trg_ent_id AS pat_sdl_id
+                FROM 
+                    pat_tbl PT 
+                    INNER JOIN psn_tbl PSN USING (ent_vrsn_id)
+                    INNER JOIN ent_vrsn_tbl EVT USING (ent_vrsn_id)
+                    LEFT JOIN ent_addr_tbl ADR ON (ADR.ent_id = evt.ent_id AND ADR.obslt_vrsn_seq_id IS NULL AND ADR.use_cd_id = x'9D3E3C49654F4D4E9582C9008F4F2EB4')
+                    LEFT JOIN ent_addr_cmp_tbl ADRC ON (ADRC.addr_id = ADR.addr_id AND ADRC.typ_cd_id = x'27F414A36D2B48499146A5F700973899')
+                    LEFT JOIN ent_rel_tbl MTHR ON (MTHR.src_ent_id = EVT.ent_id AND MTHR.obslt_vrsn_seq_id IS NULL AND MTHR.rel_typ_cd_id = x'E564FF2964B51A4192C76818C02A9E48')
+                    LEFT JOIN ent_vrsn_tbl MTHE ON (MTHE.ent_id = MTHR.trg_ent_id AND MTHE.head)
+                    LEFT JOIN psn_tbl MTHP ON (MTHP.ent_vrsn_id = MTHE.ent_vrsn_id)
+                    LEFT JOIN ent_rel_tbl DSDLR ON (DSDLR.src_ent_id = EVT.ent_id AND DSDLR.rel_typ_cd_id = x'72175F4580F5E84786BDB5CE25D351F9' AND DSDLR.obslt_vrsn_seq_id IS NULL)
+                WHERE 
+                    EVT.obslt_utc IS NULL 
+                    AND EVT.sts_cd_id IN (x'F1CB4FC3FEE0894990FD0DC49E1B9685', x'BD4C06C806FA3045B4301A52F1530C27') -- active OR new               
+                ]]>
+            </materialize>
+            <![CDATA[
+            SELECT 
+                ent_id,
+                crt_utc,
+                pat_dob,
+                age_at_reg,
+                pat_multi_birth,
+                pat_approx_dob,
+                pat_dcsd_utc,
+                pat_approx_dcsd,
+                pat_gndr_cd_id,
+                pat_nat_cd_id,
+                pat_vip_sts_cd_id,
+                pat_addr_plc,
+                has_mthr,
+                mth_dcsd,
+                mth_age_at_birth,
+                mth_nat_cd_id,
+                pat_sdl_id
+            FROM 
+                org_santedb_emr_bi_query_patient_details
+            WHERE 
+                pat_dob BETWEEN CAST(coalesce(${dob-from}, '0001-01-01') AS DATE) and CAST(coalesce(${dob-to}, current_date) AS DATE)   
+                AND crt_utc BETWEEN CAST(coalesce(${reg-from}, '0001-01-01') AS DATE) and CAST(coalesce(${reg-to}, current_date) AS DATE)   
+                and (${gender}::BLOB IS NULL OR pat_gndr_cd_id = ${gender}::BLOB)
+                AND (${facilityId}::BLOB IS NULL OR pat_sdl_id = ${facilityId}::BLOB)
+                ]]>
+        </add>
+    </definitions>
+</BiQueryDefinition>

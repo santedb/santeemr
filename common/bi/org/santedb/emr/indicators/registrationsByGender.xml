@@ -1,0 +1,86 @@
+<BiIndicatorDefinition xmlns="http://santedb.org/bi"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://santedb.org/bi http://santedb.org/schema/v3.0/BusinessIntelligence.xsd"
+    id="org.santedb.emr.bi.indicator.patient.registrations"
+    name="Patient Registrations"
+>
+    <meta>
+        <annotation>
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <span>Indicator that reports the patients registered in a particular month by the age at registration by gender</span>
+            </div>
+        </annotation>
+        <public>true</public>
+    </meta>
+    <identifier system="DHIS_INDICATORS" value="REG_BY_GENDER" />
+
+    <query>
+        <dataSources>
+            <add ref="#org.santedb.bi.dataSource.main" />
+        </dataSources>
+        <with ref="#org.santedb.emr.bi.query.patient.details" name="patient" />
+        <definitions>
+            <add>
+                <providers>
+                    <invariant>sqlite</invariant>
+                    <invariant>npgsql</invariant>
+                </providers>
+                <![CDATA[ 
+                    SELECT ent_id, pat_sdl_id, GNDR.mnemonic AS gndr, NAT.mnemonic AS nat, patient.crt_utc AS reg_date, age_at_reg
+                    FROM patient
+                        INNER JOIN CD_VRSN_TBL GNDR ON (GNDR.CD_ID = patient.PAT_GNDR_CD_ID AND GNDR.HEAD)
+                        LEFT JOIN CD_VRSN_TBL NAT ON (NAT.CD_ID = patient.PAT_NAT_CD_ID AND NAT.HEAD)
+                    ]]>
+            </add>
+        </definitions>
+    </query>
+
+    <period ref="#org.santedb.bi.core.period.monthly">
+        <startParameter>reg-from</startParameter>
+        <endParameter>reg-to</endParameter>
+    </period>
+    <subject type="Place" parameter="facilityId" name="location">pat_sdl_id</subject>
+
+    <measures>
+        <add id="org.santedb.emr.bi.indicator.patient.regsitrations.byGender" name="patients">
+            <meta>
+                <annotation>
+                    <div xmlns="http://www.w3.org/1999/xhtml"><span>All registered patients by gender</span></div>
+                </annotation>
+            </meta>
+            <identifier system="DHIS_INDCIATORS" value="PATIENT:REGISTRATIONS" />
+            <computed-by>
+                <score fn="count-distinct">ent_id</score>
+            </computed-by>
+            <stratify>
+                <by name="gender">
+                    <meta>
+                        <annotation>
+                            <div xmlns="http://www.w3.org/1999/xhtml"><span>Stratified by gender</span></div>
+                        </annotation>
+                    </meta>
+
+                    <identifier system="DHIS_INDICATORS" value="PATIENT:REGISTRATIONS:BY_GENDER" />
+                    <select name="gender">gndr</select>
+                    <thenBy name="age">
+                        <identifier system="DHIS_INDICATORS" value="PATIENT:REGISTRATIONS:BY_GENDER:BY_AGE" />
+                        <select name="age">
+                            <![CDATA[ 
+                                CASE WHEN age_at_reg < 7 THEN '< 7 day'
+                                    WHEN age_at_reg < 14 THEN '7 - 14 day'
+                                    WHEN age_at_reg < 30 THEN '14 - 30 day'
+                                    WHEN age_at_reg < 180 THEN '1 - 6 mon'
+                                    WHEN age_at_reg < 365 THEN '6 - 12 mon'
+                                    WHEN age_at_reg < 540 THEN '12 - 18 mon'
+                                    WHEN age_at_reg < 1825 THEN '< 5 years' 
+                                    WHEN age_at_reg < 3650 THEN '< 10 years'
+                                    ELSE THEN '> 10 years'
+                                END
+                            ]]>
+                        </select>
+                    </thenBy>
+                </by>
+            </stratify>
+        </add>
+    </measures>
+</BiIndicatorDefinition>
