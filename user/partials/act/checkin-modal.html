@@ -19,7 +19,7 @@
     <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
     <div class="modal" id="checkinModal" role="dialog" aria-labelledby="checkinModalTitle" aria-hidden="true"  data-backdrop="static"
         ng-controller="EmrCheckinEncounterController">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="checkinModalTitle">
@@ -43,10 +43,10 @@
                                     <div class="row">
                                         <div class="col-12">
                                             <strong>{{ "ui.emr.encounter.checkin.informant" | i18n }}</strong>
-                                            <span class="text-danger" ng-if="checkinForm.informant.$error['required']">
+                                            <div class="text-danger" ng-if="checkinForm.informant.$error['required']">
                                                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required'
                                                 | i18n }}
-                                            </span>
+                                            </div>
                                             <ul class="list-unstyled ml-2">
                                                 <li ng-repeat="(k, famr) in recordTarget.relationship track by $index"
                                                     ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
@@ -111,7 +111,7 @@
 
                             </div>
                         </div>
-                        <ul class="list-group">
+                        <ul class="list-group px-3">
                             <li class="list-group-item" ng-if="!newAct._fulfills">
                                 <label class="text-strong d-block w-100 checkbox-container">
                                     <input type="radio" name="startType" required="required" class="checkbox-control"
