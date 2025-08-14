@@ -69,8 +69,43 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     SanteDB.authentication.setElevator(new SanteDBElevator(initializeView, false));
     initializeView($stateParams.id);
 }]).controller("EmrEncounterEntryController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
-    
+    async function cancelEncounter() {
+        const encounterId = $scope.scopedObject.id;
+        
+        if (confirm(SanteDB.locale.getString("ui.emr.encounter.cancel.confirm"))) {
+            try {
+
+                var submissionBundle = new Bundle({ resource: [], correlationId: encounterId });
+                submissionBundle.resource.push(new PatientEncounter({
+                    id: encounterId,
+                    operation: BatchOperationType.DeleteInt
+                }));
+
+                var component = await SanteDB.resources.actRelationship.findAsync({
+                    "source": encounterId,
+                    "relationshipType": ActRelationshipTypeKeys.HasComponent
+                });
+
+                if (component.resource) {
+                    component.resource.forEach(c => submissionBundle.resource.push(new Act({
+                        id: c.target,
+                        operation: BatchOperationType.DeleteInt
+                    })));
+                }
+
+                await SanteDB.resources.bundle.insertAsync(submissionBundle);
+                toastr.success(SanteDB.locale.getString("ui.emr.encounter.cancel.success"));
+
+                $state.go("santedb-emr.encounter.dashboard");
+            }
+            catch (e) {
+                $rootScope.errorHandler(e);
+            }
+        }
+    }
+
     $scope.doQueue = () => SanteEMR.showRequeue($scope.scopedObject);
+
     $scope.doDischarge = async () => {
         try {
 
@@ -85,6 +120,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             SanteDB.display.buttonWait("#btnActEditdischarge", false);
         }
     }
+
     $scope.saveVisit = async function(form) {
         if(form.$invalid) {
             return;
@@ -107,4 +143,6 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             SanteDB.display.buttonWait("#btnActEditsave", false);
         }
     }
+
+    $scope.doCancel = cancelEncounter;
 }]);
