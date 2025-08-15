@@ -14,7 +14,7 @@
     </meta>
 
     <dataSources>
-        <query ref="#org.santedb.emr.bi.query.patient.details" name="patient"/>
+         <view ref="#org.santedb.emr.bi.view.patient.registrationsByGender" name="patient" />
     </dataSources>
 
     <views>

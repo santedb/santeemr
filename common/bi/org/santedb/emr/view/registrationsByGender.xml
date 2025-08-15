@@ -1,0 +1,27 @@
+<BiViewDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="by-date" id="org.santedb.emr.bi.view.patient.registrationsByGender" xmlns="http://santedb.org/bi" status="active">
+  <meta>
+    <authors>
+      <add>SanteSuite Contributors</add>
+    </authors>
+  </meta>
+  <query ref="#org.santedb.emr.bi.query.patient.details" name="patient"></query>
+  <aggregations>
+    <add>
+      <providers>
+            <invariant>sqlite</invariant>
+            <invariant>npgsql</invariant>
+      </providers>
+      <grouping>
+        <column name="gndr">
+            pat_gndr_cd_id
+        </column>
+        <column name="age">
+              pat_dob
+        </column>
+      </grouping>
+      <select>
+        <column name="id" fn="count-distinct">ent_id</column>
+      </select>
+    </add>
+  </aggregations>
+</BiViewDefinition>
