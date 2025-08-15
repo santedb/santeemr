@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<BiReportDefinition xmlns="http://santedb.org/bi" id="org.santedb.emr.bi.reports.patient.registrationsByGender" label="Registrations by Gender" name="Registrations by Gender" status="active">
+    
+    <meta>
+        <authors>
+            <add>SanteSuite Contributors</add>
+        </authors>
+        <annotation>
+            <div xmlns="http://www.w3.org/1999/xhtml">
+                <p>Displays the distribution of genders across newly registered patients.</p>
+            </div>
+        </annotation>
+        <public>true</public>
+    </meta>
+
+    <dataSources>
+        <query ref="#org.santedb.emr.bi.query.patient.details" name="patient"/>
+    </dataSources>
+
+    <views>
+        <add id="org.santedb.bi.sample.reports.eventType.main" label="ui.bi.reports.main" name="chart">
+            <div xmlns="http://www.w3.org/1999/xhtml" xmlns:bi="http://santedb.org/bi/view">
+                <bi:chart type="bar" legend="true" source="patient">
+                    <bi:title>Patient Registrations by Gender</bi:title>
+                    <bi:labels type="string" label="Gender" />
+                    <bi:yAxis min="0" label="Registrations" />
+                    <bi:dataset label="Registrations" backgroundColor="rgba(0,200,255,0.5)" borderColor="transparent" pointRadius="0">Registrations</bi:dataset>
+                </bi:chart>
+            </div>
+        </add>
+    </views>
+</BiReportDefinition>
