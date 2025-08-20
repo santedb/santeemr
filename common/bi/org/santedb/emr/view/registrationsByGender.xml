@@ -13,14 +13,20 @@
       </providers>
       <grouping>
         <column name="gndr">
-            pat_gndr_cd_id
+          case 
+            when pat_gndr_cd_id = '094941e9-a3db-48b5-862c-bc289bd7f86c' then 'Female' 
+            when pat_gndr_cd_id = 'f4e3a6bb-612e-46b2-9f77-ff844d971198' then 'Male' 
+            when pat_gndr_cd_id = '43ba2ea1-93df-4e06-8bf9-1e65c4a46a3f' then 'Unknown' 
+            when pat_gndr_cd_id = '091f27e8-e592-4e81-b5d7-338b7749d8b8' then 'Other' 
+            when pat_gndr_cd_id = 'ae94a782-1485-4241-9bca-5b09db2156bf' then 'Undifferentiated' 
+          end
         </column>
         <column name="age">
-              pat_dob
+          age_at_reg
         </column>
       </grouping>
       <select>
-        <column name="id" fn="count-distinct">ent_id</column>
+        <column name="n_registrations" fn="count-distinct">ent_id</column>
       </select>
     </add>
   </aggregations>

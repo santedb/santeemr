@@ -22,9 +22,19 @@
             <div xmlns="http://www.w3.org/1999/xhtml" xmlns:bi="http://santedb.org/bi/view">
                 <bi:chart type="bar" legend="true" source="patient">
                     <bi:title>Patient Registrations by Gender</bi:title>
-                    <bi:labels type="string" label="Gender" />
+                    <bi:labels type="string" label="Gender" >gndr</bi:labels>
                     <bi:yAxis min="0" label="Registrations" />
-                    <bi:dataset label="Registrations" backgroundColor="rgba(0,200,255,0.5)" borderColor="transparent" pointRadius="0">Registrations</bi:dataset>
+                    <bi:dataset label="Registrations" backgroundColor="rgba(0,200,255,0.5)" borderColor="transparent" pointRadius="0">n_registrations</bi:dataset>
+                </bi:chart>
+            </div>
+        </add>
+        <add id="org.santedb.bi.sample.reports.eventType.main2" label="ui.bi.reports.main2" name="chart2">
+            <div xmlns="http://www.w3.org/1999/xhtml" xmlns:bi="http://santedb.org/bi/view">
+                <bi:chart type="bar" legend="true" source="patient">
+                    <bi:title>Patient Registrations by Ages</bi:title>
+                    <bi:labels type="string" label="Age" >age</bi:labels>
+                    <bi:yAxis min="0" label="Registrations" />
+                    <bi:dataset label="Registrations" backgroundColor="rgba(0,200,255,0.5)" borderColor="transparent" pointRadius="0">n_registrations</bi:dataset>
                 </bi:chart>
             </div>
         </add>
