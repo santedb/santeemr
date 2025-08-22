@@ -21,8 +21,6 @@
 angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$rootScope", "$timeout", "$state", "$stateParams", function ($scope, $rootScope, $timeout, $state, $stateParams) {
 
     async function initializeView(encounterId) {
-
-        
         try {
             var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full");
 
@@ -49,6 +47,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
                 "relationship[MemberOf].targetConcept": encounter.typeConcept,
                 _includeTotal: false
             });
+            
             encounter._nextStates = targetStates.resource.map(state => {
                 state.icon = 'fas fa-fw fa-person-walking-arrow-loop-left';
                 state.action = $scope.returnToState;
@@ -134,6 +133,23 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             }
             SanteDB.display.getScopeObject
             SanteDB.display.cascadeScopeObject($scope, ["encounter", "scopedObject"], encounter);
+
+            // Load the next states
+            var stateId = encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0].id
+            var targetStates = await SanteDB.resources.concept.findAsync({
+                conceptSet: 'D46D45B3-4DB3-4641-ADFC-84A80B7D1637', // EMREncounterTags
+                "id||relationship[StateFlow].source": stateId,
+                "relationship[MemberOf].targetConcept": encounter.typeConcept,
+                _includeTotal: false
+            });
+            
+            encounter._nextStates = targetStates.resource.map(state => {
+                state.icon = 'fas fa-fw fa-person-walking-arrow-loop-left';
+                state.action = $scope.returnToState;
+                state.label = SanteDB.display.renderConcept(state);
+                return state;
+            });
+            
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.save.success"));
         }
         catch(e) {
