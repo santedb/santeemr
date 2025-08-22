@@ -422,7 +422,8 @@ function SanteEMRWrapper() {
                     relationshipType: comp.relationshipType,
                     target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
                     targetModel: comp.targetModel,
-                    source: encounter.id
+                    source: encounter.id,
+                    classification: RelationshipClassKeys.ContainedObjectLink
                 });
                 encounter.relationship.HasComponent.push(ar);
 
