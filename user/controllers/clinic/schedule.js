@@ -46,9 +46,16 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
     }
 
     var _calendar = null;
+    var _calendarFilter = null;
 
     function handleEventOpen(evt) {
-        console.info(evt);
+        
+        // Determine where to route the data 
+        if(evt.event.extendedProps.act.moodConcept === ActMoodKeys.Eventoccurrence) {
+            SanteDB.application.callResourceViewer(evt.event.extendedProps.act.$type, null, { id: evt.event.extendedProps.act.id });
+        } else if(evt.event.extendedProps.act.participation?.RecordTarget[0].player) {
+            SanteDB.application.callResourceViewer("Patient", null, { id : evt.event.extendedProps.act.participation?.RecordTarget[0].player });
+        }
     }
 
     function renderEventContent(evt) {
@@ -62,7 +69,6 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
                 return { html: `<h5><i class='${statusTheme[evt.event.extendedProps.act.statusConcept]}'></i> ${getEventSummaryTitle(evt.event.extendedProps.act)}</h5><small>${getEventWeekDetail(evt.event.extendedProps.act)}</small>${getEventDayDetail(evt.event.extendedProps.act)}`}
                 
         }
-
     }
 
     function getEventSummaryTitle(evt) {
@@ -82,26 +88,24 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
 
     function getEventDayDetail(evt) {
         var retVal= "<ul>"
-        Object.keys(evt.relationship.HasComponent?.map(typ => {
-            retVal += `<li><i class='${eventTypeIcons[typ.targetModel.$type]}'></i> ${SanteDB.display.renderConcept(typ.targetModel.typeConceptModel)}</li>`
-        }).groupBy(
-            k=>k,
-            k=>k
-        )).forEach(k => retVal += k);
+        evt.relationship.HasComponent?.filter(o=>o.targetModel).map(typ => `<li><i class='${eventTypeIcons[typ.targetModel.$type]}'></i> ${SanteDB.display.renderConcept(typ.targetModel.typeConceptModel)}</li>`
+        ).distinct().forEach(k => retVal += k);
 
         retVal += "</ul>";
         return retVal;
     }
     
-    function getEventIcon(evt) {
-        switch (evt.classConcept) {
-            case ActClassKeys.Encounter:
-                return "fas fa-fw fa-user";
-            case ActClassKeys.List:
-                return "fas fa-fw fa-users-viewfinder";
-            default:
-                return "fas fa-fw fa-question-circle";
+    $scope.filterCalendar = function () {
+        if($scope.filterText && $scope.filterText !== "") {
+            _calendarFilter = {
+                'participation[RecordTarget].player.name.component.value||participation[RecordTarget].player.identifier.value||participation[RecordTarget].player.relationship[Mother|Father].target.name.component.value' : `~${$scope.filterText}`
+            };
         }
+        else {
+            _calendarFilter = null;
+        }
+
+        _calendar.refetchEvents();
     }
 
     // Fetch events
@@ -110,13 +114,17 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
             var a = new Act();
             a.start
 
+            $("#loadProgressBar").removeClass("d-none");
+
             _calendar?.removeAllEvents();
             success([]);
             var calendarEvents = [];
             var eventBundle = new Bundle({ totalResults: 1 });
             var offset = 0;
             while (offset < eventBundle.totalResults) {
+                $("#loadProgressBar .progress-bar").css("width", `${(offset / eventBundle.totalResults)* 100}%`);
                 eventBundle = await SanteDB.resources.act.findAsync({ // Sessions, intent acts, etc.
+                    ..._calendarFilter,
                     "classConcept": [ActClassKeys.List, ActClassKeys.Encounter],
                     "actTime": [`>${filter.startStr}`, `<${filter.endStr}`],
                     "moodConcept": [ActMoodKeys.Intent, ActMoodKeys.Propose, ActMoodKeys.Eventoccurrence, ActMoodKeys.Appointment],
@@ -147,6 +155,10 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
         catch (e) {
             $rootScope.errorHandler(e);
         }
+        finally {
+            $("#loadProgressBar").addClass("d-none");
+        }
+        
     }
 
     // Initialize view
@@ -159,14 +171,44 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
                 initialDate: moment().format("YYYY-MM-DD"),
                 selectable: true,
                 businessHours: true,
-                dayMaxEvents: true,
+                views: {
+                    dayGridMonth: {
+                        dayMaxEvents: true
+                    },
+                    dayGridWeek: {
+                        dayMaxEvents: true
+                    },
+                    dayGridDay: {
+                        dayMaxEvents: false
+                    }
+                },
+                moreLinkClick: (e) => {
+                    switch(_calendar.view.type) {
+                        case 'dayGridMonth':
+                            return 'week';
+                        case 'dayGridWeek':
+                            return "day";
+                        default: 
+                            return "list";
+                    }
+                },
                 eventContent: renderEventContent,
                 headerToolbar: {
-                    start: 'title',
-                    center: null,
-                    right: 'dayGridMonth,dayGridWeek,dayGridDay,list today prev,next'
+                    start: 'dayGridMonth,dayGridWeek,dayGridDay,list',
+                    center: 'title',
+                    right: null
+                },
+                footerToolbar: {
+                    right: 'today,prev,next'
                 },
                 themeSystem: 'bootstrap',
+                bootstrapFontAwesome: {
+                    close: 'fas fa-fw fa-times',
+                    prev: 'fas fa-fw fa-chevron-left my-1',
+                    next: 'fas fa-fw fa-chevron-right my-1',
+                    prevYear: 'fas fa-fw fa-angle-double-left',
+                    nextYear: 'fas fa-fw fa-angle-double-right'
+                },
                 initialView: 'dayGridWeek',
                 events: fetchEvents,
                 eventClick: handleEventOpen,
@@ -178,6 +220,26 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
                 }
             });
             _calendar.render();
+
+           
+            injectHeaderFn = () => {
+                var targetSearchDiv = $(".fc-header-toolbar .fc-toolbar-chunk")[2];
+                var searchDiv = $("#calendarSearchBar");
+                var progressDiv = $("#loadProgressBar");
+                var targetProgressDiv = $(".fc-footer-toolbar .fc-toolbar-chunk")[0];
+
+                if(targetSearchDiv && targetProgressDiv) {
+                    searchDiv.removeClass("d-none");
+                    searchDiv.appendTo(targetSearchDiv);
+                    $('.fc-prev-button').addClass("h-auto");
+                    $('.fc-next-button').addClass("h-auto");
+                    progressDiv.appendTo(targetProgressDiv);
+                }
+                else {
+                    $timeout(injectHeaderFn, 250);
+                }
+            };
+            injectHeaderFn();
         }
         catch (e) {
             $rootScope.errorHandler(e);

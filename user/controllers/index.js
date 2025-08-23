@@ -283,6 +283,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
     // Set the view handlers
     SanteDB.application.addResourceViewer("AuditData", function (state, parms) { (state || $state).transitionTo("santedb-emr.system.audit.view", parms); return true; });
+    SanteDB.application.addResourceViewer("PatientEncounter", function (state, parms) { (state || $state).transitionTo("santedb-emr.encounter.view", parms); return true; });
     SanteDB.application.addResourceViewer("Patient", function (state, parms) { (state || $state).transitionTo("santedb-emr.patient.view", parms); return true; });
     SanteDB.application.addResourceViewer("DiagnosticReport", function (state, parms) {
         (state || $state).transitionTo("santedb-emr.system.bug");
