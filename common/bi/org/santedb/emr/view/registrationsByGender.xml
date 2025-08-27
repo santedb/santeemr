@@ -22,7 +22,7 @@
           end
         </column>
         <column name="age">
-          age_at_reg
+          CAST(age_at_reg as int)
         </column>
       </grouping>
       <select>
