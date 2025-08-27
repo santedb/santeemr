@@ -8,10 +8,10 @@
         <add name="main" ref="#org.santedb.bi.dataSource.main" />
     </dataSources>
     <parameters>
-        <add ref="#org.santedb.bi.core.parameter.common.date.from" name="dob-from" type="date" />
-        <add ref="#org.santedb.bi.core.parameter.common.date.to" name="dob-to" type="date" />
-        <add ref="#org.santedb.bi.core.parameter.common.date.from" name="reg-from" type="date" />
-        <add ref="#org.santedb.bi.core.parameter.common.date.to" name="reg-to" type="date" />
+        <add label="ui.bi.core.date.dob.from" ref="#org.santedb.bi.core.parameter.common.date.from" name="dob-from" type="date" />
+        <add label="ui.bi.core.date.dob.to" ref="#org.santedb.bi.core.parameter.common.date.to" name="dob-to" type="date" />
+        <add label="ui.bi.core.date.reg.from" ref="#org.santedb.bi.core.parameter.common.date.from" name="reg-from" type="date" />
+        <add label="ui.bi.core.date.reg.to" ref="#org.santedb.bi.core.parameter.common.date.to" name="reg-to" type="date" />
         <add ref="#org.santedb.bi.core.parameter.patient.gender" name="gender" type="uuid" />
         <add name="facilityId" ref="#org.santedb.bi.core.parameter.common.facility" type="uuid" />
     </parameters>
