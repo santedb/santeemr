@@ -7,7 +7,7 @@
         </authors>
         <annotation>
             <div xmlns="http://www.w3.org/1999/xhtml">
-                <p>Displays the distribution of genders across newly registered patients.</p>
+                <p>Displays the distribution of genders across registered patients, and registrations by age.</p>
             </div>
         </annotation>
         <public>true</public>
@@ -18,7 +18,7 @@
     </dataSources>
 
     <views>
-        <add id="org.santedb.bi.sample.reports.eventType.main" label="ui.bi.reports.main" name="chart">
+        <add id="org.santedb.emr.bi.reports.patient.registrationsByGender.chart1" label="ui.bi.report.registrationsByGender.regByGender" name="chart1">
             <div xmlns="http://www.w3.org/1999/xhtml" xmlns:bi="http://santedb.org/bi/view">
                 <bi:chart type="bar" legend="true" source="patient">
                     <bi:title>Patient Registrations by Gender</bi:title>
@@ -28,7 +28,7 @@
                 </bi:chart>
             </div>
         </add>
-        <add id="org.santedb.bi.sample.reports.eventType.main2" label="ui.bi.reports.main2" name="chart2">
+        <add id="org.santedb.emr.bi.reports.patient.registrationsByGender.chart2" label="ui.bi.report.registrationsByGender.regByAge" name="chart2">
             <div xmlns="http://www.w3.org/1999/xhtml" xmlns:bi="http://santedb.org/bi/view">
                 <bi:chart type="bar" legend="true" source="patient">
                     <bi:title>Patient Registrations by Ages (in years)</bi:title>
