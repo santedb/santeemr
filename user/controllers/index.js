@@ -32,11 +32,12 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             $rootScope.refValues = {};
             var templates = await SanteDB.application.getTemplateDefinitionsAsync();
             var familialRelationships = await SanteDB.resources.conceptSet.invokeOperationAsync(null, "expand", { "_mnemonic": "FamilyMember" });
-            var myFacility = await SanteDB.resources.place.getAsync(await SanteDB.authentication.getCurrentFacilityId(), "min");
+            var myFacilityId = await SanteDB.authentication.getCurrentFacilityId();
+            var myFacility = myFacilityId == EmptyGuid ? null : await SanteDB.resources.place.getAsync(myFacilityId, "min");
             $timeout(() => {
                 $rootScope.refValues.FamilyMember = familialRelationships.resource.map(o => o.mnemonic);
                 $rootScope.refValues.templates = templates;
-                $rootScope.refValues.facilityName = SanteDB.display.renderEntityName(myFacility.name);
+                $rootScope.refValues.facilityName = SanteDB.display.renderEntityName(myFacility?.name);
                 $rootScope.refValues.facility = myFacility;
             });
 
@@ -58,7 +59,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             $timeout(() => $scope.mailbox = mailMessages.resource);
         }
         catch (e) {
-            toastr.warning(SanteDB.locale.getString("ui.emr.mailError"));
+//            toastr.warning(SanteDB.locale.getString("ui.emr.mailError"));
             console.error(e);
         }
     };
@@ -199,8 +200,9 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             await SanteDB.authentication.logoutAsync();
             $("#logoutModal").modal('hide');
             $timeout(() => {
+                $rootScope.session = null;
                 $templateCache.removeAll();
-                $state.go('login');
+                //$state.go('login');
             });
 
         }
@@ -221,6 +223,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         }
         else if (ov) {
             $scope.menuItems = null;
+            $rootScope.refValues = null;
             $state.go("login");
         }
     });

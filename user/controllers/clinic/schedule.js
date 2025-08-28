@@ -165,7 +165,7 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
     async function initializeView() {
         try {
             const calendarData = {};
-            calendarData.facility = await SanteDB.resources.place.getAsync(SanteDB.configuration.getAssignedFacilityId(), "min");
+            calendarData.facility = await SanteDB.resources.place.getAsync(await SanteDB.authentication.getCurrentFacilityId(), "min");
             $timeout(() => $scope.calendarData = calendarData);
             _calendar = new FullCalendar.Calendar(document.getElementById('facilityCalendar'), {
                 initialDate: moment().format("YYYY-MM-DD"),
