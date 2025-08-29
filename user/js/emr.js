@@ -170,7 +170,7 @@ function SanteEMRWrapper() {
     this.analyzeVisit = async function (encounter) {
         try {
             var bundle = await _bundleVisit(encounter);
-            bundle.resource = bundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1);
+            bundle.resource = bundle.resource.filter(act => _IGNORE_RELATIONSHIPS.includes(act.operation) || !act.tag?.isBackEntry);
             bundle.resource.forEach(act => { act.interpretationConcept = null });
             var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
                 target: bundle
