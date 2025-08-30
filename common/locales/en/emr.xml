@@ -480,4 +480,7 @@
      <string name="ui.emr.act.backEntry.date">Date</string>
      <string name="ui.emr.act.backEntry.observation.weight">Weight (kG)</string>
      <string name="ui.emr.act.backEntry.observation.height">Height/Length (cm)</string>
+
+     <!-- Facility -->
+      <string name="ui.emr.clinic.schedule.search.placeholder">Search Patient Id, Name, or Event Action</string>
 </resources>

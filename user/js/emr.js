@@ -170,7 +170,7 @@ function SanteEMRWrapper() {
     this.analyzeVisit = async function (encounter) {
         try {
             var bundle = await _bundleVisit(encounter);
-            bundle.resource = bundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1);
+            bundle.resource = bundle.resource.filter(act => _IGNORE_RELATIONSHIPS.includes(act.operation) || !act.tag?.isBackEntry);
             bundle.resource.forEach(act => { act.interpretationConcept = null });
             var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
                 target: bundle
@@ -422,7 +422,8 @@ function SanteEMRWrapper() {
                     relationshipType: comp.relationshipType,
                     target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
                     targetModel: comp.targetModel,
-                    source: encounter.id
+                    source: encounter.id,
+                    classification: RelationshipClassKeys.ContainedObjectLink
                 });
                 encounter.relationship.HasComponent.push(ar);
 

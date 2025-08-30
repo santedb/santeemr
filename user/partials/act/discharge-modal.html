@@ -45,7 +45,7 @@
                                 </div>
                                 <ul class="list-unstyled ml-2">
                                     <li ng-repeat="comp in encounter.relationship.HasComponent track by $index"
-                                        ng-if="comp.targetModel.tag.isBackEntry[0] != 'True'">
+                                        ng-if="!comp.targetModel.tag.isBackEntry">
                                         <label class="checkbox-container" ng-init="act = comp.targetModel">
                                             <input type="checkbox" class="checkbox-control"
                                                 ng-model="comp.targetModel.statusConcept" ng-readonly="readonly"

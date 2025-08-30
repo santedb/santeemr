@@ -1,0 +1,34 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script>~/controllers/clinic/schedule.js</sdb:script>
+    <sdb:script static="true">/org.santedb.uicore/lib/fullcalendar.min.js</sdb:script>
+    <sdb:state name="santedb-emr.clinic.schedule" abstract="false">
+        <sdb:url>/schedule</sdb:url>
+        <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.0</sdb:demand>
+        <sdb:view>
+            <sdb:title lang="en">Clinic Schedule</sdb:title>
+            <sdb:controller>EmrClinicScheduleController</sdb:controller>
+        </sdb:view>
+    </sdb:state>
+
+    <h2>{{ calendarData.facility.name | name }}</h2>
+    <div style="max-height:75vh" id="facilityCalendar"></div>
+    <form name="searchForm" class="d-none m-0 p-0" ng-submit="filterCalendar(searchForm)" novalidate="novalidate"
+        id="calendarSearchBar">
+        <div class="input-group my-0">
+            <input class="form-control h-auto" type="text"
+                placeholder="{{ 'ui.emr.clinic.schedule.search.placeholder' | i18n }}" ng-model="filterText" />
+            <div class="input-group-append">
+                <button type="submit" class="btn btn-primary" ng-disabled="searchForm.$invalid">
+                    <i class="fas fa-fw fa-magnifying-glass"></i> {{ 'ui.action.search' | i18n }}
+                </button>
+            </div>
+        </div>
+    </form>
+    <div id="loadProgressBar" class="d-none" style="width:25vw">
+        <div class="progress">
+            <div class="progress-bar text-right" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <i class="fas fa-fw fa-circle-notch fa-spin"></i>
+            </div>
+        </div>
+    </div>
+</div>

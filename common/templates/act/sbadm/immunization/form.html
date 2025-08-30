@@ -15,7 +15,7 @@
  - License for the specific language governing permissions and limitations under
  - the License.
  -->
-<div xmlns="http://www.w3.org/1999/xhtml" class="d-flex flex-column justify-content-start">
+<div xmlns="http://www.w3.org/1999/xhtml" class="d-flex flex-column justify-content-start mt-1">
     <label class="font-weight-bold mb-1">
         <i class="fas fa-fw fa-syringe"></i>
         {{ act.typeConceptModel | concept }}
@@ -25,13 +25,16 @@
             'ui.model.substanceAdministration.doseSequence' | i18n }}
             <!-- If not complete - then the user can override the dose sequence -->
             <a ng-click="act._overrideDose = true"
-                ng-if="!act._overrideDose &amp;&amp; act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'">{{
-                act.doseSequence | number: 0 }}</a>
-            <span ng-if="act.targetModel.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">{{ act.doseSequence |
-                number: 0 }}</span>
-        </span>
+                ng-if="!act._overrideDose &amp;&amp; act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'">
+                {{ act.doseSequence | number: 0 }}
+            </a>
 
+            <span ng-if="act.targetModel.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
+                {{ act.doseSequence | number: 0 }}
+            </span>
+        </span>
     </label>
+
     <div ng-if="act.tag.isBackEntry" class="container-fluid">
         <div class="row">
             <label class="control-label col-sm-12 col-md-3">
@@ -39,13 +42,13 @@
                 <hint-popover hint-title="ui.model.act.actTime.date" />
             </label>
 
-            <div class="col-sm-12 col-md-9">
+            <div class="col-sm-12 col-md-8">
                 <div class="input-group">
                     <input min="{{ act.relationship.Fulfills[0].targetModel.startTime || act._getEncounter().participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
                         max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd'}}"
+                        class="form-control h-100" 
                         name="{{ act.id }}time"
                         ng-model="act.actTime" 
-                        class="form-control" 
                         required="required"  
                         type="date" />
 
@@ -79,12 +82,13 @@
     </div>
 
     <div ng-if="!act.tag.isBackEntry &amp;&amp; !act.tag.$userAdded" class="container-fluid">
-        <div class="row">
-            <label class="control-label col-sm-12 col-md-4 col-lg-2 required">
+        <!-- Lot Number -->
+        <div class="row mb-2">
+            <label class="control-label col-sm-12 col-md-4 required">
                 {{ 'ui.model.substanceAdministration.Consumable.lotNumber' | i18n }}
             </label>
 
-            <div class="col-sm-12 col-md-8 col-lg-4">
+            <div class="col-sm-12 col-md-7">
                 <entity-select required="required" is-required="true" class="form-control" name="{{ act.id }}lot" 
                     ng-model="act.participation.Consumable[0].player" auto-select-singles="true"
                     entity-type="'ManufacturedMaterial'"
@@ -97,17 +101,19 @@
                     display="item.lotNumber" >
                 </entity-select>
 
-                <div ng-if="!(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'lot'].$pristine &amp;&amp; (ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'lot'].$error.required"
-                    class="text-danger">
+                <div ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'lot'].$error.required" class="text-danger">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
             </div>
+        </div>
 
-            <label class="control-label col-sm-12 col-md-4 col-lg-2 required" ng-repeat-start="used in act.participation.Product[0].playerModel.relationship.UsedEntity track by $index">
+        <!-- Used Entities -->
+        <div class="row">
+            <label class="control-label col-sm-12 col-md-4 required mb-2" ng-repeat-start="used in act.participation.Product[0].playerModel.relationship.UsedEntity track by $index">
                 {{ used.targetModel.name | name: 'Assigned' }}
             </label>
 
-            <div ng-repeat-end="" class="col-sm-12 col-md-8 col-lg-4">
+            <div ng-repeat-end="" class="col-sm-12 col-md-7 mb-2">
                 <entity-select required="required" is-required="true" class="form-control" name="{{ act.id }}{{$index}}lot" 
                     ng-model="act.participation.Consumable[$index + 1].player" auto-select-singles="true"
                     entity-type="'ManufacturedMaterial'"
@@ -125,12 +131,15 @@
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
             </div>
+        </div>
 
-            <label class="control-label col-sm-12 col-md-4 col-lg-2 required">
+        <!-- Administration Site -->
+        <div class="row mb-2">
+            <label class="control-label col-sm-12 col-md-4 required">
                 {{ 'ui.model.substanceAdministration.site' | i18n }}
             </label>
 
-            <div class="control-label col-sm-12 col-md-8 col-lg-4">
+            <div class="control-label col-sm-12 col-md-7">
                 <concept-select name="{{ act.id }}site" required="required" ng-model="act.site" concept-set="'AdministrationSite'" class="form-control"></concept-select>
                 
                 <div ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'site'].$error.required"
@@ -141,16 +150,3 @@
         </div>
     </div>
 </div>
-
-<!-- <div xmlns="http://www.w3.org/1999/xhtml">
-    <input name="vacc-history-{{ $parent.$parent.$parent.getIdentifier(act) }}" 
-        ng-disabled="$parent.$parent.$parent.isDisabled(act)" 
-        ng-model="act.isSelected" 
-        type="checkbox" />
-
-    <input ng-change="$parent.$parent.$parent.dateSelectedUpdateColumn(act)"
-        name="vacc-history-date-{{$parent.$parent.$parent.getIdentifier(act)}}" 
-        ng-disabled="$parent.$parent.$parent.isDisabled(act)" 
-        ng-model="act.selectedDate"
-        type="date" />
-</div> -->

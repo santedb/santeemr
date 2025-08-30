@@ -21,8 +21,6 @@
 angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$rootScope", "$timeout", "$state", "$stateParams", function ($scope, $rootScope, $timeout, $state, $stateParams) {
 
     async function initializeView(encounterId) {
-
-        
         try {
             var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full");
 
@@ -49,6 +47,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
                 "relationship[MemberOf].targetConcept": encounter.typeConcept,
                 _includeTotal: false
             });
+            
             encounter._nextStates = targetStates.resource.map(state => {
                 state.icon = 'fas fa-fw fa-person-walking-arrow-loop-left';
                 state.action = $scope.returnToState;
@@ -69,8 +68,43 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     SanteDB.authentication.setElevator(new SanteDBElevator(initializeView, false));
     initializeView($stateParams.id);
 }]).controller("EmrEncounterEntryController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
-    
+    async function cancelEncounter() {
+        const encounterId = $scope.scopedObject.id;
+        
+        if (confirm(SanteDB.locale.getString("ui.emr.encounter.cancel.confirm"))) {
+            try {
+
+                var submissionBundle = new Bundle({ resource: [], correlationId: encounterId });
+                submissionBundle.resource.push(new PatientEncounter({
+                    id: encounterId,
+                    operation: BatchOperationType.DeleteInt
+                }));
+
+                var component = await SanteDB.resources.actRelationship.findAsync({
+                    "source": encounterId,
+                    "relationshipType": ActRelationshipTypeKeys.HasComponent
+                });
+
+                if (component.resource) {
+                    component.resource.forEach(c => submissionBundle.resource.push(new Act({
+                        id: c.target,
+                        operation: BatchOperationType.DeleteInt
+                    })));
+                }
+
+                await SanteDB.resources.bundle.insertAsync(submissionBundle);
+                toastr.success(SanteDB.locale.getString("ui.emr.encounter.cancel.success"));
+
+                $state.go("santedb-emr.encounter.dashboard");
+            }
+            catch (e) {
+                $rootScope.errorHandler(e);
+            }
+        }
+    }
+
     $scope.doQueue = () => SanteEMR.showRequeue($scope.scopedObject);
+
     $scope.doDischarge = async () => {
         try {
 
@@ -85,6 +119,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             SanteDB.display.buttonWait("#btnActEditdischarge", false);
         }
     }
+
     $scope.saveVisit = async function(form) {
         if(form.$invalid) {
             return;
@@ -98,6 +133,23 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             }
             SanteDB.display.getScopeObject
             SanteDB.display.cascadeScopeObject($scope, ["encounter", "scopedObject"], encounter);
+
+            // Load the next states
+            var stateId = encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0].id
+            var targetStates = await SanteDB.resources.concept.findAsync({
+                conceptSet: 'D46D45B3-4DB3-4641-ADFC-84A80B7D1637', // EMREncounterTags
+                "id||relationship[StateFlow].source": stateId,
+                "relationship[MemberOf].targetConcept": encounter.typeConcept,
+                _includeTotal: false
+            });
+            
+            encounter._nextStates = targetStates.resource.map(state => {
+                state.icon = 'fas fa-fw fa-person-walking-arrow-loop-left';
+                state.action = $scope.returnToState;
+                state.label = SanteDB.display.renderConcept(state);
+                return state;
+            });
+            
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.save.success"));
         }
         catch(e) {
@@ -107,4 +159,6 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             SanteDB.display.buttonWait("#btnActEditsave", false);
         }
     }
+
+    $scope.doCancel = cancelEncounter;
 }]);

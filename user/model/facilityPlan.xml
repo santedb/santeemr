@@ -1,0 +1,37 @@
+<ViewModel xmlns="http://santedb.org/model/view"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://santedb.org/model/view http://santedb.org/schema/v3.0/ViewModelDescription.xsd"
+    name="emr.facilityPlan">
+    
+    <include>noModelProperties</include>
+    
+    <type name="EncounterRecordTarget" type="ActParticipation" base="noModelProperties.ActParticipation">
+        <property name="playerModel" behavior="always" ref="Patient" />
+    </type>
+
+    <type type="Patient" base="noModelProperties.Patient">
+        <property name="genderConceptModel" behavior="always" ref="Concept" />
+    </type>
+    
+    <type type="PatientEncounter" base="noModelProperties.PatientEncounter">
+        <property name="templateModel" behavior="always" all="true">
+            <property name="template" behavior="always" all="true" />
+            </property>
+        <property name="moodConceptModel" behavior="always" ref="Concept" />
+        <property name="typeConceptModel" behavior="always" ref="Concept" />
+        <property name="statusConceptModel" behavior="always" ref="Concept" />
+        <property name="participation" behavior="always">
+            <property name="RecordTarget" ref="EncounterRecordTarget" />
+            <property name="*" ref="ActParticipation" />
+        </property>
+        <property name="relationship" behavior="always" all="false">
+            <property name="HasComponent" behavior="always">
+                <property name="targetModel" behavior="always" ref="Act" />
+            </property>
+        </property>
+    </type>
+
+    <type type="Act" base="noModelProperties.Act">
+        <property name="typeConceptModel" behavior="always" ref="Concept" />
+    </type>
+</ViewModel>
