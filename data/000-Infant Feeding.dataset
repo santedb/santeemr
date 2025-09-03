@@ -1,0 +1,202 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Infant Feeding Status Concepts" xmlns="http://santedb.org/data">
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>353fe256-88cd-11f0-acbf-17b704d3ad69</id>
+      <name>Infant Feeding Method</name>
+      <mnemonic>InfantFeedingMethod</mnemonic>
+      <oid>1.3.6.1.4.1.45129.3.1.5.9.3.214</oid>
+      <url>http://santedb.org/conceptset/infant-feeding</url>
+      <concept>27aa1483-dbf1-4b2c-a103-a5cb71bbfc42</concept>
+      <concept>68518762-0e66-4f42-98e1-47c936fceb44</concept>
+      <concept>69221231-6c7b-433c-88da-f51c2e2cc060</concept>
+      <concept>8058dc36-4343-4b8f-9435-9709bae31e84</concept>
+      <concept>854fea07-5531-4d45-ac66-7a27eb1e55fb</concept>
+    </ConceptSet>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>8058dc36-4343-4b8f-9435-9709bae31e84</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>InfantFeeding-ExclusiveBreastfeeding</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>67da0008-88cc-11f0-b796-ff29ea03f393</id>
+        <source>8058dc36-4343-4b8f-9435-9709bae31e84</source>
+        <language>en</language>
+        <value>Exclusively breastfed</value>
+      </name>
+      <conceptSet>353fe256-88cd-11f0-acbf-17b704d3ad69</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>854fea07-5531-4d45-ac66-7a27eb1e55fb</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>InfantFeeding-Weaned</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>1b0f261c-88cd-11f0-a479-43e24248c779</id>
+        <source>854fea07-5531-4d45-ac66-7a27eb1e55fb</source>
+        <language>en</language>
+        <value>Weaned</value>
+      </name>
+      <conceptSet>353fe256-88cd-11f0-acbf-17b704d3ad69</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>68518762-0e66-4f42-98e1-47c936fceb44</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>InfantFeeding-ExclusiveBottleFeeding</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>d145f18d-88cc-11f0-b518-eb42a217c9fe</id>
+        <source>68518762-0e66-4f42-98e1-47c936fceb44</source>
+        <language>en</language>
+        <value>Exclusive bottle feeding</value>
+      </name>
+      <conceptSet>353fe256-88cd-11f0-acbf-17b704d3ad69</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>27aa1483-dbf1-4b2c-a103-a5cb71bbfc42</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>InfantFeeding-BreastfedSupplemented</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>8c8e591d-88cc-11f0-b799-d397667cffb4</id>
+        <source>27aa1483-dbf1-4b2c-a103-a5cb71bbfc42</source>
+        <language>en</language>
+        <value>Breastfeeding with supplemental feeding</value>
+      </name>
+      <conceptSet>353fe256-88cd-11f0-acbf-17b704d3ad69</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>69221231-6c7b-433c-88da-f51c2e2cc060</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>InfantFeeding-BreastAndBottleFed</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>a53756d0-88cc-11f0-b0db-cbcff585b1e0</id>
+        <source>69221231-6c7b-433c-88da-f51c2e2cc060</source>
+        <language>en</language>
+        <value>Breastfed and Bottle fed</value>
+      </name>
+      <conceptSet>353fe256-88cd-11f0-acbf-17b704d3ad69</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>67da4e64-88cc-11f0-b797-37c7595f44e3</id>
+      <source>8058dc36-4343-4b8f-9435-9709bae31e84</source>
+      <term>bcec7076-60c0-4df9-b772-e6ccd80ce6db</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>8c8e591e-88cc-11f0-b79a-3f0bf0c8f202</id>
+      <source>27aa1483-dbf1-4b2c-a103-a5cb71bbfc42</source>
+      <term>7b2542c9-35d5-421d-86cf-84a38b622e20</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>d145f18e-88cc-11f0-b519-c31a4b7fb888</id>
+      <source>68518762-0e66-4f42-98e1-47c936fceb44</source>
+      <term>d42812fc-251f-4a84-886f-685fb7e9fba1</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>1b0f261d-88cd-11f0-a47a-63e490d4afe6</id>
+      <source>854fea07-5531-4d45-ac66-7a27eb1e55fb</source>
+      <term>d091bf02-f8a8-4fda-b1ad-a72f0edd4fa4</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>a53950ca-88cc-11f0-b0dc-e7ee0c4c5598</id>
+      <source>69221231-6c7b-433c-88da-f51c2e2cc060</source>
+      <term>864f80a3-64f6-47aa-9426-a4e96d4590bc</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>864f80a3-64f6-47aa-9426-a4e96d4590bc</id>
+      <mnemonic>733896006</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>a535498a-88cc-11f0-b0da-8f13686c56d2</id>
+        <language>en</language>
+        <value>Breastfed and bottle fed</value>
+        <source>864f80a3-64f6-47aa-9426-a4e96d4590bc</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>d42812fc-251f-4a84-886f-685fb7e9fba1</id>
+      <mnemonic>1336082005</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>d145f18c-88cc-11f0-b517-df4f1e8a3d14</id>
+        <language>en</language>
+        <value>Exclusive bottle feeding</value>
+        <source>d42812fc-251f-4a84-886f-685fb7e9fba1</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>d091bf02-f8a8-4fda-b1ad-a72f0edd4fa4</id>
+      <mnemonic>169749002</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>1b0d1278-88cd-11f0-a478-2b2b6928fdb1</id>
+        <language>en</language>
+        <value>Weaned</value>
+        <source>d091bf02-f8a8-4fda-b1ad-a72f0edd4fa4</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>7b2542c9-35d5-421d-86cf-84a38b622e20</id>
+      <mnemonic>169743001</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>8c8e591c-88cc-11f0-b798-e32d2f2387d0</id>
+        <language>en</language>
+        <value>Breastfeeding with supplement</value>
+        <source>7b2542c9-35d5-421d-86cf-84a38b622e20</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>bcec7076-60c0-4df9-b772-e6ccd80ce6db</id>
+      <mnemonic>1145307003</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>67d6a278-88cc-11f0-b795-835a9b61f016</id>
+        <language>en</language>
+        <value>Exclusively breastfed</value>
+        <source>bcec7076-60c0-4df9-b772-e6ccd80ce6db</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+</dataset>
