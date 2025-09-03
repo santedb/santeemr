@@ -165,6 +165,28 @@ define library "SanteDB Core CDSS Fact Library"
 	            participation[RecordTarget].source@CodedObservation.value=dd3a4ad8-ec64-44a5-a3aa-8dad28a49d25&
 	            participation[RecordTarget].source.isNegated=false$$)
 		end fact
+		
+		define fact "Patient Current Pregnancy State" 
+		as 
+		    query(
+				from hdsi($$participation[RecordTarget]$$)
+				where hdsi($$source.isNegated=false&
+                    source.typeConcept=7bb3403e-d8ee-4b91-8a77-64da4f459415&
+                    source.value=!68fe916c-c656-44b6-88e8-ecc6ac4c3d00
+                $$)
+				select last hdsi($$source@CodedObservation$$)
+				order by hdsi($$source.actTime$$)
+			)
+		end fact
+		
+		define fact "Patient is currently Pregnant"
+		as 
+		    all(
+		        "Patient Is Female", 
+		        "Patient Current Pregnancy State"
+		   )
+		end fact
+		    
 	end logic
 	define logic "SanteDB Core CDSS for Acts"
 		having id <org.santedb.cdss.core.act>
