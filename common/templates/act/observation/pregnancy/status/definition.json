@@ -1,0 +1,69 @@
+{ 
+    "$type": "CodedObservation",
+    "template" : "441AF8B3-ED36-4F4F-A379-2A9D1AEA374E",
+    "typeConcept" : "7bb3403e-d8ee-4b91-8a77-64da4f459415",
+    "actTime" : "{{ $now }}",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "relationship" : {
+        "HasComponent" : [
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.pregnancy.status.lmp"
+                    }
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.pregnancy.status.edd"
+                    }
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.pregnancy.aof"
+                    }       
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.pregnancy.status.confirm"
+                    }       
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.pregnancy.complication"
+                    }       
+                }
+            }
+        ]
+    },
+    "participation" : {
+        "RecordTarget" : [
+            {
+               "player": "{{ $recordTargetId }}"
+            }
+        ],
+        "Location" : [
+            {
+                "player": "{{ $facilityId }}"
+            }    
+        ],
+        "Authororiginator" : [
+            {
+                "player" : "{{ $userEntityId }}"
+            }
+        ]
+    }
+    
+}

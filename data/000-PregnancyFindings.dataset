@@ -13,7 +13,7 @@
         <id>13b1415c-8832-11f0-a3b8-7fe051bf758b</id>
         <source>9301d554-1522-447c-aef9-4694c5b84a8e</source>
         <language>en</language>
-        <value>Pregnant - Vaginal Examination Confirms (finding)</value>
+        <value>Vaginal Examination</value>
       </name>
     </Concept>
   </update>
@@ -43,7 +43,7 @@
         <id>e7ec992c-8831-11f0-a3b2-83ddf95329a5</id>
         <source>f7b4522f-99ab-4dae-bb29-d1868ce4c068</source>
         <language>en</language>
-        <value>Pregnant - on history (finding)</value>
+        <value>History / Social</value>
       </name>
     </Concept>
   </update>
@@ -58,7 +58,7 @@
         <id>f90881d0-8831-11f0-a3b5-536d9d2fb5c9</id>
         <source>918cfabc-de9d-44c2-9ffa-27bfaf3c8bf8</source>
         <language>en</language>
-        <value>Pregnant - Urine Test Confirmed (finding)</value>
+        <value>Urine Test</value>
       </name>
     </Concept>
   </update>
@@ -73,7 +73,7 @@
         <id>b1b3edec-8831-11f0-a5d2-c7f5d590ff3c</id>
         <source>433bdbf1-b1b9-468d-87d6-e77e51fed3d9</source>
         <language>en</language>
-        <value>Pregnant - blood test confirms</value>
+        <value>Blood Test</value>
       </name>
     </Concept>
   </update>
@@ -88,7 +88,7 @@
         <id>ccf3d590-8831-11f0-a5d5-7b3f416251e3</id>
         <source>792db532-7eb9-49df-a10d-26160abb035f</source>
         <language>en</language>
-        <value>Pregnant - on abdominal palpation (finding)</value>
+        <value>Abdominal Palpation</value>
       </name>
     </Concept>
   </update>

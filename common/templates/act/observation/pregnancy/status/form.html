@@ -1,0 +1,36 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+
+    <script type="text/javascript" nonce="{{ $csp_nonce }}">
+        /// <![CDATA[
+        // When the selected value is in the "Non-Indicator" concept set - we tell the HDSI to ignore the components
+        var scope = angular.element('#pregnancyStatusInput').scope();
+
+        scope.resolveTemplate = function (templateId) {
+            var templateValue = SanteDB.application.resolveTemplateForm(templateId);
+            if (templateValue == null) {
+                return "/org.santedb.uicore/partials/act/noTemplate.html"
+            }
+            return templateValue;
+        }
+
+        scope.$watch("act.valueModel", function (n, o) {
+            if(n && n.conceptSet?.includes('8e848f0e-890b-11f0-ae3f-9f37087e0822')) {
+                scope.act.relationship.HasComponent.forEach(n => n.operation = BatchOperationType.Ignore);
+            }
+            else {
+                scope.act.relationship.HasComponent.forEach(n => n.operation = BatchOperationType.InsertOrUpdate);
+            }
+        });
+        /// ]]>
+    </script>
+
+    <div id="pregnancyStatusInput">
+    TODO: Pregnancy Status entry 
+    Drop Down: PregnancyStatus
+
+    <ul class="list-group">
+        <li class="list-group-item" ng-if="comp.operation == 'InsertOrUpdate'" ng-repeat="comp in act.relationship.HasComponent track by $index">
+            <ng-include src="::resolveTemplate(comp.targetModel.templateModel.mnemonic)" />
+        </li>
+    </ul>
+</div>

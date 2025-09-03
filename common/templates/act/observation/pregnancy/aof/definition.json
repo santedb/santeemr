@@ -1,0 +1,9 @@
+{ 
+    "$type": "QuantityObservation",
+    "template" : "0003F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+    "typeConcept" : "fdaf1790-1868-11eb-adc1-0242ac120002",
+    "actTime" : "{{ $now }}",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "value" : "0",
+    "unitOfMeasure" : "a0ef1084-2158-42f2-933b-f81aa78ca4d2"
+}

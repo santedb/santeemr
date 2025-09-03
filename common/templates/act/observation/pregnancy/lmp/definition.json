@@ -1,0 +1,9 @@
+{ 
+    "$type": "DateObservation",
+    "template" : "0001F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+    "typeConcept" : "54843f39-8820-4856-951c-1bcd4812bdce",
+    "actTime" : "{{ $now }}",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "value" : "{{ $now }}",
+    "valuePrecision" : "D"
+}

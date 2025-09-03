@@ -169,6 +169,21 @@
     </update>
     <update skipIfError="false" insertIfNotExists="true">
         <Concept xmlns="http://santedb.org/model">
+            <id>afdefced-8468-43ca-9e54-cadf413dfede</id>
+            <sequence xsi:nil="true" />
+            <mnemonic>ObservationType-DeliveryDateEstimatedClinicalEstimation</mnemonic>
+            <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+            <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+            <name>
+                <id>b414fd8a-85e7-11f0-86b3-efb9e1a1efd5</id>
+                <source>afdefced-8468-43ca-9e54-cadf413dfede</source>
+                <language>en</language>
+                <value>Estimated Delivery Date (Clinical Estimate)</value>
+            </name>
+        </Concept>
+    </update>
+    <update skipIfError="false" insertIfNotExists="true">
+        <Concept xmlns="http://santedb.org/model">
             <id>9d93339c-1cdf-4b7b-9652-54fecfc030d9</id>
             <sequence xsi:nil="true" />
             <mnemonic>PregnancyState-NormalPregnancy</mnemonic>
