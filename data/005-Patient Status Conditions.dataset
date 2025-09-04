@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Patient Status / Condition Types" xmlns="http://santedb.org/data">
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Patient Status / Condition Types v3.01" xmlns="http://santedb.org/data">
   <update skipIfError="false" insertIfNotExists="true">
     <ConceptSet xmlns="http://santedb.org/model">
       <id>b73e6dbc-890a-11f0-8959-c764088c39f9</id>
@@ -11,6 +11,7 @@
       <concept>6fb8487c-cd6f-44f1-ab63-27dc65405792</concept>
       <concept>7bb3403e-d8ee-4b91-8a77-64da4f459415</concept>
       <concept>8a07a21f-50ff-4631-8e51-c54690fb1127</concept>
+      <concept>36c93880-e5a0-40bc-a271-ce7dff9a90fd</concept>
     </ConceptSet>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
@@ -25,6 +26,40 @@
         <source>7bb3403e-d8ee-4b91-8a77-64da4f459415</source>
         <language>en</language>
         <value>Pregnancy Status</value>
+      </name>
+    </Concept>
+  </update>
+    <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>1d8fb5f4-3288-4184-a7ea-772a649c069c</id>
+      <mnemonic>63895-7</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>75af05b0-88d7-11f0-a713-7badd0ed241e</id>
+        <language>en</language>
+        <value>Breastfeeding status</value>
+        <source>1d8fb5f4-3288-4184-a7ea-772a649c069c</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>36c93880-e5a0-40bc-a271-ce7dff9a90fd</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-InfantFeedingStatus</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>75af7ad6-88d7-11f0-a715-07887188f733</id>
+        <source>36c93880-e5a0-40bc-a271-ce7dff9a90fd</source>
+        <term>1d8fb5f4-3288-4184-a7ea-772a649c069c</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>734ce026-89b3-11f0-960a-0bbe09981ff6</id>
+        <source>36c93880-e5a0-40bc-a271-ce7dff9a90fd</source>
+        <language>en</language>
+        <value>Breastfeeding Status</value>
       </name>
     </Concept>
   </update>

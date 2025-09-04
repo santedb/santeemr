@@ -213,7 +213,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
 
     // Watch the session and load menus accordingly (in case user elevates)
     $rootScope.$watch('session', function (nv, ov) {
-        if (nv && nv.user) {
+        if (nv && nv.user && (!ov || nv.username != ov?.username)) {
             // Add menu items
             loadMenus();
             loadHelperProperties();
@@ -221,7 +221,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             checkConflicts();
             checkMail();
         }
-        else if (ov) {
+        else if (ov && (!nv || !nv.user)) {
             $scope.menuItems = null;
             $rootScope.refValues = null;
             $state.go("login");
