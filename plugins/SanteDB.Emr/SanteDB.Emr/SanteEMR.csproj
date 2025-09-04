@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+
+	<PropertyGroup>
+		<PackageId>SanteEMR</PackageId>
+		<Title>SanteEMR</Title>
+		<Version>$(VersionNumber)</Version>
+		<Description>SanteDB Electronic Medical Record Support Plugin</Description>
+		<Authors>SanteSuite Contributors</Authors>
+		<PackageTags>SanteDB</PackageTags>
+		<RepositoryUrl>https://github.com/santedb/santeemr</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<IncludeSymbols>true</IncludeSymbols>
+		<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+		<Product>SanteDB</Product>
+		<Copyright>Copyright (C) 2016-2025 SanteSuite Contributors (See: NOTICES)</Copyright>
+		<Company>SanteSuite Contributors</Company>
+		<PackageIconUrl>http://santesuite.org/assets/img/logo.png</PackageIconUrl>
+		<PackageProjectUrl>http://santesuite.org</PackageProjectUrl>
+		<BaseOutputPath>..\..\bin\</BaseOutputPath>
+	</PropertyGroup>
+	
+  <ItemGroup>
+    <None Include="..\..\SanteDB.licenseheader" Link="SanteDB.licenseheader" />
+  </ItemGroup>
+
+
+	<ItemGroup>
+		<PackageReference Include="SanteDB.Client" Version="$(VersionNumber)" />
+		<PackageReference Include="SanteDB.Persistence.Data" Version="$(VersionNumber)" />
+	</ItemGroup>
+</Project>

@@ -55,7 +55,8 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                 "participation[RecordTarget].player": id,
                 statusConcept: StatusKeys.Active,
                 _count: 1,
-                _includeTotal: false
+                _includeTotal: false,
+                moodConcept: ActMoodKeys.Eventoccurrence
             }, "full");
             if(encounter.resource) {
                 $scope.patient._currentEncounter = encounter.resource[0];
