@@ -91,6 +91,40 @@
     </Concept>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>8e0e93e2-3711-4932-b49e-8be6fa5739dc</id>
+      <mnemonic>75179-2</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>2b8a5682-89e1-11f0-b0fa-a70f2a679445</id>
+        <language>en</language>
+        <value>Mother's HIV Status During Pregnancy</value>
+        <source>8e0e93e2-3711-4932-b49e-8be6fa5739dc</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>437ba956-3a02-449f-bab8-c79aac9d424a</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-MothersHIVStatusDuringPregnancy</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>2b8f6a3c-89e1-11f0-b0fc-ff735399541e</id>
+        <source>437ba956-3a02-449f-bab8-c79aac9d424a</source>
+        <term>8e0e93e2-3711-4932-b49e-8be6fa5739dc</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>2b8eb7cc-89e1-11f0-b0fb-2be5bcaf0885</id>
+        <source>437ba956-3a02-449f-bab8-c79aac9d424a</source>
+        <language>en</language>
+        <value>Mother's HIV Status During Pregnancy</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
     <ConceptReferenceTerm xmlns="http://santedb.org/model">
       <id>ee110da6-8912-11f0-bbdb-f35a08a3af18</id>
       <source>14b03dc4-6f42-4318-ba62-048aaf079c26</source>

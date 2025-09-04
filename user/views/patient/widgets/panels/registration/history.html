@@ -10,7 +10,8 @@
     <div ng-controller="EmrPatientRegisterClinicalHistoryController">
         <ul class="overflow-auto list-group" ng-init="ownerForm = editForm">
             <li class="list-group-item" ng-repeat="(tpl, acts) in entryActs track by $index">
-                <ng-include src="resolveBackentryTemplate(tpl)"></ng-include>
+                <h5>{{ ::getTemplateName(tpl) }}</h5>
+                <ng-include src="resolveRegistrationTemplate(tpl)"></ng-include>
             </li>
         </ul>
     </div>

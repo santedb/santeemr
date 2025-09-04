@@ -709,6 +709,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     }]).controller("EmrPatientRegisterClinicalHistoryController", ["$scope", "$rootScope", "$timeout", function ($scope, $rootScope, $timeout) {
 
         $scope.entryActs = {};
+        
 
         $scope.$watch("scopedObject.participation.RecordTarget", function (n, o) {
             if (n) {
@@ -723,9 +724,14 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             }
         });
 
-        $scope.resolveBackentryTemplate = function (templateId) {
+        $scope.getTemplateName = function(templateId) {
+            return SanteDB.application.getTemplateMetadata(templateId)?.name || templateId;
+        }
 
-            var templateValue = SanteDB.application.resolveTemplateBackentry(templateId);
+        $scope.resolveRegistrationTemplate = function (templateId) {
+
+            var templateValue = SanteDB.application.resolveTemplateBackentry(templateId) || 
+                SanteDB.application.resolveTemplateForm(templateId);
             if (templateValue == null) {
                 return "/org.santedb.uicore/partials/act/noTemplate.html"
             }

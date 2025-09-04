@@ -17,7 +17,7 @@
  - the License.
  -->
 <AppletManifest xmlns="http://santedb.org/applet">
-  <info id="org.santedb.emr.common" version="2.1.3.0">
+  <info id="org.santedb.emr.common" version="3.0.0.0">
     <icon>/org.santedb.core/img/icon.png</icon>
     <name lang="en">SanteDB EMR Common</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
@@ -151,17 +151,27 @@
   </template>
 
   <template mnemonic="org.santedb.emr.hiv.status" public="true">
-    <definition>/org.santedb.emr.common/templates/act/observation/hivStatus/definition.json</definition>
-    <form>/org.santedb.emr.common/templates/act/observation/hivStatus/form.html</form>
-    <view>/org.santedb.emr.common/templates/act/observation/hivStatus/view.html</view>
-    <summaryView>/org.santedb.emr.common/templates/act/observation/hivStatus/summary.html</summaryView>
+    <definition>/org.santedb.emr.common/templates/act/observation/hiv/status/definition.json</definition>
+    <form>/org.santedb.emr.common/templates/act/observation/hiv/status/form.html</form>
+    <view>/org.santedb.emr.common/templates/act/observation/hiv/status/view.html</view>
+    <summaryView>/org.santedb.emr.common/templates/act/observation/hiv/status/summary.html</summaryView>
     <icon>fas fa-virus</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.12</oid>
     <description>HIV Status</description>
     <uuid>401113E0-B256-49B4-AF1F-07CC2668D00B</uuid>
   </template>
 
-  
+    <template mnemonic="org.santedb.emr.hiv.mothersStatus" public="false">
+    <definition>/org.santedb.emr.common/templates/act/observation/hiv/mothersStatus/definition.json</definition>
+    <form>/org.santedb.emr.common/templates/act/observation/hiv/mothersStatus/form.html</form>
+    <view>/org.santedb.emr.common/templates/act/observation/hiv/mothersStatus/view.html</view>
+    <summaryView>/org.santedb.emr.common/templates/act/observation/hiv/mothersStatus/summary.html</summaryView>
+    <icon>fas fa-circle</icon>
+    <oid>1.3.6.1.4.1.52820.5.2.1.16</oid>
+    <description>Mother's HIV Status</description>
+    <uuid>0006F8B3-ED36-4F4F-A379-2A9D1AEA374E</uuid>
+  </template>
+
   
   <template mnemonic="org.santedb.emr.pregnancy.status" public="true">
     <definition>/org.santedb.emr.common/templates/act/observation/pregnancy/status/definition.json</definition>
@@ -228,7 +238,7 @@
     <icon>fas fa-circle</icon>
     <oid>1.3.6.1.4.1.52820.5.2.1.13.5</oid>
     <description>Pregnancy Complication(s)</description>
-    <uuid>0004F8B3-ED36-4F4F-A379-2A9D1AEA374E</uuid>
+    <uuid>0005F8B3-ED36-4F4F-A379-2A9D1AEA374E</uuid>
   </template>
   
 
@@ -265,7 +275,7 @@
     <view>/org.santedb.emr.common/templates/act/registration/lds/view.html</view>
     <icon>fas fa-person-pregnant</icon>
     <oid>1.3.6.1.4.1.52820.5.2.5.1</oid>
-    <description>Labour &amp; Delivery Summary</description>
+    <description>Delivery Summary</description>
     <uuid>AD519D42-E437-4BAE-8B64-404303DC3424</uuid>
     <guard>recordTarget.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.age() &gt; 12</guard>
   </template>
