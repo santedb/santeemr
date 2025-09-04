@@ -1,0 +1,7 @@
+{ 
+    "$type": "CodedObservation",
+    "template" : "0006F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+    "typeConcept" : "437ba956-3a02-449f-bab8-c79aac9d424a",
+    "actTime" : "{{ $now }}",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3"
+}

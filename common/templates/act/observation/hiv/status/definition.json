@@ -1,0 +1,30 @@
+{ 
+    "$type": "CodedObservation",
+    "template": "401113E0-B256-49B4-AF1F-07CC2668D00B",
+    "classConcept" : "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
+    "typeConcept" : "8a07a21f-50ff-4631-8e51-c54690fb1127",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "actTime" : "{{ $now }}",
+    "participation" : {
+        "RecordTarget" : [
+            {
+               "player": "{{ $recordTargetId }}"
+            }
+        ],
+        "Location" : [
+            {
+                "player": "{{ $facilityId }}"
+            }    
+        ],
+        "Authororiginator" : [
+            {
+                "player" : "{{ $userEntityId }}"
+            }
+        ]
+    },
+    "policy" : [
+        {
+            "policy" : "36f1ed35-552e-421a-8f59-629561ab9eb6"
+        }    
+    ]
+}
