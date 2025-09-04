@@ -26,9 +26,6 @@
         <language>en</language>
         <value>Condition</value>
       </name>
-      <conceptSet>b73e6dbc-890a-11f0-8959-c764088c39f9</conceptSet>
-      <conceptSet>03aa038f-570e-45f1-93ac-fd77e239a1ec</conceptSet>
-      <conceptSet>952d89fa-9324-4008-9452-3eb6780b6ea0</conceptSet>
     </Concept>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
@@ -44,8 +41,6 @@
         <language>en</language>
         <value>Clinical State</value>
       </name>
-      <conceptSet>b73e6dbc-890a-11f0-8959-c764088c39f9</conceptSet>
-      <conceptSet>03aa038f-570e-45f1-93ac-fd77e239a1ec</conceptSet>
     </Concept>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
@@ -61,8 +56,6 @@
         <language>en</language>
         <value>Pregnancy Status</value>
       </name>
-      <conceptSet>b73e6dbc-890a-11f0-8959-c764088c39f9</conceptSet>
-      <conceptSet>03aa038f-570e-45f1-93ac-fd77e239a1ec</conceptSet>
     </Concept>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
@@ -78,7 +71,6 @@
         <language>en</language>
         <value>HIV Status (Finding)</value>
       </name>
-      <conceptSet>b73e6dbc-890a-11f0-8959-c764088c39f9</conceptSet>
     </Concept>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
