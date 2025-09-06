@@ -7,7 +7,7 @@ define library "SanteDB Core CDSS Fact Library"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0.2004
+		version 3.0.2008
 		doc This library contains core logic to extract common facts related to objects in SanteDB. It defines
 		doc no rules, protocols, or models, rather is intended to provide common facts about data to allow
 		doc users to more easily derive their own rules
@@ -138,6 +138,14 @@ define library "SanteDB Core CDSS Fact Library"
 		as
 			csharp($$DateTime.Now.Subtract(context.Target.DateOfBirth.Value.Date).TotalDays / 365.25f$$)
 		end fact
+
+		define fact "Patient Is Female of Childbearing Age" having type bool as
+			all(
+				"Patient Is Female",
+				csharp($$ realf("Patient Age in Years") > 14 && realf("Patient Age in Years") < 45  $$)
+			)
+		end fact
+
 		define fact "Patient Date of Birth"
 			having type date
 		as

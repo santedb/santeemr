@@ -5,5 +5,5 @@
     "actTime" : "{{ $now }}",
     "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
     "value" : "{{ $now }}",
-    "valuePrecision" : "D"
+    "valuePrecision" : "Day"
 }

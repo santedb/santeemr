@@ -4,13 +4,13 @@
 include <org.santedb.cdss.core>
 include <org.santedb.cdss.core.childcare>
 
-define library "Basic HIV Core"
+define library "HIV Status Collection Protocols"
 	having id <org.santedb.cdss.hiv>
 	having uuid {d1fe7532-89de-11f0-971a-dbcfb5e463da}
 	having oid "1.3.5.1.4.1.52820.5.3.3.0"
-	having status dont-use
+	having status active
 	with metadata
-		version 3.0
+		version 3.02
 	end metadata
 	as
 	define logic "HIV Status Collection - Patient - Common"

@@ -2,8 +2,31 @@
 
     <script type="text/javascript" nonce="{{ $csp_nonce }}">
         /// <![CDATA[
+
         // When the selected value is in the "Non-Indicator" concept set - we tell the HDSI to ignore the components
+        // TODO: Clean this up - move to a controller file ----------------------------------
         var scope = angular.element('#pregnancyStatusInput').scope();
+        var _pregnancyNegativeConcepts = [];
+        async function initializeView() {
+            try {
+                var conceptSetExpansion = await SanteDB.resources.conceptSet.findAssociatedAsync('8e848f0e-890b-11f0-ae3f-9f37087e0822', "Concept", null, "min");
+                _pregnancyNegativeConcepts = conceptSetExpansion.resource.map(o=>o.id);
+            }
+            catch (e) {
+                console.error(e);
+            }
+        }
+
+        initializeView();
+
+        function showOrHideComponents(selectedValue) {
+            if (selectedValue && _pregnancyNegativeConcepts.includes(selectedValue)) {
+                scope.act.relationship.HasComponent.forEach(n => n.operation = BatchOperationType.Ignore);
+            }
+            else {
+                scope.act.relationship.HasComponent.forEach(n => n.operation = BatchOperationType.InsertOrUpdate);
+            }
+        }
 
         scope.resolveTemplate = function (templateId) {
             var templateValue = SanteDB.application.resolveTemplateForm(templateId);
@@ -13,13 +36,15 @@
             return templateValue;
         }
 
-        scope.$watch("act.valueModel", function (n, o) {
-            if (n && n.conceptSet?.includes('8e848f0e-890b-11f0-ae3f-9f37087e0822')) {
-                scope.act.relationship.HasComponent.forEach(n => n.operation = BatchOperationType.Ignore);
-            }
-            else {
-                scope.act.relationship.HasComponent.forEach(n => n.operation = BatchOperationType.InsertOrUpdate);
-            }
+
+        scope.$watch("act.value", function (n, o) {
+            showOrHideComponents(n);
+        });
+
+        showOrHideComponents(scope.act.value);
+
+        angular.module("santedb").controller("PregnancyStatusComponentController", function () {
+
         });
         /// ]]>
     </script>
@@ -28,15 +53,16 @@
 
         <div class="row">
             <div class="col-12">
-                TODO: Pregnancy Status entry
-                Drop Down: PregnancyStatus
+                PREGNANCY STATUS: <concept-select concept-set="'PregnancyStatusCodes'" ng-model="act.value" />
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" ng-if="act.value">
             <div class="col-sm-12 col-md-6" ng-if="comp.operation == 'InsertOrUpdate'"
                 ng-repeat="comp in act.relationship.HasComponent track by $index">
-                <ng-include src="::resolveTemplate(comp.targetModel.templateModel.mnemonic)" />
+                <div ng-init="act = comp.targetModel">
+                    <ng-include src="::resolveTemplate(comp.targetModel.templateModel.mnemonic)" />
+                </div>
             </div>
         </div>
     </div>

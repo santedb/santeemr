@@ -7,22 +7,25 @@
     "relationship" : {
         "HasComponent" : [
             {
+                "operation": "Ignore",
                 "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel" : {
                     "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.pregnancy.status.lmp"
+                        "mnemonic" : "org.santedb.emr.pregnancy.lmp"
                     }
                 }
             },
             {
+                "operation": "Ignore",
                 "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel" : {
                     "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.pregnancy.status.edd"
+                        "mnemonic" : "org.santedb.emr.pregnancy.edd"
                     }
                 }
             },
             {
+                "operation": "Ignore",
                 "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel" : {
                     "templateModel" : {
@@ -31,26 +34,20 @@
                 }
             },
             {
+                "operation": "Ignore",
                 "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel" : {
                     "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.pregnancy.status.confirm"
+                        "mnemonic" : "org.santedb.emr.pregnancy.confirm"
                     }       
                 }
             },
             {
+                "operation": "Ignore",
                 "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel" : {
                     "templateModel" : {
                         "mnemonic" : "org.santedb.emr.pregnancy.complication"
-                    }       
-                }
-            },
-            {
-                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.pregnancy.hivStatus"
                     }       
                 }
             }

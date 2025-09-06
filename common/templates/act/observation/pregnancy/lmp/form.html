@@ -3,5 +3,7 @@
 
     Simple date entry with cdss-interactive tag passing the act up to the CDSS via cdss-interactive="$parent.act || $parent.$parent.act || $parent.$parent.$parent.act" - so that the components for gestational age and 
     EDD can be populated.
-    
+    <p>
+    <strong>CDSS ENTER LAST MENSTRUAL PERIOD DATE (APPROX): <input name="dateLastMenstrualPeriod" type="date" ng-model="act.value" cdss-interactive="($parent.$parent.$parent.act || $parent.$parent.act || $parent.act)"/></strong>
+    </p>
 </div>

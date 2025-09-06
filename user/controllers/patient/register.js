@@ -728,14 +728,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             return SanteDB.application.getTemplateMetadata(templateId)?.name || templateId;
         }
 
-        $scope.resolveRegistrationTemplate = function (templateId) {
+        $scope.hasBackEntry = (templateId) => SanteDB.application.resolveTemplateBackentry(templateId) != null;
 
-            var templateValue = SanteDB.application.resolveTemplateBackentry(templateId) || 
-                SanteDB.application.resolveTemplateForm(templateId);
-            if (templateValue == null) {
-                return "/org.santedb.uicore/partials/act/noTemplate.html"
-            }
-            return templateValue;
-        }
+        $scope.resolveTemplateBackentry = (templateId) => SanteDB.application.resolveTemplateBackentry(templateId);
+
+        $scope.resolveTemplateForm = (templateId) => SanteDB.application.resolveTemplateForm(templateId);
 
     }]);

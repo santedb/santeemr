@@ -11,7 +11,15 @@
         <ul class="overflow-auto list-group" ng-init="ownerForm = editForm">
             <li class="list-group-item" ng-repeat="(tpl, acts) in entryActs track by $index">
                 <h5>{{ ::getTemplateName(tpl) }}</h5>
-                <ng-include src="resolveRegistrationTemplate(tpl)"></ng-include>
+
+                <div ng-switch="::hasBackEntry(tpl)">
+                    <div ng-switch-when="true">
+                        <ng-include src="::resolveTemplateBackentry(tpl)"></ng-include>
+                    </div>
+                    <div ng-switch-default="ng-switch-default" ng-init="act = acts[0]">
+                        <ng-include src="::resolveTemplateForm(tpl)"></ng-include>
+                    </div>
+                </div>
             </li>
         </ul>
     </div>

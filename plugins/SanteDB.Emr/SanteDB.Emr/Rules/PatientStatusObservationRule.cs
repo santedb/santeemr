@@ -116,7 +116,7 @@ namespace SanteEMR.Rules
                     activeCondition.StatusConceptKey = StatusKeys.Completed;
                     activeCondition.BatchOperation = BatchOperationType.Update;
                 }
-                activeCondition.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.RefersTo, data.Key));
+                activeCondition.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.HasSubject, data.Key));
                 this.m_conditionRepository.Save(activeCondition); // Save the condition related to the act
             }
         }
