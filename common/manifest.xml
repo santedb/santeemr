@@ -116,6 +116,7 @@
     <description>Death Report</description>
     <uuid>740bd62b-54bf-4bba-8546-954cdb5bb63a</uuid>
   </template>
+
   <template mnemonic="org.santedb.emr.sbadm.immunization" public="true">
     <definition>/org.santedb.emr.common/templates/act/sbadm/immunization/definition.json</definition>
     <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
@@ -129,6 +130,22 @@
     <description>Immunizations</description>
     <uuid>50ac9b2d-e560-4b75-ac77-921bf0eceee8</uuid>
   </template>
+
+  <template mnemonic="org.santedb.emr.sbadm.immunization.booster" public="true">
+    <definition>/org.santedb.emr.common/templates/act/sbadm/immunization/definition.json</definition>
+    <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
+    <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
+    <form>/org.santedb.emr.common/templates/act/sbadm/immunization/form.html</form>
+    <view>/org.santedb.emr.common/templates/act/sbadm/immunization/view.html</view>
+    <summaryView>/org.santedb.emr.common/templates/act/sbadm/immunization/summary.html</summaryView>
+    <backEntry>/org.santedb.emr.common/templates/act/sbadm/immunization/booster/history.html</backEntry>
+    <icon>fas fa-syringe</icon>
+    <oid>1.3.5.1.4.1.52820.5.2.3.2.1</oid>
+    <description>Booster Immunizations</description>
+    <uuid>f6ac9b2d-e560-4b75-ac77-921bf0eceee8</uuid>
+  </template>
+
+
   <template mnemonic="org.santedb.emr.sbadm.supplement" public="true">
     <definition>/org.santedb.emr.common/templates/act/sbadm/supplement/definition.json</definition>
     <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
@@ -260,41 +277,41 @@
   </template>
 
   <!-- Registration Templates -->
-  <template mnemonic="org.santedb.emr.act.registration.lds" public="true">
-    <definition>/org.santedb.emr.common/templates/act/registration/lds/definition.json</definition>
+  <template mnemonic="org.santedb.emr.act.visit.lds" public="true">
+    <definition>/org.santedb.emr.common/templates/act/encounter/lds/definition.json</definition>
     <scope>54b52119-1709-4098-8911-5df6d6c84140</scope>
-    <form>/org.santedb.emr.common/templates/act/registration/lds/form.html</form>
-    <view>/org.santedb.emr.common/templates/act/registration/lds/view.html</view>
+    <form>/org.santedb.emr.common/templates/act/encounter/lds/form.html</form>
+    <view>/org.santedb.emr.common/templates/act/encounter/lds/view.html</view>
     <icon>fas fa-person-pregnant</icon>
     <oid>1.3.6.1.4.1.52820.5.2.5.1</oid>
-    <description>Delivery Summary</description>
+    <description>Labour &amp; Delivery Visit</description>
     <uuid>AD519D42-E437-4BAE-8B64-404303DC3424</uuid>
     <guard>recordTarget.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.age() &gt; 12</guard>
   </template>
-  <template mnemonic="org.santedb.emr.act.registration.ancInitial" public="true">
-    <definition>/org.santedb.emr.common/templates/act/registration/ancInitial/definition.json</definition>
+
+  <template mnemonic="org.santedb.emr.act.visit.anc" public="true">
+    <definition>/org.santedb.emr.common/templates/act/encounter/anc/definition.json</definition>
     <scope>54b52119-1709-4098-8911-5df6d6c84140</scope>
-    <form>/org.santedb.emr.common/templates/act/registration/ancInitial/form.html</form>
-    <view>/org.santedb.emr.common/templates/act/registration/ancInitial/view.html</view>
+    <view>/org.santedb.emr.common/templates/act/encounter/anc/view.html</view>
     <icon>fas fa-person-pregnant</icon>
     <oid>1.3.6.1.4.1.52820.5.2.5.2</oid>
-    <description>ANC Initial Consult</description>
+    <description>ANC Visit</description>
     <uuid>90AA7F29-5383-47E8-89F0-B208BC4D2363</uuid>
     <!-- TODO: Complete the hasObservation method -->
     <guard>recordTarget.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.age() &gt; 12</guard>
   </template>
-  <template mnemonic="org.santedb.emr.act.registration.ancFollowup" public="true">
-    <definition>/org.santedb.emr.common/templates/act/registration/ancFollowup/definition.json</definition>
+  
+  <template mnemonic="org.santedb.emr.act.visit.general" public="true">
+    <definition>/org.santedb.emr.common/templates/act/encounter/generic/definition.json</definition>
     <scope>54b52119-1709-4098-8911-5df6d6c84140</scope>
-    <form>/org.santedb.emr.common/templates/act/registration/ancFollowup/form.html</form>
-    <view>/org.santedb.emr.common/templates/act/registration/ancFollowup/view.html</view>
-    <icon>fas fa-person-pregnant</icon>
+    <view>/org.santedb.emr.common/templates/act/encounter/generic/view.html</view>
+    <summaryView>/org.santedb.emr.common/templates/act/encounter/generic/summary.html</summaryView>
+    <icon>fas fa-circle</icon>
     <oid>1.3.6.1.4.1.52820.5.2.5.3</oid>
-    <description>ANC Routine Visit / Follow-up</description>
-    <uuid>9E819583-3D37-42CE-BECB-C273D354AA39</uuid>
-    <!-- TODO: Complete the hasObservation method -->
-    <guard>recordTarget.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.age() &gt; 12 &amp;&amp; recordTarget.hasCondition('PREGNANCY_UUID')</guard>
+    <description>General / Primary Care Visit</description>
+    <uuid>690e1a5a-548d-43e5-9eeb-9e538d42a323</uuid>
   </template>
+  
   <template mnemonic="org.santedb.emr.act.registration.death" public="true">
     <definition>/org.santedb.emr.common/templates/act/registration/death/definition.json</definition>
     <scope>54b52119-1709-4098-8911-5df6d6c84140</scope>
@@ -307,6 +324,19 @@
   </template>
   
   
+  <!-- ANC Carepath -->
+  <carepath mnemonic="org.santedb.emr.carepath.anc" public="true">
+    <uuid>7a5c410d-23ff-48f8-8eda-7842a7fae937</uuid>
+    <name>ANC Routine Immunization Carepath</name>
+    <description>Provides routine vaccinations for all ANC patients</description>
+    <eligibility>participation[RecordTarget].source@CodedObservation.typeConcept=afc33800-8225-4061-b168-bacc09cdbae3&amp;
+      participation[RecordTarget].source@CodedObservation.value.conceptSet=!8e848f0e-890b-11f0-ae3f-9f37087e0822&amp;
+      participation[RecordTarget].source@CodedObservation.statusConcept=!BDEF5F90-5497-4F26-956C-8F818CCE2BD2
+    </eligibility>
+    <enrollment>automatic</enrollment>
+    <encounter>org.santedb.emr.act.visit.anc</encounter>
+  </carepath>
+
   <strings lang="en" extern="~/locales/en/emr.xml">
     <string priority="2"/>
   </strings>

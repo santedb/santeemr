@@ -1,8 +1,69 @@
-{ 
-    "$type": "CodedObservation",
-    "template" : "0005F8B3-ED36-4F4F-A379-2A9D1AEA374E",
-    "typeConcept" : "91799417-2fb2-45c1-9591-364270b11ad8",
-    "actTime" : "{{ $now }}",
-    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
-    "value" : "6052712a-340e-4480-ad6b-409ba320db4f"
+{
+    "$type": "Act",
+    "template": "0005F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+    "classConcept": "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
+    "typeConcept": "c2cb8755-1961-4cc2-a4ba-814f068dfa48",
+    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+    "relationship": {
+        "HasComponent": [
+            {
+                "operation": 5,
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "value": "182dfa3a-e890-4b49-a7fe-2f26c67cd9af"
+                }
+            },
+            {
+                "operation": 5,
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "value": "14b03dc4-6f42-4318-ba62-048aaf079c26"
+                }
+            },
+            {
+                "operation": 5,
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "value": "667ff672-f809-4907-8d75-72154d93073f"
+                }
+            },
+            {
+                "operation": 5,
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "value": "75fcd7f2-57a6-47f1-b096-e6e31f5909c5"
+                }
+            },
+            {
+                "operation": 5,
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "value": "fdd9308b-39e4-4360-804d-60b777a8a3c9"
+                }
+            },
+            {
+                "operation": 5,
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "value": "6052712a-340e-4480-ad6b-409ba320db4f",
+                    "tag" : {
+                        "$cdss.valueSet" : ["PregnancyComplications"]
+                    }
+                }
+            }
+
+        ]
+    }
 }

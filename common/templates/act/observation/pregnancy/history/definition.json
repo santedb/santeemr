@@ -59,9 +59,9 @@
             {
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel" : {
-                    "$type" : "CodedObservation",
-                    "isNegated": true,
-                    "typeConcept" : "91799417-2fb2-45c1-9591-364270b11ad8"
+                    "templateModel" : {
+                        "mnemonic": "org.santedb.emr.pregnancy.complication"
+                    }
                 }
             }
         ]

@@ -18,7 +18,7 @@ define library "Routine Collection of Pregnancy Status"
 	//          there is no current status on file for the patient or
 	//          the last time the pregnancy status was collected was greater than 30 days
 	define logic "Routine Collection of Pregnancy Status Patient"
-	    having context Patient when all("Patient Is Female of Childbearing Age")
+	    having context Patient when all("Patient Is Female of Childbearing Age", none("CDS Output Will be Saved"))
 	    import model "Prompt Patient Pregnancy Status" from <org.santedb.emr.pregnancy.status>
 	as 
 	

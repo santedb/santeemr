@@ -1,5 +1,37 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
     TODO: Pregnancy History Panel
 
-    Iterate through the HasComponent relationship and provide inputs using ng-switch based on the $type of the the input. QuantityObservation = numeric input and CodedObservation = dropdown based on the pregnancy complications
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-3 col-lg-2"
+            ng-repeat="comp in act.relationship.HasComponent track by $index"
+            ng-if="comp.targetModel.$type == 'QuantityObservation'">
+            <label class="d-block text-bold">
+                {{ comp.targetModel.typeConceptModel | concept }}
+            </label>
+            <input class="form-control" type="number" min="0" max="15" ng-model="comp.targetModel.value" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12" ng-repeat="comp in act.relationship.HasComponent track by $index"
+            ng-if="comp.targetModel.$type == 'Act'">
+            <h6>{{ comp.targetModel.typeConceptModel | concept }}</h6>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-3"
+                        ng-repeat="complication in comp.targetModel.relationship.HasComponent track by $index">
+                        <label class="checkbox-container font-weight-bold">
+                            <input type="checkbox" ng-model="complication.operation" ng-true-value="2"
+                                ng-false-value="5" class="checkbox-control" />
+                            <span></span>
+                            {{ ::complication.targetModel.valueModel | concept }}
+                        </label>
+                        <concept-select class="form-control" ng-if="complication.targetModel.tag['$cdss.valueSet']"
+                            concept-set="complication.targetModel.tag['$cdss.valueSet'][0]"
+                            ng-disabled="complication.operation == 5"
+                            ng-model="complication.targetModel.value" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

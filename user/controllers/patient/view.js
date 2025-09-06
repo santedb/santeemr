@@ -124,6 +124,10 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
         window.print();
     }
 
+    $scope.startVisit = function() {
+        SanteEMR.showCheckin($stateParams.id);
+    }
+
     // Download the specified record by touching it
     $scope.downloadRecord = async function () {
         try {
