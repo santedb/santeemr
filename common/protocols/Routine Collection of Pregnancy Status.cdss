@@ -8,7 +8,7 @@ define library "Routine Collection of Pregnancy Status"
 	having oid "1.3.5.1.4.1.52820.5.3.2.0"
 	having status active
 	with metadata
-		version 3.05
+		version 3.07
 	end metadata
 	as
 	define logic "Routine Collection of Pregnancy Status Patient"
@@ -74,6 +74,8 @@ define library "Routine Collection of Pregnancy Status"
     				propose  having model "Prompt Patient Pregnancy Status"
     				as
     					assign csharp($$DateTimeOffset.Now$$) to actTime overwrite
+						assign csharp($$ DateTimeOffset.Now.AddDays(-280).ToString("yyyy-MM-dd") $$) to tag[$cdss.minValue].value
+						assign csharp($$ DateTimeOffset.Now.ToString("yyyy-MM-dd") $$) to tag[$cdss.maxValue].value
     				end propose
     		end protocol
     		
@@ -127,7 +129,7 @@ define library "Routine Collection of Pregnancy Status"
 		define fact "Age of Fetus in Weeks"
 			having type int
 		as
-			csharp($$(int)(DateTime.Now.Subtract(((DateObservation)actf("LMP Observation Component")).Value.Value).TotalDays / 7)$$)
+			csharp($$(int)(DateTimeOffset.Now.Subtract(((DateObservation)actf("LMP Observation Component")).Value.Value).TotalDays / 7)$$)
 		end fact
 		define fact "Estimated Delivery Date"
 			having type date

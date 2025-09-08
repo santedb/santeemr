@@ -1,0 +1,12 @@
+<AppletTemplateDefinition xmlns="http://santedb.org/applet"
+     mnemonic="org.santedb.emr.act.visit.anc" public="true">
+    <definition>definition.json</definition>
+    <scope>54b52119-1709-4098-8911-5df6d6c84140</scope>
+    <view>view.html</view>
+    <icon>fas fa-person-pregnant</icon>
+    <oid>1.3.6.1.4.1.52820.5.2.5.2</oid>
+    <description>ANC Visit</description>
+    <uuid>90AA7F29-5383-47E8-89F0-B208BC4D2363</uuid>
+    <!-- TODO: Complete the hasObservation method -->
+    <guard>recordTarget.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.age() &gt; 12</guard>
+</AppletTemplateDefinition>

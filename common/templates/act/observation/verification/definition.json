@@ -7,5 +7,8 @@
   "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
   "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
   "typeConcept": "97513cbe-188f-11eb-adc1-0242ac120002",
-  "value": "97513b10-188f-11eb-adc1-0242ac120002"
+  "value": "97513b10-188f-11eb-adc1-0242ac120002",
+  "tag" : {
+    "$cdss.valueset" : [ "ObservationVerificationState" ]
+  }
 }
