@@ -2,13 +2,27 @@
     TODO: Pregnancy History Panel
 
     <div class="row">
+        <label class="checkbox-container">
+            <!-- Note: 2 = INSERT OR UPDATE , 5 = IGNORE -->
+            <input type="checkbox" ng-model="act.statusConcept" ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'" ng-false-value="null" class="checkbox-control" />
+            <span></span>
+            TODO: LOCALIZE THIS STRING - PATIENT HAS PREGNANCY HISTORY
+        </label>
+    </div>
+    <div class="row">
         <div class="col-sm-12 col-md-6 col-lg-3 col-lg-2"
             ng-repeat="comp in act.relationship.HasComponent track by $index"
             ng-if="comp.targetModel.$type == 'QuantityObservation'">
             <label class="d-block text-bold">
                 {{ comp.targetModel.typeConceptModel | concept }}
             </label>
-            <input class="form-control" type="number" min="0" max="15" ng-model="comp.targetModel.value" />
+            <input 
+                ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                class="form-control" 
+                type="number" 
+                min="0" 
+                max="15" 
+                ng-model="comp.targetModel.value" />
         </div>
     </div>
     <div class="row">
@@ -20,7 +34,9 @@
                     <div class="col-sm-12 col-md-6 col-lg-3"
                         ng-repeat="complication in comp.targetModel.relationship.HasComponent track by $index">
                         <label class="checkbox-container font-weight-bold">
+                            <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
                             <input type="checkbox" ng-model="complication.operation" ng-true-value="2"
+                                ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'"
                                 ng-false-value="5" class="checkbox-control" />
                             <span></span>
                             {{ ::complication.targetModel.valueModel | concept }}

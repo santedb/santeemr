@@ -409,6 +409,11 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
             if(patient.participation) {
                 patient.participation.RecordTarget = patient.participation.RecordTarget?.filter(o=>o.actModel.statusConcept == StatusKeys.Completed);
+                patient.participation.RecordTarget.forEach(rct => {
+                    // Cascade the batch operation
+                    rct.actModel.operation = rct.operation > 0 ? rct.operation : rct.actModel.operation;
+                    submissionBundle = bundleRelatedObjects(rct.actModel, null, submissionBundle);
+                });
             }
 
             patient = await prepareEntityForSubmission(patient, true);

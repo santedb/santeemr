@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using SanteDB.Core.Model.Acts;
 using SanteDB.Core.Model.Roles;
+using SanteDB.Core.Model.Collection;
 
 namespace SanteEMR.Services
 {
@@ -57,10 +58,7 @@ namespace SanteEMR.Services
             if(this.m_shouldBindServices)
             {
                 this.m_tracer.TraceInfo("Binding EMR Service Events");
-                this.m_serviceProvider.AddBusinessRule<Act>(typeof(PatientStatusObservationRule<Act>));
-                this.m_serviceProvider.AddBusinessRule<CodedObservation>(typeof(PatientStatusObservationRule<CodedObservation>));
-                this.m_serviceProvider.AddBusinessRule<QuantityObservation>(typeof(PatientStatusObservationRule<QuantityObservation>));
-                this.m_serviceProvider.AddBusinessRule<ControlAct>(typeof(PatientStatusObservationRule<ControlAct>));
+                this.m_serviceProvider.AddBusinessRule<Bundle>(typeof(BundleStatusObservationRule));
             }
             
             this.Started?.Invoke(this, EventArgs.Empty);
