@@ -68,7 +68,13 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     o.targetModel.tag.isBackEntry = ["True"];
                     o.targetModel.participation = o.targetModel.participation || {};
                     o.targetModel.participation.RecordTarget = [ {
-                        player: $scope.entity.id
+                        player: $scope.entity.id,
+                        playerModel: new Patient({
+                            id: $scope.entity.id,
+                            genderConcept: $scope.entity.genderConcept,
+                            dateOfBirth: $scope.entity.dateOfBirth,
+                            dateOfBirthPrecision: $scope.entity.dateOfBirthPrecision
+                        })
                     } ];
 
                     o.targetModel.route = NullReasonKeys.NoInformation;
@@ -78,7 +84,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                         o.targetModel.actTime = o.targetModel.startTime = new Date(o.targetModel.tag.$originalDate[0]);
                     }
                     else {
-                        o.targetModel.actTime = o.targetModel.startTime;
+                        o.targetModel.actTime = o.targetModel.startTime || o.targetModel.actTime;
                     }
                     return new ActParticipation({ actModel: o.targetModel });
                 });
@@ -406,6 +412,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             if(patient.participation) {
                 patient.participation.RecordTarget = patient.participation.RecordTarget?.filter(o=>o.actModel.statusConcept == StatusKeys.Completed);
                 patient.participation.RecordTarget.forEach(rct => {
+                    // Remove the record target information and point at our patient
+                    delete rct.actModel.participation?.RecordTarget;
+                    rct.actModel.participation.RecordTarget = [ { player: patient.id } ];
                     // Cascade the batch operation
                     rct.actModel.operation = rct.operation > 0 ? rct.operation : rct.actModel.operation;
                     submissionBundle = bundleRelatedObjects(rct.actModel, null, submissionBundle);

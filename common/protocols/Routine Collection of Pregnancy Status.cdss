@@ -74,8 +74,6 @@ define library "Routine Collection of Pregnancy Status"
     				propose  having model "Prompt Patient Pregnancy Status"
     				as
     					assign csharp($$DateTimeOffset.Now$$) to actTime overwrite
-						assign csharp($$ DateTimeOffset.Now.AddDays(-280).ToString("yyyy-MM-dd") $$) to tag[$cdss.minValue].value
-						assign csharp($$ DateTimeOffset.Now.ToString("yyyy-MM-dd") $$) to tag[$cdss.maxValue].value
     				end propose
     		end protocol
     		

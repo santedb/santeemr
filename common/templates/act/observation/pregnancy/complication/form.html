@@ -1,7 +1,19 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Pregnancy Complications
-
-    Here the simplest entry would be a drop down bound to the PregnancyComplications entry. However, the better implemnetation would be a list
-    of checkboxes of all concepts in the PregnancyComplications concept set - creating multiple complication entries - this is a much more 
-    complex implementation - to start - use the concept select.
+<div xmlns="http://www.w3.org/1999/xhtml" class="row">
+    <div class="col-12 py-2">
+    <h6>{{ act.typeConceptModel | concept }}</h6>
+    </div>
+    <div class="col-sm-12 col-md-6 col-lg-3"
+        ng-repeat="complication in act.relationship.HasComponent track by $index">
+        <label class="checkbox-container font-weight-bold">
+            <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
+            <input type="checkbox" ng-model="complication.operation" ng-true-value="2"
+                ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" ng-false-value="5"
+                class="checkbox-control" />
+            <span></span>
+            {{ ::complication.targetModel.valueModel | concept }}
+        </label>
+        <concept-select class="form-control" ng-if="complication.targetModel.tag['$cdss.valueSet']"
+            concept-set="complication.targetModel.tag['$cdss.valueSet'][0]" ng-disabled="complication.operation == 5"
+            ng-model="complication.targetModel.value" />
+    </div>
 </div>

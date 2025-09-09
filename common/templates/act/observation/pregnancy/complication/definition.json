@@ -5,6 +5,7 @@
     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
     "typeConcept": "c2cb8755-1961-4cc2-a4ba-814f068dfa48",
     "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+    "actTime" : "{{ $now }}",
     "relationship": {
         "HasComponent": [
             {
@@ -13,6 +14,7 @@
                 "targetModel": {
                     "$type": "CodedObservation",
                     "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "actTime" : "{{ $now }}",
                     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
                     "value": "182dfa3a-e890-4b49-a7fe-2f26c67cd9af"
                 }
@@ -23,6 +25,7 @@
                 "targetModel": {
                     "$type": "CodedObservation",
                     "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "actTime" : "{{ $now }}",
                     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
                     "value": "14b03dc4-6f42-4318-ba62-048aaf079c26"
                 }
@@ -33,6 +36,7 @@
                 "targetModel": {
                     "$type": "CodedObservation",
                     "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "actTime" : "{{ $now }}",
                     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
                     "value": "667ff672-f809-4907-8d75-72154d93073f"
                 }
@@ -43,6 +47,7 @@
                 "targetModel": {
                     "$type": "CodedObservation",
                     "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "actTime" : "{{ $now }}",
                     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
                     "value": "75fcd7f2-57a6-47f1-b096-e6e31f5909c5"
                 }
@@ -53,6 +58,7 @@
                 "targetModel": {
                     "$type": "CodedObservation",
                     "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "actTime" : "{{ $now }}",
                     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
                     "value": "fdd9308b-39e4-4360-804d-60b777a8a3c9"
                 }
@@ -63,6 +69,7 @@
                 "targetModel": {
                     "$type": "CodedObservation",
                     "typeConcept": "91799417-2fb2-45c1-9591-364270b11ad8",
+                    "actTime" : "{{ $now }}",
                     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
                     "value": "6052712a-340e-4480-ad6b-409ba320db4f",
                     "tag" : {

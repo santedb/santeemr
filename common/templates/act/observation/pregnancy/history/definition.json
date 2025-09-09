@@ -25,8 +25,10 @@
                 "targetModel" : {
                     "$type" : "QuantityObservation",
                     "typeConcept" : "a2ab26a4-1887-11eb-adc1-0242ac120002",
+                    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
+                    "actTime" : "{{ $now }}",
                     "value" : 0,
-                    "quantityConcept" : "fea2cfb1-f231-413d-b113-372779092e56"
+                    "unitOfMeasure" : "fea2cfb1-f231-413d-b113-372779092e56"
                 }
             },
             {
@@ -34,17 +36,21 @@
                 "targetModel" : {
                     "$type" : "QuantityObservation",
                     "typeConcept" : "549070d0-1889-11eb-adc1-0242ac120002",
+                    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
+                    "actTime" : "{{ $now }}",
                     "value" : 0,
-                    "quantityConcept" : "fea2cfb1-f231-413d-b113-372779092e56"
+                    "unitOfMeasure" : "fea2cfb1-f231-413d-b113-372779092e56"
                 }
             },
             {
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel" : {
                     "$type" : "QuantityObservation",
+                    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
                     "typeConcept" : "fdab26a4-1887-11eb-adc1-0242ac120002",
+                    "actTime" : "{{ $now }}",
                     "value": 0, 
-                    "quantityConcept" : "fea2cfb1-f231-413d-b113-372779092e56"
+                    "unitOfMeasure" : "fea2cfb1-f231-413d-b113-372779092e56"
                 }
             },
             {
@@ -52,8 +58,10 @@
                 "targetModel" : {
                     "$type" : "QuantityObservation",
                     "typeConcept" : "f29e7715-fa06-4e8f-a954-b6c866b12548",
+                    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
+                    "actTime" : "{{ $now }}",
                     "value": 0,
-                    "quantityConcept" : "fea2cfb1-f231-413d-b113-372779092e56"
+                    "unitOfMeasure" : "fea2cfb1-f231-413d-b113-372779092e56"
                 }
             },
             {
