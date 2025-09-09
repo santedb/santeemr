@@ -1,6 +1,7 @@
 { 
     "$type": "DateObservation",
     "template" : "0002F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
     "typeConcept" : "673ac0e2-8468-43ca-9e54-cadf413dfede",
     "actTime" : "{{ $now }}",
     "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",

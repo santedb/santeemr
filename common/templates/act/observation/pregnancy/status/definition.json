@@ -1,6 +1,7 @@
 { 
     "$type": "CodedObservation",
     "template" : "441AF8B3-ED36-4F4F-A379-2A9D1AEA374E",
+    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
     "typeConcept" : "7bb3403e-d8ee-4b91-8a77-64da4f459415",
     "actTime" : "{{ $now }}",
     "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",

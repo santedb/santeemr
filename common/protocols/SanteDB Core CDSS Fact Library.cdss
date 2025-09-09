@@ -7,7 +7,7 @@ define library "SanteDB Core CDSS Fact Library"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0.2010
+		version 3.0.2011
 		doc This library contains core logic to extract common facts related to objects in SanteDB. It defines
 		doc no rules, protocols, or models, rather is intended to provide common facts about data to allow
 		doc users to more easily derive their own rules
@@ -21,6 +21,19 @@ define library "SanteDB Core CDSS Fact Library"
 			doc Core CDSS Facts for all objects
 		end metadata
 		as
+
+		define fact "Now" having type date  as 
+			csharp($$ DateTimeOffset.Now $$)
+		end fact 
+		
+		define fact "Always" having type bool as
+			csharp($$ true $$)
+		end fact 
+
+		define fact "Never" having type bool as 
+			csharp($$ false $$)
+		end fact 
+
 		define fact "CDS Exclude Proposals"
 			having type bool
 			with metadata

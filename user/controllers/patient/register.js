@@ -68,11 +68,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     o.targetModel.tag.isBackEntry = ["True"];
                     o.targetModel.participation = o.targetModel.participation || {};
                     o.targetModel.participation.RecordTarget = [ {
-                        playerModel: new Patient({
-                            genderConcept: $scope.entity.genderConcept,
-                            dateOfBirth: $scope.entity.dateOfBirth,
-                            dateOfBirthPrecision: $scope.entity.dateOfBirthPrecision
-                        })
+                        player: $scope.entity.id
                     } ];
 
                     o.targetModel.route = NullReasonKeys.NoInformation;
