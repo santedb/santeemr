@@ -20,6 +20,9 @@
     <string name="ui.directConnect">Direct Connect to Server</string>
     <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
     <string name="ui.emr.loginMessage">Log into SanteEMR</string>
+
+    <!-- ANC Visit -->
+     <string name="org.santedb.emr.act.visit.anc">Antenatal Care Visit (Immunization)</string>
     <!-- Mail -->
     <string name="ui.emr.mail.all">View All Mail</string>
 

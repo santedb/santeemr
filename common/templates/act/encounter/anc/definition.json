@@ -1,0 +1,31 @@
+{
+    "$type": "PatientEncounter",
+    "template": "90AA7F29-5383-47E8-89F0-B208BC4D2363",
+    "templateModel": {
+        "mnemonic": "org.santedb.emr.act.visit.anc"
+    },
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+    "statusConcept": "c8064cbd-fa06-4530-b430-1a52f1530c27",
+    "dischargeDisposition" :  "499f18c5-56c4-496e-9e23-e5cf862cfab8", 
+    "typeConcept": "fa342034-43d5-477d-9748-1609099314df",
+    "actTime": "{{ $now }}",
+    "startTime": "{{ $now }}",
+    "participation": {
+        "Location": [{
+            "player": "{{ $facilityId }}"
+        }],
+        "Authororiginator": [{
+            "player": "{{ $userEntityId }}"
+        }],
+        "RecordTarget": [{
+            "player": "{{ $recordTargetId }}"
+        }]
+    },
+    "tag": {
+        "$cascade:HasComponent:*": [
+            "RecordTarget",
+            "Authororiginator",
+            "Location"
+        ]
+    }
+}
