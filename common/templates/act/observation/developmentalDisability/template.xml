@@ -1,0 +1,11 @@
+<AppletTemplateDefinition xmlns="http://santedb.org/applet" 
+    mnemonic="org.santedb.emr.observation.pediatric.developmentDisability" public="true">
+    <definition>definition.json</definition>
+    <form>form.html</form>
+    <view>view.html</view>
+    <summaryView>summary.html</summaryView>
+    <icon>fas fa-ribbon</icon>
+    <oid>1.3.6.1.4.1.52820.5.2.1.60</oid>
+    <description>Developmental Disability</description>
+    <uuid>4cacd9cb-b934-4b24-ab68-b7e34b6724e9</uuid>
+</AppletTemplateDefinition>

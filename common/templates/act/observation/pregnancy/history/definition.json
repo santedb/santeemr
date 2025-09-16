@@ -1,73 +1,84 @@
-{ 
+{
     "$type": "Act",
     "template": "296D49FC-9F92-41B2-8867-6AC12AF8E474",
-    "classConcept" : "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
-    "typeConcept" : "04d5b5e8-570e-4244-805a-e448978a19bd",
-    "actTime" : "{{ $now }}",
-    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
-    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
-    "participation" : {
-        "RecordTarget" : [
+    "classConcept": "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
+    "typeConcept": "04d5b5e8-570e-4244-805a-e448978a19bd",
+    "actTime": "{{ $now }}",
+    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+    "participation": {
+        "RecordTarget": [
             {
-                "player" : "{{ $recordTargetId }}"
+                "player": "{{ $recordTargetId }}"
             }
         ],
-        "Authororiginator" : [
+        "Authororiginator": [
             {
-                "player" : "{{ $userEntityId }}"
+                "player": "{{ $userEntityId }}"
             }
         ]
     },
-    "relationship" : {
-        "HasComponent" : [
-            {
-                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "$type" : "QuantityObservation",
-                    "typeConcept" : "a2ab26a4-1887-11eb-adc1-0242ac120002",
-                    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
-                    "actTime" : "{{ $now }}",
-                    "value" : 0,
-                    "unitOfMeasure" : "fea2cfb1-f231-413d-b113-372779092e56"
-                }
-            },
-            {
-                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "$type" : "QuantityObservation",
-                    "typeConcept" : "549070d0-1889-11eb-adc1-0242ac120002",
-                    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
-                    "actTime" : "{{ $now }}",
-                    "value" : 0,
-                    "unitOfMeasure" : "fea2cfb1-f231-413d-b113-372779092e56"
-                }
-            },
+    "relationship": {
+        "HasComponent": [
             {
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "$type" : "QuantityObservation",
-                    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
-                    "typeConcept" : "fdab26a4-1887-11eb-adc1-0242ac120002",
-                    "actTime" : "{{ $now }}",
-                    "value": 0, 
-                    "unitOfMeasure" : "fea2cfb1-f231-413d-b113-372779092e56"
-                }
-            },
-            {
-                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "$type" : "QuantityObservation",
-                    "typeConcept" : "f29e7715-fa06-4e8f-a954-b6c866b12548",
-                    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
-                    "actTime" : "{{ $now }}",
+                "targetModel": {
+                    "$type": "QuantityObservation",
+                    "typeConcept": "a2ab26a4-1887-11eb-adc1-0242ac120002",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+                    "actTime": "{{ $now }}",
                     "value": 0,
-                    "unitOfMeasure" : "fea2cfb1-f231-413d-b113-372779092e56"
+                    "unitOfMeasure": "fea2cfb1-f231-413d-b113-372779092e56"
                 }
             },
             {
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "templateModel" : {
+                "targetModel": {
+                    "$type": "QuantityObservation",
+                    "typeConcept": "e59f9ea3-c4de-4f6e-a710-8923d318ae9d",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+                    "actTime": "{{ $now }}",
+                    "value": 0,
+                    "unitOfMeasure": "fea2cfb1-f231-413d-b113-372779092e56"
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "QuantityObservation",
+                    "typeConcept": "f29e7715-fa06-4e8f-a954-b6c866b12548",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+                    "actTime": "{{ $now }}",
+                    "value": 0,
+                    "unitOfMeasure": "fea2cfb1-f231-413d-b113-372779092e56"
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "QuantityObservation",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+                    "typeConcept": "f1223e1f-ff69-4f8b-8c65-f5d9beeacfe9",
+                    "actTime": "{{ $now }}",
+                    "value": 0,
+                    "unitOfMeasure": "fea2cfb1-f231-413d-b113-372779092e56"
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "QuantityObservation",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+                    "typeConcept": "08652771-1c10-4261-ba1d-a67d5497c939",
+                    "actTime": "{{ $now }}",
+                    "value": 0,
+                    "unitOfMeasure": "fea2cfb1-f231-413d-b113-372779092e56"
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
                         "mnemonic": "org.santedb.emr.pregnancy.complication"
                     }
                 }

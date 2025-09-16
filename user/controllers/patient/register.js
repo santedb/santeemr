@@ -411,13 +411,20 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
             if(patient.participation) {
                 patient.participation.RecordTarget = patient.participation.RecordTarget?.filter(o=>o.actModel.statusConcept == StatusKeys.Completed);
+                var userId = await SanteDB.authentication.getCurrentUserEntityId();
+                var facilityId = await SanteDB.authentication.getCurrentFacilityId();
+
                 patient.participation.RecordTarget.forEach(rct => {
                     // Remove the record target information and point at our patient
                     delete rct.actModel.participation?.RecordTarget;
                     rct.actModel.participation.RecordTarget = [ { player: patient.id } ];
+                    rct.actModel.participation.Authororiginator = [ { player: userId }];
+                    rct.actModel.participation.Location = [ { player: facilityId }];
+                    rct.actModel.note?.forEach(n => n.author = userId);
                     // Cascade the batch operation
                     rct.actModel.operation = rct.operation > 0 ? rct.operation : rct.actModel.operation;
                     submissionBundle = bundleRelatedObjects(rct.actModel, null, submissionBundle);
+
                 });
             }
 

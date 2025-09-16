@@ -488,5 +488,5 @@
       <string name="ui.emr.clinic.schedule.search.placeholder">Search Patient Id, Name, or Event Action</string>
 
       <!-- History -->
-      <string name="org.santedb.emr.widget.patient.register.history">Clinical History</string>
+      <string name="org.santedb.emr.widget.patient.register.history">Clinical Profile / Information</string>
 </resources>

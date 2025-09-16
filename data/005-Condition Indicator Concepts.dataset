@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Condition Observation Types" xmlns="http://santedb.org/data">
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Condition Observation Types v3.01" xmlns="http://santedb.org/data">
     <update skipIfError="false" insertIfNotExists="true">
     <ConceptSet xmlns="http://santedb.org/model">
       <id>8e848f0e-890b-11f0-ae3f-9f37087e0822</id>
@@ -28,6 +28,12 @@
         <target>4a43da5e-85e9-11f0-bc9f-e364e8b5e561</target>
       </compose>
       <compose>
+        <id>feced720-890b-11f0-bde4-97389f4b0679</id>
+        <source>6fb6f224-890b-11f0-b631-af0db9029883</source>
+        <target>fb77fb46-927a-11f0-aa09-4b31f92ce560</target>
+        <instruction>include</instruction>
+      </compose>
+      <compose>
         <id>a8cff24a-890b-11f0-bde5-3394b95129ce</id>
         <source>6fb6f224-890b-11f0-b631-af0db9029883</source>
         <instruction>include</instruction>
@@ -44,6 +50,7 @@
         <instruction>exclude</instruction>
         <target>8e848f0e-890b-11f0-ae3f-9f37087e0822</target>
       </compose>
+      <concept>9f903584-5ed7-43e7-80d7-2e31536a1b9d</concept>
     </ConceptSet>
   </update>
 </dataset>
