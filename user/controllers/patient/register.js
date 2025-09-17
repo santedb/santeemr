@@ -745,6 +745,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             return SanteDB.application.getTemplateMetadata(templateId)?.name || templateId;
         }
 
+         $scope.getTemplateIcon = function(templateId) {
+            return SanteDB.application.getTemplateMetadata(templateId)?.icon || 'fa-circle';
+        }
+
         $scope.hasBackEntry = (templateId) => SanteDB.application.resolveTemplateBackentry(templateId) != null;
 
         $scope.resolveTemplateBackentry = (templateId) => SanteDB.application.resolveTemplateBackentry(templateId);

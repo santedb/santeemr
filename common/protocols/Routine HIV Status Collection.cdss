@@ -10,12 +10,16 @@ define library "HIV Status Collection Protocols"
 	having oid "1.3.5.1.4.1.52820.5.3.3.0"
 	having status active
 	with metadata
-		version 3.03
+		version 3.04
 	end metadata
 	as
 	define logic "HIV Status Collection - Patient - Common"
 	    having context Patient when 
-	        none("Patient Is Deceased", "CDS Output Will be Saved")
+	        none(
+                "Patient Is Deceased", 
+                "CDS Output Will be Saved",
+                "CDS Exclude Observations"
+            )
 	as 
 	    define fact "Patient Current Observed HIV Status" 
 	    as 
@@ -80,7 +84,13 @@ define library "HIV Status Collection Protocols"
 	end logic
 
     define logic "HIV Status Collection - Patient - Children"
-        having context Patient when "Patient Is Infant"
+        having context Patient when all(
+            "Patient Is Infant",
+            none(
+                "CDS Output Will be Saved",
+                "CDS Exclude Observations"
+            )
+        )
     as 
         
         define fact "Patient's Mother Is HIV Positive" having type bool

@@ -415,9 +415,9 @@ function SanteEMRWrapper() {
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD"),
                 _includeBackentry: true
-            }, undefined, "min");
+            }, undefined, "full");
 
-            await Promise.all(actions.relationship.HasComponent.map(async comp => {
+            await Promise.all(actions.relationship?.HasComponent?.map(async comp => {
                 var ar = new ActRelationship({
                     relationshipType: comp.relationshipType,
                     target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),

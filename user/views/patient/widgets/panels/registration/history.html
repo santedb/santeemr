@@ -14,7 +14,7 @@
                     ng-class="{'active': $index == 0}" 
                     data-toggle="tab"
                     class="nav-link" >
-                        {{ ::getTemplateName(tpl) }}
+                        <i class="fas fa-fw" ng-class="getTemplateIcon(tpl)"></i> {{ ::getTemplateName(tpl) }}
                 </a>
             </li>
         </ul>
