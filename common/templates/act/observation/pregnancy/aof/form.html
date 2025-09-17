@@ -1,5 +1,15 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-<p>
-    <strong>ESTIMATED AGE OF FETUS CDSS TEST: {{ act.value }} {{ act.unitOfMeasureModel | concept }}</strong>
-    </p>
+    <div class="row">
+        <div class="col-12">
+            <label class="control-label">
+                {{ 'ui.model.observation.pregnancy.estimatedAgeOfFetus' | i18n }}
+            </label>
+
+            <input cdss-interactive="($parent.$parent.$parent.act || $parent.$parent.act || $parent.act)"
+                name="dateEstimatedAgeOfFetus" 
+                ng-model="act.value" 
+                class="form-control"
+                type="date" />
+        </div>
+    </div>
 </div>

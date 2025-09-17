@@ -1,8 +1,9 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="row">
-    <div class="col-12 py-2">
-    <h6>{{ act.typeConceptModel | concept }}</h6>
+    <div class="col-12 pt-2">
+        <h6>{{ act.typeConceptModel | concept }}</h6>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-3"
+
+    <div class="col-12 ml-3"
         ng-repeat="complication in act.relationship.HasComponent track by $index">
         <label class="checkbox-container font-weight-bold">
             <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
@@ -12,6 +13,7 @@
             <span></span>
             {{ ::complication.targetModel.valueModel | concept }}
         </label>
+        
         <concept-select class="form-control" ng-if="complication.targetModel.tag['$cdss.valueSet']"
             concept-set="complication.targetModel.tag['$cdss.valueSet'][0]" ng-disabled="complication.operation == 5"
             ng-model="complication.targetModel.value" />
