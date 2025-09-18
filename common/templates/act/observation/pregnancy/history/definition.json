@@ -27,7 +27,7 @@
                     "typeConcept": "a2ab26a4-1887-11eb-adc1-0242ac120002",
                     "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
                     "actTime": "{{ $now }}",
-                    "value": 0,
+                    "value": 1,
                     "unitOfMeasure": "fea2cfb1-f231-413d-b113-372779092e56"
                 }
             },

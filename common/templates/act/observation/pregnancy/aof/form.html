@@ -2,14 +2,20 @@
     <div class="row">
         <div class="col-12">
             <label class="control-label">
-                {{ 'ui.model.observation.pregnancy.estimatedAgeOfFetus' | i18n }}
+                {{ act.typeConceptModel | concept }}
             </label>
 
-            <input cdss-interactive="($parent.$parent.$parent.act || $parent.$parent.act || $parent.act)"
-                name="dateEstimatedAgeOfFetus" 
-                ng-model="act.value" 
-                class="form-control"
-                type="date" />
+            <div class="input-group">
+
+                <input type="number" ng-readonly="true" name="dateEstimatedAgeOfFetus" ng-model="act.value"
+                    class="form-control" />
+
+                <div class="input-group-addon">
+                    <span class="input-group-text">
+                        {{ act.unitOfMeasureModel | concept }}
+                    </span>
+                </div>
+            </div>
         </div>
     </div>
 </div>

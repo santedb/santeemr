@@ -2,14 +2,27 @@
     <div class="row">
         <div class="col-12">
             <label class="text-right font-weight-bold my-auto control-label">
-                {{ 'ui.model.observation.pregnancy.lmp' | i18n }}
+               {{ act.typeConceptModel | concept }}
             </label>
-    
+
             <input cdss-interactive="($parent.$parent.$parent.act || $parent.$parent.act || $parent.act)"
-                name="dateLastMenstrualPeriod" 
-                ng-model="act.value" 
-                class="form-control"
-                type="date" />
+                name="dateLastMenstrualPeriod" ng-model="act.value" class="form-control"
+                required="required"
+                max="{{ $root.page.maxEventTime.addDays(-4) | date: 'yyyy-MM-dd' }}"
+                min="{{ $root.page.maxEventTime.addDays(-300) | date: 'yyyy-MM-dd' }}" type="date" />
+
+            <div class="text-danger"
+                ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['dateLastMenstrualPeriod'].$error['required']">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+            </div>
+            <div class="text-danger"
+                ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['dateLastMenstrualPeriod'].$error['min']">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: $root.page.maxEventTime.addDays(-300).format("YYYY-MM-DD") } }}
+            </div>
+            <div class="text-danger"
+                ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['dateLastMenstrualPeriod'].$error['max']">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { max: $root.page.maxEventTime.addDays(-4).format("YYYY-MM-DD")} }}
+            </div>
         </div>
-   </div>
+    </div>
 </div>

@@ -95,10 +95,10 @@ function SanteEMRWrapper() {
 
             if (act.$type != PatientEncounter.name) {
                 act.actTime = act.stopTime = act.stopTime || new Date();
-                
+
                 // We already have a performer
-                if(act.participation.Performer) {
-                    if(act.participation.Performer.find(p=>p.player == thisUserId)) {
+                if (act.participation.Performer) {
+                    if (act.participation.Performer.find(p => p.player == thisUserId)) {
                         return;
                     }
                     participationType = "SecondaryPerformer";
@@ -219,14 +219,14 @@ function SanteEMRWrapper() {
             var analyzeResult = await SanteEMR.analyzeVisit(encounter);
             var scope = dischargeModal.scope();
             var enc = angular.copy(encounter);
-            enc._tmpId = SanteDB.application.newGuid();            
-            
-            if(afterAction) {
-                $("#dischargeModal").on("hidden.bs.modal", function(e) {
-                    const isAfterActionDeferred = !!$(this).data('deferAction');       
-                    $(this).removeData('deferAction');             
+            enc._tmpId = SanteDB.application.newGuid();
 
-                    if(!isAfterActionDeferred && scope.encounter._persisted) {
+            if (afterAction) {
+                $("#dischargeModal").on("hidden.bs.modal", function (e) {
+                    const isAfterActionDeferred = !!$(this).data('deferAction');
+                    $(this).removeData('deferAction');
+
+                    if (!isAfterActionDeferred && scope.encounter._persisted) {
                         afterAction();
                     }
 
@@ -276,11 +276,11 @@ function SanteEMRWrapper() {
             console.warn("Have not included the return-waiting-modal.html file");
             return;
         }
-        
-        if(afterAction) {
-            $("#appointmentBookingModal").on("hidden.bs.modal", function(e) {
+
+        if (afterAction) {
+            $("#appointmentBookingModal").on("hidden.bs.modal", function (e) {
                 afterAction();
-               
+
                 $("#appointmentBookingModal").off("hidden.bs.modal");
             });
         }
@@ -317,7 +317,7 @@ function SanteEMRWrapper() {
      * @param {string} templateId The template mnemonic to resolve the icon for
      * @returns The resolved icon 
      */
-    this.resolveTemplateIcon = function (templateId) {        
+    this.resolveTemplateIcon = function (templateId) {
         var template = SanteDB.application.getTemplateMetadata(templateId);
         if (template) {
             return template.icon;
@@ -389,7 +389,7 @@ function SanteEMRWrapper() {
             var encounter = new PatientEncounter(template);
 
             // Copy fields 
-            if(templateData) {
+            if (templateData) {
                 Object.keys(templateData).forEach(field => {
                     var tplValue = templateData[field];
                     encounter[field] = tplValue;
@@ -417,67 +417,69 @@ function SanteEMRWrapper() {
                 _includeBackentry: true
             }, undefined, "full");
 
-            await Promise.all(actions.relationship?.HasComponent?.map(async comp => {
-                var ar = new ActRelationship({
-                    relationshipType: comp.relationshipType,
-                    target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
-                    targetModel: comp.targetModel,
-                    source: encounter.id,
-                    classification: RelationshipClassKeys.ContainedObjectLink
-                });
-                encounter.relationship.HasComponent.push(ar);
-
-                if (!comp.targetModel.tag || !comp.targetModel.tag.isBackEntry) {
-                    comp.targetModel.stopTime = null;
-                    comp.targetModel.actTime = comp.targetModel.startTime = encounter.startTime;
-                }
-
-                
-                comp.targetModel.id = comp.targetModel.id || ar.target;
-                comp.targetModel.moodConcept = encounter.moodConcept; // Ensure the mood concept matches the mood concept of the visit
-                delete comp.targetModel.moodConceptModel;
-                comp.targetModel.statusConcept = encounter.statusConcept; // Ensure that the status concept of the action matches the visit
-                delete comp.targetModel.statusConceptModel;
-
-                // Fulfillment for the target model
-                if (comp.targetModel && comp.targetModel.protocol) {
-                    var fulfillment = fulfillmentComponents.find(o => {
-                        var targetAct = o.targetModel;
-                        return targetAct.protocol.find(p => comp.targetModel.protocol.find(p2 => p2.protocol == p.protocol && p2.sequence == p.sequence))
+            if (actions.relationship) {
+                await Promise.all(actions.relationship?.HasComponent?.map(async comp => {
+                    var ar = new ActRelationship({
+                        relationshipType: comp.relationshipType,
+                        target: comp.target || comp.targetModel.id || SanteDB.application.newGuid(),
+                        targetModel: comp.targetModel,
+                        source: encounter.id,
+                        classification: RelationshipClassKeys.ContainedObjectLink
                     });
-                    if (fulfillment) {
-                        comp.targetModel.relationship = comp.targetModel.relationship || {};
-                        comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
-                        comp.targetModel.relationship.Fulfills.push(new ActRelationship({
-                            target: fulfillment.target
-                        }));
-                    }
-                    else {
-                        try {
-                            const fulfillment = await SanteDB.resources[comp.targetModel.$type.toCamelCase()].findAsync({
-                                _includeTotal: false, 
-                                moodConcept: ActMoodKeys.Propose,
-                                statusConcept: StatusKeys.Active,
-                                typeConcept: comp.targetModel.typeConcept,
-                                "protocol.protocol" : comp.targetModel.protocol[0].protocol,
-                                "protocol.sequence": comp.targetModel.protocol[0].sequence,
-                                _count: 1
-                            }, "min");
+                    encounter.relationship.HasComponent.push(ar);
 
-                            if(fulfillment.resource) {
-                                comp.targetModel.relationship = comp.targetModel.relationship || {};
-                                comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
-                                comp.targetModel.relationship.Fulfills.push(new ActRelationship({
-                                    target: fulfillment.resource[0].id
-                                }));
+                    if (!comp.targetModel.tag || !comp.targetModel.tag.isBackEntry) {
+                        comp.targetModel.stopTime = null;
+                        comp.targetModel.actTime = comp.targetModel.startTime = encounter.startTime;
+                    }
+
+
+                    comp.targetModel.id = comp.targetModel.id || ar.target;
+                    comp.targetModel.moodConcept = encounter.moodConcept; // Ensure the mood concept matches the mood concept of the visit
+                    delete comp.targetModel.moodConceptModel;
+                    comp.targetModel.statusConcept = encounter.statusConcept; // Ensure that the status concept of the action matches the visit
+                    delete comp.targetModel.statusConceptModel;
+
+                    // Fulfillment for the target model
+                    if (comp.targetModel && comp.targetModel.protocol) {
+                        var fulfillment = fulfillmentComponents.find(o => {
+                            var targetAct = o.targetModel;
+                            return targetAct.protocol.find(p => comp.targetModel.protocol.find(p2 => p2.protocol == p.protocol && p2.sequence == p.sequence))
+                        });
+                        if (fulfillment) {
+                            comp.targetModel.relationship = comp.targetModel.relationship || {};
+                            comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
+                            comp.targetModel.relationship.Fulfills.push(new ActRelationship({
+                                target: fulfillment.target
+                            }));
+                        }
+                        else {
+                            try {
+                                const fulfillment = await SanteDB.resources[comp.targetModel.$type.toCamelCase()].findAsync({
+                                    _includeTotal: false,
+                                    moodConcept: ActMoodKeys.Propose,
+                                    statusConcept: StatusKeys.Active,
+                                    typeConcept: comp.targetModel.typeConcept,
+                                    "protocol.protocol": comp.targetModel.protocol[0].protocol,
+                                    "protocol.sequence": comp.targetModel.protocol[0].sequence,
+                                    _count: 1
+                                }, "min");
+
+                                if (fulfillment.resource) {
+                                    comp.targetModel.relationship = comp.targetModel.relationship || {};
+                                    comp.targetModel.relationship.Fulfills = comp.targetModel.relationship.Fulfills || [];
+                                    comp.targetModel.relationship.Fulfills.push(new ActRelationship({
+                                        target: fulfillment.resource[0].id
+                                    }));
+                                }
+                            }
+                            catch (e) {
+                                console.warn("Could not fetch fulfillment target", e);
                             }
                         }
-                        catch(e) {
-                            console.warn("Could not fetch fulfillment target", e);
-                        }
                     }
-                }
-            }));
+                }));
+            }
 
             if (informantPtcpt) {
                 encounter.participation = encounter.participation || {};
@@ -524,7 +526,7 @@ function SanteEMRWrapper() {
                 _includeTotal: false,
                 _count: 1
             }, "fastview");
-            
+
             if (cps.resource) {
                 return cps.resource[0];
             }
@@ -556,34 +558,34 @@ Patient.prototype.hasCondition = function (conditionTypeConcept) {
 
 
 
-$(window).bind("touchstart", function(downEvent) {
+$(window).bind("touchstart", function (downEvent) {
     var downTouch = downEvent.originalEvent.touches[0];
     var direction = { x: 0, y: 0 };
 
-    $(window).bind("touchmove", function(moveEvent) {
+    $(window).bind("touchmove", function (moveEvent) {
         var moveTouch = moveEvent.originalEvent.touches[0];
         direction.x = moveTouch.pageX > downTouch.pageX ? 1 : -1;
         direction.y = moveTouch.pageY > downTouch.pageY ? 1 : -1;
     });
 
-    $(window).bind("touchend", function(endEvent) {
+    $(window).bind("touchend", function (endEvent) {
         $(window).unbind("touchmove");
         $(window).unbind("touchend");
 
-        $(downEvent.target).trigger("swipe", { 
-            swipeLeft: direction.x < 0, 
+        $(downEvent.target).trigger("swipe", {
+            swipeLeft: direction.x < 0,
             swipeRight: direction.x > 0,
-            swipeDown: direction.y > 0, 
+            swipeDown: direction.y > 0,
             swipeUp: direction.y < 0
         });
-    
+
     });
 
 })
 
 // Determine if this device is a touch device
-window.isTouchDevice = function() {
+window.isTouchDevice = function () {
     return (('ontouchstart' in window) ||
-     (navigator.maxTouchPoints > 0) ||
-     (navigator.msMaxTouchPoints > 0));
+        (navigator.maxTouchPoints > 0) ||
+        (navigator.msMaxTouchPoints > 0));
 }

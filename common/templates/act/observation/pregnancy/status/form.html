@@ -53,10 +53,14 @@
         <div class="row">
             <div class="col-12">
                 <label class="control-label required">
-                    {{ 'ui.model.observation.pregnancy.status' | i18n }}
+                    {{ act.typeConceptModel | concept }}
                 </label>
 
-                 <concept-select required="required" class="form-control" concept-set="'PregnancyStatusCodes'" ng-model="act.value" />
+                 <concept-select required="required" class="form-control" name="pregnancyStatus" concept-set="'PregnancyStatusCodes'" ng-model="act.value"
+                    add-concept="['21b0ffc8-ca4e-408d-a104-41fc924d3a39']" />
+                 <div class="text-danger" ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['pregnancyStatus'].$error['required']">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                 </div>
             </div>
         </div>
 

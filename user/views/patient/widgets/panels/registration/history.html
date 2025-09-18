@@ -15,6 +15,7 @@
                     data-toggle="tab"
                     class="nav-link" >
                         <i class="fas fa-fw" ng-class="getTemplateIcon(tpl)"></i> {{ ::getTemplateName(tpl) }}
+                        <i class="text-danger fas fa-fw fa-exclamation-triangle" ng-if="checkTabComponentErrors(panel.editForm, '#clinical-history-' + $index)"></i>
                 </a>
             </li>
         </ul>

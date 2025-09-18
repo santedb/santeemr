@@ -3,25 +3,23 @@
     <div class="row">
         <div class="col-12">
             <label class="p-0 font-weight-bold control-label required">
-                {{ 'ui.model.observation.pregnancy.doesPatientHavePregnancyHistory' | i18n }}
+                {{ act.typeConceptModel | concept }}
             </label>
         </div>
 
         <div class="col-12">
-            <label class="control-label mr-2">
+            <label class="checkbox-container font-weight-bold mr-2">
                 <input type="radio"
                     ng-model="act.statusConcept"
-                    required="required"
-                    ng-value="'afc33800-8225-4061-b168-bacc09cdbae3'" name="pregnancy-history" class="checkbox-control" />
+                    ng-value="'afc33800-8225-4061-b168-bacc09cdbae3'" name="pregnancyHistory" class="checkbox-control" />
                     <span></span>
                     Yes
             </label>
     
-            <label class="control-label">
+            <label class="checkbox-container font-weight-bold">
                 <input type="radio"
                     ng-model="act.statusConcept"
-                    required="required"
-                    value="null" name="pregnancy-history" class="checkbox-control" />
+                    ng-value="null" name="pregnancyHistory" class="checkbox-control" />
                     <span></span>
                     No
             </label>
@@ -38,7 +36,7 @@
 
                 <input ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'"
                     min="{{ comp.targetModel.typeConceptModel.id == 'a2ab26a4-1887-11eb-adc1-0242ac120002' ? 1 : 0 }}"
-                    ng-value="comp.targetModel.typeConceptModel.id == 'a2ab26a4-1887-11eb-adc1-0242ac120002' ? 1 : 0"
+                    name="pregnancyHistoryComponent{{ $index }}"
                     ng-model="comp.targetModel.value" 
                     class="form-control" 
                     type="number" 
