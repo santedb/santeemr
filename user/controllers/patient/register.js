@@ -67,7 +67,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     o.targetModel.tag = o.targetModel.tag || {};
                     o.targetModel.tag.isBackEntry = ["True"];
                     o.targetModel.participation = o.targetModel.participation || {};
-                    o.targetModel.participation.RecordTarget = [ {
+                    o.targetModel.participation.RecordTarget = [{
                         player: $scope.entity.id,
                         playerModel: new Patient({
                             id: $scope.entity.id,
@@ -75,7 +75,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                             dateOfBirth: $scope.entity.dateOfBirth,
                             dateOfBirthPrecision: $scope.entity.dateOfBirthPrecision
                         })
-                    } ];
+                    }];
 
                     o.targetModel.route = NullReasonKeys.NoInformation;
                     o.targetModel.site = NullReasonKeys.NoInformation;
@@ -373,7 +373,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 $scope.entity.$otherData.forEach(d => submissionBundle.resource.push(d));
             }
 
-           
+
             var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: submissionBundle, _count: 5, _offset: 0 });
             if (duplicates.results && duplicates.results != null) {
                 if (!$scope.entity._ignoreDuplicates) {
@@ -409,15 +409,22 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 }
             }
 
-            if(patient.participation) {
-                patient.participation.RecordTarget = patient.participation.RecordTarget?.filter(o=>o.actModel.statusConcept == StatusKeys.Completed);
+            if (patient.participation) {
+                patient.participation.RecordTarget = patient.participation.RecordTarget?.filter(o => o.actModel.statusConcept == StatusKeys.Completed);
+                var userId = await SanteDB.authentication.getCurrentUserEntityId();
+                var facilityId = await SanteDB.authentication.getCurrentFacilityId();
+
                 patient.participation.RecordTarget.forEach(rct => {
                     // Remove the record target information and point at our patient
                     delete rct.actModel.participation?.RecordTarget;
-                    rct.actModel.participation.RecordTarget = [ { player: patient.id } ];
+                    rct.actModel.participation.RecordTarget = [{ player: patient.id }];
+                    rct.actModel.participation.Authororiginator = [{ player: userId }];
+                    rct.actModel.participation.Location = [{ player: facilityId }];
+                    rct.actModel.note?.forEach(n => n.author = userId);
                     // Cascade the batch operation
                     rct.actModel.operation = rct.operation > 0 ? rct.operation : rct.actModel.operation;
                     submissionBundle = bundleRelatedObjects(rct.actModel, null, submissionBundle);
+
                 });
             }
 
@@ -461,7 +468,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                         delete actModel.stopTime;
                         actModel.id = o.act = actModel.id || SanteDB.application.newGuid();
                         actModel.participation = actModel.participation || {};
-                        actModel.participation.RecordTarget = [ new ActParticipation({ id: o.id, act: actModel.id, player: patient.id, operation: BatchOperationType.InsertOrUpdate })]; // Back reference but with a consistent id 
+                        actModel.participation.RecordTarget = [new ActParticipation({ id: o.id, act: actModel.id, player: patient.id, operation: BatchOperationType.InsertOrUpdate })]; // Back reference but with a consistent id 
                         submissionBundle.resource.push(actModel);
                         var retVal = new ActRelationship({ target: o.act });
                         delete o.actModel;
@@ -472,7 +479,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
             // JF - Fixes a bug where the bundle's re-organization for insert will place the substance administrations above 
             //      the patient's registration - to be fixed in future release at the bundle processing stage
-            patient.participation.RecordTarget = []; 
+            patient.participation.RecordTarget = [];
 
             submissionBundle.resource.push(registrationAct);
 
@@ -719,7 +726,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     }]).controller("EmrPatientRegisterClinicalHistoryController", ["$scope", "$rootScope", "$timeout", function ($scope, $rootScope, $timeout) {
 
         $scope.entryActs = {};
-        
+
 
         $scope.$watch("scopedObject.participation.RecordTarget", function (n, o) {
             if (n) {
@@ -734,8 +741,12 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             }
         });
 
-        $scope.getTemplateName = function(templateId) {
+        $scope.getTemplateName = function (templateId) {
             return SanteDB.application.getTemplateMetadata(templateId)?.name || templateId;
+        }
+
+        $scope.getTemplateIcon = function (templateId) {
+            return SanteDB.application.getTemplateMetadata(templateId)?.icon || 'fa-circle';
         }
 
         $scope.hasBackEntry = (templateId) => SanteDB.application.resolveTemplateBackentry(templateId) != null;
@@ -744,4 +755,13 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
         $scope.resolveTemplateForm = (templateId) => SanteDB.application.resolveTemplateForm(templateId);
 
+        $scope.checkTabComponentErrors = function (form, targetDiv) {
+            var inputNodes = document.querySelectorAll(`${targetDiv} select[name], ${targetDiv} input[name]`);
+            for(var i = 0; i < inputNodes.length; i++) {
+                if(form[inputNodes[i].name]?.$invalid) {
+                    return true;
+                }                
+            }
+            return false;
+        }
     }]);

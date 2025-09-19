@@ -24,14 +24,17 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
         try {
             var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full");
 
+            encounter.relationship = encounter.relationship || {};
+            encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
+
             // Resolve the tags on the encounter
-            if(encounter.extension && encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {
+            if (encounter.extension && encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {
                 encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0] = await SanteDB.application.resolveReferenceExtensionAsync(encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0]);
             }
 
             // All participations are not touched
-            if(encounter.relationship && encounter.relationship.HasComponent) {
-                encounter.relationship.HasComponent.forEach(e=> e.targetModel.operation = BatchOperationType.IgnoreInt );
+            if (encounter.relationship && encounter.relationship.HasComponent) {
+                encounter.relationship.HasComponent.forEach(e => e.targetModel.operation = BatchOperationType.IgnoreInt);
             }
 
             // TODO: Load the current act list and assign to the _HasComponent relationship
@@ -47,7 +50,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
                 "relationship[MemberOf].targetConcept": encounter.typeConcept,
                 _includeTotal: false
             });
-            
+
             encounter._nextStates = targetStates.resource.map(state => {
                 state.icon = 'fas fa-fw fa-person-walking-arrow-loop-left';
                 state.action = $scope.returnToState;
@@ -56,7 +59,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             });
 
         }
-        catch(e) {
+        catch (e) {
             // TODO: HANDLE ELEVATION CASE
             $rootScope.errorHandler(e);
         }
@@ -67,10 +70,10 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
     SanteDB.authentication.setElevator(new SanteDBElevator(initializeView, false));
     initializeView($stateParams.id);
-}]).controller("EmrEncounterEntryController", ["$scope", "$rootScope", "$timeout", "$state", function($scope, $rootScope, $timeout, $state) {
+}]).controller("EmrEncounterEntryController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
     async function cancelEncounter() {
         const encounterId = $scope.scopedObject.id;
-        
+
         if (confirm(SanteDB.locale.getString("ui.emr.encounter.cancel.confirm"))) {
             try {
 
@@ -120,15 +123,15 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
         }
     }
 
-    $scope.saveVisit = async function(form) {
-        if(form.$invalid) {
+    $scope.saveVisit = async function (form) {
+        if (form.$invalid) {
             return;
         }
 
         try {
             SanteDB.display.buttonWait("#btnActEditsave", true);
             var encounter = await SanteEMR.saveVisitAsync($scope.scopedObject);
-            if(encounter.extension && encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {
+            if (encounter.extension && encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {
                 encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0] = await SanteDB.application.resolveReferenceExtensionAsync(encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0]);
             }
             SanteDB.display.getScopeObject
@@ -142,17 +145,17 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
                 "relationship[MemberOf].targetConcept": encounter.typeConcept,
                 _includeTotal: false
             });
-            
+
             encounter._nextStates = targetStates.resource.map(state => {
                 state.icon = 'fas fa-fw fa-person-walking-arrow-loop-left';
                 state.action = $scope.returnToState;
                 state.label = SanteDB.display.renderConcept(state);
                 return state;
             });
-            
+
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.save.success"));
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
         finally {

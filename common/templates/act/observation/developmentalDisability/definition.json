@@ -1,0 +1,39 @@
+{
+  "$type": "CodedObservation",
+  "template": "4cacd9cb-b934-4b24-ab68-b7e34b6724e9",
+  "classConcept": "28D022C6-8A8B-47C4-9E6A-2BC67308739E",
+  "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+  "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+  "typeConcept": "518c868b-e0fb-4ef1-8187-85988284c3c6",
+  "actTime": "{{ $now }}",
+  "value": "9f903584-5ed7-43e7-80d7-2e31536a1b9d",
+  "note": [
+    {
+      "author": "{{ $userEntityId }}",
+      "text": ""
+    }
+  ],
+  "participation": {
+    "Location": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $facilityId }}"
+      }
+    ],
+    "Authororiginator": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $userEntityId }}"
+      }
+    ],
+    "RecordTarget": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $recordTargetId }}"
+      }
+    ]
+  }
+}

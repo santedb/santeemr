@@ -1,5 +1,16 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Pregnancy Confirmation Method
+    <div class="row">
+        <div class="col-12">
+            <label class="control-label">
+                {{ act.typeConceptModel | concept }}
+            </label>
 
-    Simple selection box which is bound to the PregnancyFindings concept set.
+            <concept-select concept-set="'PregnancyFindingCodes'" class="form-control" ng-model="act.value" required="required"
+                name="pregnancyFindingMethod" />
+
+            <div class="text text-danger" ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['pregnancyFindingMethod'].$error['required']">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+            </div>
+        </div>
+    </div>
 </div>

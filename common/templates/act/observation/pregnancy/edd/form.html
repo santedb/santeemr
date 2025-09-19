@@ -1,7 +1,37 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Estimated Delivery Date
+    <div class="row">
+        <div class="col-12">
+            <label class="control-label">
+                {{ act.typeConceptModel | concept }}
+            </label>
 
-    <p>
-    <strong>CDSS TEST ESTIMATED DELIVERY DATE VALUE CALCULATED: {{ act.value | extDate: 'D' }}</strong>
-    </p>
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text p-0 px-2">
+                        <div class="checkbox-container">
+                            <input type="checkbox" class="checkbox-control" ng-model="act.typeConcept"
+                                ng-true-value="'afdefced-8468-43ca-9e54-cadf413dfede'"
+                                ng-false-value="'673ac0e2-8468-43ca-9e54-cadf413dfede'" />
+                            <span></span>
+                            {{ 'ui.action.override' | i18n }}
+                        </div>
+                    </label>
+                </div>
+                
+                <input name="dateEstimatedDelivery" ng-model="act.value" class="form-control" type="date"
+                    ng-readonly="act.typeConcept == '673ac0e2-8468-43ca-9e54-cadf413dfede'"
+                    max="{{ $root.page.maxEventTime.addDays(280) | date: 'yyyy-MM-dd' }}"
+                    min="{{ $root.page.maxEventTime.addDays(-280) | date: 'yyyy-MM-dd' }}" />
+            </div>
+            <div class="text-danger" ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['dateEstimatedDelivery'].$error['required']">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+            </div>
+            <div class="text-danger" ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['dateEstimatedDelivery'].$error['min']">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n }}
+            </div>
+            <div class="text-danger" ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['dateEstimatedDelivery'].$error['max']">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n }}
+            </div>
+        </div>
+    </div>
 </div>

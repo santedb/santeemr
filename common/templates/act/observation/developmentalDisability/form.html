@@ -1,0 +1,23 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
+
+    <div class="row">
+        <div class="col-12">
+            <label class="checkbox-container">
+                <input type="checkbox" class="checkbox-control" ng-model="act.statusConcept" ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'"
+                    ng-false-value="null" />
+                <span></span>
+                {{ act.typeConceptModel | concept }} - {{ act.valueModel | concept }}
+            </label>
+        </div>
+    </div>
+    <div class="row">
+        <label class="col-sm-12 col-md-3">
+            {{ 'ui.model.act.notes' | i18n }}
+        </label>
+        <div class="col-sm-12 col-md-9">
+            <textarea ng-model="act.note[0].text" maxlength="2048" class="form-control" ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'">
+            </textarea>
+            {{ 2048 - act.node[0].text.length }} {{ 'ui.common.charsRemain' | i18n }}
+        </div>
+    </div>
+</div>

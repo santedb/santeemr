@@ -5,6 +5,5 @@
     "typeConcept" : "54843f39-8820-4856-951c-1bcd4812bdce",
     "actTime" : "{{ $now }}",
     "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
-    "value" : "{{ $now }}",
     "valuePrecision" : "Day"
 }

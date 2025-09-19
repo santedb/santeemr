@@ -1,5 +1,21 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-<p>
-    <strong>ESTIMATED AGE OF FETUS CDSS TEST: {{ act.value }} {{ act.unitOfMeasureModel | concept }}</strong>
-    </p>
+    <div class="row">
+        <div class="col-12">
+            <label class="control-label">
+                {{ act.typeConceptModel | concept }}
+            </label>
+
+            <div class="input-group">
+
+                <input type="number" ng-readonly="true" name="dateEstimatedAgeOfFetus" ng-model="act.value"
+                    class="form-control" />
+
+                <div class="input-group-addon">
+                    <span class="input-group-text">
+                        {{ act.unitOfMeasureModel | concept }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

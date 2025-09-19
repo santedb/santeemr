@@ -83,7 +83,7 @@ namespace SanteEMR.Rules
                         if (subjectAct is CodedObservation cdo && subjectAct.TypeConceptKey != ObservationTypeKeys.Condition) // The type is not a condition and is a coded observation
                         {
                             var activeCondition = this.m_conditionRepository.Find(o => o.TypeConceptKey == ObservationTypeKeys.Condition && o.ValueKey == cdo.TypeConceptKey && o.ObsoletionTime == null && o.StatusConceptKey == StatusKeys.Active).FirstOrDefault();
-                            if (this.m_conceptRepository.IsMember(EmrConstants.PatientIndicatorObservation, cdo.ValueKey.Value))
+                            if (cdo.ValueKey.HasValue && this.m_conceptRepository.IsMember(EmrConstants.PatientIndicatorObservation, cdo.ValueKey.Value))
                             {
                                 activeCondition = activeCondition ?? new CodedObservation()
                                 {
@@ -110,8 +110,14 @@ namespace SanteEMR.Rules
                                 activeCondition.StopTime = act.ActTime;
                                 activeCondition.BatchOperation = BatchOperationType.Update;
                             }
-                            activeCondition.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.RefersTo, act.Key));
-                            data.Add(activeCondition);
+
+
+                            if (activeCondition != null)
+                            {
+                                activeCondition.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.RefersTo, act.Key));
+                                data.Add(activeCondition);
+                            }
+
                         }
                     }
                 }

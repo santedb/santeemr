@@ -10,12 +10,16 @@ define library "HIV Status Collection Protocols"
 	having oid "1.3.5.1.4.1.52820.5.3.3.0"
 	having status active
 	with metadata
-		version 3.03
+		version 3.06
 	end metadata
 	as
 	define logic "HIV Status Collection - Patient - Common"
 	    having context Patient when 
-	        none("Patient Is Deceased", "CDS Output Will be Saved")
+	        none(
+                "Patient Is Deceased", 
+                "CDS Output Will be Saved",
+                "CDS Exclude Observations"
+            )
 	as 
 	    define fact "Patient Current Observed HIV Status" 
 	    as 
@@ -67,20 +71,26 @@ define library "HIV Status Collection Protocols"
             having oid "1.3.5.1.4.1.52820.5.3.3.0"
             having scope <org.santedb.emr.patient.registration>
             having scope <org.santedb.emr.visit.anc>
-            having scope <org.santedb.emr.visit.generalConsult>
+			having scope <org.santedb.emr.act.visit.general>
         as 
             when "Patient Requires HIV Status Collection"
             then 
                 propose having model "Collect Patient HIV Status" as 
                     assign csharp($$ DateTimeOffset.Now $$) to actTime
-                    assign csharp($$ ((CodedObservation)actf("Patient Current Observed HIV Status"))?.ValueKey $$) to value // copy current value
+                    assign csharp($$ ((CodedObservation)actf("Patient Current Observed HIV Status"))?.ValueKey ?? Guid.Parse("70FE34CE-CAFF-4F46-B6E6-9CD6D8F289D6") $$) to value // copy current value
                 end propose
         end protocol
         
 	end logic
 
     define logic "HIV Status Collection - Patient - Children"
-        having context Patient when "Patient Is Infant"
+        having context Patient when all(
+            "Patient Is Infant",
+            none(
+                "CDS Output Will be Saved",
+                "CDS Exclude Observations"
+            )
+        )
     as 
         
         define fact "Patient's Mother Is HIV Positive" having type bool
@@ -132,6 +142,7 @@ define library "HIV Status Collection Protocols"
             having scope <org.santedb.emr.patient.registration>
 			having scope <org.santedb.emr.act.registration.birth>
 			having scope <org.santedb.ims.pediatric.routineVacc>
+			having scope <org.santedb.emr.act.visit.general>
         as 
             when "Patient Requires Mother HIV Status Collection"
             then 

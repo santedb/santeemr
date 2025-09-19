@@ -17,8 +17,8 @@
  -->
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
     <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
-    <div class="modal" id="checkinModal" role="dialog" aria-labelledby="checkinModalTitle" aria-hidden="true"  data-backdrop="static"
-        ng-controller="EmrCheckinEncounterController">
+    <div class="modal" id="checkinModal" role="dialog" aria-labelledby="checkinModalTitle" aria-hidden="true"
+        data-backdrop="static" ng-controller="EmrCheckinEncounterController">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -39,8 +39,8 @@
                         <div ng-if="recordTarget" class="container-fluid">
                             <div class="alert alert-info p-0" ng-init="item = recordTarget">
                                 <!-- #include virtual="~/partials/patient/search-result-summary.html" -->
-                                <div class="container-fluid" ng-if="recordTarget.age() &lt;= 16">
-                                    <div class="row">
+                                <div class="container-fluid">
+                                    <div class="row" ng-if="recordTarget.age() &lt;= 16">
                                         <div class="col-12">
                                             <strong>{{ "ui.emr.encounter.checkin.informant" | i18n }}</strong>
                                             <div class="text-danger" ng-if="checkinForm.informant.$error['required']">
@@ -50,11 +50,13 @@
                                             <ul class="list-unstyled ml-2">
                                                 <li ng-repeat="(k, famr) in recordTarget.relationship track by $index"
                                                     ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
-                                                    <label ng-repeat="fam in famr track by $index" class="checkbox-container">
-                                                        <input class="checkbox-control" required="required" type="radio" name="informant"
+                                                    <label ng-repeat="fam in famr track by $index"
+                                                        class="checkbox-container">
+                                                        <input class="checkbox-control" required="required" type="radio"
+                                                            name="informant"
                                                             ng-model="newAct.participation.Informant[0].player"
                                                             value="{{fam.target}}" />
-                                        <span></span>
+                                                        <span></span>
 
                                                         {{ fam.targetModel.name | name }} <strong
                                                             class="badge badge-primary">{{
@@ -66,10 +68,10 @@
                                                     <div class="input-group">
                                                         <label class="checkbox-container">
                                                             <input required="required" type="radio" name="informant"
-                                                            class="checkbox-control"
+                                                                class="checkbox-control"
                                                                 ng-model="newAct.participation.Informant[0].player"
                                                                 value='{{ newAct.participation.Informant[0].playerModel.id }}' />
-                                                                <span></span>
+                                                            <span></span>
                                                             {{ "ui.emr.encounter.checkin.informant.other" | i18n }}
                                                         </label>
                                                         <div class="input-group-prepend">
@@ -78,8 +80,7 @@
                                                                 i18n }}
                                                             </span>
                                                         </div>
-                                                        <concept-select 
-                                                            name="infRelationship"
+                                                        <concept-select name="infRelationship"
                                                             ng-class="{ 'alert-danger' : checkinForm.infRelationship.$error['required'] }"
                                                             required="required"
                                                             ng-disabled="newAct.participation.Informant[0].player != newAct.participation.Informant[0].playerModel.id "
@@ -91,7 +92,7 @@
                                                                 {{ 'ui.model.entity.name' | i18n }}
                                                             </span>
                                                         </div>
-                                                        <input type="text" 
+                                                        <input type="text"
                                                             ng-class="{ 'alert-danger' : checkinForm.infName.$error['required'] }"
                                                             ng-disabled="newAct.participation.Informant[0].player != newAct.participation.Informant[0].playerModel.id "
                                                             ng-required="newAct.participation.Informant[0].player == newAct.participation.Informant[0].playerModel.id "
@@ -116,7 +117,7 @@
                                 <label class="text-strong d-block w-100 checkbox-container">
                                     <input type="radio" name="startType" required="required" class="checkbox-control"
                                         ng-model="newAct.$startType" value="manual" />
-                                        <span></span>
+                                    <span></span>
                                     <h5 class="my-1 ml-2 d-inline">{{ 'ui.emr.encounter.checkin.type.manual' | i18n
                                         }}</h5>
                                 </label>
@@ -127,7 +128,8 @@
                                     <div class="col-12">
                                         <entity-search ng-disabled="newAct.$startType !== 'manual'"
                                             ng-required="newAct.$startType === 'manual'" class="form-control"
-                                            type="'Template'" filter="{ scope :  [ 'org.santedb.model.act', '54b52119-1709-4098-8911-5df6d6c84140' ]  }"
+                                            type="'Template'"
+                                            filter="{ scope :  [ 'org.santedb.model.act', '54b52119-1709-4098-8911-5df6d6c84140' ]  }"
                                             ng-model="newAct.template" name="template" search-field="'description'"
                                             key="'mnemonic'" js-filter="applyGuardExpression" />
                                         <div ng-if="checkinForm.template.$error.required" class="text-danger">
@@ -143,7 +145,7 @@
                                 <label class="text-strong d-block w-100 checkbox-container">
                                     <input type="radio" name="startType" required="required" class="checkbox-control"
                                         ng-model="newAct.$startType" value="proposed-{{$index}}" />
-                                        <span></span>
+                                    <span></span>
                                     <h5 class="my-1 ml-2  d-inline">{{ 'ui.emr.encounter.checkin.type.proposed' |
                                         i18n }} {{ prop.pathwayModel.name }}</h5>
 
@@ -172,7 +174,8 @@
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">
                             <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
-                        <button type="submit" id="btnStartVisit" ng-disabled="checkinForm.$invalid" class="btn btn-primary">
+                        <button type="submit" id="btnStartVisit" ng-disabled="checkinForm.$invalid"
+                            class="btn btn-primary">
                             <i class="fa fa-check"></i> {{ 'ui.action.check-in' | i18n }}</button>
                     </div>
                 </form>
