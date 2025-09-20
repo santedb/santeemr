@@ -9,6 +9,7 @@ using SanteDB.Core.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace SanteEMR.Rules
@@ -61,10 +62,10 @@ namespace SanteEMR.Rules
             )
             {
 
-                // Determine if the patient already has this observation type
+                var rct = act.LoadProperty(o => o.Participations).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget);
+                // Determine if the patient already has this observation type which indicates a status - then update the status observation
                 if (this.m_conceptRepository.IsMember(EmrConstants.PatientStatusObservation, act.TypeConceptKey.Value))
                 {
-                    var rct = act.LoadProperty(o => o.Participations).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget);
                     if (rct?.PlayerEntityKey != null)
                     {
                         // determine if the patient already has an active observation for this status
@@ -75,52 +76,52 @@ namespace SanteEMR.Rules
                             act.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.Replaces, existing.Key)); // indicate the replacement
                             data.Add(existing);
                         }
-
-                        // If there is a subject act which is a coded observation
-                        // then this section will determine whether the condition 
-                        // observation need resolution or reactivation
-                        var subjectAct = act.LoadProperty(o => o.Relationships).FirstOrDefault(o => o.RelationshipTypeKey == ActRelationshipTypeKeys.HasSubject)?.TargetAct ?? act;
-                        if (subjectAct is CodedObservation cdo && subjectAct.TypeConceptKey != ObservationTypeKeys.Condition) // The type is not a condition and is a coded observation
-                        {
-                            var activeCondition = this.m_conditionRepository.Find(o => o.TypeConceptKey == ObservationTypeKeys.Condition && o.ValueKey == cdo.TypeConceptKey && o.ObsoletionTime == null && o.StatusConceptKey == StatusKeys.Active).FirstOrDefault();
-                            if (cdo.ValueKey.HasValue && this.m_conceptRepository.IsMember(EmrConstants.PatientIndicatorObservation, cdo.ValueKey.Value))
-                            {
-                                activeCondition = activeCondition ?? new CodedObservation()
-                                {
-                                    MoodConceptKey = ActMoodKeys.Eventoccurrence,
-                                    CreatedByKey = Guid.Parse(AuthenticationContext.SystemUserSid),
-                                    StartTime = act.ActTime,
-                                    Policies  =act.Policies,
-                                    TypeConceptKey = ObservationTypeKeys.Condition,
-                                    ValueKey = cdo.ValueKey,
-                                    StatusConceptKey = StatusKeys.Active,
-                                    Participations = new List<ActParticipation>()
-                                    {
-                                        new ActParticipation(ActParticipationKeys.RecordTarget, rct.PlayerEntityKey)
-                                    }
-                                };
-
-                                activeCondition.BatchOperation = BatchOperationType.InsertOrUpdate;
-                                activeCondition.StatusConceptKey = StatusKeys.Active;
-                            }
-                            else if (activeCondition != null)
-                            {
-                                // We want to invalidate the active condition
-                                activeCondition.StatusConceptKey = StatusKeys.Inactive;
-                                activeCondition.StopTime = act.ActTime;
-                                activeCondition.BatchOperation = BatchOperationType.Update;
-                            }
-
-
-                            if (activeCondition != null)
-                            {
-                                activeCondition.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.RefersTo, act.Key));
-                                data.Add(activeCondition);
-                            }
-
-                        }
                     }
                 }
+
+                // If there is a subject act which is a coded observation
+                // then this section will determine whether the condition 
+                // observation need resolution or reactivation
+                var subjectAct = act.LoadProperty(o => o.Relationships, referenceData: data.Item).FirstOrDefault(o => o.RelationshipTypeKey == ActRelationshipTypeKeys.HasSubject)?.TargetAct ?? act;
+                if (subjectAct is CodedObservation cdo && this.m_conceptRepository.IsMember(EmrConstants.EmrConditionTrigger, subjectAct.TypeConceptKey.Value) &&
+                    !subjectAct.IsNegated) // The type is not a condition and is a coded observation
+                {
+                    var activeCondition = this.m_conditionRepository.Find(o => o.TypeConceptKey == ObservationTypeKeys.Condition && o.ValueKey == cdo.TypeConceptKey && o.ObsoletionTime == null && o.StatusConceptKey == StatusKeys.Active).FirstOrDefault();
+                    if (cdo.ValueKey.HasValue && !this.m_conceptRepository.IsMember(EmrConstants.PatientIndicatorNegatedObservation, cdo.ValueKey.Value))
+                    {
+                        activeCondition = activeCondition ?? new CodedObservation()
+                        {
+                            MoodConceptKey = ActMoodKeys.Eventoccurrence,
+                            CreatedByKey = Guid.Parse(AuthenticationContext.SystemUserSid),
+                            StartTime = act.ActTime,
+                            Policies = act.Policies,
+                            TypeConceptKey = ObservationTypeKeys.Condition,
+                            ValueKey = cdo.ValueKey,
+                            StatusConceptKey = StatusKeys.Active,
+                            Participations = new List<ActParticipation>()
+                            {
+                                new ActParticipation(ActParticipationKeys.RecordTarget, rct.PlayerEntityKey)
+                            }
+                        };
+                        activeCondition.BatchOperation = BatchOperationType.InsertOrUpdate;
+                        activeCondition.StatusConceptKey = StatusKeys.Active;
+                    }
+                    else if (activeCondition != null)
+                    {
+                        // We want to invalidate the active condition
+                        activeCondition.StatusConceptKey = StatusKeys.Completed;
+                        activeCondition.StopTime = act.ActTime;
+                        activeCondition.BatchOperation = BatchOperationType.Update;
+                    }
+
+                    if (activeCondition != null)
+                    {
+                        activeCondition.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.RefersTo, act.Key));
+                        data.Add(activeCondition);
+                    }
+
+                }
+
             }
             return base.BeforeInsert(data);
         }

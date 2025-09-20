@@ -10,7 +10,7 @@ define library "Childhood Cognitive Function Protocols"
 	having oid "1.3.5.1.4.1.52820.5.3.1.101"
 	having status active
 	with metadata
-		version 3.04
+		version 3.05
 	end metadata
 	as
     define logic "Childhood Cognitive Function Protocols - All Children"
@@ -38,8 +38,6 @@ define library "Childhood Cognitive Function Protocols"
             having uuid {b4601717-c1df-499f-835f-f2f74203a8c5}
             having oid "1.3.5.1.4.1.52820.5.3.1.101.1"
 			having scope <org.santedb.emr.patient.registration>
-			having scope <org.santedb.ims.pediatric.routineVacc>
-            having scope <org.santedb.emr.visit.generalConsult>
         as 
             when "Should Collect Child Cognitive Disorder State"
             then 

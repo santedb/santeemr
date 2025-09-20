@@ -19,7 +19,7 @@ namespace SanteEMR
         /// <summary>
         /// Concept set which indicates the patient has a status of note / special notes
         /// </summary>
-        public static readonly Guid PatientIndicatorObservation = Guid.Parse("6fb6f224-890b-11f0-b631-af0db9029883");
+        public static readonly Guid PatientIndicatorNegatedObservation = Guid.Parse("8e848f0e-890b-11f0-ae3f-9f37087e0822");
 
         /// <summary>
         /// Patient has an active condition

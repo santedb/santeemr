@@ -435,7 +435,7 @@ function SanteEMRWrapper() {
 
 
                     comp.targetModel.id = comp.targetModel.id || ar.target;
-                    comp.targetModel.moodConcept = encounter.moodConcept; // Ensure the mood concept matches the mood concept of the visit
+                    //comp.targetModel.moodConcept = encounter.moodConcept; // Ensure the mood concept matches the mood concept of the visit
                     delete comp.targetModel.moodConceptModel;
                     comp.targetModel.statusConcept = encounter.statusConcept; // Ensure that the status concept of the action matches the visit
                     delete comp.targetModel.statusConceptModel;
