@@ -57,11 +57,13 @@ namespace SanteEMR.Rules
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
                 o.TypeConceptKey != null && 
-                o is Observation
+                o is Observation &&
+                o.GetTag(EmrConstants.IgnoreEmrTriggersTagName) != null
                 ).ToArray()
             )
             {
 
+                act.AddTag(EmrConstants.IgnoreEmrTriggersTagName, "true");
                 var rct = act.LoadProperty(o => o.Participations).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget);
                 // Determine if the patient already has this observation type which indicates a status - then update the status observation
                 if (this.m_conceptRepository.IsMember(EmrConstants.PatientStatusObservation, act.TypeConceptKey.Value))

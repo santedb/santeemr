@@ -27,6 +27,11 @@ namespace SanteEMR
         public const string PatientHasConditionsTagKey = "$hasConditions";
 
         /// <summary>
+        /// True if the EMR plugin has already processed the data
+        /// </summary>
+        public const string IgnoreEmrTriggersTagName = "emr.processed";
+
+        /// <summary>
         /// When a type of observation is registered here - the EMR will check if the value indicates the patient has the condition and will create a condition entry
         /// </summary>
         public static readonly Guid EmrConditionTrigger = Guid.Parse("2b3e26bc-5766-4e84-afac-a522edc2e7e3");
