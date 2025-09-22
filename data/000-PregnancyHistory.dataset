@@ -1,0 +1,313 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Pregnancy History Observations v3.0"
+  xmlns="http://santedb.org/data">
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>f29e7715-fa06-4e8f-a954-b6c866b12548</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-NumberPretermBirths</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>ad6ccfde-8835-11f0-b3c1-3b610903393c</id>
+        <source>f29e7715-fa06-4e8f-a954-b6c866b12548</source>
+        <language>en</language>
+        <value># Preterm Births</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>549070d0-1889-11eb-adc1-0242ac120002</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-NumberOfLiveBirths</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>d8132388-85eb-11f0-ae6f-6f46d1e5e1d7</id>
+        <source>549070d0-1889-11eb-adc1-0242ac120002</source>
+        <language>en</language>
+        <value># of Live Births</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>992aeca9-8f2d-4cba-91fd-ba668b047fd7</id>
+      <mnemonic>11612-9</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>d5ea2d50-927e-11f0-a62e-8b45156facd1</id>
+        <language>en</language>
+        <value>ABORTIONS (REPORTED)</value>
+        <source>992aeca9-8f2d-4cba-91fd-ba668b047fd7</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>f1223e1f-ff69-4f8b-8c65-f5d9beeacfe9</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-NumberAbortionsTotal</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>d5ee5182-927e-11f0-a630-63c21148bb00</id>
+        <source>f1223e1f-ff69-4f8b-8c65-f5d9beeacfe9</source>
+        <term>992aeca9-8f2d-4cba-91fd-ba668b047fd7</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>d5edc0dc-927e-11f0-a62f-6749b21f10fb</id>
+        <source>f1223e1f-ff69-4f8b-8c65-f5d9beeacfe9</source>
+        <language>en</language>
+        <value>Abortions (Induced &amp; Spontaneous)</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>b95aa21d-9ade-4e53-8da0-6b720980e24d</id>
+      <mnemonic>11638-4</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>98c976c2-9280-11f0-b004-7bf3de74f389</id>
+        <language>en</language>
+        <value>BIRTHS STILL LIVING (REPORTED)</value>
+        <source>b95aa21d-9ade-4e53-8da0-6b720980e24d</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>08652771-1c10-4261-ba1d-a67d5497c939</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-BirthsStillLiving</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>98ceb934-9280-11f0-b006-63828de34b19</id>
+        <source>08652771-1c10-4261-ba1d-a67d5497c939</source>
+        <term>b95aa21d-9ade-4e53-8da0-6b720980e24d</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>98cdef5e-9280-11f0-b005-ef752191fe64</id>
+        <source>08652771-1c10-4261-ba1d-a67d5497c939</source>
+        <language>en</language>
+        <value>Births - Living</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>2d8669df-85ae-4923-b73a-9a720afb2913</id>
+      <mnemonic>11614-5</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>38e339e6-9280-11f0-96e9-9784be7eca3b</id>
+        <language>en</language>
+        <value>ABORTIONS SPONTANEOUS (REPORTED)</value>
+        <source>2d8669df-85ae-4923-b73a-9a720afb2913</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>886beb8e-a694-4f7e-8724-839332b06cf0</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-AbortionsSpontaneous</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>38e851e2-9280-11f0-96eb-77b1dc11e9fc</id>
+        <source>886beb8e-a694-4f7e-8724-839332b06cf0</source>
+        <term>2d8669df-85ae-4923-b73a-9a720afb2913</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>38e7aefe-9280-11f0-96ea-1fb0c54f6e30</id>
+        <source>886beb8e-a694-4f7e-8724-839332b06cf0</source>
+        <language>en</language>
+        <value>Miscarriages</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>ff3d114a-8b3b-406d-869e-75afb5890f37</id>
+      <mnemonic>11639-2</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>6102d41a-927e-11f0-aa61-733477475ab9</id>
+        <language>en</language>
+        <value># Births (Term)</value>
+        <source>ff3d114a-8b3b-406d-869e-75afb5890f37</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>e59f9ea3-c4de-4f6e-a710-8923d318ae9d</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-NumberOfBirths</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>61058818-927e-11f0-aa63-ff45ce09d110</id>
+        <source>e59f9ea3-c4de-4f6e-a710-8923d318ae9d</source>
+        <term>ff3d114a-8b3b-406d-869e-75afb5890f37</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>6105065e-927e-11f0-aa62-1747878872ac</id>
+        <source>e59f9ea3-c4de-4f6e-a710-8923d318ae9d</source>
+        <language>en</language>
+        <value># Births (Term)</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>a2ab26a4-1887-11eb-adc1-0242ac120002</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-NumberOfPregnancies</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>d80f6f5e-85eb-11f0-ae69-434b7245faaa</id>
+        <source>a2ab26a4-1887-11eb-adc1-0242ac120002</source>
+        <language>en</language>
+        <value># of Pregnancies (Gravida)</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>fdab26a4-1887-11eb-adc1-0242ac120002</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-NumberOfStillbirths</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>d80d706e-85eb-11f0-ae66-e76e8b3a377b</id>
+        <source>fdab26a4-1887-11eb-adc1-0242ac120002</source>
+        <language>en</language>
+        <value># of Stillbirths</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>d8139840-85eb-11f0-ae70-8f2c995e5dd1</id>
+      <source>549070d0-1889-11eb-adc1-0242ac120002</source>
+      <term>54906eaa-1889-11eb-adc1-0242ac120002</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>98eaed34-8835-11f0-8255-97f2c764c8aa</id>
+      <source>f29e7715-fa06-4e8f-a954-b6c866b12548</source>
+      <term>73c58c77-efa5-411b-82aa-3b25e71ac1e6</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>d80ffdd4-85eb-11f0-ae6a-67a6dceea576</id>
+      <source>a2ab26a4-1887-11eb-adc1-0242ac120002</source>
+      <term>a2ab2302-1887-11eb-adc1-0242ac120002</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>d80e1cbc-85eb-11f0-ae67-ffcf0dcec69a</id>
+      <source>fdab26a4-1887-11eb-adc1-0242ac120002</source>
+      <term>fdab2302-1887-11eb-adc1-0242ac120002</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>73c58c77-efa5-411b-82aa-3b25e71ac1e6</id>
+      <mnemonic>11637-6</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>98e73d06-8835-11f0-8253-f389e7f0e76c</id>
+        <language>en</language>
+        <value>BIRTHS PRETERM</value>
+        <source>73c58c77-efa5-411b-82aa-3b25e71ac1e6</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>54906eaa-1889-11eb-adc1-0242ac120002</id>
+      <mnemonic>11636-8</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>d81284be-85eb-11f0-ae6e-9bdf20871b31</id>
+        <language>en</language>
+        <value>[#] Births.live</value>
+        <source>54906eaa-1889-11eb-adc1-0242ac120002</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>a2ab2302-1887-11eb-adc1-0242ac120002</id>
+      <mnemonic>11996-6</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>d80ed314-85eb-11f0-ae68-ff5d6253eadc</id>
+        <language>en</language>
+        <value>[#] Pregnancies</value>
+        <source>a2ab2302-1887-11eb-adc1-0242ac120002</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>fdab2302-1887-11eb-adc1-0242ac120002</id>
+      <mnemonic>57062-2</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>d80ce93c-85eb-11f0-ae65-d7ad5f3fb6ce</id>
+        <language>en</language>
+        <value>[#] Births.stillborn</value>
+        <source>fdab2302-1887-11eb-adc1-0242ac120002</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>519a832c-8835-11f0-8d60-cb79bc0bd66e</id>
+      <name>Pregnancy History Observations</name>
+      <mnemonic>PregnancyHistoryObservations</mnemonic>
+      <oid>1.3.6.1.4.1.45129.3.1.5.9.3.212</oid>
+      <url>http://santedb.org/conceptset/pregnancy-history</url>
+      <concept>549070d0-1889-11eb-adc1-0242ac120002</concept>
+      <concept>a2ab26a4-1887-11eb-adc1-0242ac120002</concept>
+      <concept>f29e7715-fa06-4e8f-a954-b6c866b12548</concept>
+      <concept>fdab26a4-1887-11eb-adc1-0242ac120002</concept>
+    </ConceptSet>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>04d5b5e8-570e-4244-805a-e448978a19bd</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ActOrganizer-PregnancyHistory</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>17fd5254-8c25-4abb-b246-083fbe9afa15</conceptClass>
+      <name>
+        <id>0d82b88e-8836-11f0-b623-f75ed2c063a6</id>
+        <source>04d5b5e8-570e-4244-805a-e448978a19bd</source>
+        <language>en</language>
+        <value>Pregnancy History</value>
+      </name>
+    </Concept>
+  </update>
+</dataset>

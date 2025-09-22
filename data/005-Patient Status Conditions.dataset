@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Patient Status / Condition Types v3.04" xmlns="http://santedb.org/data">
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>b73e6dbc-890a-11f0-8959-c764088c39f9</id>
+      <name>Patient Status Observation Types</name>
+      <mnemonic>PatientStatusObservationType</mnemonic>
+      <oid>1.3.6.1.4.1.33349.3.1.5.9.3.103</oid>
+      <url>http://santedb.org/conceptset/patient-status-observations</url>
+      <concept>6fb8487c-cd6f-44f1-ab63-27dc65405792</concept>
+      <concept>7bb3403e-d8ee-4b91-8a77-64da4f459415</concept>
+      <concept>8a07a21f-50ff-4631-8e51-c54690fb1127</concept>
+      <concept>36c93880-e5a0-40bc-a271-ce7dff9a90fd</concept>
+      <concept>04d5b5e8-570e-4244-805a-e448978a19bd</concept>
+      <concept>518c868b-e0fb-4ef1-8187-85988284c3c6</concept>
+    </ConceptSet>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>2b3e26bc-5766-4e84-afac-a522edc2e7e3</id>
+      <name>Patient Condition Trigger Codes</name>
+      <mnemonic>PatientConditionTrigger</mnemonic>
+      <oid>1.3.6.1.4.1.33349.3.1.5.9.3.120</oid>
+      <url>http://santedb.org/conceptset/patient-condition-observations</url>
+      <concept>7bb3403e-d8ee-4b91-8a77-64da4f459415</concept>
+      <concept>8a07a21f-50ff-4631-8e51-c54690fb1127</concept>
+      <concept>518c868b-e0fb-4ef1-8187-85988284c3c6</concept>
+    </ConceptSet>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>7bb3403e-d8ee-4b91-8a77-64da4f459415</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-PregnancyStatus</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>2e9eaff6-85e7-11f0-95f9-9f9ec757e409</id>
+        <source>7bb3403e-d8ee-4b91-8a77-64da4f459415</source>
+        <language>en</language>
+        <value>Pregnancy Status</value>
+      </name>
+    </Concept>
+  </update>
+    <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>1d8fb5f4-3288-4184-a7ea-772a649c069c</id>
+      <mnemonic>63895-7</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>75af05b0-88d7-11f0-a713-7badd0ed241e</id>
+        <language>en</language>
+        <value>Breastfeeding status</value>
+        <source>1d8fb5f4-3288-4184-a7ea-772a649c069c</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>36c93880-e5a0-40bc-a271-ce7dff9a90fd</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-InfantFeedingStatus</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>75af7ad6-88d7-11f0-a715-07887188f733</id>
+        <source>36c93880-e5a0-40bc-a271-ce7dff9a90fd</source>
+        <term>1d8fb5f4-3288-4184-a7ea-772a649c069c</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>734ce026-89b3-11f0-960a-0bbe09981ff6</id>
+        <source>36c93880-e5a0-40bc-a271-ce7dff9a90fd</source>
+        <language>en</language>
+        <value>Breastfeeding Status</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>8a07a21f-50ff-4631-8e51-c54690fb1127</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>Observation-HivStatus</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>d18de134-ed2f-11ee-92df-2f554e0f2f08</id>
+        <source>8a07a21f-50ff-4631-8e51-c54690fb1127</source>
+        <language>en</language>
+        <value>HIV Status (Finding)</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>6bf61afa-88ef-11f0-a235-633704427ebc</id>
+      <source>236b5641-61d2-4d12-91f7-5dddbd7f8931</source>
+      <term>402d2720-495a-4908-b2b3-00fb021c82a8</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>6c02cfe8-88ef-11f0-a252-b3d50723d95e</id>
+      <source>6fb8487c-cd6f-44f1-ab63-27dc65405792</source>
+      <term>7c7a3e02-6e86-424b-857c-561fc133675f</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>2e9fe830-85e7-11f0-95fa-0b60a41f8423</id>
+      <source>7bb3403e-d8ee-4b91-8a77-64da4f459415</source>
+      <term>3c32fa04-a54d-442d-82a8-29fc05fb6333</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>d18fd9f8-ed2f-11ee-92e0-fb423e8a1cde</id>
+      <source>8a07a21f-50ff-4631-8e51-c54690fb1127</source>
+      <term>71f3d357-cd76-4567-b169-9526aa8188a2</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>3c32fa04-a54d-442d-82a8-29fc05fb6333</id>
+      <mnemonic>11449-6</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>2e944d0e-85e7-11f0-95f8-8f6d95740352</id>
+        <language>en</language>
+        <value>PREGNANCY STATUS</value>
+        <source>3c32fa04-a54d-442d-82a8-29fc05fb6333</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>402d2720-495a-4908-b2b3-00fb021c82a8</id>
+      <mnemonic>64572001</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>6bf5037c-88ef-11f0-a233-679341bab078</id>
+        <language>en</language>
+        <value>Condition</value>
+        <source>402d2720-495a-4908-b2b3-00fb021c82a8</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>71f3d357-cd76-4567-b169-9526aa8188a2</id>
+      <mnemonic>365866002</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>d18be258-ed2f-11ee-92de-ef6aa89f0b58</id>
+        <language>en</language>
+        <value>HIV Status (Finding)</value>
+        <source>71f3d357-cd76-4567-b169-9526aa8188a2</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>7c7a3e02-6e86-424b-857c-561fc133675f</id>
+      <mnemonic>365860008</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>6c01a8d4-88ef-11f0-a250-7b24a455d4d0</id>
+        <language>en</language>
+        <value>General clinical state finding</value>
+        <source>7c7a3e02-6e86-424b-857c-561fc133675f</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+</dataset>

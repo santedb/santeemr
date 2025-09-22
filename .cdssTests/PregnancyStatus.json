@@ -1,0 +1,69 @@
+{ 
+    "$type": "CodedObservation",
+    "template" : "441AF8B3-ED36-4F4F-A379-2A9D1AEA374E",
+    "typeConcept" : "7bb3403e-d8ee-4b91-8a77-64da4f459415",
+    "actTime" : "2025-09-05T15:30:00Z",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "relationship" : {
+        "HasComponent" : [
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "$type": "DateObservation",
+                    "template" : "0001F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+                    "typeConcept" : "54843f39-8820-4856-951c-1bcd4812bdce",
+                    "actTime" : "2025-09-05T15:30:00Z",
+                    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "value" : "2025-05-05",
+                    "valuePrecision" : "Day"
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "$type": "DateObservation",
+                    "template" : "0002F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+                    "typeConcept" : "673ac0e2-8468-43ca-9e54-cadf413dfede",
+                    "actTime" : "2025-09-05T15:30:00Z",
+                    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "value" : null,
+                    "valuePrecision" : "Day"
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "$type": "QuantityObservation",
+                    "template" : "0003F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+                    "typeConcept" : "fdaf1790-1868-11eb-adc1-0242ac120002",
+                    "actTime" : "2025-09-05T15:30:00Z",
+                    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "value" : null,
+                    "unitOfMeasure" : "a0ef1084-2158-42f2-933b-f81aa78ca4d2"  
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "$type": "CodedObservation",
+                    "template" : "0004F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+                    "typeConcept" : "5dbd3949-fda0-4c5d-a849-a673fd5565f6",
+                    "actTime" : "2025-09-05T15:30:00Z",
+                    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "value" : "6052712a-340e-4480-ad6b-409ba320db4f"   
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                        "$type": "CodedObservation",
+                        "template" : "0005F8B3-ED36-4F4F-A379-2A9D1AEA374E",
+                        "typeConcept" : "91799417-2fb2-45c1-9591-364270b11ad8",
+                        "actTime" : "2025-09-05T15:30:00Z",
+                        "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+                        "value" : "6052712a-340e-4480-ad6b-409ba320db4f"   
+                }
+            }
+        ]
+    }   
+}

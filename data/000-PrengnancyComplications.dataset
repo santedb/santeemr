@@ -1,0 +1,280 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Pregnancy Complications v3.02" xmlns="http://santedb.org/data">
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>6f4e6608-8912-11f0-9a93-f764d51fde6c</id>
+      <name>Pregnancy Complications</name>
+      <mnemonic>PregnancyComplications</mnemonic>
+      <oid>1.3.6.1.4.1.33349.3.1.5.9.3.108</oid>
+      <url>http://santedb.org/conceptset/pregnancy-complication</url>
+      <concept>14b03dc4-6f42-4318-ba62-048aaf079c26</concept>
+      <concept>667ff672-f809-4907-8d75-72154d93073f</concept>
+      <concept>182dfa3a-e890-4b49-a7fe-2f26c67cd9af</concept>
+      <concept>75fcd7f2-57a6-47f1-b096-e6e31f5909c5</concept>
+      <concept>fdd9308b-39e4-4360-804d-60b777a8a3c9</concept>
+      <concept>6052712a-340e-4480-ad6b-409ba320db4f</concept>
+    </ConceptSet>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>14b03dc4-6f42-4318-ba62-048aaf079c26</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyComplication-Trauma</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>ee105032-8912-11f0-bbda-07e37a93ddfb</id>
+        <source>14b03dc4-6f42-4318-ba62-048aaf079c26</source>
+        <language>en</language>
+        <value>Traumatic injury during pregnancy</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>182dfa3a-e890-4b49-a7fe-2f26c67cd9af</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyComplication-GestationalDiabetes</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>cb8c0ea2-8912-11f0-ae72-7385e99fc3b0</id>
+        <source>182dfa3a-e890-4b49-a7fe-2f26c67cd9af</source>
+        <language>en</language>
+        <value>Gestational diabetes mellitus complicating pregnancy</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>667ff672-f809-4907-8d75-72154d93073f</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-EctopicPregnancy</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>cd0043a4-8834-11f0-b0a6-2f53d6350551</id>
+        <source>667ff672-f809-4907-8d75-72154d93073f</source>
+        <language>en</language>
+        <value>Ectopic Pregnancy</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>75fcd7f2-57a6-47f1-b096-e6e31f5909c5</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyComplication-Hypertension</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>0cc04b22-8913-11f0-968c-bbec879a5a06</id>
+        <source>75fcd7f2-57a6-47f1-b096-e6e31f5909c5</source>
+        <language>en</language>
+        <value>Pregnancy-induced hypertension</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>fdd9308b-39e4-4360-804d-60b777a8a3c9</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyComplication-PreEclampsia</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>3adc66c6-8913-11f0-bbdd-cb218e83b76c</id>
+        <source>fdd9308b-39e4-4360-804d-60b777a8a3c9</source>
+        <language>en</language>
+        <value>Pre-eclampsia</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>8e0e93e2-3711-4932-b49e-8be6fa5739dc</id>
+      <mnemonic>75179-2</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>2b8a5682-89e1-11f0-b0fa-a70f2a679445</id>
+        <language>en</language>
+        <value>Mother's HIV Status During Pregnancy</value>
+        <source>8e0e93e2-3711-4932-b49e-8be6fa5739dc</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>437ba956-3a02-449f-bab8-c79aac9d424a</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-MothersHIVStatusDuringPregnancy</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>2b8f6a3c-89e1-11f0-b0fc-ff735399541e</id>
+        <source>437ba956-3a02-449f-bab8-c79aac9d424a</source>
+        <term>8e0e93e2-3711-4932-b49e-8be6fa5739dc</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>2b8eb7cc-89e1-11f0-b0fb-2be5bcaf0885</id>
+        <source>437ba956-3a02-449f-bab8-c79aac9d424a</source>
+        <language>en</language>
+        <value>Mother's HIV Status During Pregnancy</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>ee110da6-8912-11f0-bbdb-f35a08a3af18</id>
+      <source>14b03dc4-6f42-4318-ba62-048aaf079c26</source>
+      <term>2ae50cd7-2d05-43d2-a8f1-c1e4282f61ca</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>cb8c99ee-8912-11f0-ae73-f3e07db12be3</id>
+      <source>182dfa3a-e890-4b49-a7fe-2f26c67cd9af</source>
+      <term>80fd35bb-1cd0-4067-8ca5-e792ddc260fa</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>cd012cd8-8834-11f0-b0a7-ebef7f54a3e2</id>
+      <source>667ff672-f809-4907-8d75-72154d93073f</source>
+      <term>10dc41e8-1c3e-4929-8899-b0de9a10e739</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>0cc1176e-8913-11f0-968d-f31109b4cac2</id>
+      <source>75fcd7f2-57a6-47f1-b096-e6e31f5909c5</source>
+      <term>e573cbab-1a3c-4e74-bc9b-d7ba9622788e</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>3adcbb58-8913-11f0-bbde-6f181d790199</id>
+      <source>fdd9308b-39e4-4360-804d-60b777a8a3c9</source>
+      <term>ff9677e1-361b-4126-8994-85291a3c541c</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>10dc41e8-1c3e-4929-8899-b0de9a10e739</id>
+      <mnemonic>33065-4</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>ccf8cce6-8834-11f0-b0a5-5f4f29fe3742</id>
+        <language>en</language>
+        <value>Ectopic Pregnancy</value>
+        <source>10dc41e8-1c3e-4929-8899-b0de9a10e739</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>2ae50cd7-2d05-43d2-a8f1-c1e4282f61ca</id>
+      <mnemonic>426997005</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>ee0c76f6-8912-11f0-bbd9-b799a12d9e2b</id>
+        <language>en</language>
+        <value>Traumatic injury during pregnancy</value>
+        <source>2ae50cd7-2d05-43d2-a8f1-c1e4282f61ca</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>80fd35bb-1cd0-4067-8ca5-e792ddc260fa</id>
+      <mnemonic>40801000119106</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>cb89809c-8912-11f0-ae71-cbb2c465519e</id>
+        <language>en</language>
+        <value>Gestational diabetes mellitus complicating pregnancy</value>
+        <source>80fd35bb-1cd0-4067-8ca5-e792ddc260fa</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>e573cbab-1a3c-4e74-bc9b-d7ba9622788e</id>
+      <mnemonic>48194001</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>0cbc3adc-8913-11f0-968b-c3de51429265</id>
+        <language>en</language>
+        <value>Pregnancy-induced hypertension</value>
+        <source>e573cbab-1a3c-4e74-bc9b-d7ba9622788e</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>ff9677e1-361b-4126-8994-85291a3c541c</id>
+      <mnemonic>398254007</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>3adb9714-8913-11f0-bbdc-b3e8fc12256e</id>
+        <language>en</language>
+        <value>Pre-eclampsia</value>
+        <source>ff9677e1-361b-4126-8994-85291a3c541c</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+    <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>a8ce50a9-9508-49bb-ae17-b5d6e621a0a4</id>
+      <mnemonic>65869-0</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>4fbe7e22-8912-11f0-aac9-5712130eb287</id>
+        <language>en</language>
+        <value>Pregnancy Complication</value>
+        <source>a8ce50a9-9508-49bb-ae17-b5d6e621a0a4</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>c2cb8755-1961-4cc2-a4ba-814f068dfa48</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ActOrganizer-PregnancyComplication</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>aac21384-8912-11f0-aaca-035505bdbd55</id>
+        <language>en</language>
+        <value>Identified Pregnancy Complications</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>91799417-2fb2-45c1-9591-364270b11ad8</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-PregnancyComplication</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>4fc2c158-8912-11f0-aacb-fb1991c1a5ac</id>
+        <source>91799417-2fb2-45c1-9591-364270b11ad8</source>
+        <term>a8ce50a9-9508-49bb-ae17-b5d6e621a0a4</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>4fc21384-8912-11f0-aaca-035505bdbd55</id>
+        <source>91799417-2fb2-45c1-9591-364270b11ad8</source>
+        <language>en</language>
+        <value>Pregnancy Complication</value>
+      </name>
+    </Concept>
+  </update>
+</dataset>

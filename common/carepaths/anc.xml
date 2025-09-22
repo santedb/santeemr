@@ -1,0 +1,15 @@
+<AppletCarePathwayDefinition xmlns="http://santedb.org/applet"
+  mnemonic="org.santedb.emr.carepath.anc" public="true">
+    <uuid>7a5c410d-23ff-48f8-8eda-7842a7fae937</uuid>
+    <name>ANC Routine Immunization Carepath</name>
+    <description>Provides routine vaccinations for all ANC patients</description>
+    <eligibility>
+      dateOfBirth=:(age)&gt;P14Y&amp;
+      genderConcept=094941e9-a3db-48b5-862c-bc289bd7f86c&amp;
+      participation[RecordTarget].source@CodedObservation.typeConcept=7bb3403e-d8ee-4b91-8a77-64da4f459415&amp;
+      participation[RecordTarget].source@CodedObservation.value.conceptSet=!8e848f0e-890b-11f0-ae3f-9f37087e0822&amp;
+      participation[RecordTarget].source@CodedObservation.statusConcept=!BDEF5F90-5497-4F26-956C-8F818CCE2BD2
+    </eligibility>
+    <enrollment>automatic</enrollment>
+    <encounter>org.santedb.emr.act.visit.anc</encounter>
+</AppletCarePathwayDefinition> 

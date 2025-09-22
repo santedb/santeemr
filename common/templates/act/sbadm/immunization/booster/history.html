@@ -15,20 +15,6 @@
  - License for the specific language governing permissions and limitations under
  - the License.
  -->
-<div xmlns="http://www.w3.org/1999/xhtml">
-    <div class="form-group row">
-        <label class="control-label col-md-3 col-sm-12">{{ act.typeConceptModel | concept }}</label>
-        <div class="col-md-9 col-sm-12">
-            <div class="input-group  mb-0">
-                <div class="input-group-prepend">
-                    <div class="input-group-text">
-                        <input type="checkbox" ng-model="act._active"/>
-                    </div>
-                </div>
-                <input type="numeric" min="1" max="12" ng-disabled="!act._active" ng-model="act.value" class="form-control" />
-            </div>
-            <em input-help="true">{{ 'ui.emr.templates.observation.liveBirths.help' | i18n }}</em>
-
-        </div>
-    </div>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+   TODO: Booster Immunization Back-Entry (Tetanus, Flu, etc.) simple date entry and the label as the product
 </div>

@@ -1,0 +1,13 @@
+<AppletTemplateDefinition xmlns="http://santedb.org/applet"     
+   mnemonic="org.santedb.emr.hiv.status" public="true">
+    <definition>definition.json</definition>
+    <form>form.html</form>
+    <view>view.html</view>
+    <summaryView>summary.html</summaryView>
+    <icon>fas fa-virus</icon>
+    <oid>1.3.6.1.4.1.52820.5.2.1.12</oid>
+    <description>HIV Status</description>
+    <uuid>401113E0-B256-49B4-AF1F-07CC2668D00B</uuid>
+    <scope>org.santedb.emr.act.visit.general</scope>
+
+</AppletTemplateDefinition>

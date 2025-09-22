@@ -1,0 +1,218 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Pregnancy Findings v3.0"
+  xmlns="http://santedb.org/data">
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>6f79db14-25a3-4c2e-9fea-df9f9f7f3e01</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-PregnancyValidationMethod</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>6f79db14-25a3-4c2e-9fea-df9f9f7f3e02</id>
+        <language>en</language>
+        <value>Pregnancy Confirmation Method</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>9301d554-1522-447c-aef9-4694c5b84a8e</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyFinding-VaginalExaminationConfirmed</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>13b1415c-8832-11f0-a3b8-7fe051bf758b</id>
+        <source>9301d554-1522-447c-aef9-4694c5b84a8e</source>
+        <language>en</language>
+        <value>Vaginal Examination</value>
+      </name>
+    </Concept>
+  </update>
+  
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>f7b4522f-99ab-4dae-bb29-d1868ce4c068</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyFinding-OnHistory</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>e7ec992c-8831-11f0-a3b2-83ddf95329a5</id>
+        <source>f7b4522f-99ab-4dae-bb29-d1868ce4c068</source>
+        <language>en</language>
+        <value>History / Social</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>918cfabc-de9d-44c2-9ffa-27bfaf3c8bf8</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyFinding-UrineTestConfirmed</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>f90881d0-8831-11f0-a3b5-536d9d2fb5c9</id>
+        <source>918cfabc-de9d-44c2-9ffa-27bfaf3c8bf8</source>
+        <language>en</language>
+        <value>Urine Test</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>433bdbf1-b1b9-468d-87d6-e77e51fed3d9</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyFinding-BloodTestConfirms</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>b1b3edec-8831-11f0-a5d2-c7f5d590ff3c</id>
+        <source>433bdbf1-b1b9-468d-87d6-e77e51fed3d9</source>
+        <language>en</language>
+        <value>Blood Test</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>792db532-7eb9-49df-a10d-26160abb035f</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyFinding-AbdominalPalpation</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>ccf3d590-8831-11f0-a5d5-7b3f416251e3</id>
+        <source>792db532-7eb9-49df-a10d-26160abb035f</source>
+        <language>en</language>
+        <value>Abdominal Palpation</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>13b198be-8832-11f0-a3b9-bf0d6b34e7d9</id>
+      <source>9301d554-1522-447c-aef9-4694c5b84a8e</source>
+      <term>872c0751-fd05-41d5-b985-e313c505e313</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>b1b4b65a-8831-11f0-a5d3-93103db5bdc3</id>
+      <source>433bdbf1-b1b9-468d-87d6-e77e51fed3d9</source>
+      <term>40d54858-4766-4ff6-b683-c4e06e6cee37</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>f908f390-8831-11f0-a3b6-4318cc6396d7</id>
+      <source>918cfabc-de9d-44c2-9ffa-27bfaf3c8bf8</source>
+      <term>ad551508-f668-44d9-927e-1d26a73591f3</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>e7ed38b4-8831-11f0-a3b3-d7eea07dad16</id>
+      <source>f7b4522f-99ab-4dae-bb29-d1868ce4c068</source>
+      <term>33c4c80f-326d-4cd9-bf4e-4caf7b9883a2</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>ccf43d00-8831-11f0-a5d6-6f3340bf3145</id>
+      <source>792db532-7eb9-49df-a10d-26160abb035f</source>
+      <term>0ce66e61-4136-4ab1-bf26-9ba8f515c16d</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>40d54858-4766-4ff6-b683-c4e06e6cee37</id>
+      <mnemonic>169561007</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>b1af8c70-8831-11f0-a5d1-1bb524e45077</id>
+        <language>en</language>
+        <value>Pregnant - blood test confirms</value>
+        <source>40d54858-4766-4ff6-b683-c4e06e6cee37</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>ad551508-f668-44d9-927e-1d26a73591f3</id>
+      <mnemonic>169560008</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>f9078794-8831-11f0-a3b4-d7edec42bf5a</id>
+        <language>en</language>
+        <value>Pregnant - Urine Test Confirmed (finding)</value>
+        <source>ad551508-f668-44d9-927e-1d26a73591f3</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>872c0751-fd05-41d5-b985-e313c505e313</id>
+      <mnemonic>169562000</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>13b05b5c-8832-11f0-a3b7-3b97b5aef6d8</id>
+        <language>en</language>
+        <value>Pregnant - Vaginal Examination Confirms (finding)</value>
+        <source>872c0751-fd05-41d5-b985-e313c505e313</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>0ce66e61-4136-4ab1-bf26-9ba8f515c16d</id>
+      <mnemonic>169564004</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>ccf2c560-8831-11f0-a5d4-a3ee1665b557</id>
+        <language>en</language>
+        <value>Pregnant - on abdominal palpation (finding)</value>
+        <source>0ce66e61-4136-4ab1-bf26-9ba8f515c16d</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>33c4c80f-326d-4cd9-bf4e-4caf7b9883a2</id>
+      <mnemonic>169563005</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>e7e94254-8831-11f0-a3b1-8bb168b80793</id>
+        <language>en</language>
+        <value>Pregnant - on history (finding)</value>
+        <source>33c4c80f-326d-4cd9-bf4e-4caf7b9883a2</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>82fca516-8831-11f0-8e04-4b7b340ffd27</id>
+      <name>Pregnancy Finding Codes</name>
+      <mnemonic>PregnancyFindingCodes</mnemonic>
+      <oid>1.3.6.1.4.1.45129.3.1.5.9.3.211</oid>
+      <url>http://santedb.org/conceptset/pregnancy-finding</url>
+      <concept>433bdbf1-b1b9-468d-87d6-e77e51fed3d9</concept>
+      <concept>6052712a-340e-4480-ad6b-409ba320db4f</concept>
+      <concept>792db532-7eb9-49df-a10d-26160abb035f</concept>
+      <concept>918cfabc-de9d-44c2-9ffa-27bfaf3c8bf8</concept>
+      <concept>9301d554-1522-447c-aef9-4694c5b84a8e</concept>
+      <concept>f7b4522f-99ab-4dae-bb29-d1868ce4c068</concept>
+    </ConceptSet>
+  </update>
+</dataset>

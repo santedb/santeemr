@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Condition Observation Types v3.01" xmlns="http://santedb.org/data">
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>2b3e26bc-5766-4e84-afac-a522edc2e7e3</id>
+      <name>Patient Condition Trigger Codes</name>
+      <mnemonic>PatientConditionTrigger</mnemonic>
+      <oid>1.3.6.1.4.1.33349.3.1.5.9.3.120</oid>
+      <url>http://santedb.org/conceptset/patient-condition-observations</url>
+      <concept>7bb3403e-d8ee-4b91-8a77-64da4f459415</concept>
+      <concept>8a07a21f-50ff-4631-8e51-c54690fb1127</concept>
+      <concept>518c868b-e0fb-4ef1-8187-85988284c3c6</concept>
+      <compose>
+        <id>7bb40a8a-15be-4aae-bebb-ba04b5c868fb</id>
+        <instruction>include</instruction>
+        <target>4a3952e0-8998-4020-9da2-6d78b292da69</target>
+      </compose>
+    </ConceptSet>
+  </update>
+    <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>8e848f0e-890b-11f0-ae3f-9f37087e0822</id>
+      <name>Condition Negation Indicator Concepts</name>
+      <mnemonic>ConditionNegationIndicatorConcepts</mnemonic>
+      <oid>1.3.6.1.4.1.33349.3.1.5.9.3.104.1</oid>
+      <url>http://santedb.org/conceptset/condition-negation-concepts</url>
+      <concept>09919a72-808c-44c4-8b44-86fd3725f100</concept>
+      <concept>21b0ffc8-ca4e-408d-a104-41fc924d3a39</concept>
+      <concept>68fe916c-c656-44b6-88e8-ecc6ac4c3d00</concept>
+      <concept>dd3a4ad8-ec64-44a5-a3aa-8dad28a49d25</concept>
+      <concept>e7fb387e-854d-44a7-9e62-9e1b5001e6bb</concept>
+    </ConceptSet>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>6fb6f224-890b-11f0-b631-af0db9029883</id>
+      <name>Condition Indication Concepts</name>
+      <mnemonic>ConditionIndicatorConcepts</mnemonic>
+      <oid>1.3.6.1.4.1.33349.3.1.5.9.3.104</oid>
+      <url>http://santedb.org/conceptset/condition-indicator-concepts</url>
+      <compose>
+        <id>a8ced720-890b-11f0-bde4-97389f4b0679</id>
+        <source>6fb6f224-890b-11f0-b631-af0db9029883</source>
+        <instruction>include</instruction>
+        <target>4a43da5e-85e9-11f0-bc9f-e364e8b5e561</target>
+      </compose>
+      <compose>
+        <id>feced720-890b-11f0-bde4-97389f4b0679</id>
+        <source>6fb6f224-890b-11f0-b631-af0db9029883</source>
+        <target>fb77fb46-927a-11f0-aa09-4b31f92ce560</target>
+        <instruction>include</instruction>
+      </compose>
+      <compose>
+        <id>a8cff24a-890b-11f0-bde5-3394b95129ce</id>
+        <source>6fb6f224-890b-11f0-b631-af0db9029883</source>
+        <instruction>include</instruction>
+        <target>9e1834ca-ed30-11ee-9771-7fbb587ec725</target>
+      </compose>
+      <compose>
+        <id>facff24a-890b-11f0-bde5-3394b95129ce</id>
+        <instruction>include</instruction>
+        <target>353fe256-88cd-11f0-acbf-17b704d3ad69</target>
+      </compose>
+      <compose>
+        <id>a8d02350-890b-11f0-bde6-23254ad8f20d</id>
+        <source>6fb6f224-890b-11f0-b631-af0db9029883</source>
+        <instruction>exclude</instruction>
+        <target>8e848f0e-890b-11f0-ae3f-9f37087e0822</target>
+      </compose>
+    </ConceptSet>
+  </update>
+  
+</dataset>

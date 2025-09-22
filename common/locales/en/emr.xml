@@ -20,6 +20,9 @@
     <string name="ui.directConnect">Direct Connect to Server</string>
     <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
     <string name="ui.emr.loginMessage">Log into SanteEMR</string>
+
+    <!-- ANC Visit -->
+     <string name="org.santedb.emr.act.visit.anc">Antenatal Care Visit (Immunization)</string>
     <!-- Mail -->
     <string name="ui.emr.mail.all">View All Mail</string>
 
@@ -92,7 +95,8 @@
     <string name="org.santedb.emr.widget.patient.identity">Identification</string>
     <string name="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
     <string name="org.santedb.emr.widget.patient.idCard">Patient ID Card</string>
-    <string name="org.santedb.emr.widget.patient.careplans">Care Plans</string>
+    <string name="org.santedb.emr.widget.patient.careplans">Care Pathways / Plans</string>
+    <string name="org.santedb.emr.widget.patient.conditions">Conditions</string>
 
     <!-- VRP -->
     <string name="ui.emr.vrp.title">Signed Digital ID Code</string>
@@ -483,4 +487,7 @@
 
      <!-- Facility -->
       <string name="ui.emr.clinic.schedule.search.placeholder">Search Patient Id, Name, or Event Action</string>
+
+      <!-- History -->
+      <string name="org.santedb.emr.widget.patient.register.history">Clinical Profile / Information</string>
 </resources>

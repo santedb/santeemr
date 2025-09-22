@@ -8,6 +8,7 @@
     "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
     "typeConcept": "f562e322-17ca-11eb-adc1-0242ac120002",
     "actTime": "{{ $now }}",
+    "startTime": "{{ $now }}",
     "relationship": {
         "HasComponent": [
             {
