@@ -176,7 +176,7 @@
         additional details on that patient's page</string>
 
     <!-- Clinical History -->
-    <string name="org.santedb.emr.widget.patient.act">Clinical History</string>
+    <string name="org.santedb.emr.widget.patient.act">Visit History</string>
 
     <!-- Encounters -->
     <string name="org.santedb.emr.widget.patient.act.qentry">New Entry</string>

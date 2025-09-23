@@ -26,6 +26,7 @@
         <sdb:icon>fas fa-file-medical</sdb:icon>
         <sdb:description lang="en">Patient Conditions</sdb:description>
         <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.2.3</sdb:demand>
+        <sdb:guard>query("CodedObservation", { "participation[RecordTarget].player" : scopedObject.id, _count: 0, typeConcept: "236b5641-61d2-4d12-91f7-5dddbd7f8931" }).totalResults &gt; 0</sdb:guard>
         <sdb:views></sdb:views>
     </sdb:widget>
 

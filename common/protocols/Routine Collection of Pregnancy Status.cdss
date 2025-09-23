@@ -52,38 +52,38 @@ define library "Routine Collection of Pregnancy Status"
 	    
 	    define fact "Number of Previous Pregnancies" having type int 
 	    as 
-	        hdsi($$ relationship[target.typeConcept:a2ab26a4-1887-11eb-adc1-0242ac120002].target.value $$ scoped-to fact "Most Recent Pregnancy History")
+	        hdsi($$ relationship[target.typeConcept%3da2ab26a4-1887-11eb-adc1-0242ac120002].target.value $$ scoped-to fact "Most Recent Pregnancy History")
 	    end fact 
 
 	    define fact "Number of Previous Live Births" having type int 
 	    as 
-	        hdsi($$ relationship[target.typeConcept:549070d0-1889-11eb-adc1-0242ac120002].target.value $$ scoped-to fact "Most Recent Pregnancy History")
+	        hdsi($$ relationship[target.typeConcept%3d549070d0-1889-11eb-adc1-0242ac120002].target.value $$ scoped-to fact "Most Recent Pregnancy History")
 	    end fact 
 	    
 	    define fact "Number of Previous Still Births" having type int 
 	    as 
-	        hdsi($$ relationship[target.typeConcept:fdab26a4-1887-11eb-adc1-0242ac120002].target.value $$ scoped-to fact "Most Recent Pregnancy History")
+	        hdsi($$ relationship[target.typeConcept%3dfdab26a4-1887-11eb-adc1-0242ac120002].target.value $$ scoped-to fact "Most Recent Pregnancy History")
 	    end fact 
 	    
 	    define fact "Number of Previous Preterm Births" having type int 
 	    as 
-	        hdsi($$ relationship[target.typeConcept:29e7715-fa06-4e8f-a954-b6c866b12548].target.value $$ scoped-to fact "Most Recent Pregnancy History")
+	        hdsi($$ relationship[target.typeConcept%3d29e7715-fa06-4e8f-a954-b6c866b12548].target.value $$ scoped-to fact "Most Recent Pregnancy History")
 	    end fact 
 
         define fact "History of Gestational Diabetes" having type bool as 
-            hdsi($$ relationship[target.typeConcept=91799417-2fb2-45c1-9591-364270b11ad8].target.relationship[target.typeConcept=182dfa3a-e890-4b49-a7fe-2f26c67cd9af].target.negationInd=false $$  scoped-to fact "Most Recent Pregnancy History")
+            hdsi($$ relationship[target.typeConcept%3d91799417-2fb2-45c1-9591-364270b11ad8].target.relationship[target.typeConcept=182dfa3a-e890-4b49-a7fe-2f26c67cd9af].target.negationInd=false $$  scoped-to fact "Most Recent Pregnancy History")
         end fact
         
         define fact "History of Ectopic Pregnancy" having type bool as 
-            hdsi($$ relationship[target.typeConcept:91799417-2fb2-45c1-9591-364270b11ad8].target.relationship[target.typeConcept:667ff672-f809-4907-8d75-72154d93073f].target.negationInd=false $$ scoped-to fact "Most Recent Pregnancy History")
+            hdsi($$ relationship[target.typeConcept%3d91799417-2fb2-45c1-9591-364270b11ad8].target.relationship[target.typeConcept:667ff672-f809-4907-8d75-72154d93073f].target.negationInd=false $$ scoped-to fact "Most Recent Pregnancy History")
         end fact
         
         define fact "History of Hypertension During Pregnancy" having type bool as 
-            hdsi($$ relationship[target.typeConcept:91799417-2fb2-45c1-9591-364270b11ad8].target.relationship[target.typeConcept:75fcd7f2-57a6-47f1-b096-e6e31f5909c5].target.negationInd=false $$ scoped-to fact "Most Recent Pregnancy History")
+            hdsi($$ relationship[target.typeConcept%3d91799417-2fb2-45c1-9591-364270b11ad8].target.relationship[target.typeConcept:75fcd7f2-57a6-47f1-b096-e6e31f5909c5].target.negationInd=false $$ scoped-to fact "Most Recent Pregnancy History")
         end fact
         
         define fact "History of Pre-Eclampsia" having type bool as 
-            hdsi($$ relationship[target.typeConcept:91799417-2fb2-45c1-9591-364270b11ad8].target.relationship[target.typeConcept:fdd9308b-39e4-4360-804d-60b777a8a3c9].target.negationInd=false $$ scoped-to fact "Most Recent Pregnancy History")
+            hdsi($$ relationship[target.typeConcept%3d91799417-2fb2-45c1-9591-364270b11ad8].target.relationship[target.typeConcept:fdd9308b-39e4-4360-804d-60b777a8a3c9].target.negationInd=false $$ scoped-to fact "Most Recent Pregnancy History")
         end fact
         
         define fact "Patient Current Pregnancy Status"
@@ -113,19 +113,20 @@ define library "Routine Collection of Pregnancy Status"
 		define fact "Patient Current Pregnancy Delivery Date" 
 		    having type date 
 		as 
-		    hdsi($$ $self@Act.relationship[target.typeConcept:673ac0e2-8468-43ca-9e54-cadf413dfede].target@DateObservation.value $$ scoped-to fact "Patient Current Pregnancy Status")
+		    hdsi($$ $self@Act.relationship[target.typeConcept%3d673ac0e2-8468-43ca-9e54-cadf413dfede].target@DateObservation.value $$ scoped-to fact "Patient Current Pregnancy Status")
 		end fact
 		
 		define fact "Patient Last Menstrual Period Current Pregnancy" 
 		    having type date 
 		as 
-		    hdsi($$ $self.@Act.relationship[target.typeConcept:54843f39-8820-4856-951c-1bcd4812bdce].target@DateObservation.vale $$ scoped-to fact "Patient Current Pregnancy Status")
+		    hdsi($$ $self.@Act.relationship[target.typeConcept%3d54843f39-8820-4856-951c-1bcd4812bdce].target@DateObservation.vale $$ scoped-to fact "Patient Current Pregnancy Status")
 		end fact
 		
 	end logic
 	define logic "Routine Collection of Pregnancy Status Patient"
 		having context Patient when all(
-				"Patient Is Female of Childbearing Age"
+				"Patient Is Female of Childbearing Age",
+				none("CDS Exclude Observations", "CDS Output Will be Saved")
 			)
 
 		import model "Prompt Patient Pregnancy Status" from <org.santedb.emr.pregnancy.status>
