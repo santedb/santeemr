@@ -53,12 +53,11 @@ namespace SanteEMR.Rules
 
 
             // Process each act in the bundle 
-            foreach (var act in data.Item.OfType<Act>().Where(o =>
+            foreach (var act in data.Item.OfType<Observation>().Where(o =>
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
                 o.TypeConceptKey != null && 
-                o is Observation &&
-                o.GetTag(EmrConstants.IgnoreEmrTriggersTagName) != null
+                o.GetTag(EmrConstants.IgnoreEmrTriggersTagName) == null
                 ).ToArray()
             )
             {

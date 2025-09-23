@@ -125,7 +125,8 @@ define library "Routine Collection of Pregnancy Status"
 	end logic
 	define logic "Routine Collection of Pregnancy Status Patient"
 		having context Patient when all(
-				"Patient Is Female of Childbearing Age"
+				"Patient Is Female of Childbearing Age",
+				none("CDS Exclude Observations", "CDS Output Will be Saved")
 			)
 
 		import model "Prompt Patient Pregnancy Status" from <org.santedb.emr.pregnancy.status>
