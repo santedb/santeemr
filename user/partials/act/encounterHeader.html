@@ -15,149 +15,164 @@
  - License for the specific language governing permissions and limitations under
  - the License.
  -->
-<div xmlns="http://www.w3.org/1999/xhtml" class="mb-1 scroll-sticky object-header" style="top: 0 !important;">
-    <div class="card mb-0">
-        <div class="card-body" ng-if="!encounter">
-            <i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
-        </div>
-        <div class="card-body container-fluid p-2" ng-if="encounter">
-            <div class="row">
-                <div class="col-6">
-                    <div class="p-2">
-                        <a ui-sref="santedb-emr.patient.view({ id: encounter.participation.RecordTarget[0].player })"><h5 class="m-0">{{ encounter.participation.RecordTarget[0].playerModel.name | name }} <span
-                                class="badge badge-info mr-2"><i class="fas"
-                                    ng-class="{ 'fa-male' : encounter.participation.RecordTarget[0].playerModel.genderConceptModel.mnemonic == 'Male' || encounter.participation.RecordTarget[0].playerModel.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' :  encounter.participation.RecordTarget[0].playerModel.genderConceptModel.mnemonic == 'Female' || encounter.participation.RecordTarget[0].playerModel.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
-                                {{ encounter.participation.RecordTarget[0].playerModel.genderConceptModel | concept
-                                }}</span>
-                        </h5></a>
-                        <span>
-                            <div
-                                ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']]">
-                                <i class="fas fa-id-card"></i>
-                                {{
-                                encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].value
-                                }}
-                                <span
-                                    ng-if="encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].checkDigit">
-                                    ({{encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].checkDigit}})
-                                </span>
-                                <span class="d-none d-md-inline">
-                                    <span class="badge badge-primary">{{
-                                        encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].domainModel.name
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <div class="mb-1 scroll-sticky object-header" style="top: 0 !important;">
+        <div class="card mb-0">
+            <div class="card-body" ng-if="!encounter">
+                <i class="fas fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+            </div>
+            <div class="card-body container-fluid p-2" ng-if="encounter">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="p-2">
+                            <a
+                                ui-sref="santedb-emr.patient.view({ id: encounter.participation.RecordTarget[0].player })">
+                                <h5 class="m-0">{{ encounter.participation.RecordTarget[0].playerModel.name | name }}
+                                    <span class="badge badge-info mr-2"><i class="fas"
+                                            ng-class="{ 'fa-male' : encounter.participation.RecordTarget[0].playerModel.genderConceptModel.mnemonic == 'Male' || encounter.participation.RecordTarget[0].playerModel.genderConcept == 'f4e3a6bb-612e-46b2-9f77-ff844d971198', 'fa-female' :  encounter.participation.RecordTarget[0].playerModel.genderConceptModel.mnemonic == 'Female' || encounter.participation.RecordTarget[0].playerModel.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' }"></i>
+                                        {{ encounter.participation.RecordTarget[0].playerModel.genderConceptModel |
+                                        concept
                                         }}</span>
-                                </span>
-                            </div>
-                            <div
-                                ng-if="!$root.system.config.application.setting['aa.preferred'] || !encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']]">
+                                </h5>
+                            </a>
+                            <span>
+                                <div
+                                    ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']]">
+                                    <i class="fas fa-id-card"></i>
+                                    {{
+                                    encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].value
+                                    }}
+                                    <span
+                                        ng-if="encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].checkDigit">
+                                        ({{encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].checkDigit}})
+                                    </span>
+                                    <span class="d-none d-md-inline">
+                                        <span class="badge badge-primary">{{
+                                            encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].domainModel.name
+                                            }}</span>
+                                    </span>
+                                </div>
+                                <div
+                                    ng-if="!$root.system.config.application.setting['aa.preferred'] || !encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']]">
+                                    <div class="p-2"
+                                        ng-if="id[0].value &amp;&amp; domain != $root.system.config.application.setting['aa.preferred']"
+                                        ng-repeat="(domain, id) in encounter.participation.RecordTarget[0].playerModel.identifier track by $index">
+                                        <i class="far fa-id-card"></i> {{ id[0].value }}
+                                        <span ng-if="id[0].checkDigit">({{id[0].checkDigit}})</span>
+                                        <span class="badge badge-info">{{ id[0].domainModel.name }}</span>
+                                    </div>
+                                </div>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-2 float-right d-flex flex-column  align-items-end">
+                            <h5 class="m-0">
+                                {{ encounter.templateModel.name }}
+                                <span class="badge badge-info">{{ encounter.typeConceptModel | concept }}</span> <br />
+                            </h5>
+                            <span class="badge badge-lg badge-primary"><i class="fas fa-fw fa-timeline"></i> {{
+                                encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0] | concept
+                                }}</span>
+                            <div>
                                 <div class="p-2"
                                     ng-if="id[0].value &amp;&amp; domain != $root.system.config.application.setting['aa.preferred']"
-                                    ng-repeat="(domain, id) in encounter.participation.RecordTarget[0].playerModel.identifier track by $index">
-                                    <i class="far fa-id-card"></i> {{ id[0].value }}
+                                    ng-repeat="(domain, id) in encounter.identifier track by $index">
+                                    <i class="far fa-qrcode"></i> {{ id[0].value }}
                                     <span ng-if="id[0].checkDigit">({{id[0].checkDigit}})</span>
                                     <span class="badge badge-info">{{ id[0].domainModel.name }}</span>
                                 </div>
                             </div>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-6">
-                    <div class="p-2 float-right d-flex flex-column  align-items-end">
-                        <h5 class="m-0">
-                            {{ encounter.templateModel.name }}
-                            <span class="badge badge-info">{{ encounter.typeConceptModel | concept }}</span> <br/>
-                        </h5>
-                        <span class="badge badge-lg badge-primary"><i class="fas fa-fw fa-timeline"></i> {{ encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0] | concept }}</span>
-                        <div>
-                            <div class="p-2"
-                                ng-if="id[0].value &amp;&amp; domain != $root.system.config.application.setting['aa.preferred']"
-                                ng-repeat="(domain, id) in encounter.identifier track by $index">
-                                <i class="far fa-qrcode"></i> {{ id[0].value }}
-                                <span ng-if="id[0].checkDigit">({{id[0].checkDigit}})</span>
-                                <span class="badge badge-info">{{ id[0].domainModel.name }}</span>
-                            </div>
+
                         </div>
-                        
                     </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="d-flex flex-wrap justify-content-between">
-                        <div class="mx-2">
-                            <div ng-if="encounter.startTime || encounter.stopTime">
-                                <span class="mr-2" ng-if="encounter.startTime">{{ 'ui.model.act.startTime' | i18n }} <i
-                                        class="fas fa-fw fa-clock"></i> {{ encounter.startTime | extDate: 'M' }}</span>
-                                <span ng-if="encounter.stopTime">{{ 'ui.model.act.stopTime' | i18n }} <i
-                                        class="fas fa-fw fa-clock"></i> {{ encounter.stopTime | extDate: 'M' }}</span>
+                    <div class="col-sm-12">
+                        <div class="d-flex flex-wrap justify-content-between">
+                            <div class="mx-2">
+                                <div ng-if="encounter.startTime || encounter.stopTime">
+                                    <span class="mr-2" ng-if="encounter.startTime">{{ 'ui.model.act.startTime' | i18n }}
+                                        <i class="fas fa-fw fa-clock"></i> {{ encounter.startTime | extDate: 'M'
+                                        }}</span>
+                                    <span ng-if="encounter.stopTime">{{ 'ui.model.act.stopTime' | i18n }} <i
+                                            class="fas fa-fw fa-clock"></i> {{ encounter.stopTime | extDate: 'M'
+                                        }}</span>
+                                </div>
+                                <div ng-if="!encounter.startTime &amp;&amp; !encounter.stopTime">
+                                    {{ 'ui.model.act.actTime' | i18n }} <i class="fas fa-fw fa-clock"></i> {{
+                                    encounter.actTime | extDate: 'M' }}
+                                </div>
                             </div>
-                            <div ng-if="!encounter.startTime &amp;&amp; !encounter.stopTime">
-                                {{ 'ui.model.act.actTime' | i18n }} <i class="fas fa-fw fa-clock"></i> {{ encounter.actTime | extDate: 'M' }}
-                            </div>
-                        </div>
-                        <div class="mx-2" ng-repeat="(k, ptcpt) in encounter.participation track by $index" ng-if="k != 'RecordTarget'">
-                            <i class="fas fa-fw" ng-class="{
+                            <div class="mx-2" ng-repeat="(k, ptcpt) in encounter.participation track by $index"
+                                ng-if="k != 'RecordTarget'">
+                                <i class="fas fa-fw" ng-class="{
                                 'fa-house-medical-flag' : k == 'Location',
                                 'fa-user-doctor' : k == 'Authororiginator' || k == 'Performer',
                                 'fa-hands-holding-child' : k == 'Informant' || k == 'Authenticator' || k == 'Witness',
                                 'fa-hand-holding-dollar' : k == 'Donor' || k == 'GuarantorParty'
-                            }"></i> {{ ptcpt[0].playerModel.name | name }} <small class="badge badge-secondary">{{ ptcpt[0].relationshipTypeModel || k | concept }}</small>
-                        </div>
-                        <div class="mx-2" ng-if="encounter.relationship._HasComponent">
-                            <i class="fas fa-fw fa-list-check"></i> {{ encounter.relationship._HasComponent.holderModel.typeConceptModel | concept }}
+                            }"></i> {{ ptcpt[0].playerModel.name | name }} <small class="badge badge-secondary">{{
+                                    ptcpt[0].relationshipTypeModel || k | concept }}</small>
+                            </div>
+                            <div class="mx-2" ng-if="encounter.relationship._HasComponent">
+                                <i class="fas fa-fw fa-list-check"></i> {{
+                                encounter.relationship._HasComponent.holderModel.typeConceptModel | concept }}
                                 <span
                                     ng-repeat="dst in encounter.relationship._HasComponent.holderModel.participation.Destination track by $index">
                                     <i class="fas fa-map-pin mr-1"></i> {{ dst.playerModel.name | name }}
                                 </span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
-    </div>
-    <div class="m-0 alert alert-secondary d-flex justify-content-between" ng-if="encounter.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
-        <span><i ng-init="encounter._readonly = true" class="fas fa-fw fa-check-circle"></i> {{ 'ui.emr.encounter.completed' | i18n }} </span>
-    </div>
-    <div class="m-0 alert alert-secondary"
-        ng-if="encounter.tag['$checkoutState'] &amp;&amp; encounter.tag['$checkoutState'] != $root.session.username">
-        <i ng-init="encounter._readonly = true" class="fas fa-lock"></i> {{ 'ui.notices.checkout' | i18n: { user:
-        encounter.tag['$checkoutState'] } }}
-    </div>
-    <div class="m-0 alert alert-dark" ng-if="encounter.tag['$pep.masked'] == 'true'">
-        <i class="fas fa-exclamation-circle"></i> {{ 'ui.notices.privacyControls.masked' | i18n }}
-    </div>
-    <div class="m-0 alert alert-warning" ng-if="encounter.tag['$upstream'] == 'true'">
-        <span>
-            <i class="fas fa-cloud"></i>
-            {{ 'ui.view.upstream' | i18n }}
-        </span>
-        <a ng-click='downloadRecord()' class="btn btn-sm btn-warning">
-            <i class="fas fa-cloud-download-alt"></i>
-            {{ 'ui.action.download' | i18n }}
-        </a>
-    </div>
-    <div class="m-0"
-        ng-if="encounter.obsoletionTime || encounter.statusConcept == '0bbec253-21a1-49cb-b376-7fe4d0592cda' || encounter.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5' || encounter.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2'">
-        <div class=" alert alert-dark">
-            <i class="fas fa-trash" ng-init="entity._readonly=true"></i>
-            {{ 'ui.view.deletedRecord' | i18n }}
-        </div>
-    </div>
-    <!-- Imported -->
-    <div class="m-0 alert alert-info" ng-if="encounter.tag['imported'] == 'true'">
-        <div class="d-flex justify-content-between">
-            <div>
-                <i class="fas fa-file-import"></i> {{ 'ui.notices.imported' | i18n }}
             </div>
-            <div class="flex-grow-1">
-                <div class="float-right btn-group">
-                    <button id="btnClearTag" class="btn btn-sm btn-info" ng-click="setTag('imported', null)"><i
-                            class="fas fa-check"></i> {{
-                        'ui.action.clear' | i18n }}</button>
+        </div>
+        <div class="m-0 alert alert-secondary d-flex justify-content-between"
+            ng-if="encounter.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
+            <span><i ng-init="encounter._readonly = true" class="fas fa-fw fa-check-circle"></i> {{
+                'ui.emr.encounter.completed' | i18n }} </span>
+        </div>
+        <div class="m-0 alert alert-secondary"
+            ng-if="encounter.tag['$checkoutState'] &amp;&amp; encounter.tag['$checkoutState'] != $root.session.username">
+            <i ng-init="encounter._readonly = true" class="fas fa-lock"></i> {{ 'ui.notices.checkout' | i18n: { user:
+            encounter.tag['$checkoutState'] } }}
+        </div>
+        <div class="m-0 alert alert-dark" ng-if="encounter.tag['$pep.masked'] == 'true'">
+            <i class="fas fa-exclamation-circle"></i> {{ 'ui.notices.privacyControls.masked' | i18n }}
+        </div>
+        <div class="m-0 alert alert-warning" ng-if="encounter.tag['$upstream'] == 'true'">
+            <span>
+                <i class="fas fa-cloud"></i>
+                {{ 'ui.view.upstream' | i18n }}
+            </span>
+            <a ng-click='downloadRecord()' class="btn btn-sm btn-warning">
+                <i class="fas fa-cloud-download-alt"></i>
+                {{ 'ui.action.download' | i18n }}
+            </a>
+        </div>
+        <div class="m-0"
+            ng-if="encounter.obsoletionTime || encounter.statusConcept == '0bbec253-21a1-49cb-b376-7fe4d0592cda' || encounter.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5' || encounter.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2'">
+            <div class=" alert alert-dark">
+                <i class="fas fa-trash" ng-init="entity._readonly=true"></i>
+                {{ 'ui.view.deletedRecord' | i18n }}
+            </div>
+        </div>
+        <!-- Imported -->
+        <div class="m-0 alert alert-info" ng-if="encounter.tag['imported'] == 'true'">
+            <div class="d-flex justify-content-between">
+                <div>
+                    <i class="fas fa-file-import"></i> {{ 'ui.notices.imported' | i18n }}
                 </div>
-
+                <div class="flex-grow-1">
+                    <div class="float-right btn-group">
+                        <button id="btnClearTag" class="btn btn-sm btn-info" ng-click="setTag('imported', null)"><i
+                                class="fas fa-check"></i> {{
+                            'ui.action.clear' | i18n }}</button>
+                    </div>
+                </div>
             </div>
-
         </div>
-
     </div>
+    <!-- Extension Points -->
+    <ng-include src="'/_dynamic/EncounterHeaderExtensions.html'" />
 
 </div>

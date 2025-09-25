@@ -28,8 +28,7 @@
                 ng-if="!act._overrideDose &amp;&amp; act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'">
                 {{ act.doseSequence | number: 0 }}
             </a>
-
-            <span ng-if="act.targetModel.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
+            <span ng-if="act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
                 {{ act.doseSequence | number: 0 }}
             </span>
         </span>

@@ -18,7 +18,6 @@ define library "SanteDB Core CDSS Fact Library"
 	    having status active 
 	    having context IdentifiedData
 	    as 
-	    
 	    define fact "Now"
 		    having type date
 	    as
@@ -59,13 +58,27 @@ define library "SanteDB Core CDSS Fact Library"
 		as
 			csharp($$stringf("_mode")$$)
 		end fact
+		define fact "CDS Execution Mode Is Analysis Mode" having type bool 
+		    with metadata 
+		        doc Indicates that CDSS is running in Analysis mode
+		    end metadata
+		as
+		    csharp($$stringf("_mode") == "analyze"$$)
+		end fact 
+		define fact "CDS Execution Mode Is Planning Mode" having type bool 
+		    with metadata 
+		        doc Indicates that CDSS is running in Care planning mode
+		    end metadata
+		as
+		    csharp($$stringf("_mode") == "execute"$$)
+		end fact 
 		define fact "CDS Output Will be Saved"
 			having type bool
 			with metadata
 				doc Indicates that the CDSS caller will persist the output
 			end metadata
 		as
-			csharp($$true.Equals(context["_persistent"])$$)
+			csharp($$true.Equals(context["_persistent"]) || stringf("_persistent") == "true"$$)
 		end fact
 		define fact "CDS Exclude Supplements"
 			having type bool
