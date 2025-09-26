@@ -157,6 +157,8 @@ function SanteEMRWrapper() {
             });
         }
 
+        // Ensure that the actTime matches the data in the bundle
+        bundle.resource.filter(a => !a.startTime && !a.stopTime && !a.actTime).forEach(a => a.actTime = encounter.actTime); // Copy the act time over
         bundle.correlationId = encounter.id;
         return bundle;
     }
