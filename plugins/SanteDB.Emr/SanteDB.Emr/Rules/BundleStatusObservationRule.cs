@@ -56,7 +56,7 @@ namespace SanteEMR.Rules
             foreach (var act in data.Item.OfType<Observation>().Where(o =>
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
-                o.TypeConceptKey != null && 
+                o.TypeConceptKey != null &&
                 o.GetTag(EmrConstants.IgnoreEmrTriggersTagName) == null
                 ).ToArray()
             )
@@ -87,7 +87,7 @@ namespace SanteEMR.Rules
                 if (subjectAct is CodedObservation cdo && this.m_conceptRepository.IsMember(EmrConstants.EmrConditionTrigger, subjectAct.TypeConceptKey.Value) &&
                     !subjectAct.IsNegated) // The type is not a condition and is a coded observation
                 {
-                    var activeCondition = this.m_conditionRepository.Find(o => o.TypeConceptKey == ObservationTypeKeys.Condition && o.ValueKey == cdo.TypeConceptKey && o.ObsoletionTime == null && o.StatusConceptKey == StatusKeys.Active).FirstOrDefault();
+                    var activeCondition = this.m_conditionRepository.Find(o => o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.Key) && o.TypeConceptKey == ObservationTypeKeys.Condition && o.ValueKey == cdo.TypeConceptKey && o.ObsoletionTime == null && o.StatusConceptKey == StatusKeys.Active).FirstOrDefault();
                     if (cdo.ValueKey.HasValue && !this.m_conceptRepository.IsMember(EmrConstants.PatientIndicatorNegatedObservation, cdo.ValueKey.Value))
                     {
                         activeCondition = activeCondition ?? new CodedObservation()
@@ -97,7 +97,7 @@ namespace SanteEMR.Rules
                             StartTime = act.ActTime,
                             Policies = act.Policies,
                             TypeConceptKey = ObservationTypeKeys.Condition,
-                            ValueKey = cdo.ValueKey,
+                            ValueKey = cdo.TypeConceptKey,
                             StatusConceptKey = StatusKeys.Active,
                             Participations = new List<ActParticipation>()
                             {
