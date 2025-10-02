@@ -57,7 +57,7 @@ namespace SanteEMR.Rules
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
                 o.TypeConceptKey != null &&
-                o.GetTag(EmrConstants.IgnoreEmrTriggersTagName) == null
+                o.Tags?.Any(t=>t.TagKey == EmrConstants.IgnoreEmrTriggersTagName && Boolean.Parse(t.Value)) != true
                 ).ToArray()
             )
             {
@@ -65,14 +65,15 @@ namespace SanteEMR.Rules
                 act.AddTag(EmrConstants.IgnoreEmrTriggersTagName, "true");
                 var rct = act.LoadProperty(o => o.Participations).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget);
                 // Determine if the patient already has this observation type which indicates a status - then update the status observation
-                if (this.m_conceptRepository.IsMember(EmrConstants.PatientStatusObservation, act.TypeConceptKey.Value))
+                if (act.BatchOperation != BatchOperationType.Update && this.m_conceptRepository.IsMember(EmrConstants.PatientStatusObservation, act.TypeConceptKey.Value))
                 {
                     if (rct?.PlayerEntityKey != null)
                     {
                         // determine if the patient already has an active observation for this status
-                        var existing = this.m_persistenceService.Query(o => o.TypeConceptKey == act.TypeConceptKey.Value && o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.PlayerEntityKey) && o.ObsoletionTime == null, AuthenticationContext.SystemPrincipal).FirstOrDefault();
+                        var existing = this.m_persistenceService.Query(o => o.StatusConceptKey != StatusKeys.Obsolete && o.TypeConceptKey == act.TypeConceptKey.Value && o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.PlayerEntityKey) && o.ObsoletionTime == null, AuthenticationContext.SystemPrincipal).FirstOrDefault();
                         if (existing != null)
                         {
+                            existing.BatchOperation = BatchOperationType.Update;
                             existing.StatusConceptKey = StatusKeys.Obsolete; // The old observation is now obsolete
                             act.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.Replaces, existing.Key)); // indicate the replacement
                             data.Add(existing);
@@ -87,8 +88,9 @@ namespace SanteEMR.Rules
                 if (subjectAct is CodedObservation cdo && this.m_conceptRepository.IsMember(EmrConstants.EmrConditionTrigger, subjectAct.TypeConceptKey.Value) &&
                     !subjectAct.IsNegated) // The type is not a condition and is a coded observation
                 {
-                    var activeCondition = this.m_conditionRepository.Find(o => o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.Key) && o.TypeConceptKey == ObservationTypeKeys.Condition && o.ValueKey == cdo.TypeConceptKey && o.ObsoletionTime == null && o.StatusConceptKey == StatusKeys.Active).FirstOrDefault();
-                    if (cdo.ValueKey.HasValue && !this.m_conceptRepository.IsMember(EmrConstants.PatientIndicatorNegatedObservation, cdo.ValueKey.Value))
+                    var activeCondition = this.m_conditionRepository.Find(o => o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.PlayerEntityKey) && o.TypeConceptKey == ObservationTypeKeys.Condition && o.ValueKey == cdo.TypeConceptKey && o.ObsoletionTime == null && o.StatusConceptKey == StatusKeys.Active).FirstOrDefault();
+                    if (cdo.ValueKey.HasValue && !this.m_conceptRepository.IsMember(EmrConstants.PatientIndicatorNegatedObservation, cdo.ValueKey.Value) 
+                        && !StatusKeys.InactiveStates.Contains(cdo.StatusConceptKey.Value))
                     {
                         activeCondition = activeCondition ?? new CodedObservation()
                         {
@@ -117,7 +119,8 @@ namespace SanteEMR.Rules
 
                     if (activeCondition != null)
                     {
-                        activeCondition.LoadProperty(o => o.Relationships).Add(new ActRelationship(ActRelationshipTypeKeys.RefersTo, act.Key));
+                        activeCondition.LoadProperty(o => o.Relationships).Clear();
+                        activeCondition.Relationships.Add(new ActRelationship(ActRelationshipTypeKeys.RefersTo, act.Key));
                         data.Add(activeCondition);
                     }
 

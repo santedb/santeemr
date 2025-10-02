@@ -30,7 +30,7 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
             let conditions = await SanteDB.resources.act.findAsync({
                 "participation[RecordTarget].player": patientId,
                 "typeConcept": "236b5641-61d2-4d12-91f7-5dddbd7f8931", // Condition
-                "statusConcept": StatusKeys.Active
+                "statusConcept": [ StatusKeys.Active, StatusKeys.Completed ]
             }, 'full');
 
             if (!conditions)

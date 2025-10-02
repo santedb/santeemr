@@ -343,6 +343,19 @@ function SanteEMRWrapper() {
     }
 
     /**
+     * @summary Resolve the summary template (one line summary) for the template
+     * @param {string} templateId The template mnemonic to resolve the summary for
+     * @returns {String} The location of the summary template
+     */
+    this.resolveTemplateForm = function (templateId) {
+        var templateValue = SanteDB.application.resolveTemplateForm(templateId);
+        if (templateValue == null) {
+            return "/org.santedb.uicore/partials/act/noTemplate.html"
+        }
+        return templateValue;
+    }
+
+    /**
      * @summary Save the encounter 
      * @method
      * @param {PatientEncounter} encounter The encounter that is to be saved
