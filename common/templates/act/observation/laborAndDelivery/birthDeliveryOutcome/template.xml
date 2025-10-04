@@ -1,0 +1,11 @@
+<AppletTemplateDefinition xmlns="http://santedb.org/applet"
+   mnemonic="org.santedb.emr.observation.birthDeliveryOutcome" public="false">
+    <definition>definition.json</definition>
+    <scope>org.santedb.emr.act.registration.birth</scope>
+    <form>form.html</form>
+    <summaryView>summary.html</summaryView>
+    <icon>fas fa-circle</icon>
+    <oid>1.3.6.1.4.1.52820.5.2.2.1.5</oid>
+    <description>APGAR Panel</description>
+    <uuid>1c1cbaa2-0b74-47bd-9a43-ee41443de34e</uuid>
+</AppletTemplateDefinition>

@@ -25,10 +25,13 @@
                         <input type="checkbox" ng-model="act._active"/>
                     </div>
                 </div>
-                <concept-select ng-model="act.valueModel" ng-disabled="!act._active" concept-set="'DeliveryMethod'" add-concept="'70fe34ce-caff-4f46-b6e6-9cd6d8f289d6'" class="form-control"/>
+                <concept-select ng-model="act.value" ng-disabled="!act._active" concept-set="'DeliveryMethod'" add-concept="'70fe34ce-caff-4f46-b6e6-9cd6d8f289d6'" class="form-control"
+                    name="birthDeliveryMethod" ng-required="act._active"/>
             </div>
-            <em input-help="true">{{ 'ui.emr.templates.observation.birthDeliveryMethod.help' | i18n }}</em>
-
+                        <div class="text-danger"
+                ng-if="($parent.$parent.$parent.$parent.ownerForm || $parent.$parent.$parent.ownerForm || $parent.$parent.ownerForm || $parent.ownerForm || ownerForm).birthDeliveryMethod.$error.required">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+            </div>
         </div>
     </div>
 </div>

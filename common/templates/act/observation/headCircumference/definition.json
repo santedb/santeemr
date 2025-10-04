@@ -1,0 +1,14 @@
+{
+    "$type" : "QuantityObservation",
+    "template": "c32664de-7ebc-4f1d-86e5-c33d99d523fc",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "typeConcept" : "b971ed37-0ec9-43e6-9dea-e8399417ea44",
+    "unitOfMeasure" : "eeefb6bb-18b1-478d-9cc5-575325b947a8",
+    "participation" : {
+        "RecordTarget" : [
+            {
+                "player" : ""
+            }    
+        ]
+    }
+}

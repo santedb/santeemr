@@ -1,0 +1,14 @@
+{
+    "$type": "CodedObservation",
+    "template" : "88373025-33c4-4481-8d91-a360e6ed2656",
+    "typeConcept" : "e1cf0ea0-63bf-4a8c-9e41-bbd542d3479c",
+    "statusConcept" : "20691188-f1ca-4d06-90a4-8f857c293853",
+    "actTime" : "{{ $now }}",
+    "participation" : {
+        "RecordTarget" : [
+            {
+                "player" : ""
+            }
+        ]
+    }
+}

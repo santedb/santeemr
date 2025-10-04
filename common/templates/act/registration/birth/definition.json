@@ -1,0 +1,162 @@
+{
+    "$type": "Act",
+    "classConcept": "6be8d358-f591-4a3a-9a57-1889b0147c7e",
+    "typeConcept": "f562e322-17ca-11eb-adc1-0242ac120002",
+    "actTime": "{{ $now }}",
+    "participation": {
+        "Attender": [
+            {
+                "player": "{{ $userEntityId }}"
+            }
+        ],
+        "Location": [
+            {
+                "player": "{{ $facilityId }}"
+            }
+        ],
+        "RecordTarget": [
+            {
+                "player": "{{ $recordTargetId }}"
+            }
+        ],
+        "Baby": [
+            {
+                "playerModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.patient.baby"
+                    }
+                }
+            }
+        ]
+    },
+    "relationship": {
+        "HasComponent": [
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthWeight"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthSex"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.heightLying"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.headCircumference"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthDeliveryLocation"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthDeliveryMethod"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthDeliveryOutcome"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthDeliveryDateTime"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.hiv.mothersStatus"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.observation.apgarScore.panel"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.observation.gestationalAgeAtBirth"
+                    }
+                }
+            }
+        ]
+    },
+    "tag": {
+        "$cascade:HasComponent:org.santedb.emr.observation.birthWeight": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ],
+        "$cascade:HasComponent:org.santedb.emr.observation.birthSex": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ],
+        "$cascade:HasComponent:org.santedb.emr.observation.heightLying": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ],
+        "$cascade:HasComponent:org.santedb.emr.observation.birthDeliveryMethod": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ],
+        "$cascade:HasComponent:org.santedb.emr.observation.headCircumference": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ],
+        "$cascade:HasComponent:org.santedb.emr.sbadm.immunization": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ],
+         "$cascade:HasComponent:org.santedb.emr.hiv.mothersStatus": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ],
+         "$cascade:HasComponent:org.santedb.emr.observation.apgarTotal": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ],
+         "$cascade:HasComponent:org.santedb.emr.observation.gestationalAgeAtBirth": [
+            "RecordTarget=Baby",
+            "Performer=Attender"
+        ]
+    }
+}

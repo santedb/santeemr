@@ -1,0 +1,14 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
+    <div class="row">
+        <label class="control-label required col-xs-12 col-md-3">
+            {{ act.typeConceptModel | concept }}
+        </label>
+        <div class="col-xs-12 col-md-9">
+            <concept-select concept-set="'SexAtBirth'" name="birthSex" required="required" ng-model="act.value"
+                class="form-control" ng-change="$root.findParentObject($parent, 'act.participation.Baby[0]').playerModel.genderConcept = act.value" />
+            <div class="text-danger" ng-if="($parent.$parent.$parent.$parent.ownerForm || $parent.$parent.$parent.ownerForm || $parent.$parent.ownerForm || $parent.ownerForm || ownerForm).birthSex.$error.required">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+            </div>
+        </div>
+    </div>
+</div>
