@@ -1,3 +1,19 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Summary of pregnancy history - include iconography if there were previous complications during pregnancy
+<div xmlns="http://www.w3.org/1999/xhtml" class="table">
+    <strong>{{ act.typeConceptModel | concept }}</strong>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 col-lg-6" ng-repeat="comp in act.relationship.HasComponent track by $index" ng-switch="comp.targetModel.$type">
+                <span ng-switch-when="QuantityObservation">
+                    <strong class="mr-2">{{ comp.targetModel.typeConceptModel | concept }}</strong>
+                    {{ comp.targetModel.value }}
+                </span>
+                <ul ng-switch-when="Act" class="ml-2 text-danger">
+                    <li ng-repeat="xcomp in comp.targetModel.relationship.HasComponent track by $index"
+                        ng-if="xcomp.targetModel.isNegated == false">
+                        <i class="fas fa-fw fa-exclamation-circle"></i> {{ xcomp.targetModel.valueModel | concept}}
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

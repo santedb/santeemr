@@ -9,6 +9,9 @@
         <span ng-switch-when="673ac0e2-8468-43ca-9e54-cadf413dfede" class="mx-2">
             <strong><i class="fas fa-fw fa-baby"></i> EDD:</strong> {{ comp.targetModel.value | extDate: comp.targetModel.valuePrecision }} 
         </span>
+        <span ng-switch-when="afdefced-8468-43ca-9e54-cadf413dfede" class="mx-2">
+            <strong><i class="fas fa-fw fa-baby"></i> EDD (C/E):</strong> {{ comp.targetModel.value | extDate: comp.targetModel.valuePrecision }} 
+        </span>
         <span ng-switch-when="c2cb8755-1961-4cc2-a4ba-814f068dfa48" ng-if="comp.targetModel.relationship.HasComponent" class="mx-2 text-danger font-weight-bold">
             <br/>
             <strong><i class="fas fa-fw fa-exclamation-circle"></i> {{ comp.targetModel.typeConceptModel | concept }}:</strong> 

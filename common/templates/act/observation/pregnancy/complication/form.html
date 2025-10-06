@@ -13,7 +13,6 @@
             <span></span>
             {{ ::complication.targetModel.valueModel | concept }}
         </label>
-        {{ complication.targetModel }}
         
         <concept-select class="form-control" ng-if="complication.targetModel.tag['$cdss.valueSet']"
             concept-set="complication.targetModel.tag['$cdss.valueSet'][0]" ng-disabled="complication.targetModel.isNegated"

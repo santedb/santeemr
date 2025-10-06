@@ -6,7 +6,7 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
         try {
             // Expand the conditions 
             const conditionCodes = await SanteDB.resources.conceptSet.invokeOperationAsync("2b3e26bc-5766-4e84-afac-a522edc2e7e3", "expand", {}, null, "min");
-            const results = await SanteDB.resources.observation.findAsync({
+            const results = await SanteDB.resources.act.findAsync({
                 "participation[RecordTarget].player": $scope.scopedObject.id,
                 "typeConcept.conceptSet": "b73e6dbc-890a-11f0-8959-c764088c39f9", // Is a condition
                 "statusConcept": "!bdef5f90-5497-4f26-956c-8f818cce2bd2" // Is not obsolete
@@ -58,6 +58,9 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                 // If the user has indicated somehow the data is not complete ignore it and furthermore
                 // delete the previous observation
                 var amendment = newObservations[i];
+                amendment.tag = amendment.tag || {};
+                amendment.tag["emr.processed"] = ["false"];
+                amendment.operation = BatchOperationType.Update;
                 if(
                     amendment.statusConcept == StatusKeys.Completed || 
                     amendment.statusConcept == StatusKeys.Active
