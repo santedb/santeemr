@@ -54,7 +54,13 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     $scope.newAct = new PatientEncounter({
                         participation: {
                             Informant: [
-                                {
+                                
+                            ]
+                        }
+                    });
+
+                    if($scope.recordTarget.age() <= 14) {
+                        $scope.newAct.participation.Informant.push({
                                     playerModel: new Person({
                                         id: pid,
                                         relationship:
@@ -77,10 +83,9 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                                             ]
                                         }
                                     })
-                                }
-                            ]
-                        }
-                    });
+                                });
+                    }
+
                     var tArray = fetchedData.filter(d => d.$type == "Bundle" && d.resource && d.resource[0].$type == "CarePlan");
                     if (tArray.length > 0) {
                         $scope._proposedActs = tArray[0].resource.map(cp => {

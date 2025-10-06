@@ -403,12 +403,19 @@ function SanteEMRWrapper() {
 
             var encounter = new PatientEncounter(template);
 
-            // Copy fields 
-            if (templateData) {
-                Object.keys(templateData).forEach(field => {
-                    var tplValue = templateData[field];
-                    encounter[field] = tplValue;
-                });
+            // Copy fields from the extended visit start data
+            if (templateData?.relationship) {
+                encounter.relationship = encounter.relationship || {};
+                Object.keys(templateData.relationship).forEach(relationshipType => {
+                    var tplValue = templateData.relationship[relationshipType];
+                    var currentRelationship = encounter.relationship[relationshipType];
+                    if(currentRelationship) {
+                        tplValue.forEach(tv => currentRelationship.push(tv));
+                    }
+                    else {
+                        encounter.relationship[relationshipType] = tplValue;
+                    }
+                })
             }
 
             submission.correlationId = encounter.id = encounter.id || SanteDB.application.newGuid();

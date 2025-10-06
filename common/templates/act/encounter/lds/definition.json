@@ -1,43 +1,48 @@
-{ 
+{
     "$type": "PatientEncounter",
-    "template": "004dc62e-7815-4d7b-8a96-e2753f6a4aae",
-    "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
-    "typeConcept" : "f8932034-43d5-477d-9748-1609099314df",
-    "startTime" : "{{ $now }}",
-    "participation" : {
-        "Location" : [{
-            "player" : "{{ $facilityId }}"
-        }],
-        "Admitter" : [{
-            "player" : "{{ $userEntityId }}"
-            }],
-        "RecordTarget" : [{
-            "player": "$recordTargetId }}"
-        }],
-        "Discharger" : [
-        ]
-    }, 
-    "relationship" : {
-        "HasComponent" : [
+    "template": "AD519D42-E437-4BAE-8B64-404303DC3424",
+    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+    "typeConcept": "f8932034-43d5-477d-9748-1609099314df",
+    "startTime": "{{ $now }}",
+    "participation": {
+        "Location": [
             {
-                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {   
-                    "templateModel" : {
+                "player": "{{ $facilityId }}"
+            }
+        ],
+        "Admitter": [
+            {
+                "player": "{{ $userEntityId }}"
+            }
+        ],
+        "RecordTarget": [
+            {
+                "player": "{{ $recordTargetId }}"
+            }
+        ],
+        "Discharger" : [
+            
+        ]
+    },
+    "relationship": {
+        "HasComponent": [
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
                         "mnemonic": "org.santedb.emr.observation.vitalSigns"
-                    } 
+                    }
                 }
             },
             {
-                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.act.registration.birth"
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.act.registration.birth"
                     }
                 }
             }
         ]
     },
-    "note" : [ 
-    ]
-    
+    "note": []
 }

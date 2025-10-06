@@ -40,7 +40,7 @@
                             <div class="alert alert-info p-0" ng-init="item = recordTarget">
                                 <!-- #include virtual="~/partials/patient/search-result-summary.html" -->
                                 <div class="container-fluid">
-                                    <div class="row" ng-if="recordTarget.age() &lt;= 16">
+                                    <div class="row" ng-if="$scope.newAct.participation.Informant[0]">
                                         <div class="col-12">
                                             <strong>{{ "ui.emr.encounter.checkin.informant" | i18n }}</strong>
                                             <div class="text-danger" ng-if="checkinForm.informant.$error['required']">
