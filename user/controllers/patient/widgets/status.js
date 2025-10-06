@@ -37,47 +37,9 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
     }
     
     // When the user clicks edit - we want to create an amendment observation for ecah of the observations
-    $scope.$watch("panel.view", async function (n, o) {
+    $scope.$watch("panel.view", function (n, o) {
         if (n == "Edit") {
-            // Copy the edit data over 
-            const amendmentObservations = await Promise.all(
-                $scope.statusObservations.map(async (obs) => {
-                    const blankValue = await SanteDB.application.getTemplateContentAsync(obs.templateModel.mnemonic, {
-                        "recordTargetId": $scope.scopedObject.id,
-                        "userEntity": await SanteDB.authentication.getCurrentUserEntityId(),
-                        "facilityId": await SanteDB.authentication.getCurrentFacilityId()
-                    });
-
-                    // copy the value over
-                    blankValue.value = obs.value;
-                    blankValue.status = StatusKeys.Active; // Indicate the state is active (we're observing the observation - let the template tell us it is completed)
-                    blankValue._original = obs.id; // internal use only - link to the original
-                    blankValue.operation = BatchOperationType.Auto; // internal use only 
-
-                    // Copy any notes over for editing
-                    if (obs.note) {
-                        blankValue.note = blankValue.note || [ new ActNote({ author: await SanteDB.authentication.getCurrentUserEntityId() }) ];
-                        blankValue.note[0].text = obs.note[0].text;
-                    }
-
-                    // Copy any components, subjects, etc. 
-                    blankValue.relationship = blankValue.relationship || {};
-                    if (obs.relationship?.HasComponent) {
-                        blankValue.relationship.HasComponent = blankValue.relationship.HasComponent || [];
-                        obs.relationship.HasComponent.forEach(hc => {
-                            var newValueCand = blankValue.relationship.HasComponent.find(c => c.targetModel?.typeConcept == hc.targetModel.typeConcept);
-                            if (newValueCand) // Copy value
-                            {
-                                newValueCand.value = hc.targetModel.value;
-                            }
-                        })
-                    };
-
-                    return blankValue;
-                })
-            );
-
-            $timeout(() => $scope.amendmentObservations = amendmentObservations);
+            $scope.amendmentObservations = angular.copy($scope.statusObservations);
         }
         else {
             delete $scope.amendmentObservations;
@@ -89,7 +51,6 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
         if(form.$invalid) {
             return;
         }
-
         try {
             var submissionBundle = new Bundle({ resource: [] });
             var newObservations = angular.copy($scope.amendmentObservations);
@@ -113,7 +74,6 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                     delete amendment.note;
                     submissionBundle.resource.push(amendment);
                 }
-
                 bundleRelatedObjects(amendment, null, submissionBundle);
             }
             const result = await SanteDB.resources.bundle.insertAsync(submissionBundle);
