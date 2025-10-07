@@ -3,5 +3,7 @@
     "template": "85d1e53a-7f77-4a06-bf25-d76d5dd92108",
     "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
     "typeConcept" : "99af1790-1868-11eb-adc1-0242ac120002",
-    "unitOfMeasure" : "a0ef1084-2158-42f2-933b-f81aa78ca4d2"
+    "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
+    "unitOfMeasure" : "a0ef1084-2158-42f2-933b-f81aa78ca4d2",
+    "actTime" : "{{ $now }}"
 }

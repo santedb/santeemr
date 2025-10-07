@@ -2,6 +2,7 @@
     "$type": "Act",
     "classConcept": "6be8d358-f591-4a3a-9a57-1889b0147c7e",
     "typeConcept": "f562e322-17ca-11eb-adc1-0242ac120002",
+    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
     "actTime": "{{ $now }}",
     "participation": {
         "Attender": [

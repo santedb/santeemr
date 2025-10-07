@@ -1,7 +1,7 @@
 <AppletTemplateDefinition xmlns="http://santedb.org/applet"
    mnemonic="org.santedb.emr.act.registration.birth" public="true">
     <definition>definition.json</definition>
-    <scope>AD519D42-E437-4BAE-8B64-404303DC3424</scope>
+    <scope>f8932034-43d5-477d-9748-1609099314df</scope>
     <!-- TODO: Add Emergency Care Visit -->
     <form>form.html</form>
     <summaryView>summary.html</summaryView>

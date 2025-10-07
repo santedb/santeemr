@@ -1,7 +1,9 @@
 {
     "$type": "Act",
     "classConcept": "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
+    "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
     "template": "a1b969fc-74eb-4da3-94b6-575462c155e0",
+    "actTime" : "{{ $now }}",
     "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
     "typeConcept": "374064b0-4304-4801-82ef-392cc35fca62",
     "participation": {

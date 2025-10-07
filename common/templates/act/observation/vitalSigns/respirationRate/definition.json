@@ -1,15 +1,13 @@
-{
-  "$type": "QuantityObservation",
-  "templateModel": {
-    "mnemonic": "org.santedb.emr.observation.height"
-  },
-  "classConcept": "28D022C6-8A8B-47C4-9E6A-2BC67308739E",
-  "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
-  "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
-  "typeConcept": "8d2e144b-d7bf-4c17-8916-25aff60bcb2f",
-  "unitOfMeasure": "eeefb6bb-18b1-478d-9cc5-575325b947a8",
-  "actTime": "{{ $now }}",
-  "participation": {
+{ 
+    "$type" : "QuantityObservation",
+    "template" : "08b984db-9733-449a-90e9-6cff2a59c364",
+    "statusConcept" : "c8064cbd-fa06-4530-b430-1a52f1530c27",
+    "typeConcept" : "4e3de4ec-17b8-4816-83a4-0792c4fb2a29",
+    "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
+    "unitOfMeasure" : "564ebc64-1b56-48cd-907d-41bb47b7834f",
+    "actTime" : "{{ $now }}",
+    "value" : 0,
+   "participation": {
     "Location": [
       {
         "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
@@ -31,5 +29,9 @@
         "player": "{{ $recordTargetId }}"
       }
     ]
+  },
+  "tag" : {
+      "$cdss.minValue" : [ 0 ],
+      "$cdss.maxValue" : [ 100 ]
   }
 }

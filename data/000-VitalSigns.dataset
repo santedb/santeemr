@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Vital Signs Organizer" xmlns="http://santedb.org/data">
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>30447da1-f7d5-4b25-ba44-ac36a3525a12</id>
+      <mnemonic>29274-8</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>8e4eb2dc-a38a-11f0-a6e9-e7d329c525ae</id>
+        <language>en</language>
+        <value>Vital Signs Mesaurements</value>
+        <source>30447da1-f7d5-4b25-ba44-ac36a3525a12</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>fc86f51c-d1e7-4d2e-a0be-43d972d61356</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ActOrganizer-VitalSigns</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>8e4f7640-a38a-11f0-a6ea-8ba4219be795</id>
+        <source>fc86f51c-d1e7-4d2e-a0be-43d972d61356</source>
+        <term>30447da1-f7d5-4b25-ba44-ac36a3525a12</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>861f6944-a38a-11f0-a6e8-dfc64e1d4b8a</id>
+        <source>fc86f51c-d1e7-4d2e-a0be-43d972d61356</source>
+        <language>en</language>
+        <value>Vital Signs</value>
+      </name>
+      <conceptSet>c9791a94-7a04-4276-804d-82589b6d0be1</conceptSet>
+    </Concept>
+  </update>
+    <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>96ef880b-0d3f-4de2-a8ac-7e8fa0f33844</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ActOrganizer-BloodPressure</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>8ef261ec-a390-11f0-8961-03fe644ee3f1</id>
+        <source>96ef880b-0d3f-4de2-a8ac-7e8fa0f33844</source>
+        <language>en</language>
+        <value>Blood Pressure Reading</value>
+      </name>
+    </Concept>
+  </update>
+</dataset>

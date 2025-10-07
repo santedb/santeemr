@@ -1,0 +1,58 @@
+{
+    "$type": "Act",
+    "template": "7a7b24d0-6328-45d7-a966-be05256a670b",
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+    "statusConcept": "c8064cbd-fa06-4530-b430-1a52f1530c27",
+    "classConcept": "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
+    "typeConcept": "96ef880b-0d3f-4de2-a8ac-7e8fa0f33844",
+    "actTime": "{{ $now }}",
+    "participation": {
+        "Location": [
+            {
+                "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+                "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+                "player": "{{ $facilityId }}"
+            }
+        ],
+        "Authororiginator": [
+            {
+                "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+                "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+                "player": "{{ $userEntityId }}"
+            }
+        ],
+        "RecordTarget": [
+            {
+                "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+                "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+                "player": "{{ $recordTargetId }}"
+            }
+        ]
+    },
+    "relationship": {
+        "HasComponent": [
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "QuantityObservation",
+                    "typeConcept": "c0e4e81e-af1f-4a81-80a6-c59a32f57cfa",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "unitOfMeasure": "bb1d639d-aea8-4750-a24c-b2548d2b6fe4",
+                    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+                    "actTime": "{{ $now }}"
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "QuantityObservation",
+                    "typeConcept": "8e105155-32d4-4bbe-bc86-60154706b3ca",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "unitOfMeasure": "bb1d639d-aea8-4750-a24c-b2548d2b6fe4",
+                    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+                    "actTime": "{{ $now }}"
+                }
+            }
+        ]
+    }
+}
