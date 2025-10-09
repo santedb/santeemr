@@ -19,7 +19,6 @@
  */
 angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', '$timeout', '$rootScope', "$state", function ($scope, $timeout, $rootScope, $state) {
 
-
     async function initializeView(patientId) {
         try {
             var carePathways = await SanteDB.resources.patient.invokeOperationAsync(patientId, "carepath-eligibilty");
@@ -62,7 +61,6 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 if(encounters.resource) {
                     proposed = encounters.resource.filter(r => r.moodConcept == ActMoodKeys.Propose);
                     event = encounters.resource.find(r => r.moodConcept == ActMoodKeys.Eventoccurrence);
-
 
                     if(event && event.relationship && event.relationship.Fulfills) {
                         var fulfilled = proposed.find(p => p.id == event.relationship.Fulfills[0].target);
@@ -145,9 +143,8 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 });
 
                 await fetchNextEncounters(pathway, 1, 3);
-                $(`#carePathway${idx}`).collapse("show");
-                $timeout(() => pathway._enrolled = true);
                 toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.enroll.success"));
+                $state.reload();
             }
             catch (e) {
                 $rootScope.errorHandler(e);
@@ -165,9 +162,8 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-recompute", {
                     pathway: pathway.id
                 });
-                await fetchNextEncounters(pathway, 1, 3, true);
-                $(`#carePathway${idx}`).collapse("show");
                 toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.success"));
+                $state.reload();
             }
             catch(e) {
                 $rootScope.errorHandler(e);

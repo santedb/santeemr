@@ -1,0 +1,37 @@
+{ 
+    "$type" : "QuantityObservation",
+    "template" : "b49dccb2-0a16-4ade-881a-6d8154efd45f",
+    "statusConcept" : "c8064cbd-fa06-4530-b430-1a52f1530c27",
+    "typeConcept" : "5b4661ea-eecb-47da-8e25-71e1c1db04d8",
+    "unitOfMeasure" : "564ebc64-1b56-48cd-907d-41bb47b7834f",
+    "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
+    "actTime" : "{{ $now }}",
+    "value" : 0,
+   "participation": {
+    "Location": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $facilityId }}"
+      }
+    ],
+    "Authororiginator": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $userEntityId }}"
+      }
+    ],
+    "RecordTarget": [
+      {
+        "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+        "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+        "player": "{{ $recordTargetId }}"
+      }
+    ]
+  },
+  "tag" : {
+      "$cdss.minValue" : [ 0 ],
+      "$cdss.maxValue" : [ 300 ]
+  }
+}

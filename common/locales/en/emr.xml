@@ -96,7 +96,7 @@
     <string name="org.santedb.emr.widget.patient.nok">Relatives / Family Members</string>
     <string name="org.santedb.emr.widget.patient.idCard">Patient ID Card</string>
     <string name="org.santedb.emr.widget.patient.careplans">Care Pathways / Plans</string>
-    <string name="org.santedb.emr.widget.patient.conditions">Conditions</string>
+    <string name="org.santedb.emr.widget.patient.conditions">Active Conditions</string>
 
     <!-- VRP -->
     <string name="ui.emr.vrp.title">Signed Digital ID Code</string>
@@ -176,7 +176,7 @@
         additional details on that patient's page</string>
 
     <!-- Clinical History -->
-    <string name="org.santedb.emr.widget.patient.act">Clinical History</string>
+    <string name="org.santedb.emr.widget.patient.act">Visit History</string>
 
     <!-- Encounters -->
     <string name="org.santedb.emr.widget.patient.act.qentry">New Entry</string>
@@ -490,4 +490,9 @@
 
       <!-- History -->
       <string name="org.santedb.emr.widget.patient.register.history">Clinical Profile / Information</string>
+
+      <!-- EMR Nature of Disability -->
+       <string name="ui.model.emr.disability.notes">Notes / Nature of Disability</string>
+       <string name="org.santedb.emr.widget.patient.status">Current Status Observations</string>
+       <string name="ui.emr.patient.status.update.success">Patient status observations and related conditions updated successfully</string>
 </resources>

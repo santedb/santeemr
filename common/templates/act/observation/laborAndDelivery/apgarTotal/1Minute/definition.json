@@ -1,0 +1,14 @@
+{
+    "$type" : "QuantityObservation",
+    "template": "61b969fc-74eb-4da3-94b6-575462c155e0",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
+
+    "typeConcept" : "ac598f9f-1e47-43bc-a74c-d787bf644af9",
+    "actTime" : "{{ $now }}",
+    "unitOfMeasure" : "FEA2CFB1-F231-413D-B113-372779092E56",
+    "tag" : {
+        "$cdss.minValue" : "0",
+        "$cdssMaxValue" : "10"
+    }
+}

@@ -157,6 +157,8 @@ function SanteEMRWrapper() {
             });
         }
 
+        // Ensure that the actTime matches the data in the bundle
+        bundle.resource.filter(a => !a.startTime && !a.stopTime && !a.actTime).forEach(a => a.actTime = encounter.actTime); // Copy the act time over
         bundle.correlationId = encounter.id;
         return bundle;
     }
@@ -341,6 +343,19 @@ function SanteEMRWrapper() {
     }
 
     /**
+     * @summary Resolve the summary template (one line summary) for the template
+     * @param {string} templateId The template mnemonic to resolve the summary for
+     * @returns {String} The location of the summary template
+     */
+    this.resolveTemplateForm = function (templateId) {
+        var templateValue = SanteDB.application.resolveTemplateForm(templateId);
+        if (templateValue == null) {
+            return "/org.santedb.uicore/partials/act/noTemplate.html"
+        }
+        return templateValue;
+    }
+
+    /**
      * @summary Save the encounter 
      * @method
      * @param {PatientEncounter} encounter The encounter that is to be saved
@@ -388,12 +403,19 @@ function SanteEMRWrapper() {
 
             var encounter = new PatientEncounter(template);
 
-            // Copy fields 
-            if (templateData) {
-                Object.keys(templateData).forEach(field => {
-                    var tplValue = templateData[field];
-                    encounter[field] = tplValue;
-                });
+            // Copy fields from the extended visit start data
+            if (templateData?.relationship) {
+                encounter.relationship = encounter.relationship || {};
+                Object.keys(templateData.relationship).forEach(relationshipType => {
+                    var tplValue = templateData.relationship[relationshipType];
+                    var currentRelationship = encounter.relationship[relationshipType];
+                    if(currentRelationship) {
+                        tplValue.forEach(tv => currentRelationship.push(tv));
+                    }
+                    else {
+                        encounter.relationship[relationshipType] = tplValue;
+                    }
+                })
             }
 
             submission.correlationId = encounter.id = encounter.id || SanteDB.application.newGuid();

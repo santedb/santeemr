@@ -1,0 +1,10 @@
+{
+    "$type" : "DateObservation",
+    "template": "c26b1aa0-2b96-4534-9480-8afc3a6c1414",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "typeConcept" : "409538df-26e0-4ffa-b9fc-11a244eae0e5",
+    "valuePrecision" : "Minute",
+    "actTime" : "{{ $now }}",
+    "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
+    "value" : "{{ $now }}"
+}

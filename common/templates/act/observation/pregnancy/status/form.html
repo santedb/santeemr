@@ -49,7 +49,7 @@
         /// ]]>
     </script>
 
-    <div id="pregnancyStatusInput" class="container-fluid" ng-init="act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3'">
+    <div id="pregnancyStatusInput" class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <label class="control-label required">
@@ -57,7 +57,7 @@
                 </label>
 
                  <concept-select required="required" class="form-control" name="pregnancyStatus" concept-set="'PregnancyStatusCodes'" ng-model="act.value"
-                    add-concept="['21b0ffc8-ca4e-408d-a104-41fc924d3a39']" />
+                    add-concept="['21b0ffc8-ca4e-408d-a104-41fc924d3a39']" ng-change="act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3'"/>
                  <div class="text-danger" ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['pregnancyStatus'].$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                  </div>

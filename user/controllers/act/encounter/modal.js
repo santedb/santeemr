@@ -54,7 +54,13 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     $scope.newAct = new PatientEncounter({
                         participation: {
                             Informant: [
-                                {
+                                
+                            ]
+                        }
+                    });
+
+                    if($scope.recordTarget.age() <= 14) {
+                        $scope.newAct.participation.Informant.push({
                                     playerModel: new Person({
                                         id: pid,
                                         relationship:
@@ -77,17 +83,16 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                                             ]
                                         }
                                     })
-                                }
-                            ]
-                        }
-                    });
+                                });
+                    }
+
                     var tArray = fetchedData.filter(d => d.$type == "Bundle" && d.resource && d.resource[0].$type == "CarePlan");
                     if (tArray.length > 0) {
                         $scope._proposedActs = tArray[0].resource.map(cp => {
 
                             var act = null;
                             if ($scope.encounterId) { // The user clicked a specific encounter
-                                act = cp.relationship.HasComponent.map(o=>o.targetModel).find(enc => enc.id == $scope.encounterId);
+                                act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => enc.id == $scope.encounterId);
                             }
                             else {
                                 act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => {
@@ -249,11 +254,11 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
             // Set the status of all items in the encounter
             $scope.encounter.relationship.HasComponent?.forEach(comp => {
-                if(comp.targetModel.statusConcept !== StatusKeys.Completed) {
+                if (comp.targetModel.statusConcept !== StatusKeys.Completed) {
                     comp.targetModel.operation = BatchOperationType.Delete;
                 }
             });
-            
+
             // Save the discharge
             var savedEncounter = await SanteEMR.saveVisitAsync($scope.encounter, "Discharger");
 
@@ -268,16 +273,15 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
                         pathway: careplan.pathway
                     });
-
                     var today = new Date().trunc();
+                    if (careplan.relationship?.HasComponent) {
+                        var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({ id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id }, "full");
 
-                    var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({ id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id }, "full");
-
-                    if (nextProposedAction.resource[0] && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
-                        const afterAction = $("#dischargeModal").data('after-action');
-                        $("#dischargeModal").data('deferAction', true);
-
-                        SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);
+                        if (nextProposedAction.resource[0] && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
+                            const afterAction = $("#dischargeModal").data('after-action');
+                            $("#dischargeModal").data('deferAction', true);
+                            SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);
+                        }
                     }
                 }
             }

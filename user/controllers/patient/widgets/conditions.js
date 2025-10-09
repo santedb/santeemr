@@ -1,4 +1,5 @@
 /// <reference path="../../../.ref/js/santedb.js"/>
+/// <reference path="../../../.ref/js/santedb-model.js"/>
 /*
  * Copyright (C) 2021 - 2025, SanteSuite Inc. and the SanteSuite Contributors (See NOTICE.md for full copyright notices)
  * Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
@@ -28,8 +29,8 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
         try {
             let conditions = await SanteDB.resources.act.findAsync({
                 "participation[RecordTarget].player": patientId,
-                "typeConcept.mnemonic": "ObservationType-Condition",
-                "statusConcept": StatusKeys.Active
+                "typeConcept": "236b5641-61d2-4d12-91f7-5dddbd7f8931", // Condition
+                "statusConcept": [ StatusKeys.Active, StatusKeys.Completed ]
             }, 'full');
 
             if (!conditions)

@@ -21,6 +21,7 @@
         context="org.santedb.emr.patient.dashboard" order="100" size="Large">
         <sdb:icon>fas fa-bookmark</sdb:icon>
         <sdb:description lang="en">Recent Patients</sdb:description>
+        <sdb:guard>$root.refValues.facility.id</sdb:guard>
     </sdb:widget>
     
     <div ng-controller="EmrPatientDashboardController">
@@ -29,7 +30,7 @@
             type="Patient" 
             can-filter="true"
             search-field="'name.component.value'" 
-            default-query="{ 'modifiedOn' : ':(age)&lt;PT24H' }" 
+            default-query="{ 'modifiedOn' : ':(age)&lt;PT24H', 'relationship[DedicatedServiceDeliveryLocation|IncidentalServiceDeliveryLocation|ServiceDeliveryLocation].target' : $root.refValues.facility.id }" 
             i18n-prefix="'ui.model.patient.'"
             properties="[ 'result' ]"
             display="grid"

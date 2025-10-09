@@ -1,0 +1,78 @@
+{ 
+    "$type": "Act",
+    "template" : "bd233571-f0a9-4c11-820d-782e8041fc03",
+    "typeConcept" : "fc86f51c-d1e7-4d2e-a0be-43d972d61356",
+    "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
+    "statusConcept" : "c8064cbd-fa06-4530-b430-1a52f1530c27",
+    "classConcept" : "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
+    "actTime" : "{{ $now }}",
+    "participation" : {
+        "RecordTarget" : [
+            {
+                "player" : "{{ $recordTargetId }}"
+            }    
+        ], 
+        "Authororiginator" : [
+            {
+                "player": "{{ $userEntityId }}"
+            }
+        ],
+        "Location" : [
+            {
+                "player" : "{{ $facilityId }}"
+            }
+        ]
+    },
+    "relationship" : {
+        "HasComponent" : [
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.observation.temperature"
+                    }
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.observation.heartRate"
+                    }
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.observation.respirationRate"
+                    }
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.observation.bloodPressure"
+                    }
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.observation.weight"
+                    }
+                }
+            },
+            {
+                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.observation.height"
+                    }
+                }
+            }
+        ]
+    }
+}

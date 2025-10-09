@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dataset xmlns="http://santedb.org/data" id="EMR Encounter Tags v3.41">
+<dataset xmlns="http://santedb.org/data" id="EMR Encounter Tags v3.42">
   <update insertIfNotExists="true">
     <ExtensionType xmlns="http://santedb.org/model">
       <id>CB08FF14-3DD8-40F9-869A-93C8127FC021</id>
@@ -385,5 +385,46 @@
       </name>
       <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
     </Concept>
+  </update>
+  <!-- Labor and Delivery -->
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>72d126e0-a08b-11f0-add2-5f5910506a1e</id>
+      <source>e43326c2-5daa-4872-ad58-75f0f9ba52ae</source>
+      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
+  </update>
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>72d1507a-a08b-11f0-9bf6-9b21da1e1cbe</id>
+      <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
+      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
+  </update>
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>72d14ff8-a08b-11f0-b35b-87d8842ad5ad</id>
+      <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
+      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
+  </update>
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>72d208bc-a08b-11f0-a729-db3e45038c5e</id>
+      <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
+      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
+  </update>
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>72d1e8fa-a08b-11f0-9113-e7b9ec6ed658</id>
+      <source>41148b51-16ef-4212-b0ae-d83f8901c2e4</source>
+      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
   </update>
 </dataset>

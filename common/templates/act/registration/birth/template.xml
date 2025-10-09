@@ -1,0 +1,13 @@
+<AppletTemplateDefinition xmlns="http://santedb.org/applet"
+   mnemonic="org.santedb.emr.act.registration.birth" public="true">
+    <definition>definition.json</definition>
+    <scope>f8932034-43d5-477d-9748-1609099314df</scope>
+    <!-- TODO: Add Emergency Care Visit -->
+    <form>form.html</form>
+    <summaryView>summary.html</summaryView>
+    <view>view.html</view>
+    <oid>1.3.6.1.4.1.52820.5.2.2.1</oid>
+    <icon>fas fa-baby</icon>
+    <description>Birth Registration</description>
+    <uuid>c40344a3-1075-4b8d-bc76-ba4c278639cb</uuid>
+</AppletTemplateDefinition>

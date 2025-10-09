@@ -1,0 +1,11 @@
+<AppletTemplateDefinition xmlns="http://santedb.org/applet"
+   mnemonic="org.santedb.emr.observation.birthDeliveryMethod" public="false">
+    <definition>definition.json</definition>
+    <scope>org.santedb.emr.act.registration.birth</scope>
+    <form>form.html</form>
+    <summaryView>summary.html</summaryView>
+    <icon>fas fa-hospital</icon>
+    <oid>1.3.6.1.4.1.52820.5.2.2.1.4</oid>
+    <description>Birth Delivery Method</description>
+    <uuid>fc991520-a380-4d1e-ac5b-7fdf206ce6bb</uuid>
+</AppletTemplateDefinition>

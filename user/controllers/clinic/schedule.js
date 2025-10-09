@@ -130,6 +130,7 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
                     "moodConcept": [ActMoodKeys.Intent, ActMoodKeys.Propose, ActMoodKeys.Eventoccurrence, ActMoodKeys.Appointment],
                     "statusConcept": [StatusKeys.New, StatusKeys.Active, StatusKeys.Completed],
                     _offset: offset,
+                    "participation[Location].player||participation[RecordTarget].player.relationship[DedicatedServiceDeliveryLocation].target" : await SanteDB.authentication.getCurrentFacilityId(),
                     _count: 25
                 }, "emr.facilityPlan");
 

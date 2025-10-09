@@ -1,0 +1,36 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <script type="text/javascript" nonce="{{ $csp_nonce }}">
+        /// <![CDATA[
+
+
+        angular.element(".pregnancy-status-summary").each(function() {
+            let scope = angular.element(this).scope();
+
+            if (scope.loadTarget === undefined) {
+
+                scope.loadTarget = async function(relationship) {
+                    
+                    let act = await SanteDB.resources.act.getAsync(relationship.target, 'full', {}, true);
+
+                    if (act)
+                    {
+                        scope.$timeout(function(){
+                            relationship.targetModel = act;
+                        });
+                        relationship.targetModel = act;
+                        return act;
+                    }
+                    else {
+                        console.log("Component act is missing in the act repository.");
+                    }
+                }
+            }
+        });
+        /// ]]>
+    </script>
+    <div class="d-flex flex-column pregnancy-status-summary">
+        <div ng-repeat="comprel in act.relationship.HasComponent track by $index" ng-init="act = loadTarget(comprel)">
+            <ng-include src="resolveTemplate(act.targetModel.templateModel.mnemonic)" />
+        </div>
+    </div>
+</div>

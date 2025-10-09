@@ -9,5 +9,5 @@
     <description>Developmental Disability</description>
     <uuid>4cacd9cb-b934-4b24-ab68-b7e34b6724e9</uuid>
     <scope>org.santedb.emr.act.visit.general</scope>
-
+    <guard>recordTarget.age() &lt; 12</guard>
 </AppletTemplateDefinition>

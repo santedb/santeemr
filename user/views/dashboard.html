@@ -27,7 +27,7 @@
     </sdb:state>
     
     <h1 class="mb-3">
-        {{ 'ui.emr.dashboard.title' | i18n }}
+        {{ 'ui.emr.dashboard.title' | i18n }} - {{ $root.refValues.facility.name | name }}
     </h1>
     
     <widget-panels context-name="'org.santedb.emr.dashboard'" can-customize="true" scoped-object="dashboardScope"/>
