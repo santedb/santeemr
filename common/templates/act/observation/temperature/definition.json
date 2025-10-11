@@ -6,7 +6,7 @@
     "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
     "unitOfMeasure" : "83792d73-6a3a-4a72-b13a-ba95ef4a83ea",
     "actTime" : "{{ $now }}",
-    "value" : 0,
+    "value" : null,
    "participation": {
     "Location": [
       {
