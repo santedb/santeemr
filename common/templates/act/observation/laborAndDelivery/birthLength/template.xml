@@ -1,0 +1,12 @@
+<AppletTemplateDefinition xmlns="http://santedb.org/applet" 
+    mnemonic="org.santedb.emr.observation.birthLength" public="false">
+    <definition>definition.json</definition>
+    <form>form.html</form>
+    <view>summary.html</view>
+    <summaryView>summary.html</summaryView>
+    <backEntry>history.html</backEntry>
+    <icon>fas fa-ruler-horizontal</icon>
+    <oid>1.3.6.1.4.1.52820.5.2.2.1.9</oid>
+    <description>Birth Length Entry</description>
+    <uuid>0747c349-1021-4421-8e41-db491b2b00ad</uuid>
+</AppletTemplateDefinition>

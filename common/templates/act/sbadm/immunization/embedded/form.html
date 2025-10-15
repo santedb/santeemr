@@ -1,0 +1,36 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="form-group row">
+    <label class="control-label required col-xs-12 col-md-3">
+        {{ act.participation.Product[0].playerModel.name | name: 'Assigned' }} {{ act.doseSequence}}
+    </label>
+    <!-- We want to allow the user to override this inline with the administration -->
+    <div class="col-xs-12 col-md-9">
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text p-0">
+                    <label class="checkbox-container">
+                        <input type="checkbox" ng-model="act.isNegated" ng-true-value="false" ng-false-value="true"
+                            class="checkbox-control" />
+                        <span></span>
+                    </label>
+                </span>
+                <span class="input-group-text" ng-if="!act.isNegated">
+                    {{ 'ui.model.substanceAdministration.Consumable.lotNumber' | i18n }}
+                </span>
+                <span class="input-group-text" ng-if="act.isNegated">
+                    {{ 'ui.model.act.reasonConcept' | i18n }}
+                </span>
+            </div>
+            <concept-select ng-model="reasonConcept" ng-if="act.isNegated" required="required"
+                name="notPerforming{{$index}}Reason" class="form-control h-100" concept-set="'ProtocolViolationReason'" />
+            <entity-select required="required" ng-if="!act.isNegated" is-required="true" class="form-control h-100" name="lotNumber{{ $index }}"
+                ng-model="act.participation.Consumable[0].player" auto-select-singles="true"
+                entity-type="'ManufacturedMaterial'" filter="{
+                        'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
+                        'statusConcept' : 'C8064CBD-FA06-4530-B430-1A52F1530C27',
+                        'relationship[HeldEntity].source.participation[Tracker].act.relationship[HasComponent].target' : $parent.$parent.$parent.act._getEncounter().id,
+                        'relationship[Instance].source.relationship[HasGeneralization].target' : act.participation.Product[0].player
+                    }" display="item.lotNumber">
+            </entity-select>
+        </div>
+    </div>
+</div>

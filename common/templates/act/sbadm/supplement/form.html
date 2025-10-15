@@ -16,5 +16,17 @@
  - the License.
  -->
 <div xmlns="http://www.w3.org/1999/xhtml">
-    PLACEHOLDER FOR SUPPLEMENT ADMINISTRATION
+    <!-- Current administration -->
+    <div class="form-group row">
+        <label class="col-xs-12 col-md-3 control-label required">
+            {{ 'ui.emr.act.supplement.label' | i18n }}
+        </label>
+        <div class="col-xs-12 col-md-9">
+            <entity-search type="'Material'" ng-model="act.participation.Product[0].player" 
+                required="required" name="supplement{{$index}}Product"
+                ng-disabled="!act.tag.$userAdded" search-field="'name.component.value'"
+                filter="{ 'classConcept' : 'd39073be-0f8f-440e-b8c8-7034cc138a95',  'statusConcept': 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'typeConcept.conceptSet' : 'd9e73f44-330f-11ef-9f7d-a344f6cb283f' }"
+                class="form-control" />
+        </div>
+    </div>
 </div>

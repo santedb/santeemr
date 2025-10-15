@@ -133,7 +133,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     }
 
     $scope.saveVisit = async function (form) {
-        if (form.$invalid) {
+        if (form.$invalid && !confirm(SanteDB.locale.getString("ui.emr.encounter.invalid.saveConfirm"))) {
             return;
         }
 

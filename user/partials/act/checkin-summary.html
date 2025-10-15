@@ -17,7 +17,8 @@
  -->
 <div xmlns="http://www.w3.org/1999/xhtml">
     <h2 class="mb-0">
-        {{ item.participation.RecordTarget[0].playerModel.name | name }} / {{ item.participation.Informant[0].playerModel.name | name }}
+        {{ item.participation.RecordTarget[0].playerModel.name | name }} 
+        <span ng-if="item.participation.Informant">/ {{ item.participation.Informant[0].playerModel.name | name }}</span>
     </h2>
 
     <h3 class="my-1 flex-grow-1 h6">

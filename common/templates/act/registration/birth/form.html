@@ -1,3 +1,72 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    
-</div>
+<div xmlns="http://www.w3.org/1999/xhtml" class="birthRegistration" oc-lazy-load="{ name: 'BirthRegistrationController', files: [ '/org.santedb.emr.common/controllers/templates/act/birth.js' ]  }">
+    <h5>{{ act.typeConceptModel | concept }} #{{ ::$root.getParentVariable($parent,
+        "filterCurrentActions")('c40344a3-1075-4b8d-bc76-ba4c278639cb').length }}</h5>
+    <div class="container-fluid" ng-controller="BirthRegistrationController">
+        <div class="row">
+            <div class="col-xs-12 col-md-6" ng-repeat="comp in act.relationship.HasComponent"
+                ng-if="comp.operation !== 'Delete'"
+                ng-init="act = comp.targetModel">
+                <ng-include src="::$root.getParentVariable($parent, 'resolveTemplate')(act.templateModel.mnemonic)" />
+            </div>
+            <div class="col-12" ng-if="act.participation.Baby[0].playerModel.operation !== 'Delete'">
+                <hr />
+                <h6><i class="fas fa-fw fa-baby"></i> {{ act.participation.Baby[0].playerModel.templateModel.mnemonic |
+                    i18n }}</h6>
+                <div class="container-fluid">
+                    <div class="form-group row">
+                        <div class="col-12">
+                            {{ act.participation.Baby[0].playerModel.dateOfBirth }}
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <name-edit is-required="true" no-add="true"
+                                owner-form="$root.getParentVariable($parent, 'ownerForm')" simple-entry="true"
+                                no-type="true" name="patientName"
+                                model="act.participation.Baby[0].playerModel.name.OfficialRecord" />
+                        </div>
+                        <div class="col-xs-12 col-md-6">
+                            <div class="container-fluid">
+                                <div class="form-group row">
+                                    <label class="col-xs-12 col-md-3 control-label">
+                                        {{ 'ui.model.patient.multipleBirthOrder' | i18n }}
+                                    </label>
+                                    <div class="col-xs-12 col-md-9">
+                                        <div class="input-group m-0">
+                                            <div class="input-group-prepend">
+                                                <label class="input-group-text">
+                                                    <input type="checkbox"
+                                                        ng-model="act.participation.Baby[0].playerModel.multipleBirthIndicator" />
+                                                </label>
+                                            </div>
+
+                                            <select class="form-control" name="birthOrder"
+                                                ng-required="act.participation.Baby[0].playerModel.multipleBirthIndicator"
+                                                ng-model="act.participation.Baby[0].playerModel.multipleBirthOrder"
+                                                ng-disabled="!act.participation.Baby[0].playerModel.multipleBirthIndicator">
+                                                <option value="1">{{ 'ui.model.patient.multipleBirthOrder.1' | i18n }}
+                                                </option>
+                                                <option value="2">{{ 'ui.model.patient.multipleBirthOrder.2' | i18n }}
+                                                </option>
+                                                <option value="3">{{ 'ui.model.patient.multipleBirthOrder.3' | i18n }}
+                                                </option>
+                                                <option value="4">{{ 'ui.model.patient.multipleBirthOrder.4' | i18n }}
+                                                </option>
+                                                <option value="5">{{ 'ui.model.patient.multipleBirthOrder.5' | i18n }}
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="text-danger"
+                                            ng-if="$root.getParentVariable($parent, 'ownerForm').birthOrder.$error.required">
+                                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' |
+                                            i18n }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>

@@ -30,7 +30,7 @@
             <div class="col-xs-12 col-md-6" ng-repeat="comp in act.relationship.HasComponent"
                 ng-init="act = comp.targetModel">
                 <ng-include
-                    src="::$parent.$parent.$parent.$parent.$parent.resolveTemplate(act.templateModel.mnemonic)" />
+                    src="::$root.getParentVariable($parent, 'resolveTemplate')(act.templateModel.mnemonic)" />
             </div>
         </div>
     </div>

@@ -8,7 +8,7 @@ define library "SanteDB Core CDSS Fact Library for Children"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0.2004
+		version 3.0.2018
 		doc Contains core CDSS facts which are useful for protocols and rules involving children
 	end metadata
 	as

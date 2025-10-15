@@ -1,6 +1,7 @@
 {
     "$type": "Patient",
     "template" : "b0ca8509-6c0d-403a-b381-5485fdce5794",
+    "statusConcept" : "C8064CBD-FA06-4530-B430-1A52F1530C27",
     "templateModel": {
         "mnemonic": "org.santedb.emr.patient.baby"
     },
@@ -35,6 +36,7 @@
     },
     "tag" : {
         "$copy:address.HomeAddress.0.component" : "relationship.Mother.0.targetModel.address.HomeAddress.0.component",
-        "$copy:name.OfficialRecord.0.component.Family" : "relationship.Mother.0.targetModel.name.OfficialRecord.0.component.Family"
+        "$copy:name.OfficialRecord.0.component.Family" : "relationship.Mother.0.targetModel.name.OfficialRecord.0.component.Family",
+        "emr.autoCreated" : true
     }
 }

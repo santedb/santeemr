@@ -10,4 +10,8 @@
     <icon>fas fa-baby</icon>
     <description>Birth Registration</description>
     <uuid>c40344a3-1075-4b8d-bc76-ba4c278639cb</uuid>
+    <cdss>
+        <subject>participation[Baby].player@Patient</subject>
+        <target>relationship[HasComponent].target</target>
+    </cdss>
 </AppletTemplateDefinition>

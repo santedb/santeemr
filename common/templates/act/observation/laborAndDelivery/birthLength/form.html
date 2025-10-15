@@ -16,12 +16,13 @@
  - the License.
  -->
 <div xmlns="http://www.w3.org/1999/xhtml" class="form-group row">
+    <!-- TODO: History Entry -->
     <label class="col-xs-12 col-md-3 control-label required">
         {{ act.typeConceptModel | concept }}
     </label>
-    <div class="xs-12 col-md-9">
+    <div class="col-xs-12 col-md-9">
         <div class="input-group mb-0">
-            <input type="number" min="0.1" name="weightValue" ng-model="act.value" required="required"
+            <input type="number" min="0.1" name="heightValue" ng-model="act.value" required="required"
                 cdss-interactive="act" class="form-control h-auto col-md-3" />
 
             <div class="input-group-append">
@@ -30,8 +31,8 @@
                 </label>
             </div>
 
-            <concept-select concept-set="'UnitOfMeasureWeight'" required="required" class="form-control h-auto"
-                name="weightUnit" cdss-interactive="act" ng-model="act.unitOfMeasure" />
+            <concept-select concept-set="'UnitOfMeasureHeight'" required="required" class="form-control h-auto"
+                name="heightUnit" cdss-interactive="act" ng-model="act.unitOfMeasure" />
 
             <div class="input-group-append">
                 <span ng-switch="act.interpretationConcept" class="input-group-text">
@@ -66,17 +67,17 @@
             </div>
         </div>
         <div class="text-danger"
-            ng-if="$parent.$parent.ownerForm.weightValue.$error.required || $parent.$parent.ownerForm.weightUnit.$error.required">
+            ng-if="$parent.$parent.ownerForm.heightValue.$error.required || $parent.$parent.ownerForm.heightUnit.$error.required">
             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
         </div>
 
         <div class="text-danger"
-            ng-if="$parent.$parent.ownerForm.weightValue.$error.min || $parent.$parent.ownerForm.weightUnit.$error.min">
+            ng-if="$parent.$parent.ownerForm.heightValue.$error.min || $parent.$parent.ownerForm.heightUnit.$error.min">
             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: 0.1 } }}
         </div>
 
-        <ul class="list-unstyled" ng-if="$parent.$parent.ownerForm.weightValue.$cdss">
-            <li ng-repeat="issue in $parent.$parent.ownerForm.weightValue.$cdss track by $index"
+        <ul class="list-unstyled" ng-if="$parent.$parent.ownerForm.heightValue.$cdss">
+            <li ng-repeat="issue in $parent.$parent.ownerForm.heightValue.$cdss track by $index"
                 ng-class="{ 'text-danger' : issue.priority == 'Error', 'text-warning' : issue.priority == 'Warning', 'text-info' : issue.priority == 'Information' }">
                 <i class="fas fa-fw"
                     ng-class="{ 'fa-exclamation-triangle' : issue.priority == 'Error', 'fa-info-circle' : issue.priority == 'Warning' || issue.priority == 'Information' }"></i>

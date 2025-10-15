@@ -58,5 +58,17 @@
                 }
             }
         ]
+    },
+    "tag" : {
+        "$cascade:HasComponent:org.santedb.emr.observation.temperature" : [
+            "RecordTarget=null",
+            "Location=null",
+            "Authororiginator=null"
+        ],
+        "$cascade:HasComponent:org.santedb.emr.observation.bloodPressure" : [
+            "RecordTarget=null",
+            "Location=null",
+            "Authororiginator=null"
+        ]
     }
 }
