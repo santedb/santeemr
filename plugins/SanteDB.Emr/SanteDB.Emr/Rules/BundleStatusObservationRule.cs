@@ -71,7 +71,7 @@ namespace SanteEMR.Rules
                     {
                         // determine if the patient already has an active observation for this status
                         var existing = this.m_persistenceService.Query(o => o.StatusConceptKey != StatusKeys.Obsolete && o.TypeConceptKey == act.TypeConceptKey.Value && o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.PlayerEntityKey) && o.ObsoletionTime == null, AuthenticationContext.SystemPrincipal).FirstOrDefault();
-                        if (existing != null)
+                        if (existing != null && existing.Key != act.Key)
                         {
                             existing.BatchOperation = BatchOperationType.Update;
                             existing.StatusConceptKey = StatusKeys.Obsolete; // The old observation is now obsolete
