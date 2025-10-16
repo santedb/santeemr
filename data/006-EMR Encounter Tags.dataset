@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<dataset xmlns="http://santedb.org/data" id="EMR Encounter Tags v3.42">
+<dataset xmlns="http://santedb.org/data" id="EMR Encounter Tags v3.43">
   <update insertIfNotExists="true">
     <ExtensionType xmlns="http://santedb.org/model">
       <id>CB08FF14-3DD8-40F9-869A-93C8127FC021</id>
@@ -67,7 +67,7 @@
         <targetConcept>f5201716-8aa2-4bb9-b574-763e87e3372d</targetConcept>
         <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
       </relationship>
-     
+
       <relationship>
         <id>74fb7c1a-b70a-11ef-9a2d-478a61d1703c</id>
         <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
@@ -187,7 +187,7 @@
         <id>982e29dc-b708-11ef-8421-d7a98bd351fc</id>
         <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
         <language>en</language>
-        <value>In Recovery Ward</value>
+        <value>In Recovery</value>
       </name>
       <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
     </Concept>
@@ -291,7 +291,7 @@
     </Concept>
   </update>
 
-    <update skipIfError="false" insertIfNotExists="true">
+  <update skipIfError="false" insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
       <id>e43326c2-5daa-4872-ad58-75f0f9ba52ae</id>
       <mnemonic>EncounterState-WaitingDischarge</mnemonic>
@@ -319,7 +319,7 @@
     </Concept>
   </update>
 
-    <update skipIfError="false" insertIfNotExists="true">
+  <update skipIfError="false" insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
       <id>6cec1ca3-9e06-45fc-bcf5-b641bf397399</id>
       <mnemonic>EncounterState-WaitingBed</mnemonic>
@@ -347,7 +347,7 @@
     </Concept>
   </update>
 
-    <update skipIfError="false" insertIfNotExists="true">
+  <update skipIfError="false" insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
       <id>cf3917a1-c77f-4537-9f22-6082c90310d9</id>
       <mnemonic>EncounterState-InWard</mnemonic>
@@ -381,23 +381,111 @@
         <id>814f03a8-b708-11ef-9b20-1342a2771dfc</id>
         <source>cf3917a1-c77f-4537-9f22-6082c90310d9</source>
         <language>en</language>
-        <value>In Patient Care Ward</value>
+        <value>In Ward</value>
       </name>
       <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
     </Concept>
   </update>
+
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>398d45eb-5d4f-4b1d-9841-8fd0c6dec2b1</id>
+      <mnemonic>EncounterState-InDeliveryRoom</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <relationship>
+        <id>4fb86bda-aaba-11f0-a9e4-2b36339a55c7</id>
+        <source>398d45eb-5d4f-4b1d-9841-8fd0c6dec2b1</source>
+        <targetConcept>3708d2c4-12b1-4446-81a7-a5562bbd2270</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>62ffef9c-aaba-11f0-a9e5-333245cea707</id>
+        <source>398d45eb-5d4f-4b1d-9841-8fd0c6dec2b1</source>
+        <targetConcept>e43326c2-5daa-4872-ad58-75f0f9ba52ae</targetConcept>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </relationship>
+      <relationship>
+        <id>7d8182ae-aaba-11f0-a9e6-93d93965f803</id>
+        <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
+        <targetConcept>398d45eb-5d4f-4b1d-9841-8fd0c6dec2b1</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <relationship>
+        <id>89cc2294-aaba-11f0-ab9c-9b777d3646b1</id>
+        <source>cf3917a1-c77f-4537-9f22-6082c90310d9</source>
+        <targetConcept>398d45eb-5d4f-4b1d-9841-8fd0c6dec2b1</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>1a2a259e-aaba-11f0-a978-0be15d13f6c1</id>
+        <source>398d45eb-5d4f-4b1d-9841-8fd0c6dec2b1</source>
+        <language>en</language>
+        <value>In Delivery Room</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>31d8e4f9-4095-4869-bc65-1259122bb773</id>
+      <mnemonic>EncounterState-InNeonatalWard</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <relationship>
+        <id>3cabe6f2-aaba-11f0-a9e3-7f172da3a804</id>
+        <source>31d8e4f9-4095-4869-bc65-1259122bb773</source>
+        <targetConcept>e43326c2-5daa-4872-ad58-75f0f9ba52ae</targetConcept>
+        <relationshipType>3e1fef9d-dd8e-4b9d-8462-ce5a52213743</relationshipType>
+      </relationship>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>22e770ba-aaba-11f0-acfe-dbd1c4e110a5</id>
+        <source>31d8e4f9-4095-4869-bc65-1259122bb773</source>
+        <language>en</language>
+        <value>In Neonatal Ward</value>
+      </name>
+      <conceptSet>d46d45b3-4db3-4641-adfc-84a80b7d1637</conceptSet>
+    </Concept>
+  </update>
+
+  <!-- Neonate -->
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>e89d5e1e-aaba-11f0-a4ee-67dce933da0b</id>
+      <source>e43326c2-5daa-4872-ad58-75f0f9ba52ae</source>
+      <targetConcept>48bf3525-3fad-4fca-9d17-4f93f88f4d71</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
+  </update>
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>e89c9ace-aaba-11f0-85a2-4bbb601117e2</id>
+      <source>31d8e4f9-4095-4869-bc65-1259122bb773</source>
+      <targetConcept>48bf3525-3fad-4fca-9d17-4f93f88f4d71</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
+  </update>
+
   <!-- Labor and Delivery -->
   <update insertIfNotExists="true">
     <ConceptRelationship xmlns="http://santedb.org/model">
-      <id>72d126e0-a08b-11f0-add2-5f5910506a1e</id>
-      <source>e43326c2-5daa-4872-ad58-75f0f9ba52ae</source>
+      <id>550e69da-aabb-11f0-a4ef-bf2d72503bc5</id>
+      <source>cf3917a1-c77f-4537-9f22-6082c90310d9</source>
       <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
       <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
     </ConceptRelationship>
   </update>
   <update insertIfNotExists="true">
     <ConceptRelationship xmlns="http://santedb.org/model">
-      <id>72d1507a-a08b-11f0-9bf6-9b21da1e1cbe</id>
+      <id>550f2d2a-aabb-11f0-810c-cb321343b23c</id>
+      <source>398d45eb-5d4f-4b1d-9841-8fd0c6dec2b1</source>
+      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
+  </update>
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>550d01b2-aabb-11f0-aff4-ff36e5734915</id>
       <source>3708d2c4-12b1-4446-81a7-a5562bbd2270</source>
       <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
       <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
@@ -405,26 +493,36 @@
   </update>
   <update insertIfNotExists="true">
     <ConceptRelationship xmlns="http://santedb.org/model">
-      <id>72d14ff8-a08b-11f0-b35b-87d8842ad5ad</id>
+      <id>550ff34a-aabb-11f0-bd1b-ff22c3fdcbd5</id>
+      <source>e43326c2-5daa-4872-ad58-75f0f9ba52ae</source>
+      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
+    </ConceptRelationship>
+  </update>
+  <update insertIfNotExists="true">
+    <ConceptRelationship xmlns="http://santedb.org/model">
+      <id>550da02c-aabb-11f0-a7ab-a3ffef6fb752</id>
       <source>a63e9bcc-be32-4ea6-a43f-1f3c771114d4</source>
       <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
       <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
     </ConceptRelationship>
   </update>
+
   <update insertIfNotExists="true">
     <ConceptRelationship xmlns="http://santedb.org/model">
-      <id>72d208bc-a08b-11f0-a729-db3e45038c5e</id>
-      <source>2a205838-8e40-461f-b65f-96d2d6f02836</source>
-      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <id>c90d83ac-aabb-11f0-bdb2-2b4fa06f84b9</id>
+      <source>aedf62bb-48f5-437e-914d-36e0cd57b8f8</source>
+      <targetConcept>fa342034-43d5-477d-9748-1609099314df</targetConcept>
       <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
     </ConceptRelationship>
   </update>
   <update insertIfNotExists="true">
     <ConceptRelationship xmlns="http://santedb.org/model">
-      <id>72d1e8fa-a08b-11f0-9113-e7b9ec6ed658</id>
-      <source>41148b51-16ef-4212-b0ae-d83f8901c2e4</source>
-      <targetConcept>f8932034-43d5-477d-9748-1609099314df</targetConcept>
+      <id>c90ebd6c-aabb-11f0-93ae-239c0ff26f04</id>
+      <source>fa901716-8aa2-4bb9-b574-763e87e3372d</source>
+      <targetConcept>fa342034-43d5-477d-9748-1609099314df</targetConcept>
       <relationshipType>a159d45b-3c34-4e1b-9b75-9193a7528ced</relationshipType>
     </ConceptRelationship>
   </update>
+
 </dataset>

@@ -5,7 +5,7 @@
     <div class="col-xs-12 col-md-9">
         <concept-select concept-set="'SexAtBirth'" name="birthSex" required="required" ng-model="act.value"
             class="form-control" 
-            ng-change="$root.findParentObject($parent, 'act.participation.Baby[0]').playerModel.genderConcept = act.value" />
+            />
         <div class="text-danger"
             ng-if="$root.getParentVariable($parent, 'ownerForm').birthSex.$error.required">
             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}

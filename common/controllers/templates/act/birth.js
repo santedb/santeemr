@@ -1,12 +1,17 @@
+/// <Reference path="../../../.ref/js/santedb.js" />
+/// <Reference path="../../../.ref/js/santedb-model.js" />
 angular.module('santedb').controller('BirthRegistrationController', [ "$scope", "$rootScope", function($scope, $rootScope) {
 
     // Find the birth delivery outcome of this action
     $scope.findBirthDeliveryOutcome = () => $scope.act.relationship?.HasComponent.find(c=>c.targetModel?.typeConcept == 'dddf18e4-1868-11eb-adc1-0242ac120002')?.targetModel;
     $scope.findBirthDeliveryDate = () => $scope.act.relationship?.HasComponent.find(c=>c.targetModel?.typeConcept == '409538df-26e0-4ffa-b9fc-11a244eae0e5')?.targetModel;
+    $scope.findBirthSex = () => $scope.act.relationship?.HasComponent.find(c=>c.targetModel?.typeConcept == 'e1cf0ea0-63bf-4a8c-9e41-bbd542d3479c')?.targetModel;
 
     // We want to ensure that the baby is referenced via memory so each update flows to all components in the model!
     function cascadeBabyParticipation() {
         var baby = $scope.act.participation.Baby[0].playerModel;
+        // Ensure the baby is updated 
+        baby.operation = BatchOperationType.InsertOrUpdate;
         // Each record target which is the baby
         $scope.act.relationship.HasComponent.forEach(cmp => {
 
@@ -38,10 +43,37 @@ angular.module('santedb').controller('BirthRegistrationController', [ "$scope", 
         })
     }
 
-    // Cascade tiem of delivery to bithdate
+    // Cascade time of delivery to bithdate
     $scope.$watch((s) => s.findBirthDeliveryDate()?.value, function(n, o) {
         if(n != o) {
             $scope.act.participation.Baby[0].playerModel.dateOfBirth = n;
+        }
+    });
+
+    // Cascade time of delivery to bithdate
+    $scope.$watch((s) => s.findBirthSex()?.value, function(n, o) {
+        if(n != o && 
+            $scope.act.participation?.Baby[0].playerModel
+        ) {
+            $scope.act.participation.Baby[0].playerModel.genderConcept = n;
+        }
+    });
+
+    $scope.$watch("act.statusConcept", async function(n, o) {
+        if(!$scope.act.version && n && n == StatusKeys.Completed) {
+            // Is there an active visit for the BABY?
+            var baby = $scope.act.participation.Baby[0].playerModel;
+            /** @type {Bundle} */
+            var existingEncounter = await SanteDB.resources.patientEncounter.findAsync({
+                "typeConcept" : "48bf3525-3fad-4fca-9d17-4f93f88f4d71", // Neonatal
+                "participation[RecordTarget].player" : baby.id,
+                _count: 0,
+                _includeTotal: true
+            });
+
+            if(existingEncounter.totalResults == 0 && confirm(SanteDB.locale.getString("ui.emr.patient.birth.checkInNeonate"))) {
+                
+            }
         }
     });
 

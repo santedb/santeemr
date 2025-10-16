@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="EMR Core Concept Codes v3.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="EMR Core Concept Codes v3.02"
   xmlns="http://santedb.org/data">
   <update insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
@@ -32,6 +32,7 @@
       <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
     </Concept>
   </update>
+  
   <update insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
       <id>1DB6987B-9DBD-443C-B3D9-902625CF24B8</id>
@@ -72,6 +73,21 @@
       <name>
         <language>en</language>
         <value>Postnatal Care</value>
+      </name>
+      <conceptSet>4be73176-2531-41b8-8a68-2f9d41226a96</conceptSet>
+      <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>
+    </Concept>
+  </update>
+  <update insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>48bf3525-3fad-4fca-9d17-4f93f88f4d71</id>
+      <isReadonly>false</isReadonly>
+      <mnemonic>EncounterType-Neonatal</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <language>en</language>
+        <value>Neonatal Care</value>
       </name>
       <conceptSet>4be73176-2531-41b8-8a68-2f9d41226a96</conceptSet>
       <conceptSet>42764da0-17be-11eb-adc1-0242ac120002</conceptSet>

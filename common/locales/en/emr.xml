@@ -508,6 +508,8 @@
 
     <!-- Supplements -->
     <string name="ui.emr.act.supplement.label">Administer Supplement</string>
+
     <!-- EMR Birth Newborn Information -->
-     
+    <string name="org.santedb.emr.patient.baby">Newborn Information</string>
+    <string name="ui.emr.patient.birth.checkInNeonate">Would you like to check this baby into a new Neonatal visit?</string>
 </resources>

@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="input-group-append">
-                    <span ng-switch="act.interpretationConcept" class="input-group-text">
+                    <span ng-switch="act.tag['$cdss.interpretation'][0]" class="input-group-text">
                         <span class="badge badge-danger" ng-switch-when="3c4d6579-7496-4b44-aac1-18a714ff7a05">
                             <i class="fas fa-fw fa-chevron-up"></i> <span class="d-none d-inline">{{
                                 'ui.model.observation.interpretationConcept.high' | i18n }}</span>
