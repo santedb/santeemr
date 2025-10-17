@@ -18,7 +18,7 @@
  * the License.
  *
  */
-angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootScope", "$state", function($scope, $rootScope, $state) {
+angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootScope", "$state", "$timeout", function($scope, $rootScope, $state, $timeout) {
 
     $scope.info = {
         errorDataSize: $rootScope.error ? Math.round(JSON.stringify($rootScope.error).length / 1024) : 0
@@ -33,13 +33,16 @@ angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootSco
     // Initialize the view
     async function initialize() {
         try {
+            
             var logs = await SanteDB.application.getLogInfoAsync();
-            if(logs.resource) {
-                var log = logs.resource[0];
-                $scope.info.logSize = Math.round(log.size / 1024);
-            }
-            $scope.report.lastError = angular.copy($rootScope.error);
-            $scope.$apply();
+            
+            $timeout(() => {
+                if(logs.resource) {
+                    var log = logs.resource[0];
+                    $scope.info.logSize = Math.round(log.size / 1024);
+                }
+                $scope.report.lastError = angular.copy($rootScope.error);
+            });            
         }
         catch(e) {
 

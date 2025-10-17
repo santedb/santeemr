@@ -2,39 +2,42 @@
     <div class="input-group-prepend">
         <span class="input-group-text">{{ act.typeConceptModel | concept }}</span>
     </div>
-    <input type="range" cdss-interactive="act" class="form-control" min="0" max="10" required="required" ng-model="act.value" step="1" />
+    <input type="range" cdss-interactive="act"  name="apgar1Minute{{act.value}}" class="form-control" min="0" max="10" required="required"
+        ng-model="act.value" step="1" />
     <div class="input-group-append">
-        <input type="number" cdss-interactive="act"  class="form-control h-100" min="0" max="10" required="required" ng-model="act.value" step="1" />
+        <input type="number" readonly="readonly" class="form-control h-100" min="0" max="10" required="required"
+            ng-model="act.value" step="1" />
     </div>
     <div class="input-group-append">
-                <span ng-switch="act.interpretationConcept" class="input-group-text">
-                    <span class="badge badge-danger" ng-switch-when="3c4d6579-7496-4b44-aac1-18a714ff7a05">
-                        <i class="fas fa-fw fa-chevron-up"></i>
-                        <span class="d-none d-inline">
-                            {{ 'ui.model.observation.interpretationConcept.high' | i18n }}
-                        </span>
-                    </span>
-
-                    <span class="badge badge-danger" ng-switch-when="6188f821-261f-420c-9520-0de240a05661">
-                        <i class="fas fa-fw fa-chevron-down"></i>
-                        <span class="d-none d-inline">
-                            {{ 'ui.model.observation.interpretationConcept.low' | i18n }}
-                        </span>
-                    </span>
-
-                    <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d">
-                        <i class="fas fa-fw fa-check"></i>
-                        <span class="d-none d-inline">
-                            {{ 'ui.model.observation.interpretationConcept.normal' | i18n }}
-                        </span>
-                    </span>
-
-                    <span class="badge badge-secondary" ng-switch-default="default">
-                        <i class="fas fa-fw fa-question-circle"></i>
-                        <span class="d-none d-inline">
-                            {{ 'ui.model.observation.interpretationConcept.unknown' | i18n }}
-                        </span>
-                    </span>
+       <span ng-switch="act.interpretationConcept" class="input-group-text">
+            <span class="badge badge-danger" ng-switch-when="3c4d6579-7496-4b44-aac1-18a714ff7a05">
+                <i class="fas fa-fw fa-chevron-up"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.high' | i18n }}
                 </span>
-            </div>
+            </span>
+
+            <span class="badge badge-warning" ng-switch-when="6188f821-261f-420c-9520-0de240a05661">
+                <i class="fas fa-fw fa-chevron-down"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.low' | i18n }}
+                </span>
+            </span>
+
+            <span class="badge badge-danger" ng-switch-when="a7159ba0-a9ec-4565-95b8-ed364794c0b8">
+                <i class="fas fa-fw fa-chevron-down"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.lowlow' | i18n }}
+                </span>
+            </span>
+
+            <span class="badge badge-secondary" ng-switch-default="default">
+                <i class="fas fa-fw fa-question-circle"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.unknown' | i18n }}
+                </span>
+            </span>
+        </span>
+    </div>
+    
 </div>
