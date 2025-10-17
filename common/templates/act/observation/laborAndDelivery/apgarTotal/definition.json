@@ -40,5 +40,10 @@
                 }
             }
         ]
+    },
+    "tag" : {
+        "$cascade:HasComponent:org.santedb.emr.observation.apgarScore.1Minute": [ "RecordTarget" ],
+        "$cascade:HasComponent:org.santedb.emr.observation.apgarScore.5Minute": [ "RecordTarget" ],
+        "$cascade:HasComponent:org.santedb.emr.observation.apgarScore.10Minute": [ "RecordTarget" ]
     }
 }

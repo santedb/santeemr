@@ -21,6 +21,12 @@
                                 owner-form="$root.getParentVariable($parent, 'ownerForm')" simple-entry="true"
                                 no-type="true" name="patientName"
                                 model="act.participation.Baby[0].playerModel.name.OfficialRecord" />
+
+                            <div class="text-center" ng-if="act.participation.Baby[0].playerModel.identifier">
+                                <img ng-src="/hdsi/Patient/{{act.participation.Baby[0].playerModel.id}}/_code?_format=code128&amp;_domain={{$root.system.config.application.setting['aa.preferred']}}"
+                                    style="width:7.5wm; height: 2.5em; display: block; margin: auto" />
+                                <strong>{{ act.participation.Baby[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].domainModel.name }}:</strong> {{ act.participation.Baby[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']][0].value }}
+                            </div>
                         </div>
                         <div class="col-xs-12 col-md-6">
                             <div class="container-fluid">
@@ -75,8 +81,10 @@
                                         {{ 'ui.model.patient.genderConcept' | i18n }}
                                     </label>
                                     <div class="col-xs-12 col-md-9">
-                                        <concept-select type="date" ng-model="act.participation.Baby[0].playerModel.genderConcept"
-                                            class="form-control" readonly="readonly" concept-set="'AdministrativeGenderCode'" />
+                                        <concept-select type="date"
+                                            ng-model="act.participation.Baby[0].playerModel.genderConcept"
+                                            class="form-control" readonly="readonly"
+                                            concept-set="'AdministrativeGenderCode'" />
                                     </div>
                                 </div>
 
