@@ -4,8 +4,11 @@
     </label>
 
     <div class="col-xs-12 col-md-9" ng-repeat="apgarComp in act.relationship.HasComponent track by $index"
-        ng-class="{ 'offset-md-3' : $index > 0 }" ng-init="act = apgarComp.targetModel">
-        <ng-include src="::$root.getParentVariable($parent, 'resolveTemplate')(act.templateModel.mnemonic)" />
+        ng-class="{ 'offset-md-3' : $index > 0 }"
+        ng-init=" apgarComp.targetModel.participation.RecordTarget = act.participation.RecordTarget">
+        <div ng-init="act = apgarComp.targetModel">
+            <ng-include src="::$root.getParentVariable($parent, 'resolveTemplate')(act.templateModel.mnemonic)" />
+        </div>
     </div>
-   
+
 </div>

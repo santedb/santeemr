@@ -7,6 +7,13 @@
     "typeConcept" : "ac598f9f-1e47-43bc-a74c-d787bf644af9",
     "actTime" : "{{ $now }}",
     "unitOfMeasure" : "FEA2CFB1-F231-413D-B113-372779092E56",
+    "participation" : {
+        "RecordTarget" : [
+            {
+                "player" : ""
+            }
+        ]
+    },
     "tag" : {
         "$cdss.minValue" : "0",
         "$cdssMaxValue" : "10"
