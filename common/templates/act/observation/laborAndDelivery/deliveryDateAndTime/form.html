@@ -1,0 +1,15 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="form-group row">
+    <label class="col-xs-12 col-md-3 required control-label">
+        {{ act.typeConceptModel | concept }}
+    </label>
+    <div class="col-xs-12 col-md-9">
+        <input type="datetime-local" ng-model="act.value" required="required" class="form-control" name="deliveryDate" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm' }}"
+            ng-model-options="{ 'updateOn' : 'blur' }"/>
+        <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm').deliveryDate.$error.required">
+            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+        </div>
+        <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm').deliveryDate.$error.max">
+            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { max: $root.page.maxEventTime } }}
+        </div>
+    </div>
+</div>

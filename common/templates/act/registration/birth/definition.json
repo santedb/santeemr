@@ -23,8 +23,13 @@
         "Baby": [
             {
                 "playerModel": {
+                    "$type" : "Patient",
                     "templateModel": {
                         "mnemonic": "org.santedb.emr.patient.baby"
+                    },
+                    "dateOfBirth" : "{{ $today }}",
+                    "tag" : {
+                        "$resolveSubTemplate" : true
                     }
                 }
             }
@@ -36,31 +41,7 @@
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel": {
                     "templateModel": {
-                        "mnemonic": "org.santedb.emr.observation.birthWeight"
-                    }
-                }
-            },
-            {
-                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel": {
-                    "templateModel": {
-                        "mnemonic": "org.santedb.emr.observation.birthSex"
-                    }
-                }
-            },
-            {
-                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel": {
-                    "templateModel": {
-                        "mnemonic": "org.santedb.emr.observation.height"
-                    }
-                }
-            },
-            {
-                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel": {
-                    "templateModel": {
-                        "mnemonic": "org.santedb.emr.observation.headCircumference"
+                        "mnemonic": "org.santedb.emr.observation.deliveryDateAndTime"
                     }
                 }
             },
@@ -92,18 +73,35 @@
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel": {
                     "templateModel": {
-                        "mnemonic": "org.santedb.emr.observation.deliveryDateAndTime"
+                        "mnemonic": "org.santedb.emr.observation.birthSex"
                     }
                 }
             },
             {
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.hiv.mothersStatus"
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthWeight"
                     }
                 }
             },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.birthLength"
+                    }
+                }
+            },
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "templateModel": {
+                        "mnemonic": "org.santedb.emr.observation.headCircumference"
+                    }
+                }
+            },
+            
             {
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel" : {
@@ -131,11 +129,7 @@
             "RecordTarget=Baby",
             "Performer=Attender"
         ],
-        "$cascade:HasComponent:org.santedb.emr.observation.heightLying": [
-            "RecordTarget=Baby",
-            "Performer=Attender"
-        ],
-        "$cascade:HasComponent:org.santedb.emr.observation.birthDeliveryMethod": [
+        "$cascade:HasComponent:org.santedb.emr.observation.birthLength": [
             "RecordTarget=Baby",
             "Performer=Attender"
         ],
@@ -151,7 +145,7 @@
             "RecordTarget=Baby",
             "Performer=Attender"
         ],
-         "$cascade:HasComponent:org.santedb.emr.observation.apgarTotal": [
+         "$cascade:HasComponent:org.santedb.emr.observation.apgarScore.panel": [
             "RecordTarget=Baby",
             "Performer=Attender"
         ],

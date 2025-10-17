@@ -121,6 +121,8 @@
                 <language>en</language>
                 <value>Pregnancy Status</value>
             </name>
+            <conceptSet>b73e6dbc-890a-11f0-8959-c764088c39f9</conceptSet>
+            <conceptSet>2b3e26bc-5766-4e84-afac-a522edc2e7e3</conceptSet>
             <conceptSet>03aa038f-570e-45f1-93ac-fd77e239a1ec</conceptSet>
         </Concept>
     </update>

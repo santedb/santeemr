@@ -133,7 +133,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     }
 
     $scope.saveVisit = async function (form) {
-        if (form.$invalid) {
+        if (form.$invalid && !confirm(SanteDB.locale.getString("ui.emr.encounter.invalid.saveConfirm"))) {
             return;
         }
 
@@ -143,26 +143,9 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             if (encounter.extension && encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {
                 encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0] = await SanteDB.application.resolveReferenceExtensionAsync(encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0]);
             }
-            SanteDB.display.getScopeObject
-            SanteDB.display.cascadeScopeObject($scope, ["encounter", "scopedObject"], encounter);
-
-            // Load the next states
-            var stateId = encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0].id
-            var targetStates = await SanteDB.resources.concept.findAsync({
-                conceptSet: 'D46D45B3-4DB3-4641-ADFC-84A80B7D1637', // EMREncounterTags
-                "id||relationship[StateFlow].source": stateId,
-                "relationship[MemberOf].targetConcept": encounter.typeConcept,
-                _includeTotal: false
-            });
-
-            encounter._nextStates = targetStates.resource?.map(state => {
-                state.icon = 'fas fa-fw fa-person-walking-arrow-loop-left';
-                state.action = $scope.returnToState;
-                state.label = SanteDB.display.renderConcept(state);
-                return state;
-            });
 
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.save.success"));
+            $state.reload();
         }
         catch (e) {
             $rootScope.errorHandler(e);

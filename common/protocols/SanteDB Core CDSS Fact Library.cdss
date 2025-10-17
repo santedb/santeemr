@@ -7,7 +7,7 @@ define library "SanteDB Core CDSS Fact Library"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0.2017
+		version 3.0.2018
 		doc This library contains core logic to extract common facts related to objects in SanteDB. It defines
 		doc no rules, protocols, or models, rather is intended to provide common facts about data to allow
 		doc users to more easily derive their own rules
@@ -264,9 +264,20 @@ define library "SanteDB Core CDSS Fact Library"
 		    end metadata 
 		 as
 		    hdsi($$ value $$)
-		 normalize when "Observation is Expressed in Lbs" computed as csharp($$ value * 0.45359237d $$)
-		 normalize when "Observation is Expressed in Grams" computed as csharp($$ value / 1000f $$)
+			normalize when "Observation is Expressed in Lbs" computed as csharp($$ value * 0.45359237d $$)
+			normalize when "Observation is Expressed in Grams" computed as csharp($$ value / 1000f $$)
 		 end fact
+		 
+		define fact "Observed Value Expressed in Celsius" 
+		    having type real 
+		    with metadata 
+		        doc Returns the observed value normalized to celsius
+		    end metadata
+		as 
+		    hdsi($$ value $$)
+		    normalize when "Observation is expressed in farenheit" computed as csharp($$ (double)(value - 32.0f) / 1.8f $$)
+		end fact
+		
 		define fact "Observation Has No Interpretation"
 			having type bool
 		as

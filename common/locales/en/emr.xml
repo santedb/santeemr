@@ -22,7 +22,8 @@
     <string name="ui.emr.loginMessage">Log into SanteEMR</string>
 
     <!-- ANC Visit -->
-     <string name="org.santedb.emr.act.visit.anc">Antenatal Care Visit (Immunization)</string>
+    <string name="org.santedb.emr.act.visit.anc">Antenatal Care Visit (Immunization)</string>
+    <string name="org.santedb.emr.act.visit.lds">Labor &amp; Delivery</string>
     <!-- Mail -->
     <string name="ui.emr.mail.all">View All Mail</string>
 
@@ -471,9 +472,16 @@
     <string name="org.santedb.emr.widget.patient.cdsAlerts">CDSS Alerts &amp; Notices</string>
     <string name="ui.emr.patient.header.cdssIssuesDetected">This Patient Has CDSS Alerts - Please
         Review Prior to Providing Care</string>
-    <string name="ui.emr.patient.birthDetailsValidatedReadonlyWarning">This patient's profile indicates that their demographics have been validated via an official document (Birth Certificate, Immigration Card, Passport, etc.). Fields have been disabled to prevent alteration.</string>
-    <string name="ui.emr.patient.birthDetailsValidated">This patient's profile indicates that their demographics have been validated via an official document or system (such as Birth Certificate, Passport, Immigration Documents, etc.)</string>
-    <string name="ui.emr.patient.deceasedReadonly">This patient record has been flagged as a deceased patient. The profile for the patient is readonly. If the patient is known to not be deceased, please contact support</string>
+    <string name="ui.emr.patient.birthDetailsValidatedReadonlyWarning">This patient's profile
+        indicates that their demographics have been validated via an official document (Birth
+        Certificate, Immigration Card, Passport, etc.). Fields have been disabled to prevent
+        alteration.</string>
+    <string name="ui.emr.patient.birthDetailsValidated">This patient's profile indicates that their
+        demographics have been validated via an official document or system (such as Birth
+        Certificate, Passport, Immigration Documents, etc.)</string>
+    <string name="ui.emr.patient.deceasedReadonly">This patient record has been flagged as a
+        deceased patient. The profile for the patient is readonly. If the patient is known to not be
+        deceased, please contact support</string>
     <!-- Dashboard -->
     <string name="ui.emr.dashboard.title">My Dashboard</string>
 
@@ -481,18 +489,27 @@
     <string name="ui.emr.encounter.act.substanceAdministration.iz">Immunization</string>
 
     <!-- Back Entry Labels -->
-     <string name="ui.emr.act.backEntry.date">Date</string>
-     <string name="ui.emr.act.backEntry.observation.weight">Weight (kG)</string>
-     <string name="ui.emr.act.backEntry.observation.height">Height/Length (cm)</string>
+    <string name="ui.emr.act.backEntry.date">Date</string>
+    <string name="ui.emr.act.backEntry.observation.weight">Weight (kG)</string>
+    <string name="ui.emr.act.backEntry.observation.height">Height/Length (cm)</string>
 
-     <!-- Facility -->
-      <string name="ui.emr.clinic.schedule.search.placeholder">Search Patient Id, Name, or Event Action</string>
+    <!-- Facility -->
+    <string name="ui.emr.clinic.schedule.search.placeholder">Search Patient Id, Name, or Event
+        Action</string>
 
-      <!-- History -->
-      <string name="org.santedb.emr.widget.patient.register.history">Clinical Profile / Information</string>
+    <!-- History -->
+    <string name="org.santedb.emr.widget.patient.register.history">Clinical Profile / Information</string>
 
-      <!-- EMR Nature of Disability -->
-       <string name="ui.model.emr.disability.notes">Notes / Nature of Disability</string>
-       <string name="org.santedb.emr.widget.patient.status">Current Status Observations</string>
-       <string name="ui.emr.patient.status.update.success">Patient status observations and related conditions updated successfully</string>
+    <!-- EMR Nature of Disability -->
+    <string name="ui.model.emr.disability.notes">Notes / Nature of Disability</string>
+    <string name="org.santedb.emr.widget.patient.status">Current Status Observations</string>
+    <string name="ui.emr.patient.status.update.success">Patient status observations and related
+        conditions updated successfully</string>
+
+    <!-- Supplements -->
+    <string name="ui.emr.act.supplement.label">Administer Supplement</string>
+
+    <!-- EMR Birth Newborn Information -->
+    <string name="org.santedb.emr.patient.baby">Newborn Information</string>
+    <string name="ui.emr.patient.birth.checkInNeonate">Would you like to check this baby into a new Neonatal visit?</string>
 </resources>

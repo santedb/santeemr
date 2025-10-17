@@ -5,7 +5,7 @@
     "moodConcept" : "EC74541F-87C4-4327-A4B9-97F325501747",
     "statusConcept" : "c8064cbd-fa06-4530-b430-1a52f1530c27",
     "classConcept" : "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
-    "actTime" : "{{ $now }}",
+    "actTime" : "{{ $nowMinute }}",
     "participation" : {
         "RecordTarget" : [
             {
@@ -56,23 +56,19 @@
                         "mnemonic" : "org.santedb.emr.observation.bloodPressure"
                     }
                 }
-            },
-            {
-                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.observation.weight"
-                    }
-                }
-            },
-            {
-                "classification" : "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "targetModel" : {
-                    "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.observation.height"
-                    }
-                }
             }
+        ]
+    },
+    "tag" : {
+        "$cascade:HasComponent:org.santedb.emr.observation.temperature" : [
+            "RecordTarget=null",
+            "Location=null",
+            "Authororiginator=null"
+        ],
+        "$cascade:HasComponent:org.santedb.emr.observation.bloodPressure" : [
+            "RecordTarget=null",
+            "Location=null",
+            "Authororiginator=null"
         ]
     }
 }

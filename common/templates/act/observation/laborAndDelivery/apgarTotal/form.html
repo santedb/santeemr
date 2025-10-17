@@ -1,3 +1,11 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Apgar Cluster Entry Form - Iterate through the HasComponent entries and show sliders? 
+<div xmlns="http://www.w3.org/1999/xhtml" class="form-group row">
+    <label class="col-xs-12 col-md-3 control-label required">
+        {{ act.typeConceptModel | concept }}
+    </label>
+    
+    <div class="col-xs-12 col-md-9" ng-repeat="apgarComp in act.relationship.HasComponent track by $index"
+        ng-class="{ 'offset-md-3' : $index > 0 }" ng-init="act = apgarComp.targetModel">
+        <ng-include
+            src="::$root.getParentVariable($parent, 'resolveTemplate')(act.templateModel.mnemonic)" />
+    </div>
 </div>

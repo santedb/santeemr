@@ -365,7 +365,7 @@ function SanteEMRWrapper() {
     this.saveVisitAsync = async function (encounter, thisUsersParticipationType) {
         try {
 
-            var submissionBundle = await _bundleVisit(encounter);
+            var submissionBundle = await _bundleVisit(angular.copy(encounter));
             // Is the current user listed as a performer?
             var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
             submissionBundle = _setVisitPerformers(submissionBundle, myUserId, thisUsersParticipationType);
