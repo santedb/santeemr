@@ -144,6 +144,7 @@ define library "Labour and Delivery"
 	
 	define logic "Analyze Birth Head Circumference Observation" 
 	    having context QuantityObservation when all(
+	        "Record Target is Infant",
 	        csharp($$ intf("Record Target Age in Days") < 10 $$),
 	        hdsi($$ typeConcept=b971ed37-0ec9-43e6-9dea-e8399417ea44 $$)
 	   )
