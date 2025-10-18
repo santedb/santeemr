@@ -98,7 +98,7 @@
                                 ng-if="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision == 3"
                                 ng-change="scopedObject.relationship.$other[0].targetModel.age = dateToAge(scopedObject.relationship.$other[0].targetModel.dateOfBirth)"
                                 type="date" ng-model="scopedObject.relationship.$other[0].targetModel.dateOfBirth"
-                                min="1900-01-01" max="{{ scopedObject.dateOfBirth | date: 'yyyy-MM-dd' }}"
+                                min="1900-01-01" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}"
                                 class="form-control" />
 
                             <div class="input-group-append" ng-if="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision == 1">
@@ -116,6 +116,7 @@
                         </div>
                     </div>
 
+                    {{panel.editForm['nokDob']}}
                     <div class="text-danger d-none d-sm-block" ng-if="panel.editForm['nokDob'].$invalid || panel.editForm['nokAge'].$invalid">
                         <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                     </div>
