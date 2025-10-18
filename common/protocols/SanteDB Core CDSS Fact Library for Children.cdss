@@ -8,7 +8,7 @@ define library "SanteDB Core CDSS Fact Library for Children"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0.2018
+		version 3.0.2019
 		doc Contains core CDSS facts which are useful for protocols and rules involving children
 	end metadata
 	as
@@ -78,7 +78,7 @@ define library "SanteDB Core CDSS Fact Library for Children"
 	define logic "Core Childhood Facts for Acts"
 		having id <org.santedb.cdss.core.childcare.act>
 		having status active
-		having context Act when hdsi($$ participation[RecordTarget].player.classConcept=bacd9c6f-3fa9-481e-9636-37457962804d $$)
+		having context Act 
 		with metadata
 			version 3.0-alpha
 		end metadata
