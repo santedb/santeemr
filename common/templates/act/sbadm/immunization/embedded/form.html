@@ -21,8 +21,10 @@
                 </span>
             </div>
             <concept-select ng-model="reasonConcept" ng-if="act.isNegated" required="required"
-                name="notPerforming{{$index}}Reason" class="form-control h-100" concept-set="'ProtocolViolationReason'" />
-            <entity-select required="required" ng-if="!act.isNegated" is-required="true" class="form-control h-100" name="lotNumber{{ $index }}"
+                name="notPerforming{{$index}}Reason" class="form-control min-height-fit"
+                concept-set="'ProtocolViolationReason'" />
+            <entity-select required="required" ng-if="!act.isNegated" is-required="true"
+                class="form-control min-height-fit" name="lotNumber{{ $index }}"
                 ng-model="act.participation.Consumable[0].player" auto-select-singles="true"
                 entity-type="'ManufacturedMaterial'" filter="{
                         'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
@@ -32,10 +34,12 @@
                     }" display="item.lotNumber">
             </entity-select>
         </div>
-        <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm')['notPerforming' + $index + 'Reason'].$error.required">
+        <div class="text-danger"
+            ng-if="$root.getParentVariable($parent, 'ownerForm')['notPerforming' + $index + 'Reason'].$error.required">
             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
         </div>
-        <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm')['lotNumber' + $index].$error.required">
+        <div class="text-danger"
+            ng-if="$root.getParentVariable($parent, 'ownerForm')['lotNumber' + $index].$error.required">
             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
         </div>
     </div>
