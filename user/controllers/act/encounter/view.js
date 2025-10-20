@@ -34,7 +34,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
             // All participations are not touched
             if (encounter.relationship && encounter.relationship.HasComponent) {
-                encounter.relationship.HasComponent.forEach(e => e.targetModel.operation = BatchOperationType.IgnoreInt);
+                encounter.relationship.HasComponent.filter(o=>o.targetModel).forEach(e => e.targetModel.operation = BatchOperationType.IgnoreInt);
             }
 
             // TODO: Load the current act list and assign to the _HasComponent relationship

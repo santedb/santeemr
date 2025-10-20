@@ -5,7 +5,7 @@
 
     <div class="col-12 ml-3"
         ng-repeat="complication in act.relationship.HasComponent track by $index">
-        <label class="checkbox-container font-weight-bold">
+        <label class="checkbox-container">
             <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
             <input type="checkbox" ng-model="complication.targetModel.isNegated" ng-true-value="false"
                 ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" ng-false-value="true"
