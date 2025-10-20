@@ -1,13 +1,15 @@
-<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
-    <div class="row">
-        <label class="control-label col-xs-12 col-md-3 required">
+<span xmlns="http://www.w3.org/1999/xhtml">
+    <div class="form-group row">
+        <label class="control-label col-xs-12 col-md-4 required">
             <i class="fas fa-fw fa-thermometer"></i> {{ act.typeConceptModel | concept }}
         </label>
-        <div class="col-xs-12 col-md-9">
-            <div class="input-group">
-                <input type="number" ng-model="act.value" required="required" cdss-interactive="act" step="0.1" name="value{{$index}}" class="form-control" />
-                <concept-select ng-model="act.unitOfMeasure" concept-set="'UnitOfMeasureTemperature'" cdss-interactive="act" required="required" name="unit{{$index}}" 
-                    class="form-control" />
+
+        <div class="col-xs-12 col-md-8">
+            <div class="input-group mb-0">
+                <input type="number" ng-model="act.value" required="required" cdss-interactive="act" step="0.1"
+                    name="value{{$index}}" class="form-control" />
+                <concept-select ng-model="act.unitOfMeasure" concept-set="'UnitOfMeasureTemperature'"
+                    cdss-interactive="act" required="required" name="unit{{$index}}" class="form-control" />
                 <div class="input-group-append">
                     <span ng-switch="act.interpretationConcept" class="input-group-text">
                         <span class="badge badge-danger" ng-switch-when="3c4d6579-7496-4b44-aac1-18a714ff7a05">
@@ -16,20 +18,20 @@
                         </span>
 
                         <span class="badge badge-danger" ng-switch-when="6188f821-261f-420c-9520-0de240a05661">
-                            <i class="fas fa-fw fa-chevron-down"></i> 
+                            <i class="fas fa-fw fa-chevron-down"></i>
                             <span class="d-none d-md-inline">
                                 {{ 'ui.model.observation.interpretationConcept.low' | i18n }}
                             </span>
                         </span>
 
-                        <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d"> 
+                        <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d">
                             <i class="fas fa-fw fa-check"></i>
                             <span class="d-none d-md-inline">
                                 {{ 'ui.model.observation.interpretationConcept.normal' | i18n }}
                             </span>
                         </span>
 
-                        <span class="badge badge-secondary" ng-switch-default="default"> 
+                        <span class="badge badge-secondary" ng-switch-default="default">
                             <i class="fas fa-fw fa-question-circle"></i>
                             <span class="d-none d-md-inline">
                                 {{ 'ui.model.observation.interpretationConcept.unknown' | i18n }}
@@ -38,15 +40,19 @@
                     </span>
                 </div>
             </div>
-            <div class="text-danger" ng-if="($root.getParentVariable($parent, 'ownerForm'))['value' + $index].$error.required">
+
+            <div class="text-danger"
+                ng-if="($root.getParentVariable($parent, 'ownerForm'))['value' + $index].$error.required">
                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
             </div>
-            <div class="text-danger" ng-if="($root.getParentVariable($parent, 'ownerForm'))['value' + $index].$error.min">
+            <div class="text-danger"
+                ng-if="($root.getParentVariable($parent, 'ownerForm'))['value' + $index].$error.min">
                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: 25 } }}
             </div>
-            <div class="text-danger" ng-if="($root.getParentVariable($parent, 'ownerForm'))['value' + $index].$error.max">
+            <div class="text-danger"
+                ng-if="($root.getParentVariable($parent, 'ownerForm'))['value' + $index].$error.max">
                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { max: 50 } }}
             </div>
         </div>
     </div>
-</div>
+</span>

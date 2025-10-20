@@ -482,6 +482,10 @@
     <string name="ui.emr.patient.deceasedReadonly">This patient record has been flagged as a
         deceased patient. The profile for the patient is readonly. If the patient is known to not be
         deceased, please contact support</string>
+
+    <string name="ui.emr.patient.hivStatus">HIV Status</string>
+    <string name="ui.emr.patient.mothersHivStatus">Mother's HIV Status During Pregnancy</string>
+    
     <!-- Dashboard -->
     <string name="ui.emr.dashboard.title">My Dashboard</string>
 
