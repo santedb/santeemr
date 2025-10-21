@@ -58,6 +58,7 @@ namespace SanteEMR.Services
             if(this.m_shouldBindServices)
             {
                 this.m_tracer.TraceInfo("Binding EMR Service Events");
+                this.m_serviceProvider.AddBusinessRule<Bundle>(typeof(PregnancyResolutionRule));
                 this.m_serviceProvider.AddBusinessRule<Bundle>(typeof(BundleStatusObservationRule));
             }
             
