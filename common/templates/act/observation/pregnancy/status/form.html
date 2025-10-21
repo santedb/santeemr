@@ -21,10 +21,10 @@
 
         function showOrHideComponents(selectedValue) {
             if (selectedValue && _pregnancyNegativeConcepts.includes(selectedValue)) {
-                scope.act.relationship.HasComponent.forEach(n => n.operation = BatchOperationType.Ignore);
+                scope.act.relationship?.HasComponent?.forEach(n => n.operation = BatchOperationType.Ignore);
             }
             else {
-                scope.act.relationship.HasComponent.forEach(n => n.operation = BatchOperationType.InsertOrUpdate);
+                scope.act.relationship?.HasComponent?.forEach(n => n.operation = BatchOperationType.InsertOrUpdate);
             }
         }
 

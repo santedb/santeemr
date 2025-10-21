@@ -39,7 +39,7 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
             }
             else {
                 scopeconditions = conditions.resource;
-                console.log(scopeconditions);
+                //console.log(scopeconditions);
             }
         }
         finally {
@@ -55,7 +55,7 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.$timeout = $timeout;
 
-    console.log($scope.renderStatus);
+    //console.log($scope.renderStatus);
 
     initializeView($scope.scopedObject.id);
 }]);
