@@ -100,10 +100,13 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                                         enc.actTime.isoWeek() == today.isoWeek() && enc.actTime.getFullYear() == today.getFullYear()
                                 });
                             }
-                            act.pathway = cp.pathway;
-                            act.pathwayModel = cp.pathwayModel;
-                            return act;
-                        });
+
+                            if(act) {
+                                act.pathway = cp.pathway;
+                                act.pathwayModel = cp.pathwayModel;
+                                return act;
+                            }
+                        }).filter(o=>o);
                     }
                     else {
                         $scope._proposedActs = [];
