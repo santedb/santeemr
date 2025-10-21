@@ -16,5 +16,12 @@
  - the License.
  -->
 <div xmlns="http://www.w3.org/1999/xhtml">
-    PLACEHOLDER FOR CAUSE OF DEATH
+    <div class="form-group row">
+        <label class="col-md-3 col-sm-12 control-label">{{ 'org.santedb.emr.act.observation.cod' | i18n }}</label>
+
+        <div class="col-md-8 col-sm-12">
+            <concept-select class="form-control" ng-init="act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                concept-set="'CauseOfDeath'" ng-model="act.value" shortest-name="true" />
+        </div>
+    </div>
 </div>
