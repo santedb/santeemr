@@ -76,7 +76,7 @@ namespace SanteEMR.Rules
                     if (rct?.PlayerEntityKey != null)
                     {
                         // determine if the patient already has an active observation for this status
-                        var existing = this.m_persistenceService.Query(o => o.StatusConceptKey != StatusKeys.Obsolete && o.TypeConceptKey == act.TypeConceptKey.Value && o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.PlayerEntityKey) && o.ObsoletionTime == null, AuthenticationContext.SystemPrincipal).FirstOrDefault();
+                        var existing = this.m_persistenceService.Query(o => o.MoodConceptKey == ActMoodKeys.Eventoccurrence && o.StatusConceptKey != StatusKeys.Obsolete && o.TypeConceptKey == act.TypeConceptKey.Value && o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.PlayerEntityKey) && o.ObsoletionTime == null, AuthenticationContext.SystemPrincipal).FirstOrDefault();
                         if (existing != null && existing.Key != act.Key)
                         {
                             existing.BatchOperation = BatchOperationType.Update;
@@ -182,7 +182,7 @@ namespace SanteEMR.Rules
             }
 
             // Is the record target's patient dead?
-            if (player?.DeceasedDate.HasValue != true)
+            if (player?.DeceasedDate.HasValue != true || player.DeceasedDate < dateOfDeath)
             {
                 player.DeceasedDate = dateOfDeath;
                 player.DeceasedDatePrecision = DatePrecision.Day;
