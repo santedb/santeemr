@@ -61,6 +61,8 @@ namespace SanteEMR.Rules
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
                 o.TypeConceptKey != null &&
+                o.StatusConceptKey == StatusKeys.Completed &&
+                o.MoodConceptKey == ActMoodKeys.Eventoccurrence &&
                 o.Tags?.Any(t => t.TagKey == EmrConstants.IgnoreEmrTriggersTagName && Boolean.Parse(t.Value)) != true
                 ).ToArray()
             )

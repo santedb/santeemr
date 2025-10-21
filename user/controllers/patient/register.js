@@ -421,6 +421,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     rct.actModel.participation.Authororiginator = [{ player: userId }];
                     rct.actModel.participation.Location = [{ player: facilityId }];
                     rct.actModel.note?.forEach(n => n.author = userId);
+                    rct.actModel.moodConcept = ActMoodKeys.Eventoccurrence;
                     // Cascade the batch operation
                     rct.actModel.operation = rct.operation > 0 ? rct.operation : rct.actModel.operation;
                     submissionBundle = bundleRelatedObjects(rct.actModel, null, submissionBundle);

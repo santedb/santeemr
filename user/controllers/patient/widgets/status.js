@@ -9,7 +9,8 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
             const results = await SanteDB.resources.act.findAsync({
                 "participation[RecordTarget].player": $scope.scopedObject.id,
                 "typeConcept.conceptSet": "b73e6dbc-890a-11f0-8959-c764088c39f9", // Is a condition
-                "statusConcept": "!bdef5f90-5497-4f26-956c-8f818cce2bd2" // Is not obsolete
+                "statusConcept": StatusKeys.Completed, // Is not obsolete
+                "moodConcept" : ActMoodKeys.Eventoccurrence
             }, "full");
 
             // Any observation in the 
