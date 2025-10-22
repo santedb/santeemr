@@ -423,7 +423,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     rct.actModel.note?.forEach(n => n.author = userId);
                     rct.actModel.moodConcept = ActMoodKeys.Eventoccurrence;
                     // Cascade the batch operation
-                    rct.actModel.operation = rct.operation > 0 ? rct.operation : rct.actModel.operation;
+                    if(rct.operation) {
+                        rct.actModel.operation = rct.operation > 0 ? rct.operation : rct.actModel.operation;
+                    }
                     submissionBundle = bundleRelatedObjects(rct.actModel, null, submissionBundle);
 
                 });
@@ -732,6 +734,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         $scope.$watch("scopedObject.participation.RecordTarget", function (n, o) {
             if (n) {
                 $scope.entryActs = n.filter(a => a.actModel.tag && a.actModel.tag.isBackEntry && a.actModel.tag.isBackEntry[0] == 'True')
+                    .sort((a,b) => a.actModel.templateModel.mnemonic < b.actModel.templateModel.mnemonic ? 1 : -1)
                     .groupBy(
                         o => o.actModel.templateModel.mnemonic,
                         o => o.actModel

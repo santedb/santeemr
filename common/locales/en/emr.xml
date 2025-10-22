@@ -516,4 +516,6 @@
     <!-- EMR Birth Newborn Information -->
     <string name="org.santedb.emr.patient.baby">Newborn Information</string>
     <string name="ui.emr.patient.birth.checkInNeonate">Would you like to check this baby into a new Neonatal visit?</string>
+    <string name="ui.emr.immunization.backEntry.label">Last Administration</string>
+    <string name="ui.emr.immunization.backEntry.label.hint">Select the last administration date of the identified antigen including the sequence. If the dose sequence is not known place the value 1 for the sequence</string>
 </resources>

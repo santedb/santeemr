@@ -1,7 +1,18 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="form-group row">
     <label class="col-sm-12 col-md-3 control-label">{{ act.typeConceptModel | concept }}</label>
     <div class="col-md-8 col-sm-12">
-        <input type="datetime-local" class="form-control" ng-model="act.value"
-            max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}" />
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <label class="input-group-text checkbox-container py-0">
+                    <input type="checkbox" ng-model="act.valuePrecision" ng-true-value="3" ng-false-value="5"
+                        class="checkbox-control" />
+                    <span style="top: 0;"></span> {{ 'ui.model.date.approx' | i18n }}
+                </label>
+            </div>
+            <input ng-if="act.valuePrecision === 3" type="date" class="form-control" ng-model="act.value"
+                max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" />
+            <input ng-if="act.valuePrecision === 5" type="datetime-local" class="form-control" ng-model="act.value"
+                max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}" />
+        </div>
     </div>
 </div>
