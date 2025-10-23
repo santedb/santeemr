@@ -26,6 +26,9 @@
 
     <div ng-controller="EmrActHistoryWidgetController">
 
+        <div ng-if="!history">
+            <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+        </div>
         <div class="card m-0 text-dark"
             ng-class="{ 'border-success' : act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' , 'border-info' : act.statusConcept == 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'border-danger' : act.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5' || act.statusConcept == '3efd3b6e-02d5-4cc9-9088-ef8f31e321c5', 'border-dark' : act.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2' }"
             ng-repeat="act in history track by $index">
@@ -35,7 +38,7 @@
                                     <h5 class="card-title">
                     
                     <i ng-class="templateIcon[act.templateModel.mnemonic] || 'fas fa-file-medical'"></i>
-                    {{ act.templateModel.name }} <span class="badge badge-primary">{{ act.typeConceptModel | concept }}</span></h5>
+                    {{ act.templateModel.mnemonic | i18n }} <span class="badge badge-primary">{{ act.typeConceptModel | concept }}</span></h5>
                 </a>
                 <h5 class="card-title">
                     <i class="fas fa-clock"></i> {{ act.stopTime || act.creationTime | humanDate: 'M' }}
@@ -43,7 +46,7 @@
                 </h5>
             </div>
             <div class="card-body" ng-if="act.templateModel">
-                <ng-include src="resolveSummary(act.templateModel.mnemonic)"></ng-include>
+                <ng-include src="::resolveSummary(act.templateModel.mnemonic)"></ng-include>
             </div>
             <div class="card-footer bg-light text-right text-dark d-flex justify-content-between">
                 <span class="badge" ng-class="{ 'badge-success' : act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' , 'badge-info' : act.statusConcept == 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'badge-danger' : act.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5' || act.statusConcept == '3efd3b6e-02d5-4cc9-9088-ef8f31e321c5', 'badge-dark' : act.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2' }">

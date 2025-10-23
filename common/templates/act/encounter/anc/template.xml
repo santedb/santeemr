@@ -7,5 +7,7 @@
     <description>ANC Visit</description>
     <uuid>90AA7F29-5383-47E8-89F0-B208BC4D2363</uuid>
     <!-- TODO: Complete the hasObservation method -->
+    <summaryView>/org.santedb.emr.common/templates/act/encounter/generic/summary.html</summaryView>
+
     <guard>recordTarget.genderConcept == '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.age() &gt; 12</guard>
 </AppletTemplateDefinition>

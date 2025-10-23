@@ -507,6 +507,7 @@
     <!-- EMR Nature of Disability -->
     <string name="ui.model.emr.disability.notes">Notes / Nature of Disability</string>
     <string name="org.santedb.emr.widget.patient.status">Current Status Observations</string>
+    <string name="org.santedb.emr.act.visit.general">General / Primary Care Visit</string>
     <string name="ui.emr.patient.status.update.success">Patient status observations and related
         conditions updated successfully</string>
 

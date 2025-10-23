@@ -10,7 +10,9 @@
             "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
             "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747" }).totalResults &gt; 0</sdb:guard>
         <sdb:views>
-            <sdb:view type="Edit"></sdb:view>
+            <sdb:view type="Edit">
+                <sdb:guard>!scopedObject.deceasedDate</sdb:guard>
+            </sdb:view>
         </sdb:views>
     </sdb:widget>
 
