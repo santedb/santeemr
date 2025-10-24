@@ -16,25 +16,28 @@
  - the License.
  -->
 <div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
-   <!-- TODO: History Entry -->
-   <div class="row mb-3">
-        <label class="col-5 text-right font-weight-bold my-auto">
-            {{ ::act.typeConceptModel | concept }} 
+    <!-- TODO: History Entry -->
+    <div class="row mb-3">
+        <label class="col-3 text-right font-weight-bold my-auto">
+            {{ ::act.typeConceptModel | concept }}
         </label>
 
-        <div class="col-6">
-            <select class="form-control h-auto" required="required" ng-model="act.typeConcept" ng-change="act.typeConceptModel = undefined">
-                <option value="850ca898-c656-4ba2-a7c1-ff74e3331396">{{ 'ui.emr.observation.height.method.standing' | i18n }}</option>
-                <option value="8d2e144b-d7bf-4c17-8916-25aff60bcb2f">{{ 'ui.emr.observation.height.method.lying' | i18n }}</option>
+        <div class="col-8">
+            <select class="form-control h-auto" required="required" ng-model="act.typeConcept"
+                ng-change="act.typeConceptModel = undefined">
+                <option value="850ca898-c656-4ba2-a7c1-ff74e3331396">{{ 'ui.emr.observation.height.method.standing' |
+                    i18n }}</option>
+                <option value="8d2e144b-d7bf-4c17-8916-25aff60bcb2f">{{ 'ui.emr.observation.height.method.lying' | i18n
+                    }}</option>
             </select>
         </div>
-   </div>
+    </div>
 
     <div class="row mb-0">
         <div class="col-10 offset-1">
             <div class="input-group mb-0">
                 <!-- Height Value -->
-                <input type="number" min="0.1" name="heightValue" ng-model="act.value" required="required" 
+                <input type="number" min="0.1" name="heightValue" ng-model="act.value" required="required"
                     cdss-interactive="act" class="form-control h-auto" />
 
                 <div class="input-group-append">
@@ -44,8 +47,8 @@
                 </div>
 
                 <!-- Unit of Measure -->
-                <concept-select cdss-interactive="act" concept-set="'UnitOfMeasureHeight'" required="required" class="form-control h-auto"
-                    name="heightUnit" ng-model="act.unitOfMeasure" />
+                <concept-select cdss-interactive="act" concept-set="'UnitOfMeasureHeight'" required="required"
+                    class="form-control h-auto" name="heightUnit" ng-model="act.unitOfMeasure" />
 
                 <!-- CDSS Status -->
                 <div class="input-group-append">
@@ -56,20 +59,20 @@
                         </span>
 
                         <span class="badge badge-danger" ng-switch-when="6188f821-261f-420c-9520-0de240a05661">
-                            <i class="fas fa-fw fa-chevron-down"></i> 
+                            <i class="fas fa-fw fa-chevron-down"></i>
                             <span class="d-none d-md-inline">
                                 {{ 'ui.model.observation.interpretationConcept.low' | i18n }}
                             </span>
                         </span>
 
-                        <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d"> 
+                        <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d">
                             <i class="fas fa-fw fa-check"></i>
                             <span class="d-none d-md-inline">
                                 {{ 'ui.model.observation.interpretationConcept.normal' | i18n }}
                             </span>
                         </span>
 
-                        <span class="badge badge-secondary" ng-switch-default="default"> 
+                        <span class="badge badge-secondary" ng-switch-default="default">
                             <i class="fas fa-fw fa-question-circle"></i>
                             <span class="d-none d-md-inline">
                                 {{ 'ui.model.observation.interpretationConcept.unknown' | i18n }}
@@ -84,20 +87,21 @@
             <!-- Error - Required -->
             <div class="text-danger"
                 ng-if="$parent.$parent.ownerForm.heightValue.$error.required || $parent.$parent.ownerForm.heightUnit.$error.required">
-                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
             </div>
 
             <div class="text-danger"
                 ng-if="$parent.$parent.ownerForm.heightValue.$error.min || $parent.$parent.ownerForm.heightUnit.$error.min">
-                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: 0.1 } }}
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: 0.1 } }}
             </div>
 
             <!-- CDSS Notifications -->
             <ul class="list-unstyled" ng-if="$parent.$parent.ownerForm.heightValue.$cdss">
                 <li ng-repeat="issue in $parent.$parent.ownerForm.heightValue.$cdss track by $index"
                     ng-class="{ 'text-danger' : issue.priority == 'Error', 'text-warning' : issue.priority == 'Warning', 'text-info' : issue.priority == 'Information' }">
-                        <i class="fas fa-fw" ng-class="{ 'fa-exclamation-triangle' : issue.priority == 'Error', 'fa-info-circle' : issue.priority == 'Warning' || issue.priority == 'Information' }"></i> 
-                        {{ issue.text }}
+                    <i class="fas fa-fw"
+                        ng-class="{ 'fa-exclamation-triangle' : issue.priority == 'Error', 'fa-info-circle' : issue.priority == 'Warning' || issue.priority == 'Information' }"></i>
+                    {{ issue.text }}
                 </li>
             </ul>
         </div>

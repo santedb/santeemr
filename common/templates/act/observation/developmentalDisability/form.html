@@ -1,7 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
-
     <div class="form-group row">
-        <div class="col-12 d-flex">
+        <div class="col-10 offset-1 d-flex">
             <label class="checkbox-container">
                 <input type="checkbox" class="checkbox-control" ng-model="act.statusConcept"
                     ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'" ng-false-value="null" />
@@ -11,8 +10,8 @@
             <div class="mx-2 flex-grow-1">
                 <concept-select concept-set="'DevelopmentalDisorders'" name="disorder" ng-model="act.value"
                     ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'"
-                    ng-required="act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'"
-                    class="form-control" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" />
+                    ng-required="act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'" class="form-control"
+                    add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" />
                 <div class="text-danger"
                     ng-if="($parent.$parent.$parent.ownerForm || $parent.$parent.ownerForm || $parent.ownerForm || ownerForm).disorder.$error.required">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
@@ -20,12 +19,13 @@
             </div>
         </div>
     </div>
+
     <div class="form-group row">
         <label class="col-sm-12 col-md-3 control-label"
             ng-class="{ 'required' : act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'}">
             {{ 'ui.model.emr.disability.notes' | i18n }}
         </label>
-        <div class="col-sm-12 col-md-9">
+        <div class="col-sm-12 col-md-8">
             <textarea ng-required="act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'"
                 name="natureOfDisability" ng-model="act.note[0].text" maxlength="2048" class="form-control"
                 ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'">
@@ -37,5 +37,5 @@
             </div>
         </div>
     </div>
-   
+
 </div>

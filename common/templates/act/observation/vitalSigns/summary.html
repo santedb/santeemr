@@ -1,3 +1,22 @@
-<span xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Vital Signs
+<span xmlns="http://www.w3.org/1999/xhtml" class="d-inline-flex" id="vital-summary">
+    <script type="text/javascript" nonce="{{ $csp_nonce }}">
+        // <![CDATA[ 
+        const vitalScope = angular.element("#vital-summary").scope();
+        vitalScope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+
+        async function init() {
+            const act = await SanteDB.resources.act.getAsync(vitalScope.act.id, "full");
+
+            vitalScope.act = act
+        }
+
+        init();
+        // ]]>
+    </script>
+
+    <div class="row">
+        <div class="col-12" ng-repeat="comp in act.relationship.HasComponent" ng-init="_act = comp">
+            <ng-include src="resolveSummaryTemplate(_act.targetModel.templateModel.mnemonic)"></ng-include>
+        </div>
+    </div>
 </span>
