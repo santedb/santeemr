@@ -17,8 +17,9 @@
  -->
 <div xmlns="http://www.w3.org/1999/xhtml">
     <h2 class="mb-0">
-        {{ item.participation.RecordTarget[0].playerModel.name | name }} 
-        <span ng-if="item.participation.Informant">/ {{ item.participation.Informant[0].playerModel.name | name }}</span>
+        {{ item.participation.RecordTarget[0].playerModel.name | name }}
+        <span ng-if="item.participation.Informant">/ {{ item.participation.Informant[0].playerModel.name | name
+            }}</span>
     </h2>
 
     <h3 class="my-1 flex-grow-1 h6">
@@ -26,9 +27,8 @@
     </h3>
 
     <div class="position-absolute" style="top: 25px; right: 30px">
-        <div ng-if="item.statusConcept !== 'afc33800-8225-4061-b168-bacc09cdbae3'" 
-            class="badge align-self-center m-0 p-2 text-uppercase" 
-            ng-class="{
+        <div ng-if="item.statusConcept !== 'afc33800-8225-4061-b168-bacc09cdbae3'"
+            class="badge align-self-center m-0 p-2 text-uppercase" ng-class="{
                 'badge-primary' : item.flowConceptModel.mnemonic == 'EncounterState-CheckedIn',
                 'badge-success': item.flowConceptModel.mnemonic == 'EncounterState-Observation',
                 'badge-warning': item.flowConceptModel.mnemonic == 'EncounterState-WaitingSpecialist',
@@ -38,8 +38,7 @@
                     'EncounterState-WaitingSpecialist'
                 ].indexOf(item.flowConceptModel.mnemonic) == -1
             }">
-                <i class="fas fa-fw" 
-                    ng-class="{
+            <i class="fas fa-fw" ng-class="{
                         'fa-check-circle' : item.flowConceptModel.mnemonic == 'EncounterState-CheckedIn',
                         'fa-eye': item.flowConceptModel.mnemonic == 'EncounterState-Observation',
                         'fa-clock': item.flowConceptModel.mnemonic == 'EncounterState-WaitingSpecialist',
@@ -48,24 +47,27 @@
                             'EncounterState-Observation',
                             'EncounterState-WaitingSpecialist'
                         ].indexOf(item.flowConceptModel.mnemonic) == -1}">
-                </i>
-                {{ item.flowConceptModel | concept }} ( {{ item.startTime | dateDiff: { prefix: 'ui.common.since' } }})
+            </i>
+            {{ item.flowConceptModel | concept }} ( {{ item.startTime | dateDiff: { prefix: 'ui.common.since' } }})
         </div>
     </div>
 
     <div class="d-flex vstack justify-content-between">
 
-        <h5 ng-if="item.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3'" class="badge align-self-center m-0 p-2 text-uppercase badge-dark">
-            <i class="fas fa-fw fa-person-walking-arrow-loop-left"></i> {{ 'ui.emr.encounter.waitingRoom.filter.released' | i18n }}
+        <h5 ng-if="item.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3'"
+            class="badge align-self-center m-0 p-2 text-uppercase badge-dark">
+            <i class="fas fa-fw fa-person-walking-arrow-loop-left"></i> {{
+            'ui.emr.encounter.waitingRoom.filter.released' | i18n }}
         </h5>
     </div>
 
     <div class="container-fluid d-lg-block">
         <div class="row">
-            <div ng-repeat="comp in item.relationship.HasComponent track by $index" ng-if="!comp.targetModel.tag.isBackEntry" ng-init="act = comp.targetModel" class="col-12">
+            <div ng-repeat="comp in item.relationship.HasComponent track by $index"
+                ng-if="!comp.targetModel.tag.isBackEntry" ng-init="act = comp.targetModel" class="col-12 d-inline-flex">
                 <i class="fas fa-fw"
                     ng-class="($parent.$parent.$parent.$parent.$parent.resolveTemplateIcon || $parent.$parent.$parent.$parent.resolveTemplateIcon)(comp.targetModel.templateModel.mnemonic)"></i>
-                    
+
                 <ng-include class="d-inline"
                     src="($parent.$parent.$parent.$parent.$parent.resolveSummaryTemplate || $parent.$parent.$parent.$parent.resolveSummaryTemplate)(comp.targetModel.templateModel.mnemonic)" />
             </div>

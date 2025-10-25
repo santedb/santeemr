@@ -10,7 +10,7 @@
         async function initializeView() {
             try {
                 var conceptSetExpansion = await SanteDB.resources.conceptSet.findAssociatedAsync('8e848f0e-890b-11f0-ae3f-9f37087e0822', "Concept", null, "min");
-                _pregnancyNegativeConcepts = conceptSetExpansion.resource.map(o=>o.id);
+                _pregnancyNegativeConcepts = conceptSetExpansion.resource.map(o => o.id);
             }
             catch (e) {
                 console.error(e);
@@ -58,7 +58,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-12">
+            <div class="col-10 offset-1">
                 <label class="control-label required">
                     {{ act.typeConceptModel | concept }}
                 </label>
@@ -67,16 +67,16 @@
                     add-concept="['21b0ffc8-ca4e-408d-a104-41fc924d3a39']" ng-change="act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3'"/>
                  <div class="text-danger" ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['pregnancyStatus'].$error['required']">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                 </div>
+                </div>
             </div>
         </div>
 
         <div class="row" ng-if="act.value">
             <div class="col-sm-12 col-md-6" ng-if="comp.operation == 'InsertOrUpdate'"
                 ng-repeat="comp in act.relationship.HasComponent track by $index">
-                    <div ng-init="act = comp.targetModel">
-                        <ng-include src="::resolveTemplate(comp.targetModel.templateModel.mnemonic)" />
-                    </div>
+                <div ng-init="act = comp.targetModel">
+                    <ng-include src="::resolveTemplate(comp.targetModel.templateModel.mnemonic)" />
+                </div>
             </div>
         </div>
     </div>

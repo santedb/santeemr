@@ -1,3 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Heart Rate
+    <strong>{{ 'ui.emr.act.vitals.heart.rate' | i18n }}:</strong>
+
+    {{ act.relationship.HasComponent[1].targetModel.value }}
+    {{ act.relationship.HasComponent[1].targetModel.unitOfMeasureModel | concept}}
 </div>
