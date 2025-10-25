@@ -1,8 +1,11 @@
 /// <Reference path="../../../.ref/js/santedb.js" />
 /// <Reference path="../../../.ref/js/santedb-model.js" />
-angular.module('santedb').controller('BirthRegistrationController', ["$scope", "$rootScope", "$timeout", function ($scope, $rootScope, $timeout) {
+/// <Reference path="../../../../user/js/emr.js" />
+
+angular.module('santedb').controller('BirthRegistrationController', ["$scope", "$rootScope", "$timeout", "$stateParams", function ($scope, $rootScope, $timeout, $stateParams) {
 
     const STILLBIRTH_OBS = ["org.santedb.emr.observation.birthSex", "org.santedb.emr.observation.birthWeight"]
+    const NEONATAL = ["org.santedb.emr.act.visit.neonatal"];
 
     // Find the birth delivery outcome of this action
     $scope.findBirthDeliveryOutcome = () => $scope.act.relationship?.HasComponent.find(c => c.targetModel?.typeConcept == 'dddf18e4-1868-11eb-adc1-0242ac120002')?.targetModel;
@@ -10,7 +13,7 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
     $scope.findBirthSex = () => $scope.act.relationship?.HasComponent.find(c => c.targetModel?.typeConcept == 'e1cf0ea0-63bf-4a8c-9e41-bbd542d3479c')?.targetModel;
 
     // We want to ensure that the baby is referenced via memory so each update flows to all components in the model!
-    function cascadeBabyParticipation() {
+    async function initializeTemplateView() {
         if (!$scope ||
             !$scope.act ||
             !$scope.act.participation ||
@@ -22,19 +25,35 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
         var baby = $scope.act.participation.Baby[0].playerModel;
         // Ensure the baby is updated 
         baby.operation = BatchOperationType.InsertOrUpdate;
-        // Each record target which is the baby
-        $scope.act.relationship.HasComponent.forEach(cmp => {
 
-            if (cmp.targetModel?.participation &&
-                cmp.targetModel?.participation.RecordTarget &&
-                (
-                    cmp.targetModel?.participation.RecordTarget[0].playerModel?.id == baby.id ||
-                    cmp.targetModel?.participation.RecordTarget[0].player == baby.id
-                )
-            ) {
-                cmp.targetModel.participation.RecordTarget[0].playerModel = baby;
+        // Check if baby has a neonatal encounter
+        var neonate = await SanteDB.resources.patientEncounter.findAsync({
+            "participation[RecordTarget].player" : baby.id,
+            "statusConcept": StatusKeys.Active,
+            "moodConcept" : ActMoodKeys.Eventoccurrence,
+            "_count" : 1,
+            "_includeTotal" : false
+        }, "min");
+
+        $timeout(() => {
+            if(neonate.resource) {
+                $scope.neoNatalEncounterId = neonate.resource[0].id;
             }
-        })
+            
+            // Each record target which is the baby
+            $scope.act.relationship.HasComponent.forEach(cmp => {
+
+                if (cmp.targetModel?.participation &&
+                    cmp.targetModel?.participation.RecordTarget &&
+                    (
+                        cmp.targetModel?.participation.RecordTarget[0].playerModel?.id == baby.id ||
+                        cmp.targetModel?.participation.RecordTarget[0].player == baby.id
+                    )
+                ) {
+                    cmp.targetModel.participation.RecordTarget[0].playerModel = baby;
+                }
+            });
+        });
     }
 
     function updateBabyObservationsOperation(batchOperation) {
@@ -77,23 +96,28 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
         }
     });
 
-    $scope.$watch("act.statusConcept", async function (n, o) {
-        if (!$scope.act.version && n && n == StatusKeys.Completed) {
-            // Is there an active visit for the BABY?
+    $scope.startNeonatalEncounter = async function () {
+        try {
+
+            SanteDB.display.buttonWait("#btnStartNeonateVisit", true);
+            // Get all components for the baby 
             var baby = $scope.act.participation.Baby[0].playerModel;
-            /** @type {Bundle} */
-            var existingEncounter = await SanteDB.resources.patientEncounter.findAsync({
-                "typeConcept": "48bf3525-3fad-4fca-9d17-4f93f88f4d71", // Neonatal
-                "participation[RecordTarget].player": baby.id,
-                _count: 0,
-                _includeTotal: true
+            var mother = $scope.act.participation.RecordTarget[0].playerModel;
+
+            var babyComponents = $scope.act.relationship.HasComponent?.filter(o => o && o.targetModel && o.targetModel.participation?.RecordTarget && o.targetModel.participation?.RecordTarget[0].player == baby.id).map(o => o.targetModel?.id || o.target);
+            var visit = await SanteEMR.startVisitAsync(NEONATAL, null, baby.id, null, null, new ActParticipation({ player: mother.id }), null, $scope.act._getEncounter()?.id || $stateParams.id, {
+                birthEncounterActionsForBaby: babyComponents.join(",")
             });
 
-            if (existingEncounter.totalResults == 0 && confirm(SanteDB.locale.getString("ui.emr.patient.birth.checkInNeonate"))) {
-
-            }
+            $timeout(() => $scope.neoNatalEncounterId = visit.id);
         }
-    });
+        catch(e) {
+            $rootScope.errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait("#btnStartNeonateVisit", false);
+        }
+    }
 
     $scope.$watch((s) => s.findBirthDeliveryOutcome()?.value, async function (n, o) {
         if (n === "023859e6-1867-11eb-adc1-0242ac120002") {
@@ -131,16 +155,15 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
                 });
             }
         }
-        else if($scope.act.participation.Baby) {
+        else if ($scope.act.participation.Baby) {
             $timeout(() => {
-                $scope.act.relationship.HasComponent = $scope.act.relationship.HasComponent.filter(o=>!o._shouldDeleteOnSb);
-                delete $scope.act.participation.Baby[0].playerModel.deceasedDate;
-                $scope.act.participation.Baby[0].playerModel.relationship.Mother[0].operation = $scope.act.participation.Baby[0].operation = $scope.act.participation.Baby[0].playerModel.operation = BatchOperationType.InsertOrUpdate;
+                $scope.act.relationship.HasComponent = $scope.act.relationship.HasComponent.filter(o => !o._shouldDeleteOnSb);
+                $scope.act.participation.Baby[0].operation = $scope.act.participation.Baby[0].playerModel.operation = BatchOperationType.InsertOrUpdate;
                 updateBabyObservationsOperation(BatchOperationType.InsertOrUpdate);
             });
         }
     });
 
     applyCascadeInstructions($scope.act);
-    cascadeBabyParticipation();
+    initializeTemplateView();
 }]);

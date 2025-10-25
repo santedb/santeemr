@@ -7,8 +7,13 @@
 
     <div class="container-fluid" ng-controller="BirthRegistrationController">
         <div class="row">
+            <div class="col-12" ng-if="act.participation.Baby[0].playerModel.deceasedDate">
+                <div class="alert alert-dark">
+                    <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.emr.patient.birth.neonateDeceased' | i18n }}
+                </div>
+            </div> 
             <div class="col-xs-12 col-md-6" ng-repeat="comp in act.relationship.HasComponent"
-                ng-if="comp.operation !== 'Delete'" ng-init="act = comp.targetModel">
+                ng-if="comp.operation !== 'Delete'" ng-init="act = comp.targetModel" id="infantActions{{$index}}">
                 <ng-include src="::$root.getParentVariable($parent, 'resolveTemplate')(act.templateModel.mnemonic)" />
             </div>
 
@@ -114,6 +119,24 @@
                                             concept-set="'AdministrativeGenderCode'" />
                                     </div>
                                 </div>
+
+                                <!-- Start a Visit -->
+                                 <div class="form-group row" ng-if="act.participation.Baby[0].playerModel.version">
+                                    <div class="col-12">
+                                        <div class="btn-group">
+                                            <button type="button" id="btnStartNeonateVisit" ng-if="!neoNatalEncounterId &amp;&amp; !act.participation.Baby[0].playerModel.deceasedDate" class="btn btn-primary"
+                                                ng-click="startNeonatalEncounter()">
+                                                <i class="fas fa-fw fa-baby"></i> {{ 'ui.action.check-in.neonate' | i18n }}
+                                            </button>
+                                            <a ng-if="neoNatalEncounterId &amp;&amp; !act.participation.Baby[0].playerModel.deceasedDate" class="btn btn-primary" ui-sref=".({id: neoNatalEncounterId})">
+                                                <i class="fas fa-fw fa-arrow-right"></i> {{ 'ui.action.view.neonate' | i18n }}
+                                            </a>
+                                             <a class="btn btn-info" ui-sref="santedb-emr.patient.view({id: act.participation.Baby[0].playerModel.id})">
+                                                <i class="fas fa-fw fa-baby"></i> {{ 'ui.action.view' | i18n }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                 </div>
                             </div>
                         </div>
                     </div>

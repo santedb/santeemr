@@ -1,4 +1,4 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
+<span xmlns="http://www.w3.org/1999/xhtml">
 
     {{ act.valueModel | concept }} - 
     <span ng-repeat="comp in act.relationship.HasComponent track by $index" ng-switch="comp.targetModel.typeConcept">
@@ -12,7 +12,7 @@
         <span ng-switch-when="afdefced-8468-43ca-9e54-cadf413dfede" class="mx-2">
             <strong><i class="fas fa-fw fa-baby"></i> EDD (C/E):</strong> {{ comp.targetModel.value | extDate: comp.targetModel.valuePrecision }} 
         </span>
-        <span ng-switch-when="c2cb8755-1961-4cc2-a4ba-814f068dfa48" ng-if="comp.targetModel.relationship.HasComponent" class="mx-2 text-danger font-weight-bold">
+        <span ng-switch-when="c2cb8755-1961-4cc2-a4ba-814f068dfa48" ng-if="comp.targetModel.relationship.HasComponent.hasActiveActs()" class="mx-2 text-danger font-weight-bold">
             <br/>
             <strong><i class="fas fa-fw fa-exclamation-circle"></i> {{ comp.targetModel.typeConceptModel | concept }}:</strong> 
             <span ng-repeat="xcomp in comp.targetModel.relationship.HasComponent track by $index" ng-if="!xcomp.targetModel.isNegated &amp;&amp; xcomp.targetModel.operation != 5" class="mx-1">
@@ -21,4 +21,4 @@
         </span>
     </span>
 
-</div>
+</span>

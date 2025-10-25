@@ -177,6 +177,7 @@ function SanteEMRWrapper() {
             var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
                 target: bundle
             });
+            result.issue = result.issue.filter(o=>o.id !== "error.cdss.exception");
             return result;
         }
         catch (e) {
@@ -389,17 +390,18 @@ function SanteEMRWrapper() {
      * @param {PatientEncounter} templateData Data which should be copied / pushed to the template
      * @returns {PatientEncounter} The constructed and saved {@link:PatientEncounter}
      */
-    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt, templateData) {
+    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt, templateData, refersToEncounterId, templateParameters) {
         try {
 
             var submission = new Bundle({ resource: [] });
 
+            templateParameters = templateParameters || {};
+            templateParameters.recordTargetId = recordTargetId;
+            templateParameters.facilityId = await SanteDB.authentication.getCurrentFacilityId();
+            templateParameters.userEntityId = await SanteDB.authentication.getCurrentUserEntityId();
+
             // Template
-            var template = await SanteDB.application.getTemplateContentAsync(templateId, {
-                recordTargetId: recordTargetId,
-                facilityId: await SanteDB.authentication.getCurrentFacilityId(),
-                userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
-            });
+            var template = await SanteDB.application.getTemplateContentAsync(templateId, templateParameters);
 
             var encounter = new PatientEncounter(template);
 
@@ -422,6 +424,12 @@ function SanteEMRWrapper() {
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
             encounter.relationship.Fulfills = fulfills;
+
+            if(refersToEncounterId) {
+                encounter.relationship.RefersTo = encounter.relationship.RefersTo || [];
+                encounter.relationship.RefersTo.push(new ActRelationship({ target: refersToEncounterId }))
+            }
+
             // Ensure the appropriate keys are set
             encounter.startTime = encounter.actTime = new Date();
             encounter.statusConcept = StatusKeys.Active;

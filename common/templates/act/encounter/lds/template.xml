@@ -8,5 +8,5 @@
     <uuid>ad519d42-e437-4bae-8b64-404303dc3424</uuid>
     <summaryView>/org.santedb.emr.common/templates/act/encounter/generic/summary.html</summaryView>
 
-    <guard>recordTarget.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.age() &gt; 12</guard>
+    <guard>recordTarget.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.dateOfBirth.age() &gt; 12</guard>
 </AppletTemplateDefinition>

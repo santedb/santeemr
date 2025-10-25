@@ -6,7 +6,7 @@
     },
     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
     "statusConcept": "c8064cbd-fa06-4530-b430-1a52f1530c27",
-    "dischargeDisposition" : "499f18c5-56c4-496e-9e23-e5cf862cfab8", 
+    "dischargeDisposition" : null, 
     "typeConcept": "fa342034-43d5-477d-9748-1609099314df",
     "actTime": "{{ $now }}",
     "startTime": "{{ $now }}",

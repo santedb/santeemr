@@ -20,9 +20,9 @@
                     {{ 'ui.model.act.reasonConcept' | i18n }}
                 </span>
             </div>
-            <concept-select ng-model="reasonConcept" ng-if="act.isNegated" required="required"
+            <concept-select  ng-if="act.isNegated" required="required"
                 name="notPerforming{{$index}}Reason" class="form-control min-height-fit"
-                concept-set="'ProtocolViolationReason'" />
+                concept-set="'ProtocolViolationReason'" ng-model="act.reasonConcept" />
             <entity-select required="required" ng-if="!act.isNegated" is-required="true"
                 class="form-control min-height-fit" name="lotNumber{{ $index }}"
                 ng-model="act.participation.Consumable[0].player" auto-select-singles="true"

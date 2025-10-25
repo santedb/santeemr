@@ -31,6 +31,8 @@
     <string name="ui.emr.profile">My Profile</string>
     <string name="ui.action.save.then.checkin">Save &amp; Go To</string>
     <string name="ui.action.check-in">Start Visit</string>
+    <string name="ui.action.check-in.neonate">Start Neonatal Visit</string>
+    <string name="ui.action.view.neonate">View Neonatal Visit</string>
     <string name="ui.action.visit">Visit</string>
     <string name="ui.action.discharge">End Visit</string>
     <string name="ui.action.updateSelected">Update Record</string>
@@ -516,7 +518,10 @@
 
     <!-- EMR Birth Newborn Information -->
     <string name="org.santedb.emr.patient.baby">Newborn Information</string>
+    <string name="ui.emr.patient.pregnancy.readonly">Pregnancy status should be changed by adding a pregnancy status observation in an encounter</string>
+    <string name="ui.emr.patient.carepath.unenrolAuto">This patient no longer meets the eligibility criteria for {pathway} - do you want to remove them from this care pathway?</string>
     <string name="ui.emr.patient.birth.checkInNeonate">Would you like to check this baby into a new Neonatal visit?</string>
+    <string name="ui.emr.patient.birth.neonateDeceased">This infant was indicated as deceased (live birth, died in care) in another visit</string>
     <string name="ui.emr.immunization.backEntry.unknownSequence">Ad-Hoc Boosters (Historical)</string>
     <string name="ui.emr.immunization.backEntry.knownSequence">Scheduled Boosters (Historical)</string>
     <string name="ui.emr.immunization.backEntry.label">Last Administration</string>

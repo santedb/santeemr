@@ -3,6 +3,8 @@
     <definition>definition.json</definition>
     <scope>org.santedb.emr.act.visit.general</scope>
     <scope>1db6987b-9dbd-443c-b3d9-902625cf24b8</scope>
+    <scope>org.santedb.emr.act.visit.neonatal</scope>
+
     <form>form.html</form>
     <view>view.html</view>
     <summaryView>summary.html</summaryView>

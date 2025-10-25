@@ -1,12 +1,10 @@
 {
     "$type": "PatientEncounter",
-    "templateModel": {
-        "mnemonic": "org.santedb.emr.act.visit.general"
-    },
+    "template" : "b49577ed-0fd8-4b1a-aa3b-509b16fdbc30",
     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
     "statusConcept": "c8064cbd-fa06-4530-b430-1a52f1530c27",
     "dischargeDisposition" :  null, 
-    "typeConcept": "18e92034-43d5-477d-9748-1609099314df",
+    "typeConcept": "48bf3525-3fad-4fca-9d17-4f93f88f4d71",
     "actTime": "{{ $now }}",
     "startTime": "{{ $now }}",
     "participation": {
@@ -20,11 +18,13 @@
             "player": "{{ $recordTargetId }}"
         }]
     },
-    "tag": {
-        "$cascade:HasComponent:*": [
-            "RecordTarget",
-            "Authororiginator",
-            "Location"
+    "relationship" : {
+        "HasComponent" : [
+            #for $id in @birthEncounterActionsForBaby
+            {
+                "target" : "{{ $id }}"
+            }
+            #end
         ]
     }
 }
