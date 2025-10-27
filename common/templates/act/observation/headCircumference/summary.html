@@ -1,0 +1,12 @@
+<span xmlns="http://www.w3.org/1999/xhtml">
+    {{ act.typeConceptModel | concept }} 
+    <strong>{{ act.value }}</strong> 
+    {{ act.unitOfMeasureModel | concept }} 
+    <span class="badge" ng-class="{
+        'badge-danger': (act.interpretationConcept == '3c4d6579-7496-4b44-aac1-18a714ff7a05' || act.interpretationConcept == '6188f821-261f-420c-9520-0de240a05661'),
+        'badge-success': act.interpretationConcept == '41d42abf-17ad-4144-bf97-ec3fd907f57d'
+        'badge-secondary': (act.interpretationConcept != '3c4d6579-7496-4b44-aac1-18a714ff7a05' &amp;&amp; act.interpretationConcept != '6188f821-261f-420c-9520-0de240a05661' &amp;&amp; act.interpretationConcept != '41d42abf-17ad-4144-bf97-ec3fd907f57d')
+    }">
+        {{ act.interpretationConceptModel | concept }}
+    </span>
+</span>
