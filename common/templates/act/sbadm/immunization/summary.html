@@ -19,7 +19,7 @@
     <span class="font-weight-bold">
         {{ act.participation.Product[0].playerModel.name | name: "Assigned" }} # {{ act.doseSequence}} 
     </span>
-    - ({{ act.routeModel | concept}} - {{ act.doseQuantity }} {{ act.doseUnitModel | concept }})
+    - {{ act.siteModel | concept }} - {{ act.routeModel | concept}} - {{ act.doseQuantity }} {{ act.doseUnitModel | concept }}
     <span class="badge badge-danger" ng-if="act.isNegated">
         {{ 'ui.model.act.isNegated' | i18n }} - {{ act.reasonConceptModel | concept }}
     </span>

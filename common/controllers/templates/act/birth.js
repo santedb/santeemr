@@ -7,6 +7,7 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
     const STILLBIRTH_OBS = ["org.santedb.emr.observation.birthSex", "org.santedb.emr.observation.birthWeight"]
     const NEONATAL = ["org.santedb.emr.act.visit.neonatal"];
 
+
     // Find the birth delivery outcome of this action
     $scope.findBirthDeliveryOutcome = () => $scope.act.relationship?.HasComponent.find(c => c.targetModel?.typeConcept == 'dddf18e4-1868-11eb-adc1-0242ac120002')?.targetModel;
     $scope.findBirthDeliveryDate = () => $scope.act.relationship?.HasComponent.find(c => c.targetModel?.typeConcept == '409538df-26e0-4ffa-b9fc-11a244eae0e5')?.targetModel;
@@ -28,18 +29,18 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
 
         // Check if baby has a neonatal encounter
         var neonate = await SanteDB.resources.patientEncounter.findAsync({
-            "participation[RecordTarget].player" : baby.id,
+            "participation[RecordTarget].player": baby.id,
             "statusConcept": StatusKeys.Active,
-            "moodConcept" : ActMoodKeys.Eventoccurrence,
-            "_count" : 1,
-            "_includeTotal" : false
+            "moodConcept": ActMoodKeys.Eventoccurrence,
+            "_count": 1,
+            "_includeTotal": false
         }, "min");
 
         $timeout(() => {
-            if(neonate.resource) {
+            if (neonate.resource) {
                 $scope.neoNatalEncounterId = neonate.resource[0].id;
             }
-            
+
             // Each record target which is the baby
             $scope.act.relationship.HasComponent.forEach(cmp => {
 
@@ -56,6 +57,7 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
         });
     }
 
+    
     function updateBabyObservationsOperation(batchOperation) {
         if (!$scope ||
             !$scope.act ||
@@ -67,7 +69,7 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
 
         $scope.act.relationship.HasComponent.forEach(cmp => {
             var baby = $scope.act.participation.Baby[0].playerModel;
-
+            baby.operation = batchOperation;
             if (cmp.targetModel?.participation &&
                 cmp.targetModel?.participation.RecordTarget &&
                 (
@@ -77,6 +79,7 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
             ) {
                 cmp.operation = cmp.targetModel.operation = batchOperation;
             }
+
         })
     }
 
@@ -111,7 +114,7 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
 
             $timeout(() => $scope.neoNatalEncounterId = visit.id);
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
         finally {
@@ -126,11 +129,14 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
                 // Add birth weight and birth sex & weight observations to the data
                 var templateData = await Promise.all(STILLBIRTH_OBS.map(async function (tpl) {
                     try {
-                        return await SanteDB.application.getTemplateContentAsync(tpl, {
+                        var templateData = await SanteDB.application.getTemplateContentAsync(tpl, {
                             recordTargetId: $scope.act.participation.RecordTarget[0].player,
                             facilityId: $scope.act.participation.Location[0].player,
                             userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
                         });
+
+                        delete templateData.participation?.RecordTarget;
+                        return templateData;
                     } catch (e) {
                         console.error(e);
                     }
@@ -157,6 +163,7 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
         }
         else if ($scope.act.participation.Baby) {
             $timeout(() => {
+               
                 $scope.act.relationship.HasComponent = $scope.act.relationship.HasComponent.filter(o => !o._shouldDeleteOnSb);
                 $scope.act.participation.Baby[0].operation = $scope.act.participation.Baby[0].playerModel.operation = BatchOperationType.InsertOrUpdate;
                 updateBabyObservationsOperation(BatchOperationType.InsertOrUpdate);
