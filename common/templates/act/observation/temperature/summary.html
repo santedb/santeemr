@@ -1,3 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Temperature
+    <strong>{{ 'ui.emr.act.vitals.temperature' | i18n }}:</strong>
+
+    {{ act.relationship.HasComponent[0].targetModel.value }}
+    {{ act.relationship.HasComponent[0].targetModel.unitOfMeasureModel | concept }}
 </div>

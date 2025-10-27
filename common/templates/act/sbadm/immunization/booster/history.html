@@ -16,5 +16,64 @@
  - the License.
  -->
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
-   TODO: Booster Immunization Back-Entry (Tetanus, Flu, etc.) simple date entry and the label as the product
+   <div
+      oc-lazy-load="{ name: 'HistoricalBoosterImmunizationEntryController', files: ['/org.santedb.emr.common/controllers/templates/act/sbadm/immunization.js'] }">
+      <div ng-controller="HistoricalBoosterImmunizationEntryController" class="overflow-auto">
+         <div ng-if="table">
+            <h5>{{ 'ui.emr.immunization.backEntry.knownSequence' | i18n }}</h5>
+            <!-- #include virtual="~/templates/act/sbadm/immunization/table.html"-->
+         </div>
+         <div ng-if="unknownDoses.length &gt; 0">
+            <h5>{{ 'ui.emr.immunization.backEntry.unknownSequence' | i18n }}</h5>
+            <ul class="list-group">
+               <li ng-repeat="act in unknownDoses track by $index" class="list-group-item my-1 container-fluid">
+                  <div class="row">
+                     <label class="control-label col-xs-12 col-md-3">
+                        {{ 'ui.emr.immunization.backEntry.label' | i18n }} {{
+                        act.participation.Product[0].playerModel.name
+                        |
+                        name }}
+                        <hint-popover hint-title="ui.emr.immunization.backEntry.label" />
+                     </label>
+                     <div class="col-md-9 col-xs-12">
+                        <div class="input-group">
+                           <div class="input-group-prepend">
+                              <label class="input-group-text checkbox-container py-0">
+                                 <input type="checkbox" ng-model="act.statusConcept"
+                                    ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'" ng-false-value="null"
+                                    class="checkbox-control" />
+                                 <span style="top: 0;"></span>
+                              </label>
+                           </div>
+                           <input type="date" ng-model="act.actTime"
+                              ng-disabled="act.statusConcept !== 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                              ng-required="act.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                              name="backEntryIz{{$index}}"
+                              min="{{ act.participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
+                              max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" class="form-control h-100" />
+                           <div class="input-group-append">
+                              <span class="input-group-text">
+                                 {{ 'ui.model.substanceAdministration.doseSequence' | i18n }}
+                              </span>
+                              <input type="number"
+                                 min="{{ act.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3' ? 1 : 0}}"
+                                 max="20" step="1" ng-model="act.doseSequence" class="form-control h-100"
+                                 name="backEntrySeq{{$index}}"
+                                 ng-disabled="act.statusConcept !== 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                                 ng-required="act.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3'" />
+                           </div>
+                        </div>
+                        <div class="text-danger"
+                           ng-if="($root.getParentVariable($parent, 'ownerForm') || $root.getParentVariable($parent, 'panel').editForm)['backEntryIz' + $index].$error.required ||
+                  ($root.getParentVariable($parent, 'ownerForm') || $root.getParentVariable($parent, 'panel').editForm)['backEntrySeq' + $index].$error.required">
+                           <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                        </div>
+                     </div>
+                  </div>
+               </li>
+
+            </ul>
+         </div>
+      </div>
+   </div>
 </div>

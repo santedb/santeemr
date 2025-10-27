@@ -1,3 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: REspiration Rate 
+    <strong>{{ 'ui.emr.act.vitals.respiration.rate' | i18n }}:</strong>
+
+    {{ act.relationship.HasComponent[2].targetModel.value }}
+    {{ act.relationship.HasComponent[2].targetModel.unitOfMeasureModel | concept}}
 </div>

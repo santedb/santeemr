@@ -23,10 +23,5 @@
                 "player" : "{{ $userEntityId }}"
             }
         ]
-    },
-    "policy" : [
-        {
-            "policy" : "36f1ed35-552e-421a-8f59-629561ab9eb6"
-        }    
-    ]
+    }
 }

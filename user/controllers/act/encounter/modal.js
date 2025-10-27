@@ -59,7 +59,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         }
                     });
 
-                    if($scope.recordTarget.age() <= 14) {
+                    if($scope.recordTarget.dateOfBirth.age() <= 14) {
                         $scope.newAct.participation.Informant.push({
                                     playerModel: new Person({
                                         id: pid,

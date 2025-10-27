@@ -1,3 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: BP
+    <strong>{{ 'ui.emr.act.vitals.blood.pressure' | i18n }}:</strong>
+
+    {{ act.relationship.HasComponent[3].targetModel.relationship.HasComponent[0].targetModel.value }} /
+    {{ act.relationship.HasComponent[3].targetModel.relationship.HasComponent[1].targetModel.value }}
 </div>

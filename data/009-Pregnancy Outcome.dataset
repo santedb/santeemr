@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Pregnancy Completion Reasons - v3.0" xmlns="http://santedb.org/data">
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>586550c5-f3dc-4bc8-8f4a-cdb5b77cded0</id>
+      <mnemonic>63893-2</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>6200608a-b0e7-11f0-9d03-0fcb5bf52c8c</id>
+        <language>en</language>
+        <value>Outcome of Pregnancy</value>
+        <source>586550c5-f3dc-4bc8-8f4a-cdb5b77cded0</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>983152a6-be28-4fc0-9c60-63e7178060f7</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>ObservationType-PregnancyOutcome</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>62067a9c-b0e7-11f0-9d05-0f796965f1ba</id>
+        <source>983152a6-be28-4fc0-9c60-63e7178060f7</source>
+        <term>586550c5-f3dc-4bc8-8f4a-cdb5b77cded0</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>62055194-b0e7-11f0-9d04-af54cf97c592</id>
+        <source>983152a6-be28-4fc0-9c60-63e7178060f7</source>
+        <language>en</language>
+        <value>Outcome of Pregnancy</value>
+      </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptSet xmlns="http://santedb.org/model">
+      <id>a504a86e-b0e7-11f0-a530-33d8ad0a4f69</id>
+      <name>Pregnancy Outcomes</name>
+      <mnemonic>PregnancyOutcomes</mnemonic>
+      <oid>1.3.6.1.4.1.33349.3.1.5.9.3.82</oid>
+      <url>http://santedb.org/conceptset/pregnancy-outcome</url>
+      <compose>
+        <id>ab6948ae-b0e7-11f0-bd91-e74db9ae383c</id>
+        <source>a504a86e-b0e7-11f0-a530-33d8ad0a4f69</source>
+        <instruction>include</instruction>
+        <target>02385374-1867-11eb-adc1-0242ac120002</target>
+      </compose>
+    </ConceptSet>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>6a809e7e-ccbc-48ac-8ae7-eebe701dac83</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyOutcome-Miscarriage</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>b8f3268e-b0e7-11f0-bac3-6f828ff57156</id>
+        <source>6a809e7e-ccbc-48ac-8ae7-eebe701dac83</source>
+        <language>en</language>
+        <value>Miscarriage</value>
+      </name>
+      <conceptSet>a504a86e-b0e7-11f0-a530-33d8ad0a4f69</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>e028960a-d8bb-4e89-b789-797aa90df7e2</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyOutcome-InducedAbortion</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>c532dbc4-b0e7-11f0-9d06-b764042f349e</id>
+        <source>e028960a-d8bb-4e89-b789-797aa90df7e2</source>
+        <language>en</language>
+        <value>Induced Abortion</value>
+      </name>
+      <conceptSet>a504a86e-b0e7-11f0-a530-33d8ad0a4f69</conceptSet>
+    </Concept>
+  </update>
+</dataset>
