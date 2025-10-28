@@ -70,6 +70,33 @@ const TEMPLATE_IDS = {
  */
 function SanteEMRWrapper() {
 
+    const _LOAD_CODE_PROPS = [
+        "value",
+        "unitOfMeasure",
+        "typeConcept",
+        "statusConcept",
+        "reasonConcept",
+        "interpretationConcept",
+        "doseUnit",
+        "route",
+        "site"
+
+    ];
+
+    const _LOAD_CODE_TYPES = [
+        Act.name,
+        SubstanceAdministration.name,
+        PatientEncounter.name,
+        CodedObservation.name,
+        QuantityObservation.name,
+        DateObservation.name,
+        Procedure.name,
+        Narrative.name,
+        FinancialContract.name,
+        Account.name,
+        CarePlan.name
+    ];
+
     const _IGNORE_RELATIONSHIPS = [
         BatchOperationType.Delete,
         BatchOperationType.DeleteInt,
@@ -206,7 +233,38 @@ function SanteEMRWrapper() {
     /**
      * @method
      * @memberof SanteEMRWrapper
-     * @param {string} encounter The encounter or encounter id to be discharged
+     * @summary Loads all concept models that have changed or are missing 
+     */
+    this.loadConceptModels = async function(act) {
+        try {
+            if(!_LOAD_CODE_TYPES.includes(act.$type)) {
+                return;
+            }
+
+            await Promise.all(Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id).map(async key => {
+                try 
+                {
+                    act[`${key}Model`] = await SanteDB.resources.concept.getAsync(act[key], "min");
+                }
+                catch
+                {
+
+                }
+            }));
+
+            if(act.relationship) {
+                await Promise.all(Object.keys(act.relationship).map(o=>act.relationship[o]).flat().filter(o=>o.targetModel).map(o=>o.targetModel).map(SanteEMR.loadConceptModels));
+            }
+        }
+        catch(e) {
+            console.error(e);
+        }
+    }
+
+    /**
+     * @method
+     * @memberof SanteEMRWrapper
+     * @param {Act} encounter The encounter or encounter id to be discharged
      * @param {timeout} $timeout The scope timeout service
      * @param {Function} afterAction After the modal closes, the action to execute
      */
@@ -219,6 +277,9 @@ function SanteEMRWrapper() {
         }
 
         try {
+
+            // We want to load all types
+            await SanteEMR.loadConceptModels(encounter);
             var analyzeResult = await SanteEMR.analyzeVisit(encounter);
             var scope = dischargeModal.scope();
             var enc = angular.copy(encounter);
@@ -233,7 +294,13 @@ function SanteEMRWrapper() {
                         afterAction();
                     }
 
+                    scope.encounter = null;
                     $("#dischargeModal").off("hidden.bs.modal");
+                });
+            }
+            else {
+                $("#dischargeModal").on("hidden.bs.modal", function (e) {
+                    scope.encounter = null;
                 });
             }
 
