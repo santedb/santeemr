@@ -1,6 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    <strong>{{ 'ui.emr.act.vitals.heart.rate' | i18n }}:</strong>
+    <strong>{{ act.typeConceptModel | concept }}:</strong>
 
-    {{ act.relationship.HasComponent[1].targetModel.value }}
-    {{ act.relationship.HasComponent[1].targetModel.unitOfMeasureModel | concept}}
+    {{ act.value }}
+    {{ act.unitOfMeasureModel | concept: 'zxx'}}
 </div>

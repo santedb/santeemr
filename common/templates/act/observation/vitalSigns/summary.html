@@ -1,22 +1,9 @@
-<span xmlns="http://www.w3.org/1999/xhtml" class="d-inline-flex" id="vital-summary">
-    <script type="text/javascript" nonce="{{ $csp_nonce }}">
-        // <![CDATA[ 
-        const vitalScope = angular.element("#vital-summary").scope();
-        vitalScope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
-
-        async function init() {
-            const act = await SanteDB.resources.act.getAsync(vitalScope.act.id, "full");
-
-            vitalScope.act = act
-        }
-
-        init();
-        // ]]>
-    </script>
-
-    <div class="row">
-        <div class="col-12" ng-repeat="comp in act.relationship.HasComponent" ng-init="_act = comp">
-            <ng-include src="resolveSummaryTemplate(_act.targetModel.templateModel.mnemonic)"></ng-include>
-        </div>
+<span xmlns="http://www.w3.org/1999/xhtml" class="d-inline-flex flex-wrap" id="vital-summary">
+    <strong class="mr-2">{{ act.typeConceptModel | concept }} ({{ 'ui.model.observation.actTime' | i18n }} 
+    <i class="fas fa-fw fa-clock"></i> {{ act.actTime | extDate: 'M' }})</strong>
+    <div class="d-flex justify-items-between flex-wrap">
+    <span class="mr-2 text-muted" ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
+        <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)" />
+    </span>
     </div>
 </span>

@@ -19,7 +19,7 @@
                     placeholder="{{ act.relationship.HasComponent[1].targetModel.typeConceptModel | concept }}" />
                 <div class="input-group-append">
                     <span class="input-group-text p-0 px-2">
-                        {{ act.relationship.HasComponent[0].targetModel.unitOfMeasureModel | concept }}
+                        {{ act.relationship.HasComponent[0].targetModel.unitOfMeasureModel | concept: 'zxx' }}
                     </span>
                 </div>
 
