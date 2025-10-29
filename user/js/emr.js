@@ -511,7 +511,7 @@ function SanteEMRWrapper() {
                 //firstOnly: true,
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD"),
-                _includeBackentry: true
+                _includeBackentry: false
             }, undefined, "full");
 
             if (actions.relationship) {

@@ -12,7 +12,7 @@
             <input ng-if="act.valuePrecision === 3" type="date" class="form-control" ng-model="act.value"
                 max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" />
             <input ng-if="act.valuePrecision === 5" type="datetime-local" class="form-control" ng-model="act.value"
-                max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}" />
+                max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}" step="0" />
         </div>
     </div>
 </div>
