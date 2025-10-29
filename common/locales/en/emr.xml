@@ -234,7 +234,7 @@
     <string name="org.santedb.emr.widget.patient.provenance">Edit History</string>
 
     <string name="ui.emr.bug">Submit Bug</string>
-    <string name="ui.emr.bug.success">The Bug was submitted successfully — contained🫙</string>
+    <string name="ui.emr.bug.success">🪰The Bug was submitted successfully — contained🫙</string>
     <string name="ui.emr.bug.user">Submitter</string>
     <string name="ui.emr.bug.description">Description of Bug:</string>
     <string name="ui.emr.bug.description.help">Enter a description of what you've observed happening</string>
