@@ -33,6 +33,11 @@
                                     }}</span>
                             </h5>
                         </a>
+
+                        <div class="px-2">
+                            <i class="fas fa-birthday-cake"></i><strong>{{ 'ui.model.patient.dateOfBirth' | i18n }}</strong> {{ encounter.participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }} ({{ encounter.participation.RecordTarget[0].playerModel.dateOfBirth | age }})
+                        </div>
+                        
                         <span>
                             <div
                                 ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']]">

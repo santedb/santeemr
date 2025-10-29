@@ -528,6 +528,11 @@
 
     <!-- EMR Birth Newborn Information -->
     <string name="org.santedb.emr.patient.baby">Newborn Information</string>
+    <string name="org.santedb.emr.patient.baby.name">Given/Family Name</string>
+    <string name="org.santedb.emr.patient.baby.dob">Date of Birth</string>
+    <string name="org.santedb.emr.patient.baby.gender">Gender</string>
+    <string name="org.santedb.emr.patient.baby.apgar.summary">Apgar Cluster Summary</string>
+
     <string name="ui.emr.patient.pregnancy.readonly">Pregnancy status should be changed by adding a pregnancy status observation in an encounter</string>
     <string name="ui.emr.patient.carepath.unenrolAuto">This patient no longer meets the eligibility criteria for {pathway} - do you want to remove them from this care pathway?</string>
     <string name="ui.emr.patient.birth.checkInNeonate">Would you like to check this baby into a new Neonatal visit?</string>

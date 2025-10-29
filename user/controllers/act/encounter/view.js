@@ -155,4 +155,14 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     }
 
     $scope.doCancel = cancelEncounter;
+}]).controller("EmrBirthRegistrationViewController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
+    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    
+    async function init() {        
+        const act = await SanteDB.resources.act.getAsync($scope.act.id, "full");
+        
+        $scope.act = act;
+    }
+
+    init();
 }]);
