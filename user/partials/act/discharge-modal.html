@@ -18,8 +18,9 @@
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
     <sdb:script static="false">~/controllers/act/encounter/modal.js</sdb:script>
     <div ng-controller="EmrDischargeEncounterController">
-        
-        <div class="modal" id="dischargeModal" role="dialog" aria-labelledby="dischargeModalTitle" aria-hidden="true" data-backdrop="static">
+
+        <div class="modal" id="dischargeModal" role="dialog" aria-labelledby="dischargeModalTitle" aria-hidden="true"
+            data-backdrop="static">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -46,10 +47,10 @@
                                 <ul class="list-unstyled ml-2">
                                     <li ng-repeat="comp in encounter.relationship.HasComponent track by $index"
                                         ng-if="!comp.targetModel.tag.isBackEntry">
-                                        <label class="checkbox-container" ng-init="act = comp.targetModel">
+                                        <label class="checkbox-container d-inline-flex" ng-init="act = comp.targetModel">
                                             <input type="checkbox" class="checkbox-control"
                                                 ng-model="comp.targetModel.statusConcept" ng-readonly="readonly"
-                                                ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'"/>
+                                                ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'" />
                                             <span></span>
                                             <!-- <i class="fas fa-fw fa-circle"></i> -->
                                             <ng-include
@@ -63,15 +64,16 @@
                                     </li>
                                 </ul>
                                 <div ng-if="issues.length &gt; 0" class="d-flex flex-column">
-                                    <h5><i class="fas fa-fw fa-lightbulb"></i> {{ 'ui.emr.encounter.discharge.issues' | i18n }}</h5>
+                                    <h5><i class="fas fa-fw fa-lightbulb"></i> {{ 'ui.emr.encounter.discharge.issues' |
+                                        i18n }}</h5>
                                     <div class="p-2">
                                         {{ 'ui.emr.encounter.discharge.issues.instructions' | i18n }}
                                     </div>
                                     <ul class="list-group ml-2">
-                                        <li ng-repeat="issue in issues track by $index"
-                                            class="list-group-item" 
+                                        <li ng-repeat="issue in issues track by $index" class="list-group-item"
                                             ng-class="{ 'list-group-item-danger': issue.priority == 'Error', 'list-group-item-warning': issue.priority == 'Warning', 'list-group-item-info' : issue.priority == 'Information' }">
-                                            <i class="fas fa-fw" ng-class="{ 'fa-exclamation-triangle' : issue.priority == 'Error', 'fa-info-circle' : issue.priority == 'Warning' || issue.priority == 'Information' }"></i>
+                                            <i class="fas fa-fw"
+                                                ng-class="{ 'fa-exclamation-triangle' : issue.priority == 'Error', 'fa-info-circle' : issue.priority == 'Warning' || issue.priority == 'Information' }"></i>
                                             {{ issue.text }}
                                         </li>
                                     </ul>

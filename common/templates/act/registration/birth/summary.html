@@ -1,3 +1,30 @@
-<span xmlns="http://www.w3.org/1999/xhtml">
-    {{ act.typeConceptModel | concept }} - {{ act.participation.Baby[0].playerModel.name | name }}
+<span xmlns="http://www.w3.org/1999/xhtml" oc-lazy-load="{ name: 'EmrBirthRegistrationViewController', files: ['/org.santedb.emr/controllers/act/encounter/view.js'] }">
+    <div ng-controller="EmrBirthRegistrationViewController">
+        <strong>{{ act.typeConceptModel | concept }}</strong>
+
+        <div class="row">
+            <!-- Name -->
+            <div class="col-12">
+                <strong>{{ 'org.santedb.emr.patient.baby.name' | i18n }}</strong>
+
+                {{ act.participation.Baby[0].playerModel.name | name }}
+            </div>
+            
+            <!-- DoB -->
+            <div class="col-12">
+                <strong>{{ 'org.santedb.emr.patient.baby.dob' | i18n }}</strong>
+                
+                {{ act.participation.Baby[0].playerModel.dateOfBirth | date: 'YYYY-MM-ddTHH:mm:ss' }}
+            </div>
+
+            <!-- Multiple Births -->
+            <div class="col-12" ng-if="act.participation.Baby[0].playerModel.multipleBirthIndicator">
+                {{ 'ui.model.patient.multipleBirthOrder.' + act.participation.Baby[0].playerModel.multipleBirthOrder | i18n }}
+            </div>
+        </div>
+
+        <div class="col-12" ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
+            <ng-include src="resolveSummaryTemplate(act.templateModel.mnemonic)"></ng-include>
+        </div>
+    </div>
 </span>
