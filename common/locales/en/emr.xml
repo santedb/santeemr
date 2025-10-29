@@ -24,6 +24,8 @@
     <!-- ANC Visit -->
     <string name="org.santedb.emr.act.visit.anc">Antenatal Care Visit (Immunization)</string>
     <string name="org.santedb.emr.act.visit.lds">Labor &amp; Delivery</string>
+    <string name="org.santedb.emr.act.visit.neonatal">Neonatal Care Visit</string>
+ 
     <!-- Mail -->
     <string name="ui.emr.mail.all">View All Mail</string>
 
@@ -232,6 +234,7 @@
     <string name="org.santedb.emr.widget.patient.provenance">Edit History</string>
 
     <string name="ui.emr.bug">Submit Bug</string>
+    <string name="ui.emr.bug.success">🪰The Bug was submitted successfully — contained🫙</string>
     <string name="ui.emr.bug.user">Submitter</string>
     <string name="ui.emr.bug.description">Description of Bug:</string>
     <string name="ui.emr.bug.description.help">Enter a description of what you've observed happening</string>
@@ -244,7 +247,8 @@
     <string name="ui.emr.bug.requiredFieldMissing">Ensure you have included a description and steps
         to reproduce</string>
     <string name="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to
-        the internet</string>
+        the internet and the central server is available</string>
+    <string name="ui.emr.bug.attach.detail">Attach last shown error message contents</string>
 
     <!-- User Editing -->
     <string name="ui.emr.users.edit.security.neverLoggedIn">Never Logged In</string>
@@ -256,9 +260,7 @@
         not be allowed to log in)?</string>
     <string name="ui.emr.users.confirmUnlock">Are you sure you want to unlock this user account?</string>
     <string name="ui.emr.users.saveConfirm">User profile settings updated successfully</string>
-    <string name="ui.emr.bug.onlineOnly">You can only submit bug reports when you're connected to
-        the internet and the central server is available</string>
-    <string name="ui.emr.bug.attach.detail">Attach last shown error message contents</string>
+    
     <!-- Menu Items -->
     <string name="santedb-emr.dashboard">Dashboard</string>
     <string name="santedb-emr.patient.index">Patient Administration</string>
@@ -444,6 +446,8 @@
     <string name="ui.emr.encounter.discharge.bookAppointment.confirm">This patient has upcoming
         events in their careplan. Do you want to view the next scheduled appointment now?</string>
     <string name="ui.emr.encounter.discharge.bookAppointment.title">Next Appointment Details</string>
+    <string name="ui.emr.encounter.discharge.success">Patient has been discharged successfully</string>
+ 
     <!-- Visits -->
     <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
 
