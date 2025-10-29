@@ -24,6 +24,8 @@
     <!-- ANC Visit -->
     <string name="org.santedb.emr.act.visit.anc">Antenatal Care Visit (Immunization)</string>
     <string name="org.santedb.emr.act.visit.lds">Labor &amp; Delivery</string>
+    <string name="org.santedb.emr.act.visit.neonatal">Neonatal Care Visit</string>
+ 
     <!-- Mail -->
     <string name="ui.emr.mail.all">View All Mail</string>
 
