@@ -446,6 +446,8 @@
     <string name="ui.emr.encounter.discharge.bookAppointment.confirm">This patient has upcoming
         events in their careplan. Do you want to view the next scheduled appointment now?</string>
     <string name="ui.emr.encounter.discharge.bookAppointment.title">Next Appointment Details</string>
+    <string name="ui.emr.encounter.discharge.success">Patient has been discharged successfully</string>
+ 
     <!-- Visits -->
     <string name="org.santedb.emr.widget.patient.visit">Current Visit</string>
 
