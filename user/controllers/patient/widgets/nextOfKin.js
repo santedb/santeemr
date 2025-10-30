@@ -18,7 +18,7 @@
  *
  */
 
-angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $state, $templateCache, $interval) {
+angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope", "$rootScope", "$state", "$templateCache", "$interval", function ($scope, $rootScope, $timeout, $state, $templateCache, $interval) {
     $scope.revertRemoveRelative = revertRemoveRelative;
     $scope.removeRelative = removeRelative;
     $scope.addNewRelative = addNewRelative;
@@ -40,7 +40,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
 
         return Object.keys($scope.panel.editForm.$error).findIndex(function (errorKey) {
             var errorArray = $scope.panel.editForm.$error[errorKey];
-            
+
             return errorArray.findIndex(function (error) { return error.$name.indexOf(tabInputPrefix) == 0; }) != -1;
         }) != -1;
     }
@@ -48,38 +48,38 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
     function addNewRelative() {
         const relationships = angular.copy($scope.editObject);
 
-        const newRelative = new EntityRelationship({ 
-            id: SanteDB.application.newGuid(), 
-            targetModel: new Person({ 
+        const newRelative = new EntityRelationship({
+            id: SanteDB.application.newGuid(),
+            targetModel: new Person({
                 id: SanteDB.application.newGuid(),
                 dateOfBirthPrecision: 3
-            }) 
+            })
         });
-        
+
         relationships.push(newRelative);
-        
+
         delete ($scope.editObject); // Delete the current edit object
-        $scope.editObject = relationships;  
-              
+        $scope.editObject = relationships;
+
         $scope.requiresRelationship = false;
     }
 
-    function revertRemoveRelative(relationship) {      
+    function revertRemoveRelative(relationship) {
         $scope.requiresRelationship = false;
         relationship.operation = 'Update';
     }
 
-    function removeRelative(relationship) {            
+    function removeRelative(relationship) {
         if (canRelationshipBeRemoved()) {
-            if (relationship.$id) {          
+            if (relationship.$id) {
                 relationship.operation = 'Delete';
             } else {
                 const relationships = angular.copy($scope.editObject).filter((rel) => {
                     return rel.id != relationship.id;
                 });
-        
+
                 delete ($scope.editObject); // Delete the current edit object
-                $scope.editObject = relationships;  
+                $scope.editObject = relationships;
             }
         }
     }
@@ -91,7 +91,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
             });
 
             $scope.requiresRelationship = activeRelationships.length == 1;
-            
+
             return activeRelationships.length > 1;
         }
 
@@ -121,9 +121,9 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
             relationships = relationships.filter(o => !o._inverse);
             var submissionBundle = new Bundle({ resource: [patient] });
 
-            if(!patient.relationship)
+            if (!patient.relationship)
                 patient.relationship = {};
-                
+
             // Process relationships
             relationships.forEach(async function (rel) {
                 if (!rel.relationshipTypeModel) {
@@ -175,27 +175,25 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
             var pscope = $scope;
             while (pscope.$parent.scopedObject)
                 pscope = pscope.$parent;
-            pscope.scopedObject = await SanteDB.resources.patient.getAsync($scope.scopedObject.id, "full"); // re-fetch the patient
-            
-            pscope.editObject = angular.copy(pscope.scopedObject);
-            toastr.success(SanteDB.locale.getString("ui.model.patient.saveSuccess"));
-            form.$valid = true;
+            var updatedPatient = await SanteDB.resources.patient.getAsync($scope.scopedObject.id, "full"); // re-fetch the patient
 
-            try {
-                pscope.$apply();
-            }
-            catch (e) { }
+            $timeout(() => {
+                pscope.scopedObject = updatedPatient;
+                pscope.editObject = angular.copy(pscope.scopedObject);
+                toastr.success(SanteDB.locale.getString("ui.model.patient.saveSuccess"));
+                form.$valid = true;
+            });
         }
         catch (e) {
             $rootScope.errorHandler(e);
         }
     }
 
-    $scope.$watch("panel.view", async function(n, o) {                
+    $scope.$watch("panel.view", async function (n, o) {
         if (n == 'Edit') {
             if ($scope.editObject) {
                 $scope.editObject.multipleBirthIndicator = !!$scope.editObject.multipleBirthOrder;
-                
+
                 if ($scope.editObject.extension) {
                     $scope.isBirthValidated = !!$scope.editObject.extension['http://santedb.org/extensions/core/birthValidated']?.[0];
                 }
@@ -206,8 +204,8 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
     });
 
     // Scoped object
-    $scope.$watch("scopedObject", async function (n, o) {        
-        if (n) {            
+    $scope.$watch("scopedObject", async function (n, o) {
+        if (n) {
             try {
                 if (n.relationship) {
                     var rels = (await SanteDB.resources.concept.findAsync({ "conceptSet.mnemonic": "FamilyMember", "mnemonic": Object.keys(n.relationship) }));
@@ -219,18 +217,18 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                     $scope.familyMemberRelationships = rels.resource.map(o => o.mnemonic);
 
                     if (n.id) { // existing patient => we are in edit mode
-                        $scope.relationships = Object.keys(n.relationship).filter((o) => { 
+                        $scope.relationships = Object.keys(n.relationship).filter((o) => {
                             return $scope.familyMemberRelationships.indexOf(o) > -1;
-                        }).map((o) => { 
+                        }).map((o) => {
                             const model = n.relationship[o];
 
                             const targetModel = model[0].targetModel;
                             targetModel.age = dateToAge(targetModel.dateOfBirth);
-                            
+
                             // Retrieve relatives telecom useModel
                             if (targetModel.telecom) {
                                 for (const key of Object.keys(targetModel.telecom)) {
-                                    const _telecom = targetModel.telecom[key];                                    
+                                    const _telecom = targetModel.telecom[key];
 
                                     if ((!_telecom.useModel || !_telecom.useModel.id) && key != "$other") {
                                         SanteDB.resources.concept.findAsync({ mnemonic: key }).then((bundle) => {
@@ -241,9 +239,9 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                                     }
                                 }
                             }
-                            
+
                             if (targetModel.genderConcept && !targetModel.genderConceptModel) {
-                                SanteDB.resources.concept.findAsync({ id: targetModel.genderConcept }).then((bundle) => {                                        
+                                SanteDB.resources.concept.findAsync({ id: targetModel.genderConcept }).then((bundle) => {
                                     if (bundle.resource && bundle.resource.length > 0) {
                                         targetModel.genderConceptModel = bundle.resource[0];
                                     }
@@ -272,7 +270,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
 
                                     $scope.relationships.push(rel);
                                 }
-                                catch(e) {
+                                catch (e) {
                                     console.warn("Ignoring relationship");
                                 }
                             }
@@ -280,7 +278,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                     }
                     else  // new patient => registration mode
                         $scope.relationships = Object.keys(n.relationship).filter(o => $scope.familyMemberRelationships.indexOf(o) > -1).map(o => n.relationship[o]).flat();
-                    
+
                     var promises = $scope.relationships.map(async function (rel) {
                         if (rel.id)
                             rel._active = true;
@@ -300,7 +298,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                             try {
                                 rel.targetModel = await SanteDB.resources.patient.getAsync({ id: rel.target, _upstream: n._upstream }, "full");
                             }
-                            catch(e) {
+                            catch (e) {
                                 rel.targetModel = await SanteDB.resources.person.getAsync({ id: rel.target, _upstream: n._upstream }, "full");
                             }
 
@@ -312,7 +310,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
 
                         if (rel.relationshipType == '40d18ecc-8ff8-4e03-8e58-97a980f04060' ||
                             rel.relationshipType == '29ff64e5-b564-411a-92c7-6818c02a9e48') {
-                                $scope.excludeRelationshipTypes.push(rel.relationshipType);
+                            $scope.excludeRelationshipTypes.push(rel.relationshipType);
                         }
                     });
 
@@ -322,11 +320,11 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                     $scope.editObject = angular.copy($scope.relationships);
                 }
 
-                $scope.newRelationship = new EntityRelationship({ 
-                    id: SanteDB.application.newGuid(), 
-                    targetModel: new Person({ 
-                        id: SanteDB.application.newGuid() 
-                    }) 
+                $scope.newRelationship = new EntityRelationship({
+                    id: SanteDB.application.newGuid(),
+                    targetModel: new Person({
+                        id: SanteDB.application.newGuid()
+                    })
                 });
 
                 $scope.$apply();
