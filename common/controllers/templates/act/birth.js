@@ -107,8 +107,22 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
             var baby = $scope.act.participation.Baby[0].playerModel;
             var mother = $scope.act.participation.RecordTarget[0].playerModel;
 
+            // Is this part of a list of encounters? - if so this is the same
+            var list = await SanteDB.resources.act.findAsync({
+                "statusConcept": StatusKeys.Active,
+                "classConcept": ActClassKeys.List,
+                "relationship[HasComponent].target": $scope.act._getEncounter()?.id,
+                _count: 1,
+                _includeTotal: false
+            }, "min");
+
             var babyComponents = $scope.act.relationship.HasComponent?.filter(o => o && o.targetModel && o.targetModel.participation?.RecordTarget && o.targetModel.participation?.RecordTarget[0].player == baby.id).map(o => o.targetModel?.id || o.target);
-            var visit = await SanteEMR.startVisitAsync(NEONATAL, null, baby.id, null, null, new ActParticipation({ player: mother.id }), null, $scope.act._getEncounter()?.id || $stateParams.id, {
+            var visit = await SanteEMR.startVisitAsync(NEONATAL, null, baby.id, null, null, new ActParticipation({ player: mother.id }), 
+                {
+                    relationship: {
+                        HasComponent: list.resource?.map(o => new ActRelationship({ source: o.id }))
+                    }
+                }, $scope.act._getEncounter()?.id || $stateParams.id, {
                 birthEncounterActionsForBaby: babyComponents.join(",")
             });
 

@@ -46,6 +46,7 @@
                                 </div>
                                 <ul class="list-unstyled ml-2">
                                     <li ng-repeat="comp in encounter.relationship.HasComponent track by $index"
+                                        ng-class="{ 'bg-light' : $index % 2 == 1 }"
                                         ng-if="!comp.targetModel.tag.isBackEntry">
                                         <label class="checkbox-container d-inline-flex" ng-init="act = comp.targetModel">
                                             <input type="checkbox" class="checkbox-control"

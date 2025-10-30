@@ -1,18 +1,11 @@
 <div xmlns="http://www.w3.org/1999/xhtml" id="apgar-summary">
-    <script type="text/javascript" nonce="{{ $csp_nonce }}">
-        // <![CDATA[ 
-        const apgarScope = angular.element("#apgar-summary").scope();
-        
-        apgarScope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
-        // ]]>
-    </script>
 
-    {{ 'org.santedb.emr.patient.baby.apgar.summary' | i18n }}
+    {{ act.typeConceptModel | concept }}
 
     <div class="col-12" ng-repeat="apgarComp in act.relationship.HasComponent track by $index"
         ng-init=" apgarComp.targetModel.participation.RecordTarget = act.participation.RecordTarget">
         <div ng-init="act = apgarComp.targetModel">
-            <ng-include src="resolveSummaryTemplate(act.templateModel.mnemonic)" />
+            <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)" />
         </div>
     </div>
 </div>

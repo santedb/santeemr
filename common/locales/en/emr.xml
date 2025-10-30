@@ -55,8 +55,7 @@
     <string name="ui.emr.patient.recent">Recent Patients</string>
     <string name="ui.emr.patient.search">Search Patients</string>
     <string name="ui.emr.patient.search.results">Results</string>
-    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address,
-        Identification, or Telephone</string>
+    <string name="ui.emr.patient.search.placeholder">Patient name, Mother's name, Address, Identification, or Telephone</string>
     <string name="ui.emr.patient.search.online">Include patients from the central server (out of my
         catchment)</string>
     <string name="ui.emr.patient.upstream.edit">You cannot edit the details of this patient as they

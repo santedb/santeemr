@@ -6,21 +6,30 @@
             <!-- Name -->
             <div class="col-12">
                 <strong>{{ 'org.santedb.emr.patient.baby.name' | i18n }}</strong>
-
-                {{ act.participation.Baby[0].playerModel.name | name }}
+                {{ act.participation.Baby[0].playerModel.name | name }} 
+                <div class="badge badge-dark" ng-if="::act.participation.Baby[0].playerModel.deceasedDate">
+                    {{ 'ui.model.person.deceasedDate' | i18n }}
+                </div>
             </div>
             
             <!-- DoB -->
             <div class="col-12">
                 <strong>{{ 'org.santedb.emr.patient.baby.dob' | i18n }}</strong>
-                
-                {{ act.participation.Baby[0].playerModel.dateOfBirth | date: 'YYYY-MM-ddTHH:mm:ss' }}
+                {{ act.participation.Baby[0].playerModel.dateOfBirth | extDate: act.participation.Baby[0].playerModel.dateOfBirthPrecision }}
             </div>
 
             <!-- Multiple Births -->
             <div class="col-12" ng-if="act.participation.Baby[0].playerModel.multipleBirthIndicator">
                 {{ 'ui.model.patient.multipleBirthOrder.' + act.participation.Baby[0].playerModel.multipleBirthOrder | i18n }}
             </div>
+
+            <!-- Deceased Indicator -->
+            <div class="col-12" ng-if="::act.participation.Baby[0].playerModel.deceasedDate">
+                <strong>{{ 'ui.model.person.deceasedDate' | i18n}}</strong>
+                {{ ::act.participation.Baby[0].playerModel.deceasedDate | extDate: act.participation.Baby[0].playerModel.deceasedDatePrecision }}
+                ({{ rel.targetModel.dateOfBirth | age: 'H':rel.targetModel.deceasedDate }})
+            </div>
+
         </div>
 
         <div class="col-12" ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
