@@ -1,3 +1,11 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Apgar Cluster Summary View
+<div xmlns="http://www.w3.org/1999/xhtml" id="apgar-summary">
+
+    {{ act.typeConceptModel | concept }}
+
+    <div class="col-12" ng-repeat="apgarComp in act.relationship.HasComponent track by $index"
+        ng-init=" apgarComp.targetModel.participation.RecordTarget = act.participation.RecordTarget">
+        <div ng-init="act = apgarComp.targetModel">
+            <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)" />
+        </div>
+    </div>
 </div>

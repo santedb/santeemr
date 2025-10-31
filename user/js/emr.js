@@ -120,8 +120,9 @@ function SanteEMRWrapper() {
             var participationType = "Performer";
             act.participation = act.participation || {};
 
-            if (act.$type != PatientEncounter.name) {
-                act.actTime = act.stopTime = act.stopTime || new Date();
+            if (act.$type != PatientEncounter.name && act.statusConcept == StatusKeys.Completed) {
+                act.stopTime = act.stopTime || new Date();
+                act.actTime = act.actTime || new Date();
 
                 // We already have a performer
                 if (act.participation.Performer) {
@@ -185,7 +186,7 @@ function SanteEMRWrapper() {
         }
 
         // Ensure that the actTime matches the data in the bundle
-        bundle.resource.filter(a => !a.startTime && !a.stopTime && !a.actTime).forEach(a => a.actTime = encounter.actTime); // Copy the act time over
+        bundle.resource.filter(a => !a.startTime && !a.stopTime && !a.actTime).forEach(a => a.actTime = a.actTime || encounter.actTime); // Copy the act time over
         bundle.correlationId = encounter.id;
         return bundle;
     }
@@ -511,7 +512,7 @@ function SanteEMRWrapper() {
                 //firstOnly: true,
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD"),
-                _includeBackentry: true
+                _includeBackentry: false
             }, undefined, "full");
 
             if (actions.relationship) {

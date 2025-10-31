@@ -3,9 +3,10 @@
     <definition>definition.json</definition>
     <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
     <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
-    <scope>b49577ed-0fd8-4b1a-aa3b-509b16fdbc30</scope>
     <scope>org.santedb.ims.pediatric.routineVacc</scope>
     <scope>org.santedb.emr.act.visit.general</scope>
+    <scope>org.santedb.emr.act.visit.neonatal</scope>
+
     <form>form.html</form>
     <view>summary.html</view>
     <summaryView>summary.html</summaryView>

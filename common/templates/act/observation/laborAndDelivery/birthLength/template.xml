@@ -1,5 +1,6 @@
 <AppletTemplateDefinition xmlns="http://santedb.org/applet" 
-    mnemonic="org.santedb.emr.observation.birthLength" public="false">
+    mnemonic="org.santedb.emr.observation.birthLength" public="true">
+    <scope>org.santedb.emr.act.registration.birth</scope>
     <definition>definition.json</definition>
     <form>form.html</form>
     <view>summary.html</view>

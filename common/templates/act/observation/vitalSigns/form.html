@@ -11,7 +11,7 @@
             </label>
 
             <div class="col-12 col-md-8">
-                <input type="datetime-local" ng-model="act.actTime" required="required" class="form-control"
+                <input type="datetime-local" ng-model="act.actTime" required="required" class="form-control" step="0"
                     name="vitaSignDate{{$index}}" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm'}}" />
 
                 <div class="text-danger"

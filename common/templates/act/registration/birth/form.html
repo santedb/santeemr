@@ -61,7 +61,7 @@
                                         {{ 'ui.model.patient.multipleBirthOrder' | i18n }}
                                     </label>
 
-                                    <div class="col-xs-12 col-md-9">
+                                    <div class="col-xs-12 col-md-9" ng-init="act.participation.Baby[0].playerModel.multipleBirthIndicator = act.participation.Baby[0].playerModel.multipleBirthOrder != null">
                                         <div class="input-group m-0">
                                             <div class="input-group-prepend">
                                                 <label class="input-group-text">
@@ -73,16 +73,17 @@
                                             <select class="form-control" name="birthOrder"
                                                 ng-required="act.participation.Baby[0].playerModel.multipleBirthIndicator"
                                                 ng-model="act.participation.Baby[0].playerModel.multipleBirthOrder"
-                                                ng-disabled="!act.participation.Baby[0].playerModel.multipleBirthIndicator">
-                                                <option value="1">{{ 'ui.model.patient.multipleBirthOrder.1' | i18n }}
+                                                ng-disabled="!act.participation.Baby[0].playerModel.multipleBirthIndicator"
+                                                >
+                                                <option ng-value="1">{{ 'ui.model.patient.multipleBirthOrder.1' | i18n }}
                                                 </option>
-                                                <option value="2">{{ 'ui.model.patient.multipleBirthOrder.2' | i18n }}
+                                                <option ng-value="2">{{ 'ui.model.patient.multipleBirthOrder.2' | i18n }}
                                                 </option>
-                                                <option value="3">{{ 'ui.model.patient.multipleBirthOrder.3' | i18n }}
+                                                <option ng-value="3">{{ 'ui.model.patient.multipleBirthOrder.3' | i18n }}
                                                 </option>
-                                                <option value="4">{{ 'ui.model.patient.multipleBirthOrder.4' | i18n }}
+                                                <option ng-value="4">{{ 'ui.model.patient.multipleBirthOrder.4' | i18n }}
                                                 </option>
-                                                <option value="5">{{ 'ui.model.patient.multipleBirthOrder.5' | i18n }}
+                                                <option ng-value="5">{{ 'ui.model.patient.multipleBirthOrder.5' | i18n }}
                                                 </option>
                                             </select>
                                         </div>

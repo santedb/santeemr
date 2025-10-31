@@ -288,7 +288,7 @@ define library "SanteDB Core CDSS Fact Library"
 		as
 			hdsi($$value$$)
 			normalize  when "Observation is Expressed in Lbs" computed as csharp($$value * 0.45359237d$$)
-			normalize  when "Observation is Expressed in Grams" computed as csharp($$value / 1000f$$)
+			normalize  when "Observation is Expressed in Grams" computed as csharp($$value * 1000f$$)
 		end fact
 		define fact "Observed Value Expressed in Grams"
 			having type real
@@ -297,8 +297,8 @@ define library "SanteDB Core CDSS Fact Library"
 			end metadata
 		as
 			hdsi($$value$$)
-			normalize  when "Observation is Expressed in Lbs" computed as csharp($$value * 0.45359237d$$)
-			normalize  when "Observation is Expressed in Kgs" computed as csharp($$value * 1000f$$)
+			normalize  when "Observation is Expressed in Lbs" computed as csharp($$(value * 0.45359237d) / 1000f$$)
+			normalize  when "Observation is Expressed in Kgs" computed as csharp($$value / 1000f$$)
 		end fact
 		define fact "Observed Value Expressed in Celsius"
 			having type real

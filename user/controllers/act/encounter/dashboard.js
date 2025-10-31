@@ -204,5 +204,5 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
 
     $scope.filterByFlowState = null;
     $scope.filterByType = null;
-    
+    $scope.resolveSummary = SanteDB.application.resolveTemplateSummary;
 }])
