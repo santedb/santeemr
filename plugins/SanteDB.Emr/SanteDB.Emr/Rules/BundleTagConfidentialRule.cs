@@ -33,7 +33,7 @@ namespace SanteEMR.Rules
             this.m_configuration = configurationManager.GetSection<EmrConfigurationSection>();
             this.m_conceptRepository = conceptRepository;
             this.m_pipService = pipService;
-            if (!String.IsNullOrEmpty(this.m_configuration.AutoApplyVipPolicy))
+            if (!String.IsNullOrEmpty(this.m_configuration?.AutoApplyVipPolicy))
             {
                 this.m_vipPolicy = pipService.GetPolicy(this.m_configuration.AutoApplyVipPolicy);
             }
@@ -50,7 +50,7 @@ namespace SanteEMR.Rules
                 throw new ArgumentNullException(nameof(data));
             }
             
-            var policyMaps = this.m_configuration.AutoApplyPolicyMap.SelectMany(o => this.m_conceptRepository.ExpandConceptSet(o.ConceptSet).ToArray().Select(c => new { Concept = c.Key.Value, Policy = o.PolicyOid }))
+            var policyMaps = this.m_configuration?.AutoApplyPolicyMap.SelectMany(o => this.m_conceptRepository.ExpandConceptSet(o.ConceptSet).ToArray().Select(c => new { Concept = c.Key.Value, Policy = o.PolicyOid }))
                 .GroupBy(o => o.Concept)
                 .ToDictionaryIgnoringDuplicates(o => o.Key, o => o.Select(c => this.m_pipService.GetPolicy(c.Policy)).ToArray());
 
@@ -60,7 +60,7 @@ namespace SanteEMR.Rules
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
                 o.StatusConceptKey == StatusKeys.Completed &&
                 o.MoodConceptKey == ActMoodKeys.Eventoccurrence &&
-                policyMaps.ContainsKey(o.TypeConceptKey.GetValueOrDefault())
+                policyMaps?.ContainsKey(o.TypeConceptKey.GetValueOrDefault() == true)
                 ).ToArray()
             )
             {
