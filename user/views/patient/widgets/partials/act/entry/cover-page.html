@@ -43,8 +43,8 @@
             <label
                 class="control-label col-md-3 col-sm-12 required">{{ 'ui.model.act.actTime' | i18n }}</label>
             <div class="col-md-9 col-sm-12">
-                <input type="datetime-local" class="form-control" ng-model="act.actTime" required="required" step="0"
-                    ng-disabled="!act.$templateRef" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}" />
+                <input type="datetime-local" class="form-control" ng-model="act.actTime" required="required" step="60"
+                    ng-disabled="!act.$templateRef" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm' }}" />
                     <em input-help="true">{{ 'ui.model.act.actTime.help' | i18n }}</em>
 
             </div>
