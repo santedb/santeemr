@@ -60,7 +60,7 @@ namespace SanteEMR.Rules
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
                 o.StatusConceptKey == StatusKeys.Completed &&
                 o.MoodConceptKey == ActMoodKeys.Eventoccurrence &&
-                policyMaps?.ContainsKey(o.TypeConceptKey.GetValueOrDefault() == true)
+                policyMaps?.ContainsKey(o.TypeConceptKey.GetValueOrDefault()) == true
                 ).ToArray()
             )
             {
