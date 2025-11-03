@@ -19,6 +19,12 @@ namespace SanteEMR.Configuration
         /// </summary>
         [XmlArray("policyMapping"), XmlArrayItem("set"), JsonProperty("policyMapping")]
         public List<EmrPolicyMappingConfiguration> AutoApplyPolicyMap { get; set; }
+
+        /// <summary>
+        /// The VIP policy
+        /// </summary>
+        [XmlElement("vipPolicy"), JsonProperty("vipPolicy")]
+        public String AutoApplyVipPolicy { get; set; }
     }
 
     /// <summary>

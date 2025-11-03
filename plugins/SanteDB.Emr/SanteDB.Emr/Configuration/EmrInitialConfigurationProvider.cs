@@ -6,6 +6,7 @@ using SanteDB.Core;
 using SanteDB.Core.Configuration;
 using SanteDB.Core.Model.Acts;
 using SanteDB.Core.Model.DataTypes;
+using SanteDB.Core.Model.Roles;
 using SanteDB.Core.Security;
 using SanteDB.Core.Security.Configuration;
 using SanteEMR.Services;
@@ -66,6 +67,16 @@ namespace SanteEMR.Configuration
                         }
                 });
             }
+
+            var dpcPatient = dpc.Resources.FirstOrDefault(o => o.ResourceType.Type == typeof(Patient));
+            if (dpcPatient == null) {
+                dpcPatient = new ResourceDataPolicyFilter()
+                {
+                    ResourceType = new ResourceTypeReferenceConfiguration(typeof(Patient))
+                };
+                dpc.Resources.Add(dpcPatient);
+            }
+            dpcPatient.Action = ResourceDataPolicyActionType.Redact;
 
             foreach (var at in AppDomain.CurrentDomain.GetAllTypes().Where(t => !t.IsAbstract && !t.IsInterface && typeof(Act).IsAssignableFrom(t)))
             {

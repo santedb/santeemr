@@ -125,7 +125,7 @@ namespace SanteEMR.Rules
                             Participations = new List<ActParticipation>()
                             {
                                 new ActParticipation(ActParticipationKeys.RecordTarget, rct.PlayerEntityKey)
-                            }
+                            },
                         };
                         activeCondition.BatchOperation = BatchOperationType.InsertOrUpdate;
                         activeCondition.StatusConceptKey = StatusKeys.Active;
