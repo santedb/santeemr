@@ -1,0 +1,60 @@
+{
+    "$type": "CodedObservation",
+    "template": "69fdfea7-f0d4-4f79-8682-f9f5567e5b45",
+    "classConcept": "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+    "typeConcept": "0124fde0-7857-4815-b257-74acaa0dd92d",
+    "actTime": "{{ $now }}",
+    "value": "70fe34ce-caff-4f46-b6e6-9cd6d8f289d6",
+    "participation": {
+        "Authororiginator": {
+            "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+            "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+            "player": "{{ $userEntityId }}"
+        },
+        "RecordTarget": {
+            "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+            "statusConcept": "C8064CBD-FA06-4530-B430-1A52F1530C27",
+            "player": "{{ $recordTargetId }}"
+        }
+    },
+    "relationship": {
+        "HasManifestation": [
+            { // Where we record the manifestation of the allergy
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "classConcept": "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
+                    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+                    "typeConcept": "10a0fb51-687d-41ec-8d50-ad6549e2ae58",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "value": null
+                }
+            }
+        ],
+        "HasComponent": [
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": { // Severity
+                    "$type": "CodedObservation",
+                    "classConcept": "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
+                    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+                    "typeConcept": "05012084-3351-4045-8390-fbcbd7ec1d19",
+                    "value": null // TODO: Any value from 2.16.840.1.113883.5.1063
+                }
+            },
+            {
+                "operation": 5, // IGNORE
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": { // Treatment / Notes
+                    "$type": "TextObservation",
+                    "classConcept": "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
+                    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+                    "typeConcept": "37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe",
+                    "value": null // TODO: Any value from 2.16.840.1.113883.5.1063
+                }
+            }
+        ]
+    }
+}

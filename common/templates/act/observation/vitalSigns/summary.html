@@ -1,3 +1,9 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Vital Signs
-</div>
+<span xmlns="http://www.w3.org/1999/xhtml" class="d-inline-flex flex-wrap" id="vital-summary">
+    <strong class="mr-2">{{ act.typeConceptModel | concept }} ({{ 'ui.model.observation.actTime' | i18n }} 
+    <i class="fas fa-fw fa-clock"></i> {{ act.actTime | extDate: 'M' }})</strong>
+    <div class="d-flex justify-items-between flex-wrap">
+    <span class="mr-2 text-muted" ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
+        <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)" />
+    </span>
+    </div>
+</span>

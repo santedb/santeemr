@@ -20,11 +20,11 @@
  */
 angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$rootScope", "$state", "$stateParams", "$timeout", function ($scope, $rootScope, $state, $stateParams, $timeout) {
 
-    async function getCdsAlerts(patientId){
+    async function getCdsAlerts(patientId) {
         try {
             var issues = await SanteDB.resources.patient.invokeOperationAsync(patientId, "analyze", { _excludePropose: true });
             var issueTypes = {};
-            issues.issue.forEach(o=> issueTypes[o.type] = null);
+            issues.issue.forEach(o => issueTypes[o.type] = null);
             await Promise.all(
                 Object.keys(issueTypes).map(async (f) => {
                     var concept = await SanteDB.resources.concept.getAsync(f === EmptyGuid ? '1a4ff986-f54f-11e8-8eb2-f2801f1b9fd1' : f);
@@ -35,7 +35,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
 
             return issues.issue.filter(i => i.id !== "error.cdss.exception");
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
     }
@@ -43,45 +43,65 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
     // Loads the specified patient
     async function loadPatient(id) {
         try {
-            var patient = await SanteDB.resources.patient.getAsync(id, "full");
+            var patient = await SanteDB.resources.patient.getAsync(id, "full", null, null, null, {
+                "X-SanteDB-EmitPrivacyError" : "Redact,Nullify,Hash,Hide"
+            });
 
             // Post the patient to the AngularJS scope and then load the patient encounter
             $timeout(() => {
                 $scope.patient = new Patient(patient);
             });
 
-            // Attempt to get any current encounter
-            var encounter = await SanteDB.resources.patientEncounter.findAsync({
-                "participation[RecordTarget].player": id,
-                statusConcept: StatusKeys.Active,
-                _count: 1,
-                _includeTotal: false,
-                moodConcept: ActMoodKeys.Eventoccurrence
-            }, "full");
-            if(encounter.resource) {
-                $scope.patient._currentEncounter = encounter.resource[0];
-            }
+            if (!patient.deceasedDate) {
+                // Attempt to get any current encounter
+                var encounter = await SanteDB.resources.patientEncounter.findAsync({
+                    "participation[RecordTarget].player": id,
+                    statusConcept: StatusKeys.Active,
+                    _count: 1,
+                    _includeTotal: false,
+                    moodConcept: ActMoodKeys.Eventoccurrence
+                }, "full");
 
-            // Detect any alerts from the CDSS 
-            var issues = await getCdsAlerts(id);
-            $timeout(() => {
-                $scope.cdssAlerts = {
-                    priority: issues.sort((a, b) => {
-                        switch(a.priority) {
-                            case "Information": a.priorityVal = 1; break;
-                            case "Warning": a.priorityVal = 2; break;
-                            case "Error": a.priorityVal = 3; break;
-                        }
-                        switch(b.priority) {
-                            case "Information": b.priorityVal = 1; break;
-                            case "Warning": b.priorityVal = 2; break;
-                            case "Error": b.priorityVal = 3; break;
-                        }
-                        return a.priorityVal > b.priorityVal ? -1 : 1;
-                    })[0]?.priority,
-                    issues: issues
-                };
-            })
+                if (encounter.resource) {
+                    $timeout(() => {
+                        $scope.viewVisit = function () {
+                            $state.go("santedb-emr.encounter.view", { id: $scope.patient._currentEncounter.id });
+                        };
+                        $scope.patient._currentEncounter = encounter.resource[0];
+                    });
+                }
+                else {
+
+                    $timeout(() => {
+                        $scope.startVisit = function () {
+                            SanteEMR.showCheckin($stateParams.id);
+                        };
+                    });
+
+
+                }
+
+                // Detect any alerts from the CDSS 
+                var issues = await getCdsAlerts(id);
+                $timeout(() => {
+                    $scope.cdssAlerts = {
+                        priority: issues.sort((a, b) => {
+                            switch (a.priority) {
+                                case "Information": a.priorityVal = 1; break;
+                                case "Warning": a.priorityVal = 2; break;
+                                case "Error": a.priorityVal = 3; break;
+                            }
+                            switch (b.priority) {
+                                case "Information": b.priorityVal = 1; break;
+                                case "Warning": b.priorityVal = 2; break;
+                                case "Error": b.priorityVal = 3; break;
+                            }
+                            return a.priorityVal > b.priorityVal ? -1 : 1;
+                        })[0]?.priority,
+                        issues: issues
+                    };
+                })
+            }
         }
         catch (e) {
 
@@ -112,20 +132,13 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                     break;
             }
         }
-        finally {
-            SanteDB.authentication.setElevator(null); // we got the patient successfully
-        }
     }
 
-    SanteDB.authentication.setElevator(new SanteDBElevator(loadPatient, false));
+    SanteDB.authentication.setElevator(new SanteDBElevator(() => loadPatient($stateParams.id), true));
     loadPatient($stateParams.id);
 
     $scope.printCard = function () {
         window.print();
-    }
-
-    $scope.startVisit = function() {
-        SanteEMR.showCheckin($stateParams.id);
     }
 
     // Download the specified record by touching it

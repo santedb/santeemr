@@ -1,0 +1,13 @@
+{
+    "$type": "DateObservation",
+    "templateModel": {
+        "mnemonic": "org.santedb.emr.observation.timeofdeath"
+    },
+    "classConcept": "28D022C6-8A8B-47C4-9E6A-2BC67308739E",
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+    "statusConcept": "c8064cbd-fa06-4530-b430-1a52f1530c27",
+    "typeConcept": "51140974-adbe-4e56-bb38-66719f7945c9",
+    "valuePrecision": "Minute",
+    "actTime": "{{ $now }}",
+    "value": "{{ $nowMinute }}"
+}

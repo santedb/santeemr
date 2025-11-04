@@ -103,14 +103,6 @@
   </update>
   <update skipIfError="false" insertIfNotExists="true">
     <ConceptReferenceTerm xmlns="http://santedb.org/model">
-      <id>6c02cfe8-88ef-11f0-a252-b3d50723d95e</id>
-      <source>6fb8487c-cd6f-44f1-ab63-27dc65405792</source>
-      <term>7c7a3e02-6e86-424b-857c-561fc133675f</term>
-      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
-    </ConceptReferenceTerm>
-  </update>
-  <update skipIfError="false" insertIfNotExists="true">
-    <ConceptReferenceTerm xmlns="http://santedb.org/model">
       <id>2e9fe830-85e7-11f0-95fa-0b60a41f8423</id>
       <source>7bb3403e-d8ee-4b91-8a77-64da4f459415</source>
       <term>3c32fa04-a54d-442d-82a8-29fc05fb6333</term>
@@ -138,19 +130,7 @@
       </name>
     </ReferenceTerm>
   </update>
-  <update skipIfError="false" insertIfNotExists="true">
-    <ReferenceTerm xmlns="http://santedb.org/model">
-      <id>402d2720-495a-4908-b2b3-00fb021c82a8</id>
-      <mnemonic>64572001</mnemonic>
-      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
-      <name>
-        <id>6bf5037c-88ef-11f0-a233-679341bab078</id>
-        <language>en</language>
-        <value>Condition</value>
-        <source>402d2720-495a-4908-b2b3-00fb021c82a8</source>
-      </name>
-    </ReferenceTerm>
-  </update>
+  
   <update skipIfError="false" insertIfNotExists="true">
     <ReferenceTerm xmlns="http://santedb.org/model">
       <id>71f3d357-cd76-4567-b169-9526aa8188a2</id>

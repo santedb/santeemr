@@ -37,10 +37,11 @@
             render="{'result': renderResult }"
             item-supplement="[  patientHasOpenEncounter ]"
             item-actions="[ 
-                    { name: 'check-in', action: 'checkin', className: 'btn-secondary', when: '!item.tag.$hasEncounter &amp;&amp; item.deceasedDate == null', icon: 'fas fa-heart-circle-bolt' },
-                    { name: 'visit', className: 'btn-info', when: 'item.tag.$hasEncounter', icon: 'fa-solid fa-house-user'},
-                    { name: 'discharge', className: 'btn-warning', when: 'item.tag.$hasEncounter', icon: 'fa-solid fa-right-from-bracket'},
-                    { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-arrow-right' } ,
+                        { name: 'check-in', action: 'checkin', className: 'btn-secondary', icon: 'fas fa-person-circle-plus', when: '!item.tag[&quot;$pep.masked&quot;] &amp;&amp; !item.tag.$hasEncounter &amp;&amp; item.deceasedDate == null' },
+                        { name: 'visit', action: 'goVisit', className: 'btn-info',  icon: 'fa-solid fa-person-shelter', when: 'item.tag.$hasEncounter &amp;&amp; !item.tag[&quot;$pep.masked&quot;]' },
+                        { name: 'discharge', action: 'doDischarge', className: 'btn-success', icon: 'fa-solid fa-person-walking-arrow-right', when: 'item.tag.$hasEncounter &amp;&amp; !item.tag[&quot;$pep.masked&quot;]' },
+                        { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.999', sref: 'santedb-emr.patient.view', className: 'btn-warning', icon: 'fas fa-shield-halved', when: 'item.tag[&quot;$pep.masked&quot;]' },
+                        { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.view', className: 'btn-primary', icon: 'fas fa-person', when: '!item.tag[&quot;$pep.masked&quot;]' }
                 ]"
             actions="[ { name: 'register', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.patient.register', className: 'btn-primary', icon: 'fa fa-user-plus' } , { name: 'search', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.3', sref: 'santedb-emr.patient.search', className: 'btn-info', icon: 'fa fa-search-plus' } ]"
             item-template="/org.santedb.emr/partials/patient/search-result.html">

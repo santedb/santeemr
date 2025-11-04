@@ -1,10 +1,11 @@
 <AppletTemplateDefinition xmlns="http://santedb.org/applet"
-    mnemonic="org.santedb.emr.observation.temperature" public="false">
+    mnemonic="org.santedb.emr.observation.temperature" public="true">
     <definition>definition.json</definition>
     <scope>1db6987b-9dbd-443c-b3d9-902625cf24b8</scope>
     <scope>fa342034-43d5-477d-9748-1609099314df</scope>
     <scope>18e92034-43d5-477d-9748-1609099314df</scope>
     <scope>bd233571-f0a9-4c11-820d-782e8041fc03</scope>
+    <scope>org.santedb.emr.act.visit.neonatal</scope>
     <form>form.html</form>
     <summaryView>summary.html</summaryView>
     <icon>fas fa-thermometer</icon>

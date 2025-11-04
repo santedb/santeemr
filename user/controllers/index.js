@@ -171,7 +171,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         });
 
         $(".navbar-sidenav").on("swipe", function (e, d) {
-            console.info(d, e);
+            //console.info(d, e);
             if (d.swipeRight) {
                 railLogicFn(e);
             } else if(d.swipeLeft && $(e.target).hasClass("navbar-peek")) {

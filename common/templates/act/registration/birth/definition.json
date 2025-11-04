@@ -22,6 +22,7 @@
         ],
         "Baby": [
             {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "playerModel": {
                     "$type" : "Patient",
                     "templateModel": {

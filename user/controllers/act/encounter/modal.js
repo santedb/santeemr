@@ -59,7 +59,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         }
                     });
 
-                    if($scope.recordTarget.age() <= 14) {
+                    if($scope.recordTarget.dateOfBirth.age() <= 14) {
                         $scope.newAct.participation.Informant.push({
                                     playerModel: new Person({
                                         id: pid,
@@ -100,10 +100,13 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                                         enc.actTime.isoWeek() == today.isoWeek() && enc.actTime.getFullYear() == today.getFullYear()
                                 });
                             }
-                            act.pathway = cp.pathway;
-                            act.pathwayModel = cp.pathwayModel;
-                            return act;
-                        });
+
+                            if(act) {
+                                act.pathway = cp.pathway;
+                                act.pathwayModel = cp.pathwayModel;
+                                return act;
+                            }
+                        }).filter(o=>o);
                     }
                     else {
                         $scope._proposedActs = [];
@@ -187,6 +190,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveSummary = SanteEMR.resolveSummaryTemplate;
     $scope.saveCheckin = saveCheckin;
 
     $("#checkinModal").on("hidden.bs.modal", function () {
@@ -239,6 +243,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
         }
     });
 
+    $scope.resolveSummary = SanteEMR.resolveSummaryTemplate;
     $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
 

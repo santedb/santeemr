@@ -21,7 +21,7 @@
     default-query="{
         'participation[Location].player' : filterByLocation,
         statusConcept: filterByActState || 'C8064CBD-FA06-4530-B430-1A52F1530C27',
-        creationTime: filterByActDate, 
+        stopTime: filterByActDate, 
         moodConcept: 'EC74541F-87C4-4327-A4B9-97F325501747',
         _orderBy: 'startTime:desc',
         _viewModel: 'fastview',
@@ -33,10 +33,12 @@
         { name: 'filterFlow', className: 'btn-secondary', icon: 'fas fa-fw fa-diagram-next', children: filterFlow },
         { name: 'filterType', className: 'btn-light', icon: 'fas fa-fw fa-object-ungroup', children: filterType }
     ]" item-actions="[
-        { name: 'cancel', action: 'doCancel', className: 'btn-danger', icon: 'fa-solid fa-person-circle-xmark', when: '!r.previousVersion || r.actTime.age(&quot;hours&quot;) > 8'},
-        { name: 'discharge', action: 'doDischarge', className: 'btn-success', icon: 'fa-solid fa-person-walking-arrow-right', when: 'r.statusConcept !== &quot;afc33800-8225-4061-b168-bacc09cdbae3&quot;'},
-        { name: 'visit', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.encounter.view', className: 'btn-info', icon: 'fas fa-person-shelter' },
-        { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', action: 'doViewPatient', className: 'btn-primary', icon: 'fas fa-person' }
+        { name: 'cancel', action: 'doCancel', className: 'btn-danger', icon: 'fa-solid fa-person-circle-xmark', when: '(!r.previousVersion || r.actTime.age(&quot;hours&quot;) > 8) &amp;&amp; !r.tag[\'$pep.masked\']'},
+        { name: 'discharge', action: 'doDischarge', className: 'btn-success', icon: 'fa-solid fa-person-walking-arrow-right', when: 'r.statusConcept !== &quot;afc33800-8225-4061-b168-bacc09cdbae3&quot; &amp;&amp; !r.tag[\'$pep.masked\']'},
+        { name: 'visit', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', sref: 'santedb-emr.encounter.view', className: 'btn-info', icon: 'fas fa-person-shelter', when: '!r.tag[\'$pep.masked\']' },
+        { name: 'view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.2.1', action: 'doViewPatient', className: 'btn-primary', icon: 'fas fa-person', when: '!r.tag[\'$pep.masked\']' },
+        { name: 'visit', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.999', sref: 'santedb-emr.encounter.view', className: 'btn-warning', icon: 'fas fa-shield-halved', when: 'r.tag[\'$pep.masked\']' }
+
     ]" display="list" item-supplement="[ loadFlowState ]"
     item-template="/org.santedb.emr/partials/act/checkin-summary.html">
 </entity-list>

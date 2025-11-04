@@ -16,30 +16,36 @@
  - the License.
  -->
 <div xmlns="http://www.w3.org/1999/xhtml">
-    <h2 class="mb-0">
-        {{ item.participation.RecordTarget[0].playerModel.name | name }} 
-        <span ng-if="item.participation.Informant">/ {{ item.participation.Informant[0].playerModel.name | name }}</span>
-    </h2>
 
-    <h3 class="my-1 flex-grow-1 h6">
-        {{ item.templateModel.mnemonic | i18n }} / {{ item.typeConceptModel | concept }}
-    </h3>
+    <div ng-if="item.tag['$pep.masked'] || item.reasonConcept == '9b16bf12-073e-4ea4-b6c5-e1b93e8fd490'"
+        class="alert alert-danger">
+        <h5><i class="fas fa-fw fa-shield-halved"></i> {{ 'ui.model.act.reasonConcept.masked.title' | i18n }}</h5>
+        <p>{{ 'ui.model.act.reasonConcept.masked.description' | i18n }}</p>
+    </div>
+    <div ng-if="!item.tag['$pep.masked']">
+        <h2 class="mb-0">
+            {{ item.participation.RecordTarget[0].playerModel.name | name }}
+            <span ng-if="item.participation.Informant">/ {{ item.participation.Informant[0].playerModel.name | name
+                }}</span>
+        </h2>
 
-    <div class="position-absolute" style="top: 25px; right: 30px">
-        <div ng-if="item.statusConcept !== 'afc33800-8225-4061-b168-bacc09cdbae3'" 
-            class="badge align-self-center m-0 p-2 text-uppercase" 
-            ng-class="{
+        <h3 class="my-1 flex-grow-1 h6">
+            {{ item.templateModel.mnemonic | i18n }} / {{ item.typeConceptModel | concept }}
+        </h3>
+
+        <div class="position-absolute" style="top: 25px; right: 30px">
+            <div ng-if="item.statusConcept !== 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                class="badge align-self-center m-0 p-2 text-uppercase" ng-class="{
                 'badge-primary' : item.flowConceptModel.mnemonic == 'EncounterState-CheckedIn',
                 'badge-success': item.flowConceptModel.mnemonic == 'EncounterState-Observation',
                 'badge-warning': item.flowConceptModel.mnemonic == 'EncounterState-WaitingSpecialist',
-                'badge-secondary' : [
+                'badge-secondary' : ([
                     'EncounterState-CheckedIn',
                     'EncounterState-Observation',
                     'EncounterState-WaitingSpecialist'
-                ].indexOf(item.flowConceptModel.mnemonic) == -1
-            }">
-                <i class="fas fa-fw" 
-                    ng-class="{
+                ]).includes(item.flowConceptModel.mnemonic)
+             }">
+                <i class="fas fa-fw" ng-class="{
                         'fa-check-circle' : item.flowConceptModel.mnemonic == 'EncounterState-CheckedIn',
                         'fa-eye': item.flowConceptModel.mnemonic == 'EncounterState-Observation',
                         'fa-clock': item.flowConceptModel.mnemonic == 'EncounterState-WaitingSpecialist',
@@ -47,27 +53,32 @@
                             'EncounterState-CheckedIn',
                             'EncounterState-Observation',
                             'EncounterState-WaitingSpecialist'
-                        ].indexOf(item.flowConceptModel.mnemonic) == -1}">
+                        ].includes(item.flowConceptModel.mnemonic)
+                    }">
                 </i>
                 {{ item.flowConceptModel | concept }} ( {{ item.startTime | dateDiff: { prefix: 'ui.common.since' } }})
+            </div>
         </div>
-    </div>
 
-    <div class="d-flex vstack justify-content-between">
+        <div class="d-flex vstack justify-content-between">
 
-        <h5 ng-if="item.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3'" class="badge align-self-center m-0 p-2 text-uppercase badge-dark">
-            <i class="fas fa-fw fa-person-walking-arrow-loop-left"></i> {{ 'ui.emr.encounter.waitingRoom.filter.released' | i18n }}
-        </h5>
-    </div>
+            <h5 ng-if="item.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                class="badge align-self-center m-0 p-2 text-uppercase badge-dark">
+                <i class="fas fa-fw fa-person-walking-arrow-loop-left"></i> {{
+                'ui.emr.encounter.waitingRoom.filter.released' | i18n }}
+            </h5>
+        </div>
+        <div class="container-fluid d-lg-block">
+            <div class="row">
+                <div ng-repeat="comp in ::item.relationship.HasComponent.orderBy('targetModel.actTime') track by $index"
+                    ng-class="{ 'bg-light' : $index % 2 == 1 }" ng-if="!comp.targetModel.tag.isBackEntry"
+                    ng-init="act = comp.targetModel" class="col-12 d-inline-flex">
+                    <i class="fas fa-fw"
+                        ng-class="($parent.$parent.$parent.$parent.$parent.resolveTemplateIcon || $parent.$parent.$parent.$parent.resolveTemplateIcon)(comp.targetModel.templateModel.mnemonic)"></i>
 
-    <div class="container-fluid d-lg-block">
-        <div class="row">
-            <div ng-repeat="comp in item.relationship.HasComponent track by $index" ng-if="!comp.targetModel.tag.isBackEntry" ng-init="act = comp.targetModel" class="col-12">
-                <i class="fas fa-fw"
-                    ng-class="($parent.$parent.$parent.$parent.$parent.resolveTemplateIcon || $parent.$parent.$parent.$parent.resolveTemplateIcon)(comp.targetModel.templateModel.mnemonic)"></i>
-                    
-                <ng-include class="d-inline"
-                    src="($parent.$parent.$parent.$parent.$parent.resolveSummaryTemplate || $parent.$parent.$parent.$parent.resolveSummaryTemplate)(comp.targetModel.templateModel.mnemonic)" />
+                    <ng-include class="d-inline"
+                        src="::$root.getParentVariable($parent, 'resolveSummaryTemplate')(comp.targetModel.templateModel.mnemonic)" />
+                </div>
             </div>
         </div>
     </div>

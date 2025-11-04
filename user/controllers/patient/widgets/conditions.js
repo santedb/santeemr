@@ -30,7 +30,7 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
             let conditions = await SanteDB.resources.act.findAsync({
                 "participation[RecordTarget].player": patientId,
                 "typeConcept": "236b5641-61d2-4d12-91f7-5dddbd7f8931", // Condition
-                "statusConcept": [ StatusKeys.Active, StatusKeys.Completed ]
+                "statusConcept": [ StatusKeys.Active ]
             }, 'full');
 
             if (!conditions)
@@ -39,7 +39,7 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
             }
             else {
                 scopeconditions = conditions.resource;
-                console.log(scopeconditions);
+                //console.log(scopeconditions);
             }
         }
         finally {
@@ -55,7 +55,7 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.$timeout = $timeout;
 
-    console.log($scope.renderStatus);
+    //console.log($scope.renderStatus);
 
     initializeView($scope.scopedObject.id);
 }]);

@@ -70,6 +70,33 @@ const TEMPLATE_IDS = {
  */
 function SanteEMRWrapper() {
 
+    const _LOAD_CODE_PROPS = [
+        "value",
+        "unitOfMeasure",
+        "typeConcept",
+        "statusConcept",
+        "reasonConcept",
+        "interpretationConcept",
+        "doseUnit",
+        "route",
+        "site"
+
+    ];
+
+    const _LOAD_CODE_TYPES = [
+        Act.name,
+        SubstanceAdministration.name,
+        PatientEncounter.name,
+        CodedObservation.name,
+        QuantityObservation.name,
+        DateObservation.name,
+        Procedure.name,
+        Narrative.name,
+        FinancialContract.name,
+        Account.name,
+        CarePlan.name
+    ];
+
     const _IGNORE_RELATIONSHIPS = [
         BatchOperationType.Delete,
         BatchOperationType.DeleteInt,
@@ -93,8 +120,9 @@ function SanteEMRWrapper() {
             var participationType = "Performer";
             act.participation = act.participation || {};
 
-            if (act.$type != PatientEncounter.name) {
-                act.actTime = act.stopTime = act.stopTime || new Date();
+            if (act.$type != PatientEncounter.name && act.statusConcept == StatusKeys.Completed) {
+                act.stopTime = act.stopTime || new Date();
+                act.actTime = act.actTime || new Date();
 
                 // We already have a performer
                 if (act.participation.Performer) {
@@ -158,7 +186,7 @@ function SanteEMRWrapper() {
         }
 
         // Ensure that the actTime matches the data in the bundle
-        bundle.resource.filter(a => !a.startTime && !a.stopTime && !a.actTime).forEach(a => a.actTime = encounter.actTime); // Copy the act time over
+        bundle.resource.filter(a => !a.startTime && !a.stopTime && !a.actTime).forEach(a => a.actTime = a.actTime || encounter.actTime); // Copy the act time over
         bundle.correlationId = encounter.id;
         return bundle;
     }
@@ -177,6 +205,7 @@ function SanteEMRWrapper() {
             var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
                 target: bundle
             });
+            result.issue = result.issue.filter(o=>o.id !== "error.cdss.exception");
             return result;
         }
         catch (e) {
@@ -205,7 +234,38 @@ function SanteEMRWrapper() {
     /**
      * @method
      * @memberof SanteEMRWrapper
-     * @param {string} encounter The encounter or encounter id to be discharged
+     * @summary Loads all concept models that have changed or are missing 
+     */
+    this.loadConceptModels = async function(act) {
+        try {
+            if(!_LOAD_CODE_TYPES.includes(act.$type)) {
+                return;
+            }
+
+            await Promise.all(Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id).map(async key => {
+                try 
+                {
+                    act[`${key}Model`] = await SanteDB.resources.concept.getAsync(act[key], "min");
+                }
+                catch
+                {
+
+                }
+            }));
+
+            if(act.relationship) {
+                await Promise.all(Object.keys(act.relationship).map(o=>act.relationship[o]).flat().filter(o=>o.targetModel).map(o=>o.targetModel).map(SanteEMR.loadConceptModels));
+            }
+        }
+        catch(e) {
+            console.error(e);
+        }
+    }
+
+    /**
+     * @method
+     * @memberof SanteEMRWrapper
+     * @param {Act} encounter The encounter or encounter id to be discharged
      * @param {timeout} $timeout The scope timeout service
      * @param {Function} afterAction After the modal closes, the action to execute
      */
@@ -218,6 +278,9 @@ function SanteEMRWrapper() {
         }
 
         try {
+
+            // We want to load all types
+            await SanteEMR.loadConceptModels(encounter);
             var analyzeResult = await SanteEMR.analyzeVisit(encounter);
             var scope = dischargeModal.scope();
             var enc = angular.copy(encounter);
@@ -232,7 +295,13 @@ function SanteEMRWrapper() {
                         afterAction();
                     }
 
+                    scope.encounter = null;
                     $("#dischargeModal").off("hidden.bs.modal");
+                });
+            }
+            else {
+                $("#dischargeModal").on("hidden.bs.modal", function (e) {
+                    scope.encounter = null;
                 });
             }
 
@@ -389,17 +458,18 @@ function SanteEMRWrapper() {
      * @param {PatientEncounter} templateData Data which should be copied / pushed to the template
      * @returns {PatientEncounter} The constructed and saved {@link:PatientEncounter}
      */
-    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt, templateData) {
+    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt, templateData, refersToEncounterId, templateParameters) {
         try {
 
             var submission = new Bundle({ resource: [] });
 
+            templateParameters = templateParameters || {};
+            templateParameters.recordTargetId = recordTargetId;
+            templateParameters.facilityId = await SanteDB.authentication.getCurrentFacilityId();
+            templateParameters.userEntityId = await SanteDB.authentication.getCurrentUserEntityId();
+
             // Template
-            var template = await SanteDB.application.getTemplateContentAsync(templateId, {
-                recordTargetId: recordTargetId,
-                facilityId: await SanteDB.authentication.getCurrentFacilityId(),
-                userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
-            });
+            var template = await SanteDB.application.getTemplateContentAsync(templateId, templateParameters);
 
             var encounter = new PatientEncounter(template);
 
@@ -422,6 +492,12 @@ function SanteEMRWrapper() {
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
             encounter.relationship.Fulfills = fulfills;
+
+            if(refersToEncounterId) {
+                encounter.relationship.RefersTo = encounter.relationship.RefersTo || [];
+                encounter.relationship.RefersTo.push(new ActRelationship({ target: refersToEncounterId }))
+            }
+
             // Ensure the appropriate keys are set
             encounter.startTime = encounter.actTime = new Date();
             encounter.statusConcept = StatusKeys.Active;
@@ -436,7 +512,7 @@ function SanteEMRWrapper() {
                 //firstOnly: true,
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD"),
-                _includeBackentry: true
+                _includeBackentry: false
             }, undefined, "full");
 
             if (actions.relationship) {

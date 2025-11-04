@@ -88,7 +88,7 @@ angular.module('santedb').controller('EmrClinicScheduleController', ["$scope", "
 
     function getEventDayDetail(evt) {
         var retVal= "<ul>"
-        evt.relationship.HasComponent?.filter(o=>o.targetModel).map(typ => `<li><i class='${eventTypeIcons[typ.targetModel.$type]}'></i> ${SanteDB.display.renderConcept(typ.targetModel.typeConceptModel)}</li>`
+        evt.relationship?.HasComponent?.filter(o=>o.targetModel).map(typ => `<li><i class='${eventTypeIcons[typ.targetModel.$type]}'></i> ${SanteDB.display.renderConcept(typ.targetModel.typeConceptModel)}</li>`
         ).distinct().forEach(k => retVal += k);
 
         retVal += "</ul>";

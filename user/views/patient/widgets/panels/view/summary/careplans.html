@@ -39,7 +39,9 @@
                             <i class="fas fa-fw"
                                 ng-class="{ 'fa-house-medical-circle-check text-success' : path._enrolled, 'fa-house-medical-circle-xmark text-info' : null }"></i>
                             {{ path.name }}
+                            <i class="fas fa-fw fa-exclamation-circle text-danger" ng-if="path._ineligible"></i>
                             <i class="float-right fas fa-fw fa-chevron-right"></i>
+                            
                         </h5>
                     </button>
                     <div class="float-right btn-group">

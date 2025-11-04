@@ -1,3 +1,16 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Apgar Cluster Summary View
+<div xmlns="http://www.w3.org/1999/xhtml" id="apgar-summary">
+
+    {{ act.typeConceptModel | concept }}
+
+    <div class="col-12" ng-repeat="apgarComp in ::act.relationship.HasComponent track by $index">
+        <span>
+            {{ apgarComp.targetModel.typeConceptModel | concept }} - <strong>{{ apgarComp.targetModel.value }}</strong> <span class="badge mx-2" ng-class="{
+        'badge-danger': (apgarComp.targetModel.interpretationConcept == '3c4d6579-7496-4b44-aac1-18a714ff7a05' || apgarComp.targetModel.interpretationConcept == '6188f821-261f-420c-9520-0de240a05661'),
+        'badge-success': apgarComp.targetModel.interpretationConcept == '41d42abf-17ad-4144-bf97-ec3fd907f57d',
+        'badge-secondary': (apgarComp.targetModel.interpretationConcept != '3c4d6579-7496-4b44-aac1-18a714ff7a05' &amp;&amp; apgarComp.targetModel.interpretationConcept != '6188f821-261f-420c-9520-0de240a05661' &amp;&amp; act.interpretationConcept != '41d42abf-17ad-4144-bf97-ec3fd907f57d')
+    }">
+        {{ apgarComp.targetModel.interpretationConceptModel | concept }}
+    </span>
+        </span>
+    </div>
 </div>

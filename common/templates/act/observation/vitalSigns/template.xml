@@ -2,8 +2,10 @@
     mnemonic="org.santedb.emr.observation.vitalSigns" public="true">
     <scope>1DB6987B-9DBD-443C-B3D9-902625CF24B8</scope>
     <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
-    <scope>FA342034-43D5-477D-9748-1609099314DF</scope>
     <scope>F8932034-43D5-477D-9748-1609099314DF</scope>
+    <scope>fa342034-43d5-477d-9748-1609099314df</scope>
+    <scope>org.santedb.emr.act.visit.neonatal</scope>
+
     <definition>definition.json</definition>
     <form>form.html</form>
     <summaryView>summary.html</summaryView>

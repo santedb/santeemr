@@ -1,3 +1,10 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: BP
+    <strong>{{ act.typeConceptModel | concept }}:</strong>
+
+    <span ng-repeat="comp in act.relationship.HasComponent track by $index" ng-if="comp.targetModel.typeConcept == 'c0e4e81e-af1f-4a81-80a6-c59a32f57cfa'">
+        {{ comp.targetModel.value }}
+    </span> /
+    <span ng-repeat="comp in act.relationship.HasComponent track by $index" ng-if="comp.targetModel.typeConcept == '8e105155-32d4-4bbe-bc86-60154706b3ca'">
+        {{ comp.targetModel.value }}
+    </span>
 </div>

@@ -1,0 +1,8 @@
+<span xmlns="http://www.w3.org/1999/xhtml" class="d-inline-flex flex-wrap">
+    <div class="d-flex justify-items-between flex-wrap">
+    <strong class="mr-2">{{ act.typeConceptModel | concept }} - {{ act.valueModel | concept }}</strong>
+    <span class="mr-2 text-muted" ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
+        <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)" />
+    </span>
+    </div>
+</span>

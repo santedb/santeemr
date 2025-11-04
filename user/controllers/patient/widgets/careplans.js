@@ -28,7 +28,23 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 if (enrolledCarePathways.resource && enrolledCarePathways.resource.find(o => o.id == cp.id || o.pathway == cp.id)) {
                     cp._enrolled = true;
                 }
-            })
+            });
+
+            // Are there any care pathways the patient is enrolled in that they are ineligible to be enrolled in?
+            var nonEligibleCarePathways = enrolledCarePathways.resource?.filter(cp => !carePathways.find(el => el.id == cp.id));
+            if(nonEligibleCarePathways?.length > 0 && confirm(SanteDB.locale.getString("ui.emr.patient.carepath.unenrolAuto", { pathway: nonEligibleCarePathways.map(o=>o.name).join(",") }))) {
+                nonEligibleCarePathways.forEach(cp => SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-unenroll", {
+                    pathway: cp.id
+                }));
+            }
+            else {
+                nonEligibleCarePathways?.forEach(cp => {
+                    cp._enrolled = true;
+                    cp._ineligible = true;
+                    carePathways.push(cp);
+                })
+            }
+
             $timeout(() => {
                 $scope.carePathways = carePathways;
             });

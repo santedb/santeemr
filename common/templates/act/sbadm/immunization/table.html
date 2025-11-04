@@ -1,0 +1,61 @@
+<table class="table table-striped" xmlns="http://www.w3.org/1999/xhtml">
+    <thead>
+        <tr>
+            <th></th>
+            <th class="text-center" ng-repeat="i in table.cols track by $index">
+                {{i}}
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="(ag, dose) in table.data track by $index">
+            <!-- Antigen Name -->
+            <th class="align-middle">
+                {{ag}}
+            </th>
+
+            <td class="text-center align-middle" ng-repeat="adm in dose track by $index">
+                <div class="d-inline-flex" ng-if="adm.doseSequence !== undefined">
+                    <label class="checkbox-container">
+                        <input ng-disabled="adm.actTime &gt; $root.page.minEventTime || 
+                                    dose[$index - 1] &amp;&amp; dose[$index - 1].statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' || 
+                                    !adm.tag.isBackEntry" name="vacc-history-{{ ag }}-{{ dose.doseSequence }}-enabled"
+                            ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'" ng-model="adm.statusConcept"
+                            class="checkbox-control" ng-false-value="null" type="checkbox" />
+                        <span></span>
+                    </label>
+                    <input ng-change="dateSelectedUpdateColumn(adm)" class="form-control"
+                        name="vacc-history-{{ ag }}-{{ adm.doseSequence }}"
+                        ng-disabled="adm.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" ng-model="adm.actTime"
+                        type="date" ng-required="adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                        min="{{ (adm.startTime || adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime) | date: 'yyyy-MM-dd'}}"
+                        max="{{ adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' ? (adm.stopTime || $root.page.today) : null | date: 'yyyy-MM-dd' }}" />
+                </div>
+
+                <div
+                    ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + dose.doseSequence + '-enabled'].$viewValue == true">
+                    <div class="text-danger"
+                        ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.required">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
+
+                    <div class="text-danger"
+                        ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.min">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min:
+                        getFormattedDate((adm.startTime ||
+                        adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime))
+                        } }}
+                    </div>
+
+                    <div class="text-danger"
+                        ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.max">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { max:
+                        getFormattedDate((adm.startTime ||
+                        adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime))
+                        } }}
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>

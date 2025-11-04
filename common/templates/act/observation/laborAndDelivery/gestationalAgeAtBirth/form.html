@@ -2,24 +2,30 @@
     <label class="col-xs-12 col-md-3 control-label required">
         {{ act.typeConceptModel | concept }}
     </label>
+
     <div class="col-xs-12 col-md-9">
         <div class="input-group">
-            <input type="number" step="1" ng-model="act.value" name="gestationAgeAtBirth" class="form-control h-100" min="1" max="50" cdss-interactive="act"/>
+            <input type="number" step="1" ng-model="act.value" name="gestationAgeAtBirth"
+                class="form-control min-height-fit" min="1" max="50" cdss-interactive="act" />
+
             <div class="input-group-append">
                 <span class="input-group-text">
-                    {{ act.unitOfMeasureModel | concept }}
+                    {{ act.unitOfMeasureModel | concept: 'zxx' }}
                 </span>
             </div>
         </div>
-        <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm').gestationAgeAtBirth.$error.required">
+
+        <div class="text-danger"
+            ng-if="$root.getParentVariable($parent, 'ownerForm').gestationAgeAtBirth.$error.required">
             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
         </div>
+
         <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm').gestationAgeAtBirth.$error.min">
             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: 1 } }}
         </div>
+
         <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm').gestationAgeAtBirth.$error.max">
             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { min: 50 } }}
         </div>
     </div>
-
 </div>

@@ -4,10 +4,14 @@
     <name>ANC Routine Immunization Carepath</name>
     <description>Provides routine vaccinations for all ANC patients</description>
     <eligibility>
+     deceasedDate=null&amp;
       dateOfBirth=:(age)&gt;P14Y&amp;
       genderConcept=094941e9-a3db-48b5-862c-bc289bd7f86c&amp;
+      participation[RecordTarget].source@CodedObservation.moodConcept=EC74541F-87C4-4327-A4B9-97F325501747&amp;
       participation[RecordTarget].source@CodedObservation.typeConcept=7bb3403e-d8ee-4b91-8a77-64da4f459415&amp;
-      participation[RecordTarget].source@CodedObservation.value.conceptSet=!8e848f0e-890b-11f0-ae3f-9f37087e0822&amp;
+      participation[RecordTarget].source@CodedObservation.value=9d93339c-1cdf-4b7b-9652-54fecfc030d9&amp;
+      participation[RecordTarget].source@CodedObservation.value=032d6f02-48cf-451d-a66a-36ac2fec2454&amp;
+      participation[RecordTarget].source@CodedObservation.value=0d934588-4bec-49b7-9e3f-1266cf8b4195&amp;
       participation[RecordTarget].source@CodedObservation.statusConcept=!BDEF5F90-5497-4F26-956C-8F818CCE2BD2
     </eligibility>
     <enrollment>automatic</enrollment>

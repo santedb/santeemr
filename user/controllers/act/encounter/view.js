@@ -22,7 +22,9 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
     async function initializeView(encounterId) {
         try {
-            var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full");
+            var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full", null, null, null, {
+                "X-SanteDB-EmitPrivacyError": "Redact,Nullify,Hash,Hide"
+            });
 
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
@@ -34,7 +36,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
             // All participations are not touched
             if (encounter.relationship && encounter.relationship.HasComponent) {
-                encounter.relationship.HasComponent.forEach(e => e.targetModel.operation = BatchOperationType.IgnoreInt);
+                encounter.relationship.HasComponent.filter(o=>o.targetModel).forEach(e => e.targetModel.operation = BatchOperationType.IgnoreInt);
             }
 
             // TODO: Load the current act list and assign to the _HasComponent relationship
@@ -72,12 +74,10 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             // TODO: HANDLE ELEVATION CASE
             $rootScope.errorHandler(e);
         }
-        finally {
-            SanteDB.authentication.setElevator(null);
-        }
+        
     }
 
-    SanteDB.authentication.setElevator(new SanteDBElevator(initializeView, false));
+    SanteDB.authentication.setElevator(new SanteDBElevator(() => initializeView($stateParams.id), true));
     initializeView($stateParams.id);
 }]).controller("EmrEncounterEntryController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
     async function cancelEncounter() {
@@ -121,7 +121,6 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
         try {
 
             var rct = $scope.scopedObject.participation.RecordTarget[0].player;
-
             SanteDB.display.buttonWait("#btnActEditdischarge", true);
             await SanteEMR.showDischarge($scope.scopedObject, $timeout, () => {
                 $state.go("santedb-emr.patient.view", { id: rct });
@@ -156,4 +155,14 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     }
 
     $scope.doCancel = cancelEncounter;
+}]).controller("EmrBirthRegistrationViewController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
+    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    
+    async function init() {        
+        const act = await SanteDB.resources.act.getAsync($scope.act.id, "full");
+        
+        $scope.act = act;
+    }
+
+    init();
 }]);

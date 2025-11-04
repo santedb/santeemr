@@ -15,6 +15,14 @@
         "targetModel": {
           "$type": "Act",
           "templateModel": {
+            "mnemonic": "org.santedb.emr.observation.timeofdeath"
+          }
+        }
+      },
+      {
+        "targetModel": {
+          "$type": "Act",
+          "templateModel": {
             "mnemonic": "org.santedb.emr.observation.cod"
           }
         }

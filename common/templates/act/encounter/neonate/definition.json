@@ -1,0 +1,30 @@
+{
+    "$type": "PatientEncounter",
+    "template" : "b49577ed-0fd8-4b1a-aa3b-509b16fdbc30",
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+    "statusConcept": "c8064cbd-fa06-4530-b430-1a52f1530c27",
+    "dischargeDisposition" :  null, 
+    "typeConcept": "48bf3525-3fad-4fca-9d17-4f93f88f4d71",
+    "actTime": "{{ $now }}",
+    "startTime": "{{ $now }}",
+    "participation": {
+        "Location": [{
+            "player": "{{ $facilityId }}"
+        }],
+        "Authororiginator": [{
+            "player": "{{ $userEntityId }}"
+        }],
+        "RecordTarget": [{
+            "player": "{{ $recordTargetId }}"
+        }]
+    },
+    "relationship" : {
+        "HasComponent" : [
+            #for $id in @birthEncounterActionsForBaby
+            {
+                "target" : "{{ $id }}"
+            }
+            #end
+        ]
+    }
+}

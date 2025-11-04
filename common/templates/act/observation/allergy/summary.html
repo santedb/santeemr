@@ -1,0 +1,21 @@
+<span xmlns="http://www.w3.org/1999/xhtml">
+    <strong>{{ act.typeConceptModel | concept }}</strong>
+    <strong class="mx-2 text-underline">
+        {{ act.valueModel | concept }}
+    </strong>
+    <span class="badge mx-2" ng-class="
+        {
+            'badge-danger' : ['ba7c70a2-4eab-4eb0-b3a1-4ad1a792c131', 'bac8d12f-1829-48e3-beed-bcc2ff0c1050'].includes(act.relationship.HasComponent[0].targetModel.value),
+            'badge-warning' : act.relationship.HasComponent[0].targetModel.value == '2a1bdbdb-f0e9-4ee2-872f-f3cad824ba10',
+            'badge-primary' : act.relationship.HasComponent[0].targetModel.value == 'b09b4f76-df38-4825-86a9-e791cd37859b'
+        }"><i class="fas fa-fw fa-exclamation-triangle"></i> {{
+        act.relationship.HasComponent[0].targetModel.typeConceptModel | concept
+        }} {{ act.relationship.HasComponent[0].targetModel.valueModel | concept
+        }}</span>
+
+    <span class="ml-2">
+        <i class="fas fa-fw fa-circle"></i> {{ act.relationship.HasManifestation[0].targetModel.typeConceptModel | concept }}: {{ act.relationship.HasManifestation[0].targetModel.valueModel
+        | concept }}
+    </span>
+
+</span>

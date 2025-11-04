@@ -1,5 +1,5 @@
 <AppletTemplateDefinition xmlns="http://santedb.org/applet"
-   mnemonic="org.santedb.emr.observation.apgarScore.panel" public="false">
+   mnemonic="org.santedb.emr.observation.apgarScore.panel" public="true">
     <definition>definition.json</definition>
     <scope>org.santedb.emr.act.registration.birth</scope>
     <form>form.html</form>
@@ -8,4 +8,6 @@
     <oid>1.3.6.1.4.1.52820.5.2.2.1.8</oid>
     <description>APGAR Scores</description>
     <uuid>a1b969fc-74eb-4da3-94b6-575462c155e0</uuid>
+    <scope>org.santedb.emr.act.visit.neonatal</scope>
+
 </AppletTemplateDefinition>

@@ -36,5 +36,25 @@ namespace SanteEMR
         /// </summary>
         public static readonly Guid EmrConditionTrigger = Guid.Parse("2b3e26bc-5766-4e84-afac-a522edc2e7e3");
 
+        /// <summary>
+        /// Date of death concept key
+        /// </summary>
+        public static readonly Guid DateOfDeathConceptKey = Guid.Parse("51140974-adbe-4e56-bb38-66719f7945c9");
+
+        /// <summary>
+        /// Patient discharged because they died
+        /// </summary>
+        public static readonly Guid DischargeDispositionDied = Guid.Parse("6df3720b-857f-4ba2-826f-b7f1d3c3adbb");
+
+        /// <summary>
+        /// Birth registration
+        /// </summary>
+        public static readonly Guid RegistrationTypeBirth = Guid.Parse("f562e322-17ca-11eb-adc1-0242ac120002");
+
+        /// <summary>
+        /// The labour and delivery visit key
+        /// </summary>
+        public static readonly Guid LabourAndDeliveryVisitKey = Guid.Parse("f8932034-43d5-477d-9748-1609099314df");
+
     }
 }
