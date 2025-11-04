@@ -58,20 +58,23 @@ namespace SanteEMR.Rules
             foreach (var act in data.Item.OfType<Act>().Where(o =>
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
-                o.StatusConceptKey == StatusKeys.Completed &&
-                o.MoodConceptKey == ActMoodKeys.Eventoccurrence &&
-                policyMaps?.ContainsKey(o.TypeConceptKey.GetValueOrDefault()) == true
+               
+                o.MoodConceptKey == ActMoodKeys.Eventoccurrence 
                 ).ToArray()
             )
             {
-                // Apply policies
-                var appliedPolicyMaps = policyMaps[act.TypeConceptKey.GetValueOrDefault()];
                 act.Policies = act.Policies ?? new List<SanteDB.Core.Model.Security.SecurityPolicyInstance>(); // preserve user policies
-                act.Policies.AddRange(appliedPolicyMaps.Where(p=>!act.Policies.Any(ap=>ap.PolicyKey == p.Key)).Select(o => new SanteDB.Core.Model.Security.SecurityPolicyInstance()
+
+                // Apply policies
+                if (act.StatusConceptKey == StatusKeys.Completed)
                 {
-                    PolicyKey = o.Key,
-                    GrantType = SanteDB.Core.Model.Security.PolicyGrantType.Grant
-                }));
+                    var appliedPolicyMaps = policyMaps[act.TypeConceptKey.GetValueOrDefault()];
+                    act.Policies.AddRange(appliedPolicyMaps.Where(p => !act.Policies.Any(ap => ap.PolicyKey == p.Key)).Select(o => new SanteDB.Core.Model.Security.SecurityPolicyInstance()
+                    {
+                        PolicyKey = o.Key,
+                        GrantType = SanteDB.Core.Model.Security.PolicyGrantType.Grant
+                    }));
+                }
 
                 // Hide / Tag Confidential for VIPs
                 var rct = act.LoadProperty(o => o.Participations).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget)?.LoadProperty(o => o.PlayerEntity) as Person;

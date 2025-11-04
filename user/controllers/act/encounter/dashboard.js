@@ -150,6 +150,9 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
                 _loadedFlowStates[extensionValue] = r.flowConceptModel;
                 return r;
             }
+            else {
+                return r;
+            }
         }
         catch (e) {
             console.warn("cannot load flow state", e);

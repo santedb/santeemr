@@ -43,7 +43,9 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
     // Loads the specified patient
     async function loadPatient(id) {
         try {
-            var patient = await SanteDB.resources.patient.getAsync(id, "full");
+            var patient = await SanteDB.resources.patient.getAsync(id, "full", null, null, null, {
+                "X-SanteDB-EmitPrivacyError" : "Redact,Nullify,Hash,Hide"
+            });
 
             // Post the patient to the AngularJS scope and then load the patient encounter
             $timeout(() => {
@@ -130,12 +132,9 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                     break;
             }
         }
-        finally {
-            SanteDB.authentication.setElevator(null); // we got the patient successfully
-        }
     }
 
-    SanteDB.authentication.setElevator(new SanteDBElevator(loadPatient, false));
+    SanteDB.authentication.setElevator(new SanteDBElevator(() => loadPatient($stateParams.id), true));
     loadPatient($stateParams.id);
 
     $scope.printCard = function () {
