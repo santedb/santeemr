@@ -541,6 +541,8 @@
     <string name="ui.emr.immunization.backEntry.label">Last Administration</string>
     <string name="ui.emr.immunization.backEntry.label.hint">Select the last administration date of the identified antigen including the sequence. If the dose sequence is not known place the value 1 for the sequence</string>
 
+    <!-- Save an unfinished visit -->
+     <string name="ui.emr.encounter.invalid.saveConfirm">This visit contains invalid data - are you sure you want to save it in the database?</string>
     <!-- Elevation -->
      <string name="ui.emr.elevation.cancel"><![CDATA[<i class="fas fa-fw fa-info-circle"></i> Elevation request has been cancelled]]></string>
      <string name="ui.emr.elevation.success"><![CDATA[<i class="fas fa-fw fa-shield"></i> Elevated session has been granted]]></string>
