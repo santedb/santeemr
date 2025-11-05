@@ -22,7 +22,9 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
     async function initializeView(encounterId) {
         try {
-            var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full");
+            var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full", null, null, null, {
+                "X-SanteDB-EmitPrivacyError": "Redact,Nullify,Hash,Hide"
+            });
 
             encounter.relationship = encounter.relationship || {};
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
@@ -72,12 +74,20 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
             // TODO: HANDLE ELEVATION CASE
             $rootScope.errorHandler(e);
         }
-        finally {
-            SanteDB.authentication.setElevator(null);
-        }
+        
     }
 
-    SanteDB.authentication.setElevator(new SanteDBElevator(initializeView, false));
+    var elevator = new SanteDBElevator(() => initializeView($stateParams.id), true);
+    elevator.setCloseCallback((elevated) => {
+        if(!elevated) {
+            toastr.info(SanteDB.locale.getString("ui.emr.elevation.cancel"));
+            $state.go("santedb-emr.dashboard");
+        }
+        else {
+            toastr.success(SanteDB.locale.getString("ui.emr.elevation.success"));
+        }
+    });
+    SanteDB.authentication.setElevator(elevator);
     initializeView($stateParams.id);
 }]).controller("EmrEncounterEntryController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
     async function cancelEncounter() {
@@ -156,7 +166,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
     $scope.doCancel = cancelEncounter;
 }]).controller("EmrBirthRegistrationViewController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
-    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     
     async function init() {        
         const act = await SanteDB.resources.act.getAsync($scope.act.id, "full");

@@ -31,7 +31,7 @@
     </div>
     <div ng-if="patient">
         <!-- #include virtual="/org.santedb.uicore/partials/patient/patientHeader.html" -->
-        <widget-tabs context-name="'org.santedb.emr.patient.view'" scoped-object="patient"></widget-tabs>
+        <widget-tabs ng-if="!patient.tag['$pep.masked']" context-name="'org.santedb.emr.patient.view'" scoped-object="patient"></widget-tabs>
         <!-- #include virtual="~/partials/patient/patient-card.html" -->
     </div>
 

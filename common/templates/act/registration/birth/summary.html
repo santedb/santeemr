@@ -32,8 +32,8 @@
 
         </div>
 
-        <div class="col-12" ng-repeat="comp in act.relationship.HasComponent" ng-init="act = comp.targetModel">
-            <ng-include src="resolveSummaryTemplate(act.templateModel.mnemonic)"></ng-include>
+        <div class="col-12" ng-repeat="comp in ::act.relationship.HasComponent track by $index" ng-init="act = comp.targetModel">
+            <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)"></ng-include>
         </div>
     </div>
 </span>

@@ -35,12 +35,12 @@
             <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
         </div>
         <ul ng-if="!isLoading &amp;&amp; !hasError" class="list-group">
-            <li ng-repeat="cond in conditions track by $index" class="list-group-item"  ng-init="act = cond.relationship.RefersTo[0].targetModel">
+            <li ng-repeat="cond in conditions track by $index" class="list-group-item"  ng-init="act = cond.relationship.RefersTo[0].targetModel || cond">
                 <h5><i class="fas fa-fw"
                                 ng-class="resolveTemplateIcon(act.templateModel.mnemonic)"></i>
-                            {{ cond.valueModel | concept }} <span class="badge badge-primary">{{ cond.statusConceptModel | concept }} ({{ cond.startTime | humanDate: 'D' }} - {{ cond.stopTime | humanDate: 'D' }})</span></h5>
+                            <span ng-if="!act.tag['$pep.masked']">{{ cond.valueModel | concept }} <span class="badge badge-primary">{{ cond.statusConceptModel | concept }} ({{ cond.startTime | humanDate: 'D' }} - {{ cond.stopTime | humanDate: 'D' }})</span></span></h5>
                         <ng-include class="d-inline"
-                            src="::resolveSummaryTemplate(act.templateModel.mnemonic)" />
+                            src="::$root.getParentVariable($parent, 'resolveSummaryTemplate')(act.templateModel.mnemonic)" />
             </li>
         </ul>
     </div>

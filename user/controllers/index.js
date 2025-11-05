@@ -304,5 +304,21 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         }
     });
 
+    $scope.dropElevatedSession = async function() {
+        try {
+            SanteDB.display.buttonWait("#btnEndElevation", true);
+            var session = SanteDB.authentication.getElevator()?.getSession();
+            if(session?.id_token) {
+                await SanteDB.authentication.logoutAsync(session.id_token);
+            }
+        }
+        finally {
+            SanteDB.authentication.setElevator(null);
+            SanteDB.display.buttonWait("#btnEndElevation", false);
+            $state.go("santedb-emr.dashboard");
+
+        }
+    }
+
 }]);
 
