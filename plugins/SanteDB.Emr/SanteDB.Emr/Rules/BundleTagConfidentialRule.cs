@@ -66,9 +66,8 @@ namespace SanteEMR.Rules
                 act.Policies = act.Policies ?? new List<SanteDB.Core.Model.Security.SecurityPolicyInstance>(); // preserve user policies
 
                 // Apply policies
-                if (act.StatusConceptKey == StatusKeys.Completed)
+                if (act.StatusConceptKey == StatusKeys.Completed && policyMaps.TryGetValue(act.TypeConceptKey.GetValueOrDefault(), out var appliedPolicyMaps))
                 {
-                    var appliedPolicyMaps = policyMaps[act.TypeConceptKey.GetValueOrDefault()];
                     act.Policies.AddRange(appliedPolicyMaps.Where(p => !act.Policies.Any(ap => ap.PolicyKey == p.Key)).Select(o => new SanteDB.Core.Model.Security.SecurityPolicyInstance()
                     {
                         PolicyKey = o.Key,

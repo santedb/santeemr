@@ -134,7 +134,17 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
         }
     }
 
-    SanteDB.authentication.setElevator(new SanteDBElevator(() => loadPatient($stateParams.id), true));
+    var elevator = new SanteDBElevator(() => loadPatient($stateParams.id), true);
+    elevator.setCloseCallback((elevated) => {
+        if(!elevated) {
+            toastr.info(SanteDB.locale.getString("ui.emr.elevation.cancel"));
+            $state.go("santedb-emr.dashboard");
+        }
+        else {
+            toastr.success(SanteDB.locale.getString("ui.emr.elevation.success"));
+        }
+    });
+    SanteDB.authentication.setElevator(elevator);
     loadPatient($stateParams.id);
 
     $scope.printCard = function () {

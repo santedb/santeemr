@@ -540,4 +540,8 @@
     <string name="ui.emr.immunization.backEntry.knownSequence">Scheduled Boosters (Historical)</string>
     <string name="ui.emr.immunization.backEntry.label">Last Administration</string>
     <string name="ui.emr.immunization.backEntry.label.hint">Select the last administration date of the identified antigen including the sequence. If the dose sequence is not known place the value 1 for the sequence</string>
+
+    <!-- Elevation -->
+     <string name="ui.emr.elevation.cancel"><![CDATA[<i class="fas fa-fw fa-info-circle"></i> Elevation request has been cancelled]]></string>
+     <string name="ui.emr.elevation.success"><![CDATA[<i class="fas fa-fw fa-shield"></i> Elevated session has been granted]]></string>
 </resources>
