@@ -51,7 +51,7 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
         }
     };
 
-    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.$timeout = $timeout;
 

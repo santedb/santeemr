@@ -31,13 +31,17 @@
                                     {{ encounter.participation.RecordTarget[0].playerModel.genderConceptModel |
                                     concept
                                     }}</span>
+
                             </h5>
                         </a>
 
                         <div class="px-2">
-                            <i class="fas fa-birthday-cake"></i><strong>{{ 'ui.model.patient.dateOfBirth' | i18n }}</strong> {{ encounter.participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }} ({{ encounter.participation.RecordTarget[0].playerModel.dateOfBirth | age }})
+                            <i class="fas fa-birthday-cake"></i><strong>{{ 'ui.model.patient.dateOfBirth' | i18n
+                                }}</strong> {{ encounter.participation.RecordTarget[0].playerModel.dateOfBirth | date:
+                            'yyyy-MM-dd' }} ({{ encounter.participation.RecordTarget[0].playerModel.dateOfBirth | age
+                            }})
                         </div>
-                        
+
                         <span>
                             <div
                                 ng-if="$root.system.config.application.setting['aa.preferred'] &amp;&amp; encounter.participation.RecordTarget[0].playerModel.identifier[$root.system.config.application.setting['aa.preferred']]">
@@ -72,7 +76,11 @@
                     <div class="p-2 float-right d-flex flex-column  align-items-end">
                         <h5 class="m-0">
                             {{ encounter.templateModel.name }}
-                            <span class="badge badge-info">{{ encounter.typeConceptModel | concept }}</span> <br />
+                            <span class="badge badge-info">{{ encounter.typeConceptModel | concept }}</span>
+                            <span class="badge badge-danger ml-2" ng-repeat="pol in encounter.policy track by $index">
+                                <i class="fas fa-fw fa-shield"></i> {{ pol.policyModel.name }}
+                            </span>
+                            <br />
                         </h5>
                         <span class="badge badge-lg badge-primary"><i class="fas fa-fw fa-timeline"></i> {{
                             encounter.extension['http://santedb.org/emr/extensions/encounter-flow'][0] | concept
@@ -174,7 +182,7 @@
             </div>
         </div>
     </div>
-<!-- Extension Points -->
-<ng-include src="'/_dynamic/EncounterHeaderExtensions.html'" />
+    <!-- Extension Points -->
+    <ng-include src="'/_dynamic/EncounterHeaderExtensions.html'" />
 
 </div>

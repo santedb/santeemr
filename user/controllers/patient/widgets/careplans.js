@@ -221,7 +221,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
         }
     }
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
-    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.enroll = enroll;
     $scope.unenroll = unenroll;
     $scope.recompute = recompute;

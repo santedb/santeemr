@@ -540,4 +540,17 @@
     <string name="ui.emr.immunization.backEntry.knownSequence">Scheduled Boosters (Historical)</string>
     <string name="ui.emr.immunization.backEntry.label">Last Administration</string>
     <string name="ui.emr.immunization.backEntry.label.hint">Select the last administration date of the identified antigen including the sequence. If the dose sequence is not known place the value 1 for the sequence</string>
+
+    <!-- Save an unfinished visit -->
+     <string name="ui.emr.encounter.invalid.saveConfirm">This visit contains invalid data - are you sure you want to save it in the database?</string>
+    <!-- Elevation -->
+     <string name="ui.emr.elevation.cancel"><![CDATA[<i class="fas fa-fw fa-info-circle"></i> Elevation request has been cancelled]]></string>
+     <string name="ui.emr.elevation.success"><![CDATA[<i class="fas fa-fw fa-shield"></i> Elevated session has been granted]]></string>
+
+
+     <!-- Policies &amp; Consent -->
+      <string name="org.santedb.emr.widget.patient.policies">Consent / Policies</string>
+      <string name="ui.emr.patient.policy.info">This panel is used to assign or remove consent directives on the patient's record. Note that when a patient has a consent directive applied, records assigned to the patient and the patient demographics will be masked and or require a break the glass condition</string>
+      <string name="ui.emr.patient.policy.none">This record has no policies associated</string>
+      <string name="ui.emr.patient.policy.warning"><![CDATA[Changing the policies attached to this object may impact users ability to access this record (requiring them to elevate or being denied completely). <strong>Only change these settings if you are sure you want to alter the privacy directives for the object</strong>]]></string>
 </resources>

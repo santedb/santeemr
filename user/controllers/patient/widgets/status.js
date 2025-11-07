@@ -30,8 +30,8 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
 
     initializeView();
 
-    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
-    $scope.resolveTemplateForm = SanteEMR.resolveTemplateForm;
+    $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveForm = $scope.resolveTemplateForm = SanteEMR.resolveTemplateForm;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.getTemplateName = function (templateId) {
         return SanteDB.application.getTemplateMetadata(templateId)?.name || templateId;

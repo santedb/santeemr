@@ -274,9 +274,10 @@
                     <span class="flex-grow-1 p-1">
                         <i class="fas fa-fw fa-shield-halved"></i> {{ 'ui.authentication.elevatedSession' | i18n }}
                     </span>
-                    <a class="btn btn-danger btn-sm m-0" ng-if="$root.outstandingApiCalls() == 0" ui-sref="santedb-emr.dashboard">
+                    <button type="button" id="btnEndElevation" class="btn btn-danger btn-sm m-0" ng-disabled="$root.outstandingApiCalls() &gt; 0" 
+                        ng-click="dropElevatedSession()">
                         <i class="fas fa-fw fa-times-circle"></i> {{ 'ui.authentication.elevatedSession.end' | i18n }}
-                    </a>
+                    </button>
                 </div>
 
                 <div ng-if="$root.refValues.facilityName">

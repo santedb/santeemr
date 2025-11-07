@@ -107,7 +107,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
    
     initializeView();
 
-    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.doViewPatient = async function (r) {
         try {
@@ -207,5 +207,4 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
 
     $scope.filterByFlowState = null;
     $scope.filterByType = null;
-    $scope.resolveSummary = SanteDB.application.resolveTemplateSummary;
 }])

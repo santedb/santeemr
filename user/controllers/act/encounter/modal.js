@@ -189,8 +189,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
     }
 
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
-    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
-    $scope.resolveSummary = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.saveCheckin = saveCheckin;
 
     $("#checkinModal").on("hidden.bs.modal", function () {
@@ -243,8 +242,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
         }
     });
 
-    $scope.resolveSummary = SanteEMR.resolveSummaryTemplate;
-    $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+    $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
 
     $scope.saveDischarge = async function (formData) {

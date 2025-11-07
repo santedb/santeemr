@@ -1,0 +1,56 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script>~/controllers/patient/widgets/policies.js</sdb:script>
+    <sdb:widget order="1200" name="org.santedb.emr.widget.patient.policies" headerClass="alert-success" size="Small"
+        type="Panel" context="org.santedb.emr.patient.view.dashboard">
+        <sdb:icon>fas fa-shield-halved</sdb:icon>
+        <sdb:description lang="en">Privacy policies that have been applied against the patient record</sdb:description>
+        <sdb:views>
+            <sdb:view type="Edit">
+                <!-- <sdb:demand>1.3.6.1.4.1.33349.3.1.5.9.2.0.13</sdb:demand> -->
+            </sdb:view>
+        </sdb:views>
+        <sdb:guard>scopedObject</sdb:guard>
+    </sdb:widget>
+
+    <div ng-controller="EmrPatientPolicyController">
+        <ul ng-if="panel.view != 'Edit'" class="list-group">
+            <li class="list-group-item-info list-group-item">
+                <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.emr.patient.policy.info' | i18n }}
+            </li>
+            <li ng-repeat="pol in scopedObject.policy track by $index" class="list-group-item">
+                <i class="fas fa-fw fa-shield"></i> {{ pol.policyModel.name }} ({{ pol.policyModel.oid}})
+            </li>
+            <li ng-if="scopedObject.policy.length == 0" class="list-group-item">
+                {{ 'ui.emr.patient.policy.none' | i18n }}
+            </li>
+        </ul>
+        <form ng-if="panel.view == 'Edit'" name="panel.editForm"
+            ng-submit="changePatientPolicies(panel.editForm)" novalidate="novalidate">
+            <li class="list-group-item-warning list-group-item">
+                <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.emr.patient.policy.warning' | i18n }}
+            </li>
+            <li ng-repeat="pol in scopedObject.policy track by $index" 
+                ng-if="pol.operation != 'Delete'"
+                class="list-group-item d-flex">
+                <span class="flex-grow-1"><i class="fas fa-fw fa-shield"></i> {{ pol.policyModel.name }} ({{
+                    pol.policyModel.oid}})</span>
+                <button class="btn btn-danger btn-sm" type="button" ng-click="pol.operation = 'Delete'">
+                    <i class="fas fa-fw fa-times-circle"></i> {{ 'ui.action.remove' | i18n }}
+                </button>
+            </li>
+            <li class="list-group-item">
+                <div class="input-group">
+                    <entity-select class="form-control h-100" name="newPolicy"
+                        ng-model="newPolicy.policyModel" return-object="true" entity-type="'SecurityPolicy'" filter="{
+                        'isPublic' : true
+                    }"></entity-select>
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-success" ng-click="scopedObject.policy.push(newPolicy); newPolicy = {}">
+                            <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n }}
+                        </button>
+                    </div>
+                </div>
+            </li>
+        </form>
+    </div>
+</div>

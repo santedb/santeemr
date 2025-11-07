@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="EMR Policies v3.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="EMR Policies v3.01"
     xmlns="http://santedb.org/data">
     <update insertIfNotExists="true">
         <SecurityPolicy xmlns="http://santedb.org/model">
             <id>8081F5BF-E001-479A-9780-7E0440B3094E</id>
             <name>Unrestricted EMR Functions</name>
             <oid>1.3.6.1.4.1.33349.3.1.5.9.2.200</oid>
-            <isPublic>true</isPublic>
+            <isPublic>false</isPublic>
             <canOverride>false</canOverride>
         </SecurityPolicy>
     </update>
@@ -16,9 +16,8 @@
             <id>0E6EE360-22F9-4BD2-A51C-3670BA017E80</id>
             <name>Clinic Reporting</name>
             <oid>1.3.6.1.4.1.33349.3.1.5.9.2.200.1</oid>
-            <isPublic>true</isPublic>
+            <isPublic>false</isPublic>
             <canOverride>false</canOverride>
         </SecurityPolicy>
     </update>
-
 </dataset>
