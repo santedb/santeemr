@@ -3,19 +3,18 @@
  * Copyright (C) 2021 - 2025, SanteSuite Inc. and the SanteSuite Contributors (See NOTICE.md for full copyright notices)
  * Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
  * Portions Copyright (C) 2015-2018 Mohawk College of Applied Arts and Technology
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you
- * may not use this file except in compliance with the License. You may
- * obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License"); you 
+ * may not use this file except in compliance with the License. You may 
+ * obtain a copy of the License at 
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0 
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
- * License for the specific language governing permissions and limitations under
+ * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+ * License for the specific language governing permissions and limitations under 
  * the License.
- *
  */
 
 // Interactive SHIM between host environment and browser
@@ -857,6 +856,13 @@ function APIWrapper(_config) {
 function ResourceWrapper(_config) {
 
     /**
+     * @summary Get the resource this resource wrapper is configured 
+     * @memberof ResourceWrapper
+     * @returns (string} The resource that this handler handes
+     */
+    this.getResource = () => _config.resource;
+
+    /**
      * @method getUrl
      * @summary Gets the URL to this resource base
      * @memberof ResourceWrapper
@@ -874,6 +880,7 @@ function ResourceWrapper(_config) {
         * @param {any} parms Extra parameters to pass to the get function
         * @param {any} state A unique state object which is passed back to the caller
         * @param {boolean} upstream True if the get should be directly submitted to the upstream iCDR server
+        * @param {any} headers Extra headers to be added to the request
         * @returns {Promise} The promise for the operation
         * @example Fetch a patient by ID
         *   async function fetchPatient(id) {
@@ -889,11 +896,10 @@ function ResourceWrapper(_config) {
         *       }
         *   }
         */
-    this.getAsync = function (id, viewModel, query, upstream, state) {
+    this.getAsync = function (id, viewModel, query, upstream, state, headers) {
 
-        var headers = {
-            Accept: _config.accept
-        };
+        headers = headers || {};
+        headers.Accept =  headers.Accept || _config.accept;
 
         // Prepare query
         var url = null;
@@ -959,11 +965,10 @@ function ResourceWrapper(_config) {
         *       }
         *   }
         */
-    this.findAsync = function (query, viewModel, upstream, state) {
+    this.findAsync = function (query, viewModel, upstream, state, headers) {
 
-        var headers = {
-            Accept: _config.accept
-        };
+        headers = headers || {};
+        headers.Accept =  headers.Accept || _config.accept;
         query = query || {};
 
         if (viewModel)
@@ -1018,6 +1023,7 @@ function ResourceWrapper(_config) {
         * @param {any} data The data / resource which is to be created
         * @param {any} state A unique state object which is passed back to the caller
         * @param {boolean} upstream True if the registration should be directly submitted to the upstream iCDR server
+        * @param {boolean} dontReturnObject True if the created object should not be returned
         * @returns {Promise} The promise for the operation
         * @description When inserting data into the CDR, it is important that the object passed into {@param data} has an appropriate $type which matches the type of data being 
         *               sent. This check is done to ensure that a {@link Patient} is not submitted to the {@link Act} endpoint.
@@ -1045,14 +1051,15 @@ function ResourceWrapper(_config) {
         *   }
         * }
         */
-    this.insertAsync = function (data, upstream, state) {
+    this.insertAsync = function (data, upstream, state, dontReturnObject, headers) {
 
+        
         if (data.$type !== _config.resource && data.$type !== `${_config.resource}Info` && data.$type !== `${_config.resource}Definition`)
             throw new Exception("ArgumentException", "error.invalidType", `Invalid type, resource wrapper expects ${_config.resource} however ${data.$type} specified`);
 
-        var headers = {
-            Accept: _config.accept
-        };
+        headers = headers || {};
+        headers.Accept = _config.accept;
+
         if (_config.viewModel)
             headers["X-SanteDB-ViewModel"] = _config.viewModel;
 
@@ -1068,6 +1075,10 @@ function ResourceWrapper(_config) {
 
         if (upstream !== undefined) {
             headers["X-SanteDB-Upstream"] = upstream;
+        }
+
+        if(dontReturnObject !== undefined) {
+            headers["X-SanteDB-NoEcho"] = true;
         }
 
         // Perform post
@@ -1093,11 +1104,13 @@ function ResourceWrapper(_config) {
      * @description The patching operation is used to update a portion of the resource without subimtting the entirety of the object to the dCDR or iCDR 
      *               server ({@link https://help.santesuite.org/developers/service-apis/health-data-service-interface-hdsi/patching})
      */
-    this.patchAsync = function (id, etag, patch, force, upstream, state) {
+    this.patchAsync = function (id, etag, patch, force, upstream, state, dontReturnObject, headers) {
         if (patch.$type !== "Patch")
             throw new Exception("ArgumentException", "error.invalidType", `Invalid type, resource wrapper expects ${_config.resource} however ${data.$type} specified`);
+        
+        headers = headers || {};
+        headers.Accept = _config.accept;
 
-        var headers = {};
         if (etag) {
             headers['If-Match'] = etag;
         }
@@ -1108,6 +1121,11 @@ function ResourceWrapper(_config) {
 
         if (force) {
             headers['X-Patch-Force'] = true;
+        }
+
+        
+        if(dontReturnObject !== undefined) {
+            headers["X-SanteDB-NoEcho"] = true;
         }
 
         patch.appliesTo = patch.appliesTo || {};
@@ -1135,7 +1153,7 @@ function ResourceWrapper(_config) {
         * @param {boolean} upstream True if the update should be directly submitted to the upstream iCDR server
         * @returns {Promise} The promise for the operation
         */
-    this.updateAsync = function (id, data, upstream, state) {
+    this.updateAsync = function (id, data, upstream, state, dontReturnObject, headers) {
 
         if (data.id && data.id !== id)
             throw new Exception("ArgumentException", "error.invalidValue", `Identifier mismatch, PUT identifier  ${id} doesn't match ${data.id}`);
@@ -1144,15 +1162,19 @@ function ResourceWrapper(_config) {
             delete (data.updatedBy);
         if (data.updatedTime)
             delete (data.updatedTime);
+        
+        headers = headers || {};
+        headers.Accept = _config.accept;
 
-        var headers = {
-            Accept: _config.accept
-        };
         if (_config.viewModel)
             headers["X-SanteDB-ViewModel"] = _config.viewModel;
 
         if (upstream !== undefined) {
             headers["X-SanteDB-Upstream"] = upstream;
+        }
+
+        if(dontReturnObject !== undefined) {
+            headers["X-SanteDB-NoEcho"] = true;
         }
 
         // Send PUT
@@ -1175,16 +1197,20 @@ function ResourceWrapper(_config) {
     * @param {boolean} upstream True if the delete should be directly submitted to the upstream iCDR server
     * @returns {Promise} The promise for the operation
     */
-    this.deleteAsync = function (id, upstream, state) {
+    this.deleteAsync = function (id, upstream, state, dontReturnObject, headers) {
 
-        var headers = {
-            Accept: _config.accept
-        };
+        headers = headers || {};
+        headers.Accept = _config.accept;
+
         if (_config.viewModel)
             headers["X-SanteDB-ViewModel"] = _config.viewModel;
 
         if (upstream !== undefined) {
             headers["X-SanteDB-Upstream"] = upstream;
+        }
+        
+        if(dontReturnObject !== undefined) {
+            headers["X-SanteDB-NoEcho"] = true;
         }
 
         return _config.api.deleteAsync({
@@ -1718,14 +1744,14 @@ function ResourceWrapper(_config) {
     *   }
     * }
     */
-    this.invokeOperationAsync = function (id, operation, parameters, upstream, viewModel, state) {
+    this.invokeOperationAsync = function (id, operation, parameters, upstream, viewModel, expectType, contentType, state) {
 
 
         if (!operation)
             throw new Exception("ArgumentNullException", "Missing scoping property");
 
         var headers = {
-            Accept: _config.accept
+            Accept: contentType || _config.accept
         };
         if (viewModel)
             headers["X-SanteDB-ViewModel"] = viewModel;
@@ -1757,8 +1783,8 @@ function ResourceWrapper(_config) {
             data: requestParms,
             state: state,
             resource: url,
-            contentType: _config.accept
-
+            contentType: contentType || _config.accept,
+            dataType: expectType
         });
     }
 };
@@ -1857,7 +1883,7 @@ function SanteDBWrapper() {
                 if (data.responseJSON &&
                     pve &&
                     data.getResponseHeader("WWW-Authenticate").indexOf("insufficient_scope") > -1)
-                    _elevator.elevate(angular.copy(_session), [pve.policyId, "*"]);
+                    _elevator.elevate(angular.copy(_session), [pve, "*"]);
                 else
                     _elevator.elevate(null);
                 return true;
@@ -2034,7 +2060,7 @@ function SanteDBWrapper() {
          * @description In some templates, sub objects will have no $type, and just a reference to a template mnemonic. This method will take a template
          *              object and will resolve these references to other templates. {@link https://help.santesuite.org/santedb/data-and-information-architecture/conceptual-data-model#templates}
          */
-        async function getSubTemplates(collection, parms) {
+        async function getSubTemplates(collection, parms, viewModel) {
             var promises = Object.keys(collection).map(function (key) {
                 try {
                     var relationships = collection[key];
@@ -2048,28 +2074,46 @@ function SanteDBWrapper() {
 
                             var targetProperty = rel.playerModel || rel.targetModel;
 
-                            if (targetProperty && !targetProperty.classConcept && targetProperty.templateModel) {
-                                var object = await _resources.template.getAsync(targetProperty.templateModel.mnemonic, "full", parms);
+                            if (targetProperty && (!targetProperty.classConcept || targetProperty.tag?.$resolveSubTemplate) && targetProperty.templateModel) {
+                                var object = await _resources.template.getAsync(`${targetProperty.templateModel.mnemonic}/skel`, viewModel || "full", parms);
 
+                                if(targetProperty.id) {
+                                    object.id = targetProperty.id; // We already have an ID for this object so we want to keep that 
+                                }
+                                
                                 // Initialize the template 
                                 if (object.tag) {
                                     Object.keys(object.tag).filter(o => o.indexOf("$copy") == 0).forEach(function (k) {
                                         var target = k.substring(6);
                                         var source = object.tag[k];
 
+                                        if(Array.isArray(source))
+                                        {
+                                            source = source[0];
+                                        }
                                         // Analyze
                                         var scopedValue = object;
                                         source.split('.').forEach(function (s) { if (scopedValue) scopedValue = scopedValue[s]; });
 
-                                        object[target] = copyObject(scopedValue, true);
+                                        var targetObject = object;
+                                        var targetParts = target.split('.');
+                                        for(var i = 0; i < targetParts.length - 1; i++) {
+                                            if(targetObject) {
+                                                targetObject = targetObject[targetParts[i]];
+                                            }
+                                        };
 
+                                        scopedValue = copyObject(scopedValue, true);
+                                        targetObject[targetParts[targetParts.length - 1]] = scopedValue;
                                     })
                                 }
 
                                 if (object.relationship)
                                     object.relationship = await getSubTemplates(object.relationship, parms);
-
-                                if (rel.playerModel) {
+                                if (object.participation)
+                                    object.participation = await getSubTemplates(object.participation, parms);
+                                
+                                if (rel.playerModel || rel.$type == "ActParticipation") {
                                     rel.playerModel = object;
                                     Object.keys(targetProperty).forEach(subKey => rel.playerModel[subKey] = rel.playerModel[subKey] || targetProperty[subKey]);
                                 }
@@ -2600,10 +2644,11 @@ function SanteDBWrapper() {
          * @method doUpdateAsync
          * @memberof SanteDBWrapper.ApplicationApi
          */
-        this.doUpdateAsync = function () {
+        this.doUpdateAsync = function (noPrompt) {
             return _app.postAsync({
-                resource: "Update",
-                contentType: 'application/json'
+                resource: "$update",
+                contentType: 'application/json',
+                data: { _apply: noPrompt }
             });
         }
         /**
@@ -2818,6 +2863,23 @@ function SanteDBWrapper() {
          * @param {string} templateId The id of the template for which HTML input should be gathered
          * @description This method allows a plugin to resolve a template identifier (like: entity.tanzania.child) to an actual HTML input form
          */
+        this.resolveTemplateBackentry = function(templateId) {
+            var entry = (_templateCache || []).find(o => o.mnemonic == templateId);
+            if (entry) {
+                return entry.backEntry;
+            }
+            else {
+                return null;
+            }
+        }
+        /**
+         * @summary Resolves the HTML input form for the specified template
+         * @method resolveTemplateForm
+         * @memberof SanteDBWrapper.ApplicationApi
+         * @returns {string} The HTML content of the input form for the specified template
+         * @param {string} templateId The id of the template for which HTML input should be gathered
+         * @description This method allows a plugin to resolve a template identifier (like: entity.tanzania.child) to an actual HTML input form
+         */
         this.resolveTemplateForm = function (templateId) {
             var entry = (_templateCache || []).find(o => o.mnemonic == templateId);
             if (entry) {
@@ -2884,14 +2946,15 @@ function SanteDBWrapper() {
          * @param {any} parms The parameters to pass to the template
          * @returns {any} The templated object
          */
-        this.getTemplateContentAsync = async function (templateId, parms) {
-            var template = await _resources.template.getAsync(templateId, "full", parms);
+        this.getTemplateContentAsync = async function (templateId, parms, viewModel) {
+            var template = await _resources.template.getAsync(`${templateId}/skel`, viewModel || "full", parms);
             if (template.relationship) { // Find relationship templates
-                template.relationship = await getSubTemplates(template.relationship, parms);
+                template.relationship = await getSubTemplates(template.relationship, parms, viewModel);
             }
             if (template.participation) {
-                template.participation = await getSubTemplates(template.participation, parms);
+                template.participation = await getSubTemplates(template.participation, parms, viewModel);
             }
+            
             return template;
         }
         /**
@@ -3035,7 +3098,8 @@ function SanteDBWrapper() {
      * @property {ResourceWrapper} appletSolution Functions for interacting with system applet solutions
      * @property {ResourceWrapper} applet Functions for interacting with system applets
      * @property {ResourceWrapper} conceptRelationship Functions for interacting with concept relationships
-     * 
+     * @property {ResourceWrapper} notificationTemplate Functions for interacting with notification templates
+     * @property {ResourceWrapper} notificationInstance Functions for interacting with notification instances
      */
     function ResourceApi() {
 
@@ -3070,6 +3134,17 @@ function SanteDBWrapper() {
         });
 
         /**
+         * @type {ResourceWrapper}
+         * @memberof SanteDBWrapper.ResourceApi
+         * @summary Wrapper for entity extensions
+         */
+        this.entityExtension = new ResourceWrapper({
+            accept: "application/json", 
+            resource: "EntityExtension", 
+            api: _hdsi
+        });
+
+        /**
         * @type {ResourceWrapper}
         * @memberof SanteDBWrapper.ResourceApi
         * @summary Represents a resource wrapper that persists care pathway definitions
@@ -3081,6 +3156,29 @@ function SanteDBWrapper() {
         });
 
         /**
+        * @type {ResourceWrapper}
+        * @memberof SanteDBWrapper.ResourceApi
+        * @summary Represents a resource wrapper that persists a data template definition
+        */
+        this.dataTemplateDefinition = new ResourceWrapper({
+            accept: "application/json",
+            resource: 'DataTemplateDefinition', 
+            api: _ami
+        });
+
+        /**
+            * @type {ResourceWrapper}
+            * @memberof SanteDBWrapper.ResourceApi
+            * @summary Represents an resource wrapper that interoperates with the concept relationship type handler
+            */
+        this.conceptRelationshipType = new ResourceWrapper({
+            accept: _viewModelJsonMime,
+            resource: "ConceptRelationshipType",
+            api: _hdsi
+        });
+
+        
+        /**
             * @type {ResourceWrapper}
             * @memberof SanteDBWrapper.ResourceApi
             * @summary Represents an resource wrapper that interoperates with the care planner
@@ -3090,6 +3188,7 @@ function SanteDBWrapper() {
             resource: "CarePlan",
             api: _hdsi
         });
+
         /**
         * @type {ResourceWrapper}
         * @memberof SanteDBWrapper.ResourceApi
@@ -3207,6 +3306,16 @@ function SanteDBWrapper() {
             api: _hdsi
         });
 
+        /**
+            * @type {ResourceWrapper}
+            * @summary Represents the act relationship resource
+            * @memberof SanteDBWrapper.ResourceApi
+            */
+        this.actRelationship = new ResourceWrapper({
+            accept: _viewModelJsonMime,
+            resource: "ActRelationship",
+            api: _hdsi
+        });
 
         /**
          * @type {ResourceWrapper}
@@ -3238,6 +3347,17 @@ function SanteDBWrapper() {
         this.codedObservation = new ResourceWrapper({
             accept: _viewModelJsonMime,
             resource: "CodedObservation",
+            api: _hdsi
+        });
+
+        /**
+            * @type {ResourceWrapper}
+            * @memberof SanteDBWrapper.ResourceApi
+            * @summary Represents the DateObservation Resource
+            */
+        this.dateObservation = new ResourceWrapper({
+            accept: _viewModelJsonMime,
+            resource: "DateObservation",
             api: _hdsi
         });
         /**
@@ -3765,6 +3885,28 @@ function SanteDBWrapper() {
             api: _hdsi
         });
 
+        /**
+         * @type {ResourceWrapper}
+         * @memberof SanteDbWrapper.resources
+         * @summary Wrapper for notification templates
+         */
+        this.notificationTemplate = new ResourceWrapper({
+            resource: "NotificationTemplate",
+            accept: _viewModelJsonMime,
+            api: _ami
+        });
+
+        /**
+         * @type {ResourceWrapper}
+         * @memberof SanteDbWrapper.resources
+         * @summary Wrapper for notification instances
+         */
+        this.notificationInstance = new ResourceWrapper({
+            resource: "NotificationInstance",
+            accept: _viewModelJsonMime,
+            api: _ami
+        });
+
     };
 
     // HACK: Wrapper pointer facility = place
@@ -4261,7 +4403,20 @@ function SanteDBWrapper() {
          * @memberof SanteDBWrapper.AuthenticationApi
          */
         this.setElevator = function (elevator) {
-            _elevator = elevator;
+            if(elevator && _elevator && _elevator.getSession()) {
+                console.warn("Ignoring setElevator since an authenticated elevated session already exists");
+            }
+            else {
+                _elevator = elevator;
+            }
+        }
+
+        /**
+         * @summary Gets the current elevator if assigned
+         * @returns {SanteDBElevator} The assigned elevation handler
+         */
+        this.getElevator = function() {
+            return _elevator;
         }
         /**
             * @method getSessionInfoAsync
@@ -4717,29 +4872,49 @@ function SanteDBWrapper() {
             });
         }
 
+        let resetSessionVariables = function(){
+            _oauthSession = _session = null;
+            window.sessionStorage.removeItem('token');
+            window.sessionStorage.removeItem('refresh_token');
+            window.sessionStorage.removeItem('lang');
+            SanteDB.locale.setLocale(null);
+        };
+
         /**
             * @method logoutAsync
             * @memberof SanteDBWrapper.AuthenticationApi
             * @summary Abandons the current SanteDB session
             * @returns {Promise} The promise representing the fulfillment or rejection of the logout request
             */
-        this.logoutAsync = function () {
+        this.logoutAsync = function (id_token_hint) {
             return new Promise(function (fulfill, reject) {
+                try {
+                    
+                    if (!_session || _session === undefined)
+                    {
+                        resetSessionVariables();
+                        if (fulfill) fulfill();
+                        return;
+                    }
+                }
+                catch (e1) {
+                    if (reject) reject(e1);
+                }
+
                 try {
                     _auth.postAsync({
                         resource: "signout",
                         contentType: 'application/x-www-form-urlencoded',
                         data: {
+                            id_token_hint: id_token_hint,
                             logout_hint: _session.username,
                             client_id: SanteDB.configuration.getClientId()
                         }
                     })
                         .then(function (d) {
-                            _oauthSession = _session = null;
-                            window.sessionStorage.removeItem('token');
-                            window.sessionStorage.removeItem('refresh_token');
-                            window.sessionStorage.removeItem('lang');
-                            SanteDB.locale.setLocale(null);
+                            if(!id_token_hint || id_token_hint == _session.jti) {
+                                resetSessionVariables();
+                            }
                             if (fulfill) fulfill(d);
                         })
                         .catch(reject);
@@ -4821,7 +4996,13 @@ function SanteDBWrapper() {
             day: 'YYYY-MM-DD',
             hour: 'YYYY-MM-DD HH',
             minute: 'YYYY-MM-DD HH:mm',
-            second: 'YYYY-MM-DD HH:mm:ss'
+            second: 'YYYY-MM-DD HH:mm:ss',
+            human: {
+                month: 'MMMM, YYYY',
+                day: 'dddd MMMM D, YYYY',
+                hour: 'dddd MMMM D, YYYY [at] hh A',
+                minute: 'dddd MMMM D, YYYY [at] hh:mm A'
+            }
         };
 
 
@@ -4835,7 +5016,8 @@ function SanteDBWrapper() {
             */
         this.getString = function (stringId, parameters) {
             try {
-                var retVal = __SanteDBAppService.GetString(stringId);
+                var retVal =
+                    __SanteDBAppService.GetString(stringId);
 
                 if (retVal && retVal.replace) {
                     retVal = retVal.replace(/\{.*?\}/ig, function (s) {
@@ -4996,7 +5178,6 @@ function SanteDBWrapper() {
         $.ajaxSetup({
             cache: false,
             beforeSend: function (data, settings) {
-
                 if (!settings.noAuth) {
                     var elevatorToken = _elevator ? _elevator.getToken() : null;
                     if (elevatorToken) {

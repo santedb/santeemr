@@ -124,11 +124,11 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                         $timeout(() => $scope.patient = new Patient(patient));
                     }
                     catch (e) {
-                        $timeout(() => $scope.error = $rootScope.prepareErrorForDisplay(e));
+                        $rootScope.errorHandler(e);
                     }
                     break;
                 default:
-                    $timeout(() => $scope.error = $rootScope.prepareErrorForDisplay(e));
+                        $rootScope.errorHandler(e);
                     break;
             }
         }

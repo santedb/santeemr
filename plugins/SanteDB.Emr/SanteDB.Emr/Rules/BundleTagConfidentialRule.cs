@@ -49,7 +49,7 @@ namespace SanteEMR.Rules
             {
                 throw new ArgumentNullException(nameof(data));
             }
-            
+
             var policyMaps = this.m_configuration?.AutoApplyPolicyMap.SelectMany(o => this.m_conceptRepository.ExpandConceptSet(o.ConceptSet).ToArray().Select(c => new { Concept = c.Key.Value, Policy = o.PolicyOid }))
                 .GroupBy(o => o.Concept)
                 .ToDictionaryIgnoringDuplicates(o => o.Key, o => o.Select(c => this.m_pipService.GetPolicy(c.Policy)).ToArray());
@@ -58,8 +58,7 @@ namespace SanteEMR.Rules
             foreach (var act in data.Item.OfType<Act>().Where(o =>
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
-               
-                o.MoodConceptKey == ActMoodKeys.Eventoccurrence 
+                o.MoodConceptKey == ActMoodKeys.Eventoccurrence
                 ).ToArray()
             )
             {
@@ -77,13 +76,24 @@ namespace SanteEMR.Rules
 
                 // Hide / Tag Confidential for VIPs
                 var rct = act.LoadProperty(o => o.Participations).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget)?.LoadProperty(o => o.PlayerEntity) as Person;
-                if(rct?.VipStatusKey != null && this.m_vipPolicy != null && !act.Policies.Any(p=>p.PolicyKey == this.m_vipPolicy.Key))
+                if (rct?.VipStatusKey != null && this.m_vipPolicy != null && !act.Policies.Any(p => p.PolicyKey == this.m_vipPolicy.Key))
                 {
                     act.Policies.Add(new SanteDB.Core.Model.Security.SecurityPolicyInstance()
                     {
                         PolicyKey = this.m_vipPolicy.Key,
                         GrantType = SanteDB.Core.Model.Security.PolicyGrantType.Grant
                     });
+                }
+
+                // If there are any consent directives on the patient we want to apply them to this record as well
+                var rctPolicies = rct?.LoadProperty(o => o.Policies).Where(p => !act.Policies.Any(a => a.PolicyKey == p.PolicyKey));
+                if(rctPolicies?.Any() == true)
+                {
+                    act.Policies.AddRange(rctPolicies.Select(o => new SanteDB.Core.Model.Security.SecurityPolicyInstance()
+                    {
+                        PolicyKey = o.PolicyKey,
+                        GrantType = o.GrantType
+                    }));
                 }
             }
 
@@ -93,11 +103,14 @@ namespace SanteEMR.Rules
                 foreach (var ent in data.Item.OfType<Person>().Where(o =>
                     o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                     o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
-                    o.VipStatusKey.HasValue
+                    (o.VipStatusKey.HasValue ||
+                    o.LoadProperty(
+                        r => r.Relationships, referenceData: data.Item).Where(r => r.RelationshipTypeKey == EntityRelationshipTypeKeys.Mother).Any(r => (r.LoadProperty(t => t.TargetEntity, referenceData: data.Item) as Person).VipStatusKey.HasValue)
+                    )
                 ))
                 {
                     var entPolicies = ent.LoadProperty(o => o.Policies);
-                    if(!entPolicies.Any(p=>p.PolicyKey == this.m_vipPolicy.Key))
+                    if (!entPolicies.Any(p => p.PolicyKey == this.m_vipPolicy.Key))
                     {
                         entPolicies.Add(new SanteDB.Core.Model.Security.SecurityPolicyInstance()
                         {
