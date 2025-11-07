@@ -36,7 +36,7 @@
                 <div class="card-body">
                     <h5 class="card-title p-0 m-0">{{ id.value }} <small class="text-muted">{{ id.domainModel.name
                             }}</small>
-                        <button type="button" class="float-right btn btn-outline-primary"
+                        <button type="button" class="float-right btn btn-outline-primary" ng-disabled="scopedObject.policy.length &gt; 0"
                             ng-click="showBarcode(domain)"><i class="fas fa-barcode fa-fw"></i></button>
                     </h5>
                 </div>

@@ -3,7 +3,7 @@
     
     <div ng-controller="PregnancyHistoryController">
         <!-- Does Patient Have Pregnancy History -->
-        <div class="row">
+        <div class="row" ng-if="!act.version">
             <div class="col-12">
                 <label class="p-0 font-weight-bold control-label required">
                     {{ act.typeConceptModel | concept }}
@@ -34,7 +34,7 @@
                     {{ comp.targetModel.typeConceptModel | concept }}
                 </label>
 
-                <input ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                <input ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' &amp;&amp; !act.version"
                     min="{{ comp.targetModel.typeConceptModel.id == 'a2ab26a4-1887-11eb-adc1-0242ac120002' ? 1 : 0 }}"
                     name="pregnancyHistoryComponent{{ $index }}" ng-model="comp.targetModel.value" class="form-control"
                     type="number" max="15" />
@@ -54,7 +54,7 @@
                         <label class="checkbox-container">
                             <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
                             <input type="checkbox" ng-model="complication.targetModel.isNegated" ng-true-value="false"
-                                ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                                ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'  &amp;&amp; !act.version"
                                 ng-false-value="true" class="checkbox-control" />
                             <span></span>
                             {{ ::complication.targetModel.valueModel | concept }}

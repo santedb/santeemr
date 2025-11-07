@@ -104,7 +104,7 @@
                 {{ item.dateOfBirth | extDate: item.dateOfBirthPrecision }} ({{ item.dateOfBirth | age }})
                 
                 <!-- Deceased Indicator -->
-                <div class="ml-1 badge badge-danger" ng-if="item.deceasedDate">
+                <div class="ml-1 badge badge-dark" ng-if="item.deceasedDate">
                     <i class="fas fa-exclamation-circle"></i> 
                     
                     {{ 'ui.model.person.deceasedDate' | i18n }} ({{ item.deceasedDate | extDate: item.deceasedDatePrecision }})
