@@ -38,9 +38,9 @@
     </sdb:widget>
 
     <div ng-controller="EmrEncounterEntryController">
-        <form ng-submit="saveVisit(encounterForm)" name="encounterForm" novalidate="novalidate" autocapitalize="off"
+        <form ng-submit="saveVisit(encounterForm)" ng-if="scopedObject.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" name="encounterForm" novalidate="novalidate" autocapitalize="off"
             autocomplete="off" aria-autocomplete="none">
-            <act-edit owner-form="encounterForm" model="scopedObject" no-add="false" no-header="true" readonly="{{ scopedObject.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' }}"
+            <act-edit owner-form="encounterForm" model="scopedObject" no-add="false" no-header="true" readonly="false"
                 no-override="false" actions="[
                 { name: 'cancel', className: 'btn-danger editOnly', icon: 'fas fa-fw fa-times-circle', action: 'doCancel', when: '!r.previousVersion' },
                 { name: 'save', type: 'submit', className: 'btn-primary editOnly', icon: 'fas fa-fw fa-floppy-disk', validOnly: false },
@@ -48,6 +48,10 @@
                 { name: 'discharge', action: 'doDischarge', className: 'btn-success editOnly', icon: 'fas fa-fw fa-person-walking-arrow-right', validOnly: true }
                 ]" no-remove="false" />
         </form>
+        <div ng-if="scopedObject.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
+            <act-edit model="scopedObject" no-add="true" no-header="true" readonly="true"
+                no-override="true" no-remove="true" />
+        </div>
     </div>
 
     <!-- #include virtual="~/partials/act/return-waiting-modal.html" -->

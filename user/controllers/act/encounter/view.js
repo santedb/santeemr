@@ -23,7 +23,9 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     async function initializeView(encounterId) {
         try {
             var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full", null, null, null, {
-                "X-SanteDB-EmitPrivacyError": "Redact,Nullify,Hash,Hide"
+                "X-SanteDB-EmitPrivacyError": "Redact,Nullify,Hash,Hide",
+                "Pragma" : "no-cache",
+                "Cache-Control" : "no-cache"
             });
 
             encounter.relationship = encounter.relationship || {};

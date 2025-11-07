@@ -107,7 +107,6 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
 
             var rootCause = e.getRootCause();
 
-            // TODO: --- HANDLE ELEVATION CASE
             // Type of exception
             switch (rootCause.$type) {
                 case "FileNotFoundException": // Try upstream
@@ -134,6 +133,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
         }
     }
 
+    // elevation code
     var elevator = new SanteDBElevator(() => loadPatient($stateParams.id), true);
     elevator.setCloseCallback((elevated) => {
         if(!elevated) {
