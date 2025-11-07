@@ -36,9 +36,20 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
             // All participations are not touched
             if (encounter.relationship && encounter.relationship.HasComponent) {
-                encounter.relationship.HasComponent.filter(o=>o.targetModel).forEach(e => e.targetModel.operation = BatchOperationType.IgnoreInt);
+                encounter.relationship.HasComponent.filter(o => o.targetModel).forEach(e => e.targetModel.operation = BatchOperationType.IgnoreInt);
             }
 
+            // The ancounter policies
+            if (encounter.policy) {
+                await Promise.all(encounter.policy?.map(async (p) => {
+                    try {
+                        p.policyModel = await SanteDB.resources.securityPolicy.getAsync(p.policy);
+                    }
+                    catch (e) {
+
+                    }
+                }));
+            }
             // TODO: Load the current act list and assign to the _HasComponent relationship
             $timeout(() => {
                 $scope.encounter = encounter;
@@ -67,19 +78,19 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
                 state.action = $scope.returnToState;
                 state.label = SanteDB.display.renderConcept(state);
                 return state;
-            }) ;
+            });
 
         }
         catch (e) {
             // TODO: HANDLE ELEVATION CASE
             $rootScope.errorHandler(e);
         }
-        
+
     }
 
     var elevator = new SanteDBElevator(() => initializeView($stateParams.id), true);
     elevator.setCloseCallback((elevated) => {
-        if(!elevated) {
+        if (!elevated) {
             toastr.info(SanteDB.locale.getString("ui.emr.elevation.cancel"));
             $state.go("santedb-emr.dashboard");
         }
@@ -167,10 +178,10 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
     $scope.doCancel = cancelEncounter;
 }]).controller("EmrBirthRegistrationViewController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
     $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
-    
-    async function init() {        
+
+    async function init() {
         const act = await SanteDB.resources.act.getAsync($scope.act.id, "full");
-        
+
         $scope.act = act;
     }
 
