@@ -71,7 +71,10 @@
         <div class="container-fluid d-lg-block">
             <div class="row">
                 <div ng-repeat="comp in ::item.relationship.HasComponent.orderBy('targetModel.actTime') track by $index"
-                    ng-class="{ 'bg-light' : $index % 2 == 1 }" ng-if="!comp.targetModel.tag.isBackEntry"
+                    ng-class="{ 
+                        'bg-light' : $index % 2 == 1 ,
+                        'actEntryComponentRemoved' : comp.targetModel.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5'
+                    }" ng-if="!comp.targetModel.tag.isBackEntry"
                     ng-init="act = comp.targetModel" class="col-12 d-inline-flex">
                     <i class="fas fa-fw"
                         ng-class="($parent.$parent.$parent.$parent.$parent.resolveTemplateIcon || $parent.$parent.$parent.$parent.resolveTemplateIcon)(comp.targetModel.templateModel.mnemonic)"></i>

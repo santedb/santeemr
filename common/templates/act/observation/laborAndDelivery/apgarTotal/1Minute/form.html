@@ -1,6 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="input-group">
     <div class="input-group-prepend">
-        <span class="input-group-text">{{ act.typeConceptModel | concept }}</span>
+        <span class="input-group-text">{{ ::act.typeConceptModel | concept }}</span>
     </div>
     <input type="range" cdss-interactive="act"  name="apgar1Minute{{act.value}}" class="form-control" min="0" max="10" required="required"
         ng-model="act.value" step="1" />

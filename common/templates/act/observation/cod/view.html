@@ -1,3 +1,10 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    {{ act.typeConceptModel | concept }}: {{ act.valueModel | concept }}
+    <div class="form-group row">
+        <label class="col-md-3 col-sm-12 control-label">{{ 'org.santedb.emr.act.observation.cod' | i18n }}</label>
+
+        <div class="col-md-8 col-sm-12">
+            <concept-select disabled="disabled" readonly="readonly" class="form-control" 
+                concept-set="'CauseOfDeath'" ng-model="::act.value" shortest-name="true" />
+        </div>
+    </div>
 </div>

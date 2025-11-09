@@ -6,7 +6,7 @@
         <div class="row" ng-if="!act.version">
             <div class="col-12">
                 <label class="p-0 font-weight-bold control-label required">
-                    {{ act.typeConceptModel | concept }}
+                    {{ ::act.typeConceptModel | concept }}
                 </label>
             </div>
 
@@ -37,7 +37,7 @@
                 <input ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' &amp;&amp; !act.version"
                     min="{{ comp.targetModel.typeConceptModel.id == 'a2ab26a4-1887-11eb-adc1-0242ac120002' ? 1 : 0 }}"
                     name="pregnancyHistoryComponent{{ $index }}" ng-model="comp.targetModel.value" class="form-control"
-                    type="number" max="15" />
+                    type="number" max="50" />
             </div>
         </div>
 

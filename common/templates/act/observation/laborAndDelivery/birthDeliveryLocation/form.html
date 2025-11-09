@@ -17,7 +17,7 @@
  -->
 <div xmlns="http://www.w3.org/1999/xhtml">
     <div class="form-group row">
-        <label class="control-label col-md-3 col-sm-12 required">{{ act.typeConceptModel | concept }}</label>
+        <label class="control-label col-md-3 col-sm-12 required">{{ ::act.typeConceptModel | concept }}</label>
         <div class="col-md-9 col-sm-12">
             <concept-select ng-model="act.value" required="required" concept-set="'DeliveryLocation'"
                 add-concept="'70fe34ce-caff-4f46-b6e6-9cd6d8f289d6'" class="form-control"

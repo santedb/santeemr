@@ -1,6 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="form-group row">
     <label class="control-label required col-xs-12 col-md-3">
-        {{ act.typeConceptModel | concept }}
+        {{ ::act.typeConceptModel | concept }}
     </label>
     <div class="col-xs-12 col-md-9">
         <concept-select concept-set="'SexAtBirth'" name="birthSex" required="required" ng-model="act.value"

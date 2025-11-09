@@ -2,13 +2,13 @@
     <div class="row">
         <div class="col-12">
             <label class="control-label">
-                {{ act.typeConceptModel | concept }}
+                {{ ::act.typeConceptModel | concept }}
             </label>
 
             <concept-select concept-set="'PregnancyFindingCodes'" class="form-control" ng-model="act.value" required="required"
                 name="pregnancyFindingMethod" />
 
-            <div class="text text-danger" ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['pregnancyFindingMethod'].$error['required']">
+            <div class="text text-danger" ng-if="$root.getParentVariable($parent, 'editForm')['pregnancyFindingMethod'].$error['required']">
                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
             </div>
         </div>
