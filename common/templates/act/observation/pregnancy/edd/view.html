@@ -1,0 +1,27 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <div class="row">
+        <div class="col-12">
+            <label class="control-label">
+                {{ ::act.typeConceptModel | concept }}
+            </label>
+
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <label class="input-group-text p-0 px-2">
+                        <div class="checkbox-container">
+                            <input readonly="readonly" disabled="disabled" 
+                                type="checkbox" class="checkbox-control" ng-value="::act.typeConcept"
+                                ng-true-value="'afdefced-8468-43ca-9e54-cadf413dfede'"
+                                ng-false-value="'673ac0e2-8468-43ca-9e54-cadf413dfede'" />
+                            <span></span>
+                            {{ 'ui.action.override' | i18n }}
+                        </div>
+                    </label>
+                </div>
+                
+                <input disabled="disabled" readonly="readonly" 
+                    ng-model="act.value" class="form-control" type="date"/>
+            </div>
+        </div>
+    </div>
+</div>

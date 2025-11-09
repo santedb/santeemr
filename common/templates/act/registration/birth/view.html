@@ -1,0 +1,38 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="birthRegistration"
+    >
+    <h5>
+        {{ ::act.typeConceptModel | concept }} #{{ ::$root.getParentVariable($parent,
+        "filterCurrentActions")('c40344a3-1075-4b8d-bc76-ba4c278639cb').indexOf(act) + 1}}
+    </h5>
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12" ng-if="act.participation.Baby[0].playerModel.deceasedDate">
+                <div class="alert alert-dark">
+                    <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.emr.patient.birth.neonateDeceased' | i18n }}
+                </div>
+            </div> 
+            <div class="col-xs-12 col-md-6" ng-repeat="comp in ::act.relationship.HasComponent"
+                ng-if="comp.operation !== 'Delete'" ng-init="act = comp.targetModel" id="infantActions{{$index}}">
+                <ng-include src="::$root.getParentVariable($parent, 'resolveView')(act.templateModel.mnemonic)" />
+            </div>
+
+            <div class="col-12" ng-if="act.participation.Baby">
+                <hr />
+
+                <h6>
+                    <i class="fas fa-fw fa-baby"></i>
+                    {{ ::act.participation.Baby[0].playerModel.templateModel.mnemonic | i18n }}
+                </h6>
+
+                <div class="container-fluid">
+                    <div class="form-group row">
+                        <div class="col-12" ng-init="item = act.participation.Baby[0].playerModel">
+                            <!-- #include virtual="~/partials/patient/search-result-summary.html" -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

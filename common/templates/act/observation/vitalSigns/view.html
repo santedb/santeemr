@@ -1,0 +1,31 @@
+<span xmlns="http://www.w3.org/1999/xhtml">
+    <h5>
+        {{ ::act.typeConceptModel | concept }}
+    </h5>
+
+    <div class=" container-fluid">
+        <div class="form-group row">
+            <!-- Nest the date the same way the sub-obs are nested so they look better -->
+            <label class="control-label col-xs-12 col-md-3">
+                {{ 'ui.model.act.actTime.dateTime' | i18n }} 
+            </label>
+
+            <div class="col-12 col-md-8">
+                <input type="datetime-local" readonly="readonly" disabled="disabled" 
+                    ng-model="act.actTime" class="form-control" />
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-10 offset-1">
+                <div class="row">
+                    <span class="col-6" ng-repeat="comp in ::act.relationship.HasComponent"
+                        ng-init="act = comp.targetModel">
+                        <ng-include
+                            src="::$root.getParentVariable($parent, 'resolveView')(act.templateModel.mnemonic)" />
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>

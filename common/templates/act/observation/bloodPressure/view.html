@@ -1,0 +1,26 @@
+<span xmlns="http://www.w3.org/1999/xhtml">
+    <div class="form-group row">
+        <label class="col-xs-12 col-md-4 control-label required">
+            <i class="fas fa-fw fa-heart"></i> {{ act.typeConceptModel | concept }}
+        </label>
+
+        <div class="col-xs-12 col-md-8">
+            <div class="input-group mb-0">
+                <input type="number" disabled="disabled" ng-value="::act.relationship.HasComponent[0].targetModel.value"
+                    class="form-control" />
+                <div class="input-group-append">
+                    <span class="input-group-text p-0 px-2">
+                        /
+                    </span>
+                </div>
+                <input type="number" disabled="disabled" ng-value="::act.relationship.HasComponent[1].targetModel.value"
+                    class="form-control" />
+                <div class="input-group-append">
+                    <span class="input-group-text p-0 px-2">
+                        {{ act.relationship.HasComponent[0].targetModel.unitOfMeasureModel | concept: 'zxx' }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</span>
