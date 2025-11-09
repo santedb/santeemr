@@ -3,7 +3,7 @@
     <scope>org.santedb.emr.act.registration.birth</scope>
     <definition>definition.json</definition>
     <form>form.html</form>
-    <view>summary.html</view>
+    <view>view.html</view>
     <summaryView>summary.html</summaryView>
     <backEntry>history.html</backEntry>
     <icon>fas fa-ruler-horizontal</icon>

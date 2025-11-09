@@ -1,7 +1,7 @@
 <span xmlns="http://www.w3.org/1999/xhtml">
     <div class="form-group row">
         <label class="col-xs-12 col-md-4 control-label required">
-            <i class="fas fa-fw fa-lungs"></i> {{ act.typeConceptModel | concept }}
+            <i class="fas fa-fw fa-lungs"></i> {{ ::act.typeConceptModel | concept }}
         </label>
 
         <div class="col-xs-12 col-md-8">
@@ -10,7 +10,7 @@
                     class="form-control" name="value{{$index}}" cdss-interactive="act" />
                 <div class="input-group-append">
                     <span class="input-group-text p-0 px-2">
-                        {{ act.unitOfMeasureModel | concept: 'zxx'}}
+                        {{ ::act.unitOfMeasureModel | concept: 'zxx'}}
                     </span>
                 </div>
 

@@ -1,7 +1,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="birthRegistration"
     oc-lazy-load="{ name: 'BirthRegistrationController', files: [ '/org.santedb.emr.common/controllers/templates/act/birth.js' ]  }">
     <h5>
-        {{ act.typeConceptModel | concept }} #{{ ::$root.getParentVariable($parent,
+        {{ ::act.typeConceptModel | concept }} #{{ ::$root.getParentVariable($parent,
         "filterCurrentActions")('c40344a3-1075-4b8d-bc76-ba4c278639cb').indexOf(act) + 1}}
     </h5>
 

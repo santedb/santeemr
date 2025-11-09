@@ -1,0 +1,44 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="input-group">
+    <div class="input-group-prepend">
+        <span class="input-group-text">{{ ::act.typeConceptModel | concept }}</span>
+    </div>
+    <input type="range" readonly="readonly" disabled="disabled" class="form-control"
+        ng-value="::act.value" />
+    <div class="input-group-append">
+        <input type="number" readonly="readonly" disabled="disabled" class="form-control h-100" 
+            ng-value="::act.value" />
+    </div>
+    <div class="input-group-append">
+       <span ng-switch="act.interpretationConcept" class="input-group-text">
+            
+            <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d">
+                <i class="fas fa-fw fa-check"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.normal' | i18n }}
+                </span>
+            </span>
+
+            <span class="badge badge-warning" ng-switch-when="6188f821-261f-420c-9520-0de240a05661">
+                <i class="fas fa-fw fa-chevron-down"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.low' | i18n }}
+                </span>
+            </span>
+
+            <span class="badge badge-danger" ng-switch-when="a7159ba0-a9ec-4565-95b8-ed364794c0b8">
+                <i class="fas fa-fw fa-chevron-down"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.lowlow' | i18n }}
+                </span>
+            </span>
+
+            <span class="badge badge-secondary" ng-switch-default="default">
+                <i class="fas fa-fw fa-question-circle"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.unknown' | i18n }}
+                </span>
+            </span>
+        </span>
+    </div>
+    
+</div>

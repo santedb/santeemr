@@ -1,3 +1,43 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: More detailed view of the preganncy history
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
+
+    <div class="row">
+        <div ng-repeat="comp in ::act.relationship.HasComponent track by $index"
+            ng-if="comp.targetModel.$type == 'QuantityObservation'" class="col-sm-12 col-md-6 col-lg-3 col-lg-2">
+            <label class="d-block font-weight-bold">
+                {{ ::comp.targetModel.typeConceptModel | concept }}
+            </label>
+
+            <input disabled="disabled" readonly="readonly" 
+                ng-value="::comp.targetModel.value" class="form-control"
+                type="number" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12" ng-repeat="comp in ::act.relationship.HasComponent track by $index"
+            ng-if="comp.targetModel.$type == 'Act'">
+            <label class="control-label">
+                {{ ::comp.targetModel.typeConceptModel | concept }}
+            </label>
+
+            <div class="row">
+                <div class="col-12 ml-3"
+                    ng-repeat="complication in ::comp.targetModel.relationship.HasComponent track by $index">
+                    <label class="checkbox-container">
+                        <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
+                        <input type="checkbox" readonly="reaodnly" disabled="disabled" 
+                            ng-value="::complication.targetModel.isNegated" ng-true-value="false"
+                            ng-false-value="true" class="checkbox-control" />
+                        <span></span>
+                        {{ ::complication.targetModel.valueModel | concept }}
+                    </label>
+
+                    <concept-select disabled="disabled" readonly="readonly" 
+                        class="form-control" ng-if="complication.targetModel.tag['$cdss.valueSet']"
+                        concept-set="complication.targetModel.tag['$cdss.valueSet'][0]"
+                        ng-model="complication.targetModel.value" />
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

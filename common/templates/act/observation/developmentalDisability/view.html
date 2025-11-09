@@ -1,4 +1,26 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Detailed view for the cognitive / special arrangement 
-    Include: Notes
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
+    <div class="form-group row">
+        <div class="col-10 offset-1 d-flex">
+            <label class="control-label">
+                {{ act.typeConceptModel | concept }}
+            </label>
+            <div class="mx-2 flex-grow-1">
+                <concept-select readonly="readonly" disabled="disabled" concept-set="'DevelopmentalDisorders'" name="disorder" ng-model="::act.value"
+                    add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" />
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label class="col-sm-12 col-md-3 control-label">
+            {{ 'ui.model.emr.disability.notes' | i18n }}
+        </label>
+        <div class="col-sm-12 col-md-8">
+            <textarea readonly="readonly" disabled="disabled" 
+                ng-value="::act.note[0].text" class="form-control"
+            >
+            </textarea>
+        </div>
+    </div>
+
 </div>

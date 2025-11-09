@@ -3,7 +3,7 @@
     <div ng-controller="PregnancyHistoryController">
         <div class="form-group row">
             <label class="control-label col-sm-12 col-md-3 required">
-                {{ act.typeConceptModel | concept }}
+                {{ ::act.typeConceptModel | concept }}
             </label>
             <div class="col-sm-12 col-md-9" ng-if-end="ng-if-end">
                 <concept-select concept-set="'PregnancyOutcomes'" ng-model="act.value" class="form-control"

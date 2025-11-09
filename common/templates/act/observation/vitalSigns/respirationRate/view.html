@@ -1,0 +1,51 @@
+<span xmlns="http://www.w3.org/1999/xhtml">
+    <div class="form-group row">
+        <label class="col-xs-12 col-md-4 control-label required">
+            <i class="fas fa-fw fa-lungs"></i> {{ ::act.typeConceptModel | concept }}
+        </label>
+
+        <div class="col-xs-12 col-md-8">
+            <div class="input-group mb-0">
+                <input type="number" readonly="readonly" disabled="disabled" 
+                    ng-value="::act.value"
+                    class="form-control" name="value{{$index}}" />
+                <div class="input-group-append">
+                    <span class="input-group-text p-0 px-2">
+                        {{ ::act.unitOfMeasureModel | concept: 'zxx'}}
+                    </span>
+                </div>
+
+                <div class="input-group-append">
+                    <span ng-switch="act.interpretationConcept" class="input-group-text">
+                        <span class="badge badge-danger" ng-switch-when="3c4d6579-7496-4b44-aac1-18a714ff7a05">
+                            <i class="fas fa-fw fa-chevron-up"></i> <span class="d-none d-md-inline">{{
+                                'ui.model.observation.interpretationConcept.high' | i18n }}</span>
+                        </span>
+
+                        <span class="badge badge-danger" ng-switch-when="6188f821-261f-420c-9520-0de240a05661">
+                            <i class="fas fa-fw fa-chevron-down"></i>
+                            <span class="d-none d-md-inline">
+                                {{ 'ui.model.observation.interpretationConcept.low' | i18n }}
+                            </span>
+                        </span>
+
+                        <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d">
+                            <i class="fas fa-fw fa-check"></i>
+                            <span class="d-none d-md-inline">
+                                {{ 'ui.model.observation.interpretationConcept.normal' | i18n }}
+                            </span>
+                        </span>
+
+                        <span class="badge badge-secondary" ng-switch-default="default">
+                            <i class="fas fa-fw fa-question-circle"></i>
+                            <span class="d-none d-md-inline">
+                                {{ 'ui.model.observation.interpretationConcept.unknown' | i18n }}
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</span>
