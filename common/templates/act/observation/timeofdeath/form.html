@@ -1,5 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="form-group row">
-    <label class="col-sm-12 col-md-3 control-label">{{ ::act.typeConceptModel | concept }}</label>
+    <label class="col-sm-12 col-md-3 control-label required">{{ ::act.typeConceptModel | concept }}</label>
     <div class="col-md-8 col-sm-12">
         <div class="input-group">
             <div class="input-group-prepend">
@@ -9,10 +9,13 @@
                     <span style="top: 0;"></span> {{ 'ui.model.date.approx' | i18n }}
                 </label>
             </div>
-            <input ng-if="act.valuePrecision === 3" type="date" class="form-control" ng-model="act.value"
-                max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" />
+            <input ng-if="act.valuePrecision === 3" ng-init="act.value = act.value.trunc()" type="date" class="form-control" ng-model="act.value"
+                max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" required="required" name="timeOfDeath"/>
             <input ng-if="act.valuePrecision === 5" type="datetime-local" class="form-control" ng-model="act.value"
-                max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}" step="60" />
+                max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}" step="60" required="required" name="timeOfDeath"/>
+            <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm').timeOfDeath.$error.required">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+            </div>
         </div>
     </div>
 </div>
