@@ -1,3 +1,8 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    TODO: Display the pregnancy complication code and relevant icon
+    <strong><i class="fas fa-fw fa-exclamation-circle"></i> {{ ::act.typeConceptModel | concept
+        }}:</strong>
+    <span ng-repeat="comp in ::act.relationship.HasComponent track by $index"
+        ng-if="!comp.targetModel.isNegated &amp;&amp; comp.targetModel.operation != 5" class="mx-1">
+        <i class="fas fa-circle"></i> {{ comp.targetModel.valueModel | concept }}
+    </span>
 </div>

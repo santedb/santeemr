@@ -18,7 +18,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="d-flex flex-column justify-content-start mt-1">
     <label class="font-weight-bold mb-1">
         <i class="fas fa-fw fa-syringe"></i>
-        {{ act.typeConceptModel | concept }}
+        {{ ::act.typeConceptModel | concept }}
 
         <!-- Has not been user added -->
         <span ng-if="!act.tag.$userAdded">: {{ act.participation.Product[0].playerModel.name.Assigned | name }} {{

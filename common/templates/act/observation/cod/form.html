@@ -17,11 +17,15 @@
  -->
 <div xmlns="http://www.w3.org/1999/xhtml">
     <div class="form-group row">
-        <label class="col-md-3 col-sm-12 control-label">{{ 'org.santedb.emr.act.observation.cod' | i18n }}</label>
+        <label class="col-md-3 col-sm-12 control-label required">{{ ::act.typeConceptModel | concept }}</label>
 
         <div class="col-md-8 col-sm-12">
             <concept-select class="form-control" ng-init="act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3'"
-                concept-set="'CauseOfDeath'" ng-model="act.value" shortest-name="true" />
+                concept-set="'CauseOfDeath'" add-concept="['70fe34ce-caff-4f46-b6e6-9cd6d8f289d6']" ng-model="act.value" 
+                shortest-name="true"  required="required" name="cod" />
+                <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm').cod.$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n}}
+                </div>
         </div>
     </div>
 </div>

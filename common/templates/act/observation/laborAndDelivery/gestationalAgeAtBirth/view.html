@@ -1,0 +1,19 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="form-group row">
+    <label class="col-xs-12 col-md-3 control-label required">
+        {{ ::act.typeConceptModel | concept }}
+    </label>
+
+    <div class="col-xs-12 col-md-9">
+        <div class="input-group">
+            <input type="number" disabled="disabled" readonly="readonly" 
+                ng-value="::act.value"
+                class="form-control min-height-fit" />
+
+            <div class="input-group-append">
+                <span class="input-group-text">
+                    {{ ::act.unitOfMeasureModel | concept: 'zxx' }}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

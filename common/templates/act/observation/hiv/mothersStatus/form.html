@@ -1,6 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
     <div class="form-group row">
-        <label class="col-md-3 col-sm-12 control-label">{{ 'ui.emr.patient.mothersHivStatus' | i18n }}</label>
+        <label class="col-md-3 col-sm-12 control-label">{{ ::act.typeConceptModel | concept }}</label>
 
         <div class="col-md-8 col-sm-12">
             <concept-select class="form-control" ng-change="act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3'"

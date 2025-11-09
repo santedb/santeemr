@@ -177,6 +177,7 @@ function SanteEMRWrapper() {
         encounter = await prepareActForSubmission(encounter);
         /** @type {Bundle} */
         var bundle = bundleRelatedObjects(encounter, ["Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills"]);
+        bundle.resource = bundle.resource?.filter(o => !o.tag || !o.tag['$pep.masked'] );
         encounter = bundle.resource.find(o => o.$type == PatientEncounter.name);
         // remove components which have a deleted target
         if (encounter.relationship && encounter.relationship.HasComponent) {
@@ -221,7 +222,7 @@ function SanteEMRWrapper() {
      */
     this.showCheckin = function (patientId, encounterId) {
         var checkinModal = angular.element("#checkinModal");
-        if (checkinModal == null) {
+        if (checkinModal == null || !checkinModal.scope()) {
             console.warn("Have not included the checkin-modal.html file");
             return;
         }

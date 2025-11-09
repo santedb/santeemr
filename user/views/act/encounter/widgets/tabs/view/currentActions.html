@@ -50,7 +50,10 @@
         </form>
         <div ng-if="scopedObject.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
             <act-edit model="scopedObject" no-add="true" no-header="true" readonly="true"
-                no-override="true" no-remove="true" />
+                no-override="true" no-remove="true"
+                 actions="[
+                    { name: 'delete', className: 'btn-danger viewOnly', icon: 'fas fa-fw fa-trash', action: 'doCancel' }
+                ]" />
         </div>
     </div>
 

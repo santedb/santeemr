@@ -1,6 +1,6 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
-    <strong>{{ act.typeConceptModel | concept }}:</strong>
+    <strong>{{ ::act.typeConceptModel | concept }}:</strong>
 
-    {{ act.value }}
-    {{ act.unitOfMeasureModel | concept: 'zxx'}}
+    {{ ::act.value }}
+    {{ ::act.unitOfMeasureModel | concept: 'zxx'}}
 </div>

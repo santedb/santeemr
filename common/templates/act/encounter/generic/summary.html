@@ -23,7 +23,12 @@
         </label>
         <div class="col-sm-12 col-md-9">
             <ul class="list-unstyled mr-2">
-                <li ng-repeat="comp in act.relationship.HasComponent.orderBy('targetModel.actTime') track by $index" ng-init="act = comp.targetModel">
+                <li ng-repeat="comp in act.relationship.HasComponent.orderBy('targetModel.actTime') track by $index" 
+                    ng-init="act = comp.targetModel"
+                    ng-class="{
+                        'actEntryComponentRemoved' : comp.targetModel.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5'
+                    }"
+                >
                     <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)"></ng-include>
                 </li>
             </ul>

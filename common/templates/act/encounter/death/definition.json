@@ -1,9 +1,8 @@
 {
-    "$type": "Act",
+    "$type": "PatientEncounter",
     "templateModel": {
-        "mnemonic": "org.santedb.emr.act.registration.death"
+        "mnemonic": "org.santedb.emr.act.visit.death"
     },
-    "classConcept": "6be8d358-f591-4a3a-9a57-1889b0147c7e",
     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
     "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
     "typeConcept": "f562e458-17ca-11eb-adc1-0242ac120002",

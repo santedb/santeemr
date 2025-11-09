@@ -7,7 +7,7 @@
     <scope>org.santedb.emr.act.visit.neonatal</scope>
 
     <form>form.html</form>
-    <view>summary.html</view>
+    <view>view.html</view>
     <summaryView>summary.html</summaryView>
     <backEntry>history.html</backEntry>
     <icon>fas fa-weight-scale</icon>

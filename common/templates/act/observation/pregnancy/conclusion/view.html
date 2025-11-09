@@ -1,3 +1,24 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    
+<div xmlns="http://www.w3.org/1999/xhtml" class="container">
+    <div class="form-group row">
+        <label class="control-label col-sm-12 col-md-3 required">
+            {{ ::act.typeConceptModel | concept }}
+        </label>
+        <div class="col-sm-12 col-md-9" ng-if-end="ng-if-end">
+            <concept-select readonly="readonly" disabled="disabled" 
+                concept-set="'PregnancyOutcomes'" ng-model="act.value" class="form-control"
+                add-concept="['70fe34ce-caff-4f46-b6e6-9cd6d8f289d6']" required="required" />
+        </div>
+    </div>
+    <div class="row" ng-repeat="comp in ::act.relationship.HasComponent track by $index"
+        ng-if="comp.targetModel.typeConcept === '04d5b5e8-570e-4244-805a-e448978a19bd'">
+        <label ng-repeat-start="sc in ::comp.targetModel.relationship.HasComponent track by $index"
+            class="control-label required mb-2 col-sm-12 col-md-4 col-xl-3">
+            {{ ::sc.targetModel.typeConceptModel | concept }}
+        </label>
+        <div ng-repeat-end="" class="col-sm-12 col-md-8 col-xl-3 mb-2">
+            <input readonly="readonly" disabled="disabled" type="number" class="form-control" 
+                ng-value="::sc.targetModel.value"
+                />
+        </div>
+    </div>
 </div>
