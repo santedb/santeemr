@@ -105,7 +105,7 @@ namespace SanteEMR.Rules
                     o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Delete &&
                     (o.VipStatusKey.HasValue ||
                     o.LoadProperty(
-                        r => r.Relationships, referenceData: data.Item).Where(r => r.RelationshipTypeKey == EntityRelationshipTypeKeys.Mother).Any(r => (r.LoadProperty(t => t.TargetEntity, referenceData: data.Item) as Person).VipStatusKey.HasValue)
+                        r => r.Relationships, referenceData: data.Item).Where(r => r.RelationshipTypeKey == EntityRelationshipTypeKeys.Mother).Any(r => (r.LoadProperty(t => t.TargetEntity, referenceData: data.Item) as Person)?.VipStatusKey != null)
                     )
                 ))
                 {
