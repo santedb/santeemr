@@ -38,7 +38,7 @@
     </sdb:widget>
 
     <div ng-controller="EmrEncounterEntryController">
-        <form ng-submit="saveVisit(encounterForm)" ng-if="scopedObject.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" name="encounterForm" novalidate="novalidate" autocapitalize="off"
+        <form ng-submit="saveVisit(encounterForm)" ng-if="!scopedObject.obsoletionTime &amp;&amp; scopedObject.statusConcept == 'c8064cbd-fa06-4530-b430-1a52f1530c27'" name="encounterForm" novalidate="novalidate" autocapitalize="off"
             autocomplete="off" aria-autocomplete="none">
             <act-edit owner-form="encounterForm" model="scopedObject" no-add="false" no-header="true" readonly="false"
                 no-override="false" actions="[
@@ -48,7 +48,7 @@
                 { name: 'discharge', action: 'doDischarge', className: 'btn-success editOnly', icon: 'fas fa-fw fa-person-walking-arrow-right', validOnly: true }
                 ]" no-remove="false" />
         </form>
-        <div ng-if="scopedObject.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
+        <div ng-if="scopedObject.obsoletionTime || scopedObject.statusConcept != 'c8064cbd-fa06-4530-b430-1a52f1530c27'">
             <act-edit model="scopedObject" no-add="true" no-header="true" readonly="true"
                 no-override="true" no-remove="true"
                  actions="[
