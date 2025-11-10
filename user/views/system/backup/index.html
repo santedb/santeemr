@@ -31,9 +31,9 @@
         button-bar="'#backupMediaDiv'" stateless="true"
         sort="{ label: 'label', timestamp: 'timestamp',size:'size',createdBy:'createdBy'}"
         render="{ 'timestamp' : renderTimestamp, 'encrypted': renderEncrypted,  'size': renderSize }" item-actions="[
-            { name: 'view', sref: 'santedb-emr.system.backup.view', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.18', className: 'btn-primary', icon: 'fas fa-eye' },
-            { name: 'delete', action: 'deleteBackup', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.18', className: 'btn-danger', icon: 'fas fa-trash' },
-            { name: 'restore', action: 'showRestoreControl', demand: '1.3.6.1.4.1.33349.3.1.5.9.2.0.18', className: 'btn-warning', icon: 'fas fa-undo' },
+            { name: 'view', sref: 'santedb-emr.system.backup.view', className: 'btn-primary', icon: 'fas fa-eye' },
+            { name: 'delete', action: 'deleteBackup', className: 'btn-danger', icon: 'fas fa-trash' },
+            { name: 'restore', action: 'showRestoreControl', className: 'btn-warning', icon: 'fas fa-undo' },
         ]" properties="[ 'label', 'timestamp', 'size', 'encrypted', 'createdBy' ]">
 
     </entity-table>
