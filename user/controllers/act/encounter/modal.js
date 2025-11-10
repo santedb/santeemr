@@ -276,16 +276,16 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
                         pathway: careplan.pathway
                     });
-                    var today = new Date().trunc();
-                    if (careplan.relationship?.HasComponent) {
-                        var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({ id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id }, "full");
+                    // var today = new Date().trunc();
+                    // if (careplan.relationship?.HasComponent) {
+                    //     var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({ id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id }, "full");
 
-                        if (nextProposedAction.resource[0] && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
-                            const afterAction = $("#dischargeModal").data('after-action');
-                            $("#dischargeModal").data('deferAction', true);
-                            SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);
-                        }
-                    }
+                    //     if (nextProposedAction.resource[0] && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
+                    //         const afterAction = $("#dischargeModal").data('after-action');
+                    //         $("#dischargeModal").data('deferAction', true);
+                    //         SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);
+                    //     }
+                    // }
                 }
             }
 
