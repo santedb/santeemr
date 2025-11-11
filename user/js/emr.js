@@ -580,6 +580,11 @@ function SanteEMRWrapper() {
                 }));
             }
 
+            encounter.relationship?.HasComponent?.filter(o => o.targetModel).forEach(o => {
+                o.targetModel.statusConcept = StatusKeys.Active;
+                delete o.targetModel.statusConceptModel;
+            });
+
             if (informantPtcpt) {
                 encounter.participation = encounter.participation || {};
                 encounter.participation.Informant = encounter.participation.Informant || [];
