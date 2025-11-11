@@ -80,7 +80,6 @@ function SanteEMRWrapper() {
         "doseUnit",
         "route",
         "site"
-
     ];
 
     const _LOAD_CODE_TYPES = [
@@ -246,7 +245,9 @@ function SanteEMRWrapper() {
             await Promise.all(Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id).map(async key => {
                 try 
                 {
-                    act[`${key}Model`] = await SanteDB.resources.concept.getAsync(act[key], "min");
+                    if(!(act[key] instanceof Date)) {
+                        act[`${key}Model`] = await SanteDB.resources.concept.getAsync(act[key], "min");
+                    }
                 }
                 catch
                 {
