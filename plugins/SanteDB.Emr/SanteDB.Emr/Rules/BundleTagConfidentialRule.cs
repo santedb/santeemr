@@ -4,6 +4,7 @@ using SanteDB.Core.Model.Collection;
 using SanteDB.Core.Model.Constants;
 using SanteDB.Core.Model.Entities;
 using SanteDB.Core.Security;
+using SanteDB.Core.Security.Privacy;
 using SanteDB.Core.Security.Services;
 using SanteDB.Core.Services;
 using SanteDB.Rest.HDSI.Vrp;
@@ -121,6 +122,7 @@ namespace SanteEMR.Rules
                 }
             }
 
+            data.Item.ForEach(i => i.AddAnnotation(new PreventPrivacyWriteValidation()));
             return base.BeforeInsert(data);
         }
 

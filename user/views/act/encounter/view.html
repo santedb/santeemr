@@ -26,6 +26,9 @@
     </sdb:state>
 
     <!-- #include virtual="~/partials/act/encounterHeader.html" -->
+    <!-- Extension Points -->
+    <ng-include src="'/_dynamic/EncounterHeaderExtensions.html'" />
+
     <div ng-if="encounter">
         <widget-tabs context-name="'org.santedb.emr.encounter.view'" scoped-object="encounter"></widget-tabs>
     </div>
