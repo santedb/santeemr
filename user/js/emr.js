@@ -609,6 +609,9 @@ function SanteEMRWrapper() {
 
             }
 
+            // Any objects which are masked are for reference only - ignore them 
+            submission.resource.filter(o => o.tag && o.tag['$pep.masked'] || o.reasonConcept == NullReasonKeys.Masked).forEach(o => o.operation = BatchOperationType.Ignore);
+
             // Now we want to submit
             var submittedBundle = await SanteDB.resources.bundle.insertAsync(submission);
             return submittedBundle.resource.find(o => o.$type == "PatientEncounter");

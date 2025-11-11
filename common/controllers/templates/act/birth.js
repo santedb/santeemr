@@ -122,7 +122,7 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
                     relationship: {
                         HasComponent: list.resource?.map(o => new ActRelationship({ source: o.id }))
                     }
-                }, $scope.act._getEncounter()?.id || $stateParams.id, {
+                }, null, {
                 birthEncounterActionsForBaby: babyComponents.join(",")
             });
 
