@@ -50,6 +50,10 @@ input[type="checkbox"].checkbox-control ~ span {
   display: inline-block;
   height: 1.5em;
   width: 1.5em;
+  max-height: 1.5em;
+  max-width: 1.5em;
+  min-height: 1.5em;
+  min-width: 1.5em;
   border: solid 1px #868e96;
   border-radius: 5px;
   margin: 0em 0.25em 0em 0em;

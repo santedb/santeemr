@@ -43,12 +43,26 @@
 
             <div class="col-sm-12 col-md-8">
                 <div class="input-group">
+                    
                     <input
-                        min="{{ act.relationship.Fulfills[0].targetModel.startTime || act._getEncounter().participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
+                        min="{{ act.template == 'f6ac9b2d-e560-4b75-ac77-921bf0eceee8' ? act._getEncounter().participation.RecordTarget[0].playerModel.dateOfBirth : act.relationship.Fulfills[0].targetModel.startTime || act._getEncounter().participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
                         max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd'}}" class="form-control h-100"
-                        name="{{ act.id }}time" ng-model="act.actTime" required="required" type="date" />
+                        name="{{ act.id }}time" 
+                        ng-model="act.actTime" required="required" type="date" />
 
-                    <div class="input-group-append">
+                    <div class="input-group-append" ng-if="act.template == 'f6ac9b2d-e560-4b75-ac77-921bf0eceee8'">
+                        <span class="input-group-text">
+                            {{ 'ui.model.substanceAdministration.doseSequence' | i18n }}
+                        </span>
+                            <input type="number"
+                            min="{{ act.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3' ? 1 : 0}}" max="20"
+                            step="1" ng-model="act.doseSequence" class="form-control h-100"
+                            name="backEntrySeq{{$index}}"
+                            ng-disabled="act.statusConcept !== 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                                 ng-required="act.statusConcept === 'afc33800-8225-4061-b168-bacc09cdbae3'" />
+                    </div>
+                    <div class="input-group-append"
+                        ng-if="act.tag.$originalDate[0] || act.relationship.Fulfills[0].targetModel.startTime">
                         <span class="input-group-text">
                             <strong class="mr-1">{{ 'ui.model.act.relationship.Fulfills.target.actTime' | i18n }}
                             </strong>
@@ -75,12 +89,10 @@
             </label>
             <div class="col-sm-12 col-md-7">
                 <div class="input-group">
-                <entity-select required="required" is-required="true" class="form-control h-100" name="{{act.id}}prod"
-                    ng-model="act.participation.Product[0].playerModel"
-                    ng-change="act.participation.Product[0].player = act.participation.Product[0].playerModel.id" auto-select-singles="true"
-                    entity-type="'Material'"
-                    return-object="true" 
-                    filter="{
+                    <entity-select required="required" is-required="true" class="form-control h-100"
+                        name="{{act.id}}prod" ng-model="act.participation.Product[0].playerModel"
+                        ng-change="act.participation.Product[0].player = act.participation.Product[0].playerModel.id"
+                        auto-select-singles="true" entity-type="'Material'" return-object="true" filter="{
                         'classConcept' : 'd39073be-0f8f-440e-b8c8-7034cc138a95',
                         'determinerConcept' : 'AD28A7AC-A66B-42C4-91B4-DE40A2B11980',
                         'statusConcept' : 'C8064CBD-FA06-4530-B430-1A52F1530C27',
@@ -89,16 +101,14 @@
                     }"></entity-select>
                     <div class="input-group-append">
                         <span class="input-group-text">
-                             {{ 'ui.model.substanceAdministration.doseSequence' | i18n }}
+                            {{ 'ui.model.substanceAdministration.doseSequence' | i18n }}
                         </span>
-                        <input type="number"
-                                 min="1"
-                                 max="20" step="1" ng-model="act.doseSequence" class="form-control h-100"
-                                 name="{{act.id}}seq"
-                                 required="required" />
+                        <input type="number" min="1" max="20" step="1" ng-model="act.doseSequence"
+                            class="form-control h-100" name="{{act.id}}seq" required="required" />
                     </div>
                 </div>
-                <div ng-if="$root.getParentVariable($parent, 'ownerForm')[act.id + 'prod'].$error.required || $root.getParentVariable($parent, 'ownerForm')[act.id + 'seq'].$error.required || $root.getParentVariable($parent, 'ownerForm')[act.id + 'seq'].$error.min" class="text-danger">
+                <div ng-if="$root.getParentVariable($parent, 'ownerForm')[act.id + 'prod'].$error.required || $root.getParentVariable($parent, 'ownerForm')[act.id + 'seq'].$error.required || $root.getParentVariable($parent, 'ownerForm')[act.id + 'seq'].$error.min"
+                    class="text-danger">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
             </div>
@@ -110,11 +120,9 @@
             </label>
 
             <div class="col-sm-12 col-md-7">
-                <entity-select 
-                    ng-disabled="!act.participation.Product[0].player"
-                    required="required" is-required="true" class="form-control" name="{{ act.id }}lot"
-                    ng-model="act.participation.Consumable[0].player" auto-select-singles="true"
-                    entity-type="'ManufacturedMaterial'" filter="{
+                <entity-select ng-disabled="!act.participation.Product[0].player" required="required" is-required="true"
+                    class="form-control" name="{{ act.id }}lot" ng-model="act.participation.Consumable[0].player"
+                    auto-select-singles="true" entity-type="'ManufacturedMaterial'" filter="{
                         'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
                         'statusConcept' : 'C8064CBD-FA06-4530-B430-1A52F1530C27',
                         'relationship[HeldEntity].source.participation[Tracker].act.relationship[HasComponent].target' : act._getEncounter().id,
@@ -161,8 +169,9 @@
             </label>
 
             <div class="control-label col-sm-12 col-md-7">
-                <concept-select name="{{ act.id }}site" ng-disabled="!act.participation.Consumable[0].player" required="required" ng-model="act.site"
-                    concept-set="'AdministrationSite'" class="form-control"></concept-select>
+                <concept-select name="{{ act.id }}site" ng-disabled="!act.participation.Consumable[0].player"
+                    required="required" ng-model="act.site" concept-set="'AdministrationSite'"
+                    class="form-control"></concept-select>
 
                 <div ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)[act.id + 'site'].$error.required"
                     class="text-danger">
