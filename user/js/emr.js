@@ -511,7 +511,7 @@ function SanteEMRWrapper() {
             // Compute the actions to be performed
             var actions = await SanteDB.resources.patient.invokeOperationAsync(recordTargetId, "generate-careplan", {
                 pathway: carePathway,
-                //firstOnly: true,
+                isVisit: true,
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD"),
                 _includeBackentry: false

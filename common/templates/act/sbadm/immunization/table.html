@@ -29,7 +29,7 @@
                         ng-disabled="adm.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" ng-model="adm.actTime"
                         type="date" ng-required="adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'"
                         min="{{ (adm.startTime || adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime) | date: 'yyyy-MM-dd'}}"
-                        max="{{ adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' ? (adm.stopTime || $root.page.today) : null | date: 'yyyy-MM-dd' }}" />
+                        max="{{ adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' ? ($root.page.today) : null | date: 'yyyy-MM-dd' }}" />
                 </div>
 
                 <div
