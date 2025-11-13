@@ -60,7 +60,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                     _count: 1,
                     _includeTotal: false,
                     moodConcept: ActMoodKeys.Eventoccurrence
-                }, "full");
+                }, "min");
 
                 if (encounter.resource) {
                     $timeout(() => {
