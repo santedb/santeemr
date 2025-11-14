@@ -51,6 +51,7 @@
             </property>
         </property>
         <property name="relationship" behavior="always">
+            <property name="Fulfills" ref="ActRelationshipTarget" />
             <property name="RefersTo" all="false" ref="ActRelationshipTarget" />
             <property name="HasComponent" all="false" ref="ActRelationshipTarget" />
             <property name="HasSubject" all="false" ref="ActRelationshipTarget" />
@@ -84,7 +85,7 @@
 
     <type type="SubstanceAdministration" base="emr.actSummaryView.Act">
         <property name="routeModel" behavior="always" />
-        <proeprty name="siteModel" behavior="always" />
+        <property name="siteModel" behavior="always" />
         <property name="doseUnitModel" behavior="always"/>
     </type>
 
