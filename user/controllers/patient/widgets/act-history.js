@@ -79,7 +79,7 @@ angular.module('santedb').controller('EmrActHistoryWidgetController', ['$scope',
                             _count: 10,
                             _includeTotal: false
                         },
-                        "full"
+                        "emr.actSummaryView"
                     );
                     offset += results.count;
                     if(results.resource)

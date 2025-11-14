@@ -24,10 +24,10 @@
         stopTime: filterByActDate, 
         moodConcept: 'EC74541F-87C4-4327-A4B9-97F325501747',
         _orderBy: 'startTime:desc',
-        _viewModel: 'fastview',
+        _viewModel: 'emr.actSummaryView',
         'participation[Location].player' : $root.refValues.facility.id,
         'extension[http://santedb.org/emr/extensions/encounter-flow].value': filterByFlowState,
-        typeConcept: filterByType
+        typeConcept: filterByType,
     }" actions="[
         { name: 'dashboard', sref: 'santedb-emr.encounter.dashboard', className: 'btn-info', icon: 'fas fa-fw fa-heart-circle-bolt' },
         { name: 'filterFlow', className: 'btn-secondary', icon: 'fas fa-fw fa-diagram-next', children: filterFlow },

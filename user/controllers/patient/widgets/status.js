@@ -11,7 +11,7 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                 "typeConcept.conceptSet": "b73e6dbc-890a-11f0-8959-c764088c39f9", // Is a condition
                 "statusConcept": StatusKeys.Completed, // Is not obsolete
                 "moodConcept" : ActMoodKeys.Eventoccurrence
-            }, "full");
+            }, "emr.actSummaryView");
 
             // Any observation in the 
             results.resource?.filter(obs => conditionCodes.resource.map(o => o.id).includes(obs.typeConcept)).forEach(obs => {

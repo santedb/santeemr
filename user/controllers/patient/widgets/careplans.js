@@ -72,7 +72,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                     _includeTotal: false
                 };
 
-                var encounters = await SanteDB.resources.patientEncounter.findAsync(filter, "full");
+                var encounters = await SanteDB.resources.patientEncounter.findAsync(filter, "emr.actSummaryView");
                 var proposed = [], event = [];
                 if(encounters.resource) {
                     proposed = encounters.resource.filter(r => r.moodConcept == ActMoodKeys.Propose);

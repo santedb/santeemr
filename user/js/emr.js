@@ -70,6 +70,7 @@ const TEMPLATE_IDS = {
  */
 function SanteEMRWrapper() {
 
+    const _loadedConceptDetails = {};
     const _LOAD_CODE_PROPS = [
         "value",
         "unitOfMeasure",
@@ -242,21 +243,26 @@ function SanteEMRWrapper() {
                 return;
             }
 
-            await Promise.all(Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id).map(async key => {
+            for(const key of Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id)) {
                 try 
                 {
-                    if(!(act[key] instanceof Date)) {
-                        act[`${key}Model`] = await SanteDB.resources.concept.getAsync(act[key], "min");
+                    if(!(act[key] instanceof Date || typeof act[key] === 'number')) {
+                        act[`${key}Model`] = _loadedConceptDetails[act[key]] || await SanteDB.resources.concept.getAsync(act[key], "min");
+                        if(!_loadedConceptDetails[act[key]]) {
+                            _loadedConceptDetails[act[key]] = act[`${key}Model`];
+                        }
                     }
                 }
                 catch
                 {
 
                 }
-            }));
+            };
 
             if(act.relationship) {
-                await Promise.all(Object.keys(act.relationship).map(o=>act.relationship[o]).flat().filter(o=>o.targetModel).map(o=>o.targetModel).map(SanteEMR.loadConceptModels));
+                for(const a of Object.keys(act.relationship).map(o=>act.relationship[o]).flat().filter(o=>o.targetModel).map(o=>o.targetModel)) {
+                    await SanteEMR.loadConceptModels(a);
+                }
             }
         }
         catch(e) {

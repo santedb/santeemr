@@ -1,0 +1,96 @@
+<ViewModel xmlns="http://santedb.org/model/view">
+    <include>noModelProperties</include>
+
+    <type type="ActTemplate" all="false">
+        <property name="mnemonic" />
+        <property name="name" />
+    </type>
+    <type type="EntityTemplate" all="false">
+        <property name="mnemonic" />
+        <property name="name" />
+    </type>
+
+    <type type="ActProtocol" all="false">
+        <property name="protocol" />
+        <property name="protocolModel" behavior="always" />
+    </type>
+
+    <type type="Concept" all="false">
+        <property name="mnemonic" />
+        <property name="name" behavior="always" all="true" />
+    </type>
+
+    <type type="ActRelationship" name="ActRelationshipTarget" base="noModelProperties.ActRelationship">
+        <property name="targetModel" behavior="always" />
+    </type>
+
+    <type type="ActParticipation" name="ActParticipationNested" base="noModelProperties.ActParticipation" all="false">
+        <property name="player" />
+        <property name="playerModel" behavior="always"/>
+        <property name="classification" />
+    </type>
+
+    <type type="Act" base="noModelProperties.Act" all="true">
+        <property name="templateModel" behavior="always" />
+        <property name="protocol" behavior="always" ref="ActProtocol" />
+        <property name="typeConceptModel" behavior="always" />
+        <property name="reasonConceptModel" behavior="always" />
+        <property name="statusConceptModel" behavior="always" /> 
+        <property name="participation" behavior="always">
+            <property name="RecordTarget" ref="ActParticipationNested" />
+            <property name="Location" ref="ActParticipationNested" />
+            <property name="Authororiginator" ref="ActParticipationNested" />
+            <property name="Performer" ref="ActParticipationNested" />
+            <property name="Product" ref="ActParticipationNested" />
+            <property name="Baby" ref="ActParticipationNested" />
+            <property name="Informant" ref="ActParticipationNested" />
+            <property name="Consumable" ref="ActParticipationNested" />
+            <property name="SecondaryPerformer" ref="ActParticipationNested" />
+            <property name="*" all="false">
+                <property name="player" />
+            </property>
+        </property>
+        <property name="relationship" behavior="always">
+            <property name="RefersTo" all="false" ref="ActRelationshipTarget" />
+            <property name="HasComponent" all="false" ref="ActRelationshipTarget" />
+            <property name="HasSubject" all="false" ref="ActRelationshipTarget" />
+            <property name="*" all="false">
+                <property name="target" />
+            </property>
+        </property>
+
+    </type>
+    <type type="PatientEncounter" base="emr.actSummaryView.Act">
+        <property name="dischargeDispositionModel" behavior="always"/>
+    </type>
+
+    <type type="Observation" base="emr.actSummaryView.Act">
+        <property name="interpretationConceptModel" behavior="always" />
+    </type>
+
+    <type type="CodedObservation" base="emr.actSummaryView.Observation">
+        <property name="valueModel" behavior="always"/>
+    </type>
+
+    <type type="QuantityObservation" base="emr.actSummaryView.Observation">
+        <property name="unitOfMeasureModel" behavior="always"/>
+    </type>
+
+    <type type="TextObservation" base="emr.actSummaryView.Observation">
+    </type>
+
+    <type type="DateObservation" base="emr.actSummaryView.Observation">
+    </type>
+
+    <type type="SubstanceAdministration" base="emr.actSummaryView.Act">
+        <property name="routeModel" behavior="always" />
+        <proeprty name="siteModel" behavior="always" />
+        <property name="doseUnitModel" behavior="always"/>
+    </type>
+
+    <type type="Procedure" base="emr.actSummaryView.Act">
+    </type>
+
+    <type type="ControlAct" base="emr.actSummaryView.Act">
+    </type>
+</ViewModel>
