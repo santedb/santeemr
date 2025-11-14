@@ -19,9 +19,52 @@
  */
 
 angular.module('santedb').controller('EmrPatientDashboardController', ["$scope", "$rootScope", "$state", "$timeout", function ($scope, $rootScope, $state, $timeout) {
-
     // Bind to scope
     $scope.checkin = SanteEMR.showCheckin;
     $scope.patientHasOpenEncounter = SanteEMR.patientHasOpenEncounter;
-   
+
+    $scope.doDischarge = async function (r, idx) {                
+        try {
+            SanteDB.display.buttonWait(`#recentPatientList_action_discharge_${idx}`, true);
+
+            var encounter = (await SanteDB.resources.patientEncounter.findAsync({
+                "participation[RecordTarget].player": r,
+                "statusConcept": StatusKeys.Active,
+                "moodConcept": ActMoodKeys.Eventoccurrence,
+                _count: 1,
+                _includeTotal: true
+            }, "full")).resource[0];            
+            
+            await SanteEMR.showDischarge(encounter, $timeout, () => {
+                $("#recentPatientList")[0].EntityList.refresh();
+            });
+        }
+        catch (e) {
+            SanteDB.display.getRootScope($scope).errorHandler(e);
+        }
+        finally {
+            SanteDB.display.buttonWait(`#recentPatientList_action_discharge_${idx}`, false);
+        }
+    }
+
+    $scope.goVisit = async function(id) {
+        try {
+            var encounter = await SanteDB.resources.patientEncounter.findAsync({
+                "participation[RecordTarget].player": id,
+                "statusConcept": StatusKeys.Active,
+                "moodConcept": ActMoodKeys.Eventoccurrence,
+                _count: 1,
+                _includeTotal: true
+            }, "min");
+            if(encounter.resource) {
+                $state.go("santedb-emr.encounter.view", { id: encounter.resource[0].id });
+            }
+            else {
+                toastr.error(SanteDB.locale.getString("ui.emr.encounter.navigate.notFound"));
+            }
+        }
+        catch(e) {
+            SanteDB.display.getRootScope($scope).errorHandler(e);
+        }
+    }
 }]);
