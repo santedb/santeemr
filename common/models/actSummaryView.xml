@@ -61,37 +61,41 @@
         </property>
 
     </type>
-    <type type="PatientEncounter" base="emr.actSummaryView.Act">
+    <type type="PatientEncounter" base="emr.actSummaryView.Act" all="true">
         <property name="dischargeDispositionModel" behavior="always"/>
     </type>
 
-    <type type="Observation" base="emr.actSummaryView.Act">
+    <type type="Observation" base="emr.actSummaryView.Act" all="true">
+        <property name="interpretationConcept" behavior="always" />
         <property name="interpretationConceptModel" behavior="always" />
     </type>
 
-    <type type="CodedObservation" base="emr.actSummaryView.Observation">
+    <type type="CodedObservation" base="emr.actSummaryView.Observation" all="true">
         <property name="valueModel" behavior="always"/>
     </type>
 
-    <type type="QuantityObservation" base="emr.actSummaryView.Observation">
+    <type type="QuantityObservation" base="emr.actSummaryView.Observation" all="true">
         <property name="unitOfMeasureModel" behavior="always"/>
     </type>
 
-    <type type="TextObservation" base="emr.actSummaryView.Observation">
+    <type type="TextObservation" base="emr.actSummaryView.Observation" all="true">
     </type>
 
-    <type type="DateObservation" base="emr.actSummaryView.Observation">
+    <type type="DateObservation" base="emr.actSummaryView.Observation" all="true">
     </type>
 
-    <type type="SubstanceAdministration" base="emr.actSummaryView.Act">
+    <type type="SubstanceAdministration" base="emr.actSummaryView.Act" all="true">
+        <property name="route" />
         <property name="routeModel" behavior="always" />
+        <property name="site" />
         <property name="siteModel" behavior="always" />
+        <property name="doseUnit" />
         <property name="doseUnitModel" behavior="always"/>
     </type>
 
-    <type type="Procedure" base="emr.actSummaryView.Act">
+    <type type="Procedure" base="emr.actSummaryView.Act" all="true">
     </type>
 
-    <type type="ControlAct" base="emr.actSummaryView.Act">
+    <type type="ControlAct" base="emr.actSummaryView.Act" all="true">
     </type>
 </ViewModel>
