@@ -263,31 +263,31 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             });
 
             // Save the discharge
-            var savedEncounter = await SanteEMR.saveVisitAsync($scope.encounter, "Discharger");
+            await SanteEMR.saveVisitAsync($scope.encounter, "Discharger");
 
             // Was this part of a pathway or CDSS proposal? 
-            if ($scope.encounter.relationship.Fulfills &&
-                $scope.encounter.relationship.Fulfills[0].targetModel.moodConcept == ActMoodKeys.Propose
-            ) {
-                var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
+            // if ($scope.encounter.relationship.Fulfills &&
+            //     $scope.encounter.relationship.Fulfills[0].targetModel.moodConcept == ActMoodKeys.Propose
+            // ) {
+            //     var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
 
-                if (careplan) {
-                    // Regenerate the careplan
-                    careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
-                        pathway: careplan.pathway
-                    });
-                    // var today = new Date().trunc();
-                    // if (careplan.relationship?.HasComponent) {
-                    //     var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({ id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id }, "full");
+            //     if (careplan) {
+            //         // Regenerate the careplan
+            //         careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
+            //             pathway: careplan.pathway
+            //         });
+            //         // var today = new Date().trunc();
+            //         // if (careplan.relationship?.HasComponent) {
+            //         //     var nextProposedAction = await SanteDB.resources.patientEncounter.findAsync({ id: careplan.relationship.HasComponent.map(o => o.targetModel).filter(o => o.actTime > today)[0]?.id }, "full");
 
-                    //     if (nextProposedAction.resource[0] && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
-                    //         const afterAction = $("#dischargeModal").data('after-action');
-                    //         $("#dischargeModal").data('deferAction', true);
-                    //         SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);
-                    //     }
-                    // }
-                }
-            }
+            //         //     if (nextProposedAction.resource[0] && confirm(SanteDB.locale.getString("ui.emr.encounter.discharge.bookAppointment.confirm"))) {
+            //         //         const afterAction = $("#dischargeModal").data('after-action');
+            //         //         $("#dischargeModal").data('deferAction', true);
+            //         //         SanteEMR.showAppointmentBooking(nextProposedAction.resource[0], $timeout, afterAction);
+            //         //     }
+            //         // }
+            //     }
+            // }
 
             $timeout(() => {
                 $("#dischargeModal").modal('hide');

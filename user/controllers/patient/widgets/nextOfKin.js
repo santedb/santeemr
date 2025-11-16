@@ -170,7 +170,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
 
             await Promise.all(submissionBundle.resource.map(o => prepareEntityForSubmission(o))); // Correct entity information
 
-            await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            await SanteDB.resources.bundle.insertAsync(submissionBundle, undefined, undefined, true);
 
             var pscope = $scope;
             while (pscope.$parent.scopedObject)

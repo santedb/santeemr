@@ -80,7 +80,7 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                 }
                 bundleRelatedObjects(amendment, null, submissionBundle);
             }
-            const result = await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            const result = await SanteDB.resources.bundle.insertAsync(submissionBundle, undefined, undefined, true);
             toastr.success(SanteDB.locale.getString("ui.emr.patient.status.update.success"));
             $state.reload();
         }

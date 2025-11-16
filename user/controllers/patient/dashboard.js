@@ -33,7 +33,7 @@ angular.module('santedb').controller('EmrPatientDashboardController', ["$scope",
                 "moodConcept": ActMoodKeys.Eventoccurrence,
                 _count: 1,
                 _includeTotal: true
-            }, "full")).resource[0];            
+            }, "emr.actDetail")).resource[0];            
             
             await SanteEMR.showDischarge(encounter, $timeout, () => {
                 $("#recentPatientList")[0].EntityList.refresh();

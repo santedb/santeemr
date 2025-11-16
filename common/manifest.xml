@@ -32,6 +32,9 @@
   <viewModel key="emr.actSummaryView">
     <definition>/org.santedb.emr.common/models/actSummaryView.xml</definition>
   </viewModel>
+    <viewModel key="emr.actDetail">
+    <definition>/org.santedb.emr.common/models/actDetail.xml</definition>
+  </viewModel>
   
   
   <errors>

@@ -37,7 +37,7 @@ angular.module('santedb').controller('EmrPatientViewWidgetController', ['$scope'
             // Bundle to be submitted
             var bundle = new Bundle({ resource: [submissionObject] });
             
-            await SanteDB.resources.bundle.insertAsync(bundle);
+            await SanteDB.resources.bundle.insertAsync(bundle, undefined, undefined, true);
             var updated = await SanteDB.resources.patient.getAsync($scope.scopedObject.id, "full"); // re-fetch the patient
             $timeout(() => $scope.scopedObject = updated);
             toastr.success(SanteDB.locale.getString("ui.model.patient.saveSuccess"));

@@ -55,7 +55,7 @@ function bindSearchScopeCommonFunctions($scope, $state, $timeout) {
                 "moodConcept": ActMoodKeys.Eventoccurrence,
                 _count: 1,
                 _includeTotal: true
-            }, "full")).resource[0];            
+            }, "emr.actDetail")).resource[0];            
 
             await SanteEMR.showDischarge(encounter, $timeout, () => {
                 $("#searchList")[0].EntityList.refresh();

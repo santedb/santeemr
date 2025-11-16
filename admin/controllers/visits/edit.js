@@ -145,7 +145,7 @@ angular.module('santedb').controller('EmrEditVisitTypesController', ["$scope", "
                                 source: st.id, 
                                 targetConcept: $scope.visitType.concept,
                                 relationshipType: ConceptRelationshipTypeKeys.MemberOf
-                            }));
+                            }), undefined, undefined, false);
                         }
                     }
                     catch(e) {

@@ -204,7 +204,9 @@ function SanteEMRWrapper() {
             bundle.resource = bundle.resource.filter(act => _IGNORE_RELATIONSHIPS.includes(act.operation) || (!act.tag?.isBackEntry && act.statusConcept == StatusKeys.Completed));
             bundle.resource.forEach(act => { act.interpretationConcept = null });
             var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
-                target: bundle
+                target: bundle,
+                _excludePropose: true,
+                _excludeSubmitted: true
             });
             result.issue = result.issue.filter(o=>o.id !== "error.cdss.exception");
             return result;
@@ -446,9 +448,8 @@ function SanteEMRWrapper() {
             // Is the current user listed as a performer?
             var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
             submissionBundle = _setVisitPerformers(submissionBundle, myUserId, thisUsersParticipationType);
-            submissionBundle = await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            submissionBundle = await SanteDB.resources.bundle.insertAsync(submissionBundle, undefined, undefined, true);
             encounter._persisted = true;
-            return submissionBundle.resource.find(o => o.$type == "PatientEncounter");
         }
         catch (e) {
             throw new Exception("EmrException", e.message, null, e);
@@ -521,7 +522,7 @@ function SanteEMRWrapper() {
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD"),
                 _includeBackentry: false
-            }, undefined, "full");
+            }, undefined, "emr.actDetail");
 
             if (actions.relationship) {
                 await Promise.all(actions.relationship?.HasComponent?.map(async comp => {
@@ -619,8 +620,8 @@ function SanteEMRWrapper() {
             submission.resource.filter(o => o.tag && o.tag['$pep.masked'] || o.reasonConcept == NullReasonKeys.Masked).forEach(o => o.operation = BatchOperationType.Ignore);
 
             // Now we want to submit
-            var submittedBundle = await SanteDB.resources.bundle.insertAsync(submission);
-            return submittedBundle.resource.find(o => o.$type == "PatientEncounter");
+            await SanteDB.resources.bundle.insertAsync(submission, undefined, undefined, true);
+            return new PatientEncounter({ id: encounter.id });
         }
         catch (e) {
             throw new Exception("EmrException", e.message, null, e);

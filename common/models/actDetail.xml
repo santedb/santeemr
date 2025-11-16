@@ -1,0 +1,158 @@
+<ViewModel xmlns="http://santedb.org/model/view">
+    <include>noModelProperties</include>
+
+    <type type="TemplateDefinition" all="false">
+        <property name="mnemonic" />
+        <property name="name" />
+    </type>
+
+    <type type="ActProtocol" all="false">
+        <property name="protocol" />
+        <property name="protocolModel" behavior="always" />
+    </type>
+
+    <type type="Concept" all="false">
+        <property name="mnemonic" />
+        <property name="name" behavior="always" all="true" />
+    </type>
+
+    <type type="ActRelationship" name="ActRelationshipTarget" base="noModelProperties.ActRelationship">
+        <property name="targetModel" behavior="always" />
+    </type>
+
+    <type type="EntityIdentifier" base="noModelProperties.EntityIdentifier" all="true">
+        <property name="domainModel" behavior="always" all="true"/>
+    </type>
+
+    <type type="Place" base="noModelProperties.Place" all="true">
+        <property name="identifier" behavior="always" all="true" />
+        <property name="name" behavior="always" all="true" />
+    </type>
+
+    <type type="EntityRelationship" base="noModelProperties.EntityRelationship" name="PatientFamilyMemberRelationship" all="false">
+        <property name="target" />
+        <property name="targetModel" behavior="always" all="true">
+            <property name="name" behavior="always" all="true" />
+            <property name="telecom" behavior="always" all="true" />
+            <property name="identifier" behavior="always" all="true" />
+            <property name="address" behavior="always" all="true" />
+        </property>
+    </type>
+
+    <type type="Patient" base="noModelProperties.Patient" all="true">
+        <property name="templateModel" behavior="always" />
+        <property name="genderConceptModel" behavior="always" />
+        <property name="identifier" behavior="always" all="true" />
+        <property name="name" behavior="always" all="true" />
+        <property name="address" behavior="always" all="true" />
+        <property name="policy" behavior="always" />
+
+        <property name="relationship" behavior="always" all="true" >
+            <property name="Citizen" all="false">
+                <property name="target" />
+                <property name="targetModel" behavior="always" />
+            </property>
+            <property name="Birthplace" all="false">
+                <property name="target" />
+                <property name="targetModel" behavior="always" />
+            </property>
+            <property name="Mother" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Father" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Guardian" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Sister" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Brother" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Uncle" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Husband" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Wife" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Spouse" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Friend" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="SignificantOther" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Aunt" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Grandparent" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Grandfather" all="false" ref="PatientFamilyMemberRelationship" />
+            <property name="Grandmother" all="false" ref="PatientFamilyMemberRelationship" />
+        </property>
+    </type>
+
+    <type type="ActParticipation" name="ActParticipationNested" base="noModelProperties.ActParticipation" all="false">
+        <property name="player" />
+        <property name="playerModel" behavior="always"/>
+        <property name="classification" />
+    </type>
+
+    <type type="Act" base="noModelProperties.Act" all="true">
+        <property name="templateModel" behavior="always" />
+        <property name="protocol" behavior="always" ref="ActProtocol" />
+        <property name="typeConceptModel" behavior="always" />
+        <property name="reasonConceptModel" behavior="always" />
+        <property name="statusConceptModel" behavior="always" /> 
+        <property name="policy" behavior="always" />
+        <property name="participation" behavior="always">
+            <property name="RecordTarget" ref="ActParticipationNested" />
+            <property name="Location" ref="ActParticipationNested" />
+            <property name="Authororiginator" ref="ActParticipationNested" />
+            <property name="Performer" ref="ActParticipationNested" />
+            <property name="Admitter" ref="ActParticipationNested" />
+            <property name="Discharger" ref="ActParticipationNested" />
+            <property name="Product" ref="ActParticipationNested" />
+            <property name="Baby" ref="ActParticipationNested" />
+            <property name="Informant" ref="ActParticipationNested" />
+            <property name="Consumable" ref="ActParticipationNested" />
+            <property name="SecondaryPerformer" ref="ActParticipationNested" />
+            <property name="*" all="false">
+                <property name="player" />
+            </property>
+        </property>
+        <property name="relationship" behavior="always">
+            <property name="Fulfills" ref="ActRelationshipTarget" />
+            <property name="RefersTo" all="false" ref="ActRelationshipTarget" />
+            <property name="HasComponent" all="false" ref="ActRelationshipTarget" />
+            <property name="HasSubject" all="false" ref="ActRelationshipTarget" />
+            <property name="*" all="false">
+                <property name="target" />
+            </property>
+        </property>
+
+    </type>
+
+    <type type="CarePlan" base="emr.actDetail.act" all="true">
+
+    </type>
+    <type type="PatientEncounter" base="emr.actDetail.Act" all="true">
+        <property name="dischargeDispositionModel" behavior="always"/>
+    </type>
+
+    <type type="Observation" base="emr.actDetail.Act" all="true">
+        <property name="interpretationConcept" behavior="always" />
+        <property name="interpretationConceptModel" behavior="always" />
+    </type>
+
+    <type type="CodedObservation" base="emr.actDetail.Observation" all="true">
+        <property name="valueModel" behavior="always"/>
+    </type>
+
+    <type type="QuantityObservation" base="emr.actDetail.Observation" all="true">
+        <property name="unitOfMeasureModel" behavior="always"/>
+    </type>
+
+    <type type="TextObservation" base="emr.actDetail.Observation" all="true">
+    </type>
+
+    <type type="DateObservation" base="emr.actDetail.Observation" all="true">
+    </type>
+
+    <type type="SubstanceAdministration" base="emr.actDetail.Act" all="true">
+        <property name="route" />
+        <property name="routeModel" behavior="always" />
+        <property name="site" />
+        <property name="siteModel" behavior="always" />
+        <property name="doseUnit" />
+        <property name="doseUnitModel" behavior="always"/>
+    </type>
+
+    <type type="Procedure" base="emr.actDetail.Act" all="true">
+    </type>
+
+    <type type="ControlAct" base="emr.actDetail.Act" all="true">
+    </type>
+</ViewModel>

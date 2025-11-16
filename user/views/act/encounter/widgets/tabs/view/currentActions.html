@@ -40,7 +40,7 @@
     <div ng-controller="EmrEncounterEntryController">
         <form ng-submit="saveVisit(encounterForm)" ng-if="!scopedObject.obsoletionTime &amp;&amp; scopedObject.statusConcept == 'c8064cbd-fa06-4530-b430-1a52f1530c27'" name="encounterForm" novalidate="novalidate" autocapitalize="off"
             autocomplete="off" aria-autocomplete="none">
-            <act-edit owner-form="encounterForm" model="scopedObject" no-add="false" no-header="true" readonly="false"
+            <act-edit owner-form="encounterForm" view-model="emr.actDetail" model="scopedObject" no-add="false" no-header="true" readonly="false"
                 no-override="false" actions="[
                 { name: 'cancel', className: 'btn-danger editOnly', icon: 'fas fa-fw fa-times-circle', action: 'doCancel', when: '!r.previousVersion' },
                 { name: 'save', type: 'submit', className: 'btn-primary editOnly', icon: 'fas fa-fw fa-floppy-disk', validOnly: false },
