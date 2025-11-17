@@ -22,10 +22,10 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
     async function initializeView(encounterId) {
         try {
-            var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "full", null, null, null, {
+            var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "emr.actDetail", null, null, null, {
                 "X-SanteDB-EmitPrivacyError": "Redact,Nullify,Hash,Hide",
                 "Pragma" : "no-cache",
-                "Cache-Control" : "no-cache"
+                "Cache-Control" : $rootScope.system?.config?.integration?.mode == 'synchronize' ? null : "no-cache"
             });
 
             encounter.relationship = encounter.relationship || {};
@@ -127,7 +127,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
                     })));
                 }
 
-                await SanteDB.resources.bundle.insertAsync(submissionBundle);
+                await SanteDB.resources.bundle.insertAsync(submissionBundle, undefined, undefined, true);
                 toastr.success(SanteDB.locale.getString("ui.emr.encounter.cancel.success"));
 
                 $state.go("santedb-emr.encounter.dashboard");
@@ -161,11 +161,7 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
 
         try {
             SanteDB.display.buttonWait("#btnActEditsave", true);
-            var encounter = await SanteEMR.saveVisitAsync($scope.scopedObject);
-            if (encounter.extension && encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL]) {
-                encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0] = await SanteDB.application.resolveReferenceExtensionAsync(encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL][0]);
-            }
-
+            await SanteEMR.saveVisitAsync($scope.scopedObject);
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.save.success"));
             $state.reload();
         }

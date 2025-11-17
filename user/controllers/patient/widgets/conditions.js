@@ -31,7 +31,7 @@ angular.module('santedb').controller('EmrPatientConditionWidgetController', ['$s
                 "participation[RecordTarget].player": patientId,
                 "typeConcept": "236b5641-61d2-4d12-91f7-5dddbd7f8931", // Condition
                 "statusConcept": [ StatusKeys.Active ]
-            }, 'full');
+            }, 'emr.actSummaryView');
 
             if (!conditions)
             {

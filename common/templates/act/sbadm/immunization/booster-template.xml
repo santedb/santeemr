@@ -1,6 +1,7 @@
 <AppletTemplateDefinition xmlns="http://santedb.org/applet"     
     mnemonic="org.santedb.emr.sbadm.immunization.booster" public="true">
     <definition>definition.json</definition>
+    <scope>org.santedb.emr.act.visit.anc</scope>
     <scope>org.santedb.emr.act.visit.general</scope>
     <form>form.html</form>
     <view>view.html</view>

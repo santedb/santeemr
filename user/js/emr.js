@@ -70,6 +70,7 @@ const TEMPLATE_IDS = {
  */
 function SanteEMRWrapper() {
 
+    const _loadedConceptDetails = {};
     const _LOAD_CODE_PROPS = [
         "value",
         "unitOfMeasure",
@@ -80,7 +81,6 @@ function SanteEMRWrapper() {
         "doseUnit",
         "route",
         "site"
-
     ];
 
     const _LOAD_CODE_TYPES = [
@@ -204,7 +204,9 @@ function SanteEMRWrapper() {
             bundle.resource = bundle.resource.filter(act => _IGNORE_RELATIONSHIPS.includes(act.operation) || (!act.tag?.isBackEntry && act.statusConcept == StatusKeys.Completed));
             bundle.resource.forEach(act => { act.interpretationConcept = null });
             var result = await SanteDB.resources.bundle.invokeOperationAsync(null, "analyze", {
-                target: bundle
+                target: bundle,
+                _excludePropose: true,
+                _excludeSubmitted: true
             });
             result.issue = result.issue.filter(o=>o.id !== "error.cdss.exception");
             return result;
@@ -243,19 +245,26 @@ function SanteEMRWrapper() {
                 return;
             }
 
-            await Promise.all(Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id).map(async key => {
+            for(const key of Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id)) {
                 try 
                 {
-                    act[`${key}Model`] = await SanteDB.resources.concept.getAsync(act[key], "min");
+                    if(!(act[key] instanceof Date || typeof act[key] === 'number')) {
+                        act[`${key}Model`] = _loadedConceptDetails[act[key]] || await SanteDB.resources.concept.getAsync(act[key], "min");
+                        if(!_loadedConceptDetails[act[key]]) {
+                            _loadedConceptDetails[act[key]] = act[`${key}Model`];
+                        }
+                    }
                 }
                 catch
                 {
 
                 }
-            }));
+            };
 
             if(act.relationship) {
-                await Promise.all(Object.keys(act.relationship).map(o=>act.relationship[o]).flat().filter(o=>o.targetModel).map(o=>o.targetModel).map(SanteEMR.loadConceptModels));
+                for(const a of Object.keys(act.relationship).map(o=>act.relationship[o]).flat().filter(o=>o.targetModel).map(o=>o.targetModel)) {
+                    await SanteEMR.loadConceptModels(a);
+                }
             }
         }
         catch(e) {
@@ -439,9 +448,8 @@ function SanteEMRWrapper() {
             // Is the current user listed as a performer?
             var myUserId = await SanteDB.authentication.getCurrentUserEntityId();
             submissionBundle = _setVisitPerformers(submissionBundle, myUserId, thisUsersParticipationType);
-            submissionBundle = await SanteDB.resources.bundle.insertAsync(submissionBundle);
+            submissionBundle = await SanteDB.resources.bundle.insertAsync(submissionBundle, undefined, undefined, true);
             encounter._persisted = true;
-            return submissionBundle.resource.find(o => o.$type == "PatientEncounter");
         }
         catch (e) {
             throw new Exception("EmrException", e.message, null, e);
@@ -510,11 +518,11 @@ function SanteEMRWrapper() {
             // Compute the actions to be performed
             var actions = await SanteDB.resources.patient.invokeOperationAsync(recordTargetId, "generate-careplan", {
                 pathway: carePathway,
-                //firstOnly: true,
+                isVisit: true,
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD"),
                 _includeBackentry: false
-            }, undefined, "full");
+            }, undefined, "emr.actDetail");
 
             if (actions.relationship) {
                 await Promise.all(actions.relationship?.HasComponent?.map(async comp => {
@@ -608,9 +616,12 @@ function SanteEMRWrapper() {
 
             }
 
+            // Any objects which are masked are for reference only - ignore them 
+            submission.resource.filter(o => o.tag && o.tag['$pep.masked'] || o.reasonConcept == NullReasonKeys.Masked).forEach(o => o.operation = BatchOperationType.Ignore);
+
             // Now we want to submit
-            var submittedBundle = await SanteDB.resources.bundle.insertAsync(submission);
-            return submittedBundle.resource.find(o => o.$type == "PatientEncounter");
+            await SanteDB.resources.bundle.insertAsync(submission, undefined, undefined, true);
+            return new PatientEncounter({ id: encounter.id });
         }
         catch (e) {
             throw new Exception("EmrException", e.message, null, e);

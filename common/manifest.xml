@@ -29,6 +29,13 @@
   <viewModel key="emr.duplicateRelationship">
     <definition>/org.santedb.emr.common/models/duplicate.xml</definition>
   </viewModel>
+  <viewModel key="emr.actSummaryView">
+    <definition>/org.santedb.emr.common/models/actSummaryView.xml</definition>
+  </viewModel>
+    <viewModel key="emr.actDetail">
+    <definition>/org.santedb.emr.common/models/actDetail.xml</definition>
+  </viewModel>
+  
   
   <errors>
     <add code="403" asset="/org.santedb.emr.common/views/error/elevate.html"/>

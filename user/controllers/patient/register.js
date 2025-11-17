@@ -55,7 +55,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 targetPatient: $scope.entity,
                 encounter: "org.santedb.emr.patient.registration",
                 _includeBackentry: true
-            }, null, "full");
+            }, null, "emr.actDetail");
 
             $timeout(() => {
                 $scope.preventSubmit = false;
