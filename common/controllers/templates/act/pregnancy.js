@@ -11,7 +11,7 @@ angular.module('santedb').controller("PregnancyHistoryController", ["$scope", "$
                 "_orderBy": "actTime:desc",
                 "_count": 1,
                 "_includeTotal": false
-            }, "full");
+            }, "emr.actDetail");
 
             if (!existingHistory.resource) {
                 return;

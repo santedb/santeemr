@@ -374,7 +374,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             }
 
 
-            var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: submissionBundle, _count: 5, _offset: 0 });
+            var duplicates = await SanteDB.resources.patient.invokeOperationAsync(null, "match", { target: patient, _count: 5, _offset: 0 });
             if (duplicates.results && duplicates.results != null) {
                 if (!$scope.entity._ignoreDuplicates) {
                     // Fetch the results
