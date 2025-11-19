@@ -64,13 +64,16 @@
                                         </div>
                                     </li>
                                 </ul>
-                                <div ng-if="issues.length &gt; 0" class="d-flex flex-column">
+                                <div ng-if="issues.length &gt; 0 || issues === undefined || issues === null" class="d-flex flex-column">
                                     <h5><i class="fas fa-fw fa-lightbulb"></i> {{ 'ui.emr.encounter.discharge.issues' |
                                         i18n }}</h5>
                                     <div class="p-2">
                                         {{ 'ui.emr.encounter.discharge.issues.instructions' | i18n }}
                                     </div>
                                     <ul class="list-group ml-2">
+                                        <li ng-if="issues.length == 0">
+                                            <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+                                        </li>
                                         <li ng-repeat="issue in issues track by $index" class="list-group-item"
                                             ng-class="{ 'list-group-item-danger': issue.priority == 'Error', 'list-group-item-warning': issue.priority == 'Warning', 'list-group-item-info' : issue.priority == 'Information' }">
                                             <i class="fas fa-fw"

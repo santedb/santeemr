@@ -20,7 +20,7 @@
         <property name="name" behavior="always" all="true" />
     </type>
 
-    <type type="ActRelationship" name="ActRelationshipTarget" base="noModelProperties.ActRelationship">
+    <type type="ActRelationship" name="ActRelationshipTarget" base="noModelProperties.ActRelationship" all="true">
         <property name="targetModel" behavior="always" />
     </type>
 
@@ -94,6 +94,10 @@
     </type>
 
     <type type="Procedure" base="emr.actSummaryView.Act" all="true">
+        <property name="approachSiteModel" behavior="always" />
+        <property name="targetSiteModel" behavior="always" />
+        <property name="methodModel" behavior="always" />
+
     </type>
 
     <type type="ControlAct" base="emr.actSummaryView.Act" all="true">

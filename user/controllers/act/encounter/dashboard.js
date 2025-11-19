@@ -129,6 +129,7 @@ angular.module('santedb').controller("EmrWaitingRoomController", ["$scope", "$ro
         try {
             SanteDB.display.buttonWait(`#waitingRoomList_action_discharge_${idx}`, true);
             var encounter = await SanteDB.resources.patientEncounter.getAsync(r, "emr.actDetail");
+            encounter.$preventReloadConcepts = true;
             await SanteEMR.showDischarge(encounter, $timeout, () => {
                 $("#waitingRoomList")[0].EntityList.refresh();
             });

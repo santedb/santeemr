@@ -187,4 +187,14 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
 
     applyCascadeInstructions($scope.act);
     initializeTemplateView();
+}]).controller("EmrBirthRegistrationViewController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
+    $scope.resolveSummary = $scope.resolveSummaryTemplate = SanteEMR.resolveSummaryTemplate;
+
+    async function init() {
+        const act = await SanteDB.resources.act.getAsync($scope.act.id, "emr.actDetail");
+
+        $scope.act = act;
+    }
+
+    init();
 }]);

@@ -20,8 +20,8 @@
         <property name="targetModel" behavior="always" />
     </type>
 
-    <type type="EntityIdentifier" base="noModelProperties.EntityIdentifier" all="true">
-        <property name="domainModel" behavior="always" all="true"/>
+    <type type="EntityIdentifier" all="true">
+        <property name="domainModel" behavior="always" all="true" />
     </type>
 
     <type type="Place" base="noModelProperties.Place" all="true">

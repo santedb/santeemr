@@ -289,9 +289,10 @@ function SanteEMRWrapper() {
 
         try {
 
-            // We want to load all types
-            await SanteEMR.loadConceptModels(encounter);
-            var analyzeResult = await SanteEMR.analyzeVisit(encounter);
+            // We want to load all types (ensure that the encounter is fresh)
+            if(!encounter.$preventReloadConcepts) {
+                await SanteEMR.loadConceptModels(encounter);
+            }
             var scope = dischargeModal.scope();
             var enc = angular.copy(encounter);
             enc._tmpId = SanteDB.application.newGuid();
@@ -314,13 +315,18 @@ function SanteEMRWrapper() {
                     scope.encounter = null;
                 });
             }
-
+            
             $timeout(() => {
                 scope.encounter = enc;
-                scope.issues = analyzeResult.issue;
                 $("#dischargeModal").modal('show');
                 $("#dischargeModal").data('after-action', afterAction);
             });
+            
+            var analyzeResult = await SanteEMR.analyzeVisit(encounter);
+            $timeout(() => {
+                scope.issues = analyzeResult.issue;
+            });
+
 
         }
         catch (e) {
@@ -478,7 +484,7 @@ function SanteEMRWrapper() {
             templateParameters.userEntityId = await SanteDB.authentication.getCurrentUserEntityId();
 
             // Template
-            var template = await SanteDB.application.getTemplateContentAsync(templateId, templateParameters);
+            var template = await SanteDB.application.getTemplateContentAsync(templateId, templateParameters, "emr.actSummary");
 
             var encounter = new PatientEncounter(template);
 
@@ -522,7 +528,7 @@ function SanteEMRWrapper() {
                 encounter: template.templateModel.mnemonic,
                 period: moment().format("YYYY-MM-DD"),
                 _includeBackentry: false
-            }, undefined, "emr.actDetail");
+            }, undefined, "emr.actSummary");
 
             if (actions.relationship) {
                 await Promise.all(actions.relationship?.HasComponent?.map(async comp => {

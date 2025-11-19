@@ -37,7 +37,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         ],
                         _orderBy: "actTime:desc",
                         _includeTotal: false
-                    }, 'full'),
+                    }, 'emr.actDetail'),
                     // Find appointments 
                     SanteDB.resources.patientEncounter.findAsync({
                         "participation[RecordTarget].player": n,
