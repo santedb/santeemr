@@ -22,7 +22,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
 
     async function getCdsAlerts(patientId) {
         try {
-            var issues = await SanteDB.resources.patient.invokeOperationAsync(patientId, "analyze", { _excludePropose: true });
+            var issues = await SanteDB.resources.patient.invokeOperationAsync(patientId, "analyze", { _excludePropose: true, _excludeSubmitted: true });
             var issueTypes = {};
             issues.issue.forEach(o => issueTypes[o.type] = null);
             await Promise.all(
