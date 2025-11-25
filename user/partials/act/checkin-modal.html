@@ -125,13 +125,19 @@
                                     <label class="col-12 text-bold required">
                                         {{ 'ui.model.act.template' | i18n }}
                                     </label>
-                                    <div class="col-12">
+                                    <div class="col-12" ng-if="newAct">
+                                        <!-- <entity-select entity-type="'Template'" ng-model="newAct.template" ng-disabled="newAct.$startType !== 'manual'"
+                                            filter="{ scope :  [ 'org.santedb.model.act', '54b52119-1709-4098-8911-5df6d6c84140' ]  }"
+                                            name="template" class="form-control"
+                                            key="'mnemonic'" js-filter="applyGuardExpression" 
+                                            display="&quot;&lt;i class='fas fa-fw' ng-class='item.icon'&gt;&lt;/i&gt;&quot; + item.name"
+                                            ></entity-select> -->
                                         <entity-search ng-disabled="newAct.$startType !== 'manual'"
                                             ng-required="newAct.$startType === 'manual'" class="form-control"
                                             type="'Template'"
                                             filter="{ scope :  [ 'org.santedb.model.act', '54b52119-1709-4098-8911-5df6d6c84140' ]  }"
                                             ng-model="newAct.template" name="template" search-field="'description'"
-                                            key="'mnemonic'" js-filter="applyGuardExpression" />
+                                            key="'mnemonic'" js-filter="applyGuardExpression" no-search="true" />
                                         <div ng-if="checkinForm.template.$error.required" class="text-danger">
                                             <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required'
                                             | i18n }}

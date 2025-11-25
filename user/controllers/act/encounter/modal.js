@@ -59,7 +59,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         }
                     });
 
-                    if($scope.recordTarget.dateOfBirth.age() <= 14) {
+                    if($scope.recordTarget.dateOfBirth.age() <= 16) {
                         $scope.newAct.participation.Informant.push({
                                     playerModel: new Person({
                                         id: pid,
@@ -92,7 +92,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
                             var act = null;
                             if ($scope.encounterId) { // The user clicked a specific encounter
-                                act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => enc.id == $scope.encounterId);
+                                act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => enc?.id == $scope.encounterId);
                             }
                             else {
                                 act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => {
@@ -195,6 +195,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
     $("#checkinModal").on("hidden.bs.modal", function () {
         $timeout(() => {
             $scope.patientId = "";
+            $scope.newAct = null;
             delete ($scope.recordTarget);
             delete ($scope.encounter);
         });
