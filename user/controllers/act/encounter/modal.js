@@ -266,11 +266,17 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             await SanteEMR.saveVisitAsync($scope.encounter, "Discharger");
 
             // Was this part of a pathway or CDSS proposal? 
-            // if ($scope.encounter.relationship.Fulfills &&
-            //     $scope.encounter.relationship.Fulfills[0].targetModel.moodConcept == ActMoodKeys.Propose
-            // ) {
-            //     var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
+            if ($scope.encounter.relationship?.Fulfills &&
+                $scope.encounter.relationship.Fulfills[0].targetModel?.moodConcept == ActMoodKeys.Propose
+            ) {
+                var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
 
+                if(careplan?.pathway) {
+                    careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
+                         pathway: careplan.pathway
+                     });
+                }
+            }
             //     if (careplan) {
             //         // Regenerate the careplan
             //         careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
