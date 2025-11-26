@@ -1,4 +1,4 @@
-<ViewModel xmlns="http://santedb.org/model/view">
+<ViewModel xmlns="http://santedb.org/model/view"  name="emr.actDetail">
     <include>noModelProperties</include>
 
     <type type="TemplateDefinition" all="false">
@@ -80,6 +80,10 @@
         <property name="classification" />
     </type>
 
+    <type type="Act" name="ActFulfillment" base="noModelProperties.Act" all="false" >
+        <property name="moodConcept" />
+    </type>
+
     <type type="Act" base="noModelProperties.Act" all="true">
         <property name="templateModel" behavior="always" />
         <property name="protocol" behavior="always" ref="ActProtocol" />
@@ -104,19 +108,22 @@
             </property>
         </property>
         <property name="relationship" behavior="always">
-            <property name="Fulfills" ref="ActRelationshipTarget" />
-            <property name="RefersTo" all="false" ref="ActRelationshipTarget" />
-            <property name="HasComponent" all="false" ref="ActRelationshipTarget" />
-            <property name="HasSubject" all="false" ref="ActRelationshipTarget" />
-            <property name="*" all="false">
+            <property name="Fulfills" all="true">
+                <property name="targetModel" ref="ActFulfillment" all="true" />
+            </property>
+            <property name="RefersTo" all="true" ref="ActRelationshipTarget" />
+            <property name="HasComponent" all="true" ref="ActRelationshipTarget" />
+            <property name="HasManifestation" all="true" ref="ActRelationshipTarget" />
+            <property name="HasSubject" all="true" ref="ActRelationshipTarget" />
+            <property name="*" all="true">
                 <property name="target" />
             </property>
         </property>
 
     </type>
 
-    <type type="CarePlan" base="emr.actDetail.act" all="true">
-
+    <type type="CarePlan" base="emr.actDetail.Act" all="true">
+        <property name="pathwayModel" behavior="always" />
     </type>
     <type type="PatientEncounter" base="emr.actDetail.Act" all="true">
         <property name="dischargeDispositionModel" behavior="always"/>

@@ -59,7 +59,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                         }
                     });
 
-                    if($scope.recordTarget.dateOfBirth.age() <= 14) {
+                    if($scope.recordTarget.dateOfBirth.age() <= 16) {
                         $scope.newAct.participation.Informant.push({
                                     playerModel: new Person({
                                         id: pid,
@@ -92,7 +92,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
                             var act = null;
                             if ($scope.encounterId) { // The user clicked a specific encounter
-                                act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => enc.id == $scope.encounterId);
+                                act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => enc?.id == $scope.encounterId);
                             }
                             else {
                                 act = cp.relationship.HasComponent.map(o => o.targetModel).find(enc => {
@@ -195,6 +195,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
     $("#checkinModal").on("hidden.bs.modal", function () {
         $timeout(() => {
             $scope.patientId = "";
+            $scope.newAct = null;
             delete ($scope.recordTarget);
             delete ($scope.encounter);
         });
@@ -266,11 +267,17 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             await SanteEMR.saveVisitAsync($scope.encounter, "Discharger");
 
             // Was this part of a pathway or CDSS proposal? 
-            // if ($scope.encounter.relationship.Fulfills &&
-            //     $scope.encounter.relationship.Fulfills[0].targetModel.moodConcept == ActMoodKeys.Propose
-            // ) {
-            //     var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
+            if ($scope.encounter.relationship?.Fulfills &&
+                $scope.encounter.relationship.Fulfills[0].targetModel?.moodConcept == ActMoodKeys.Propose
+            ) {
+                var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
 
+                if(careplan?.pathway) {
+                    careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
+                         pathway: careplan.pathway
+                     });
+                }
+            }
             //     if (careplan) {
             //         // Regenerate the careplan
             //         careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {

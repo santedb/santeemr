@@ -12,7 +12,7 @@
                     <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.emr.patient.birth.neonateDeceased' | i18n }}
                 </div>
             </div> 
-            <div class="col-xs-12 col-md-6" ng-repeat="comp in act.relationship.HasComponent"
+            <div class="col-xs-12 col-xl-6" ng-repeat="comp in act.relationship.HasComponent"
                 ng-if="comp.operation !== 'Delete'" ng-init="act = comp.targetModel" id="infantActions{{$index}}">
                 <ng-include src="::$root.getParentVariable($parent, 'resolveTemplate')(act.templateModel.mnemonic)" />
             </div>
@@ -29,7 +29,7 @@
                     <div class="form-group row">
                         <div class="col-12">
                         </div>
-                        <div class="col-xs-12 col-md-6">
+                        <div class="col-xs-12 col-xl-6">
                             <name-edit is-required="true" no-add="true"
                                 owner-form="$root.getParentVariable($parent, 'ownerForm')" simple-entry="true"
                                 no-type="true" name="patientName"
@@ -52,7 +52,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xs-12 col-md-6">
+                        <div class="col-xs-12 col-xl-6">
                             <div class="container-fluid">
                                 <!-- Multiple Birth -->
                                 <div class="form-group row">

@@ -1,10 +1,15 @@
 <div xmlns="http://www.w3.org/1999/xhtml">
     <strong>{{ act.typeConceptModel | concept }}:</strong>
-
-    <span ng-repeat="comp in act.relationship.HasComponent track by $index" ng-if="comp.targetModel.typeConcept == 'c0e4e81e-af1f-4a81-80a6-c59a32f57cfa'">
+    <span ng-repeat="comp in act.relationship.HasComponent track by $index"
+        ng-if="comp.targetModel.typeConcept == 'c0e4e81e-af1f-4a81-80a6-c59a32f57cfa'"
+        ng-class="{ 'text-danger font-weight-bold' : comp.targetModel.interpretationConcept != '41d42abf-17ad-4144-bf97-ec3fd907f57d' }">
+        <i ng-if="comp.targetModel.interpretationConcept != '41d42abf-17ad-4144-bf97-ec3fd907f57d'" class="fas fa-fw fa-exclamation-circle"></i>
         {{ comp.targetModel.value }}
     </span> /
-    <span ng-repeat="comp in act.relationship.HasComponent track by $index" ng-if="comp.targetModel.typeConcept == '8e105155-32d4-4bbe-bc86-60154706b3ca'">
+    <span ng-repeat="comp in act.relationship.HasComponent track by $index"
+        ng-if="comp.targetModel.typeConcept == '8e105155-32d4-4bbe-bc86-60154706b3ca'"
+        ng-class="{ 'text-danger font-weight-bold' : comp.targetModel.interpretationConcept != '41d42abf-17ad-4144-bf97-ec3fd907f57d' }">
+        <i ng-if="comp.targetModel.interpretationConcept != '41d42abf-17ad-4144-bf97-ec3fd907f57d'" class="fas fa-fw fa-exclamation-circle"></i>
         {{ comp.targetModel.value }}
     </span>
 </div>

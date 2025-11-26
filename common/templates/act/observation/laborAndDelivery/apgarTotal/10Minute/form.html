@@ -1,8 +1,8 @@
-<div xmlns="http://www.w3.org/1999/xhtml" class="input-group">
+<div xmlns="http://www.w3.org/1999/xhtml" class="input-group" ng-if="act.id">
     <div class="input-group-prepend">
         <span class="input-group-text">{{ act.typeConceptModel | concept }}</span>
     </div>
-    <input type="range" cdss-interactive="act" name="apgar10Minute{{act.id}}" class="form-control" min="0" max="10"
+    <input type="range" cdss-interactive="act" name="apgar10Minute{{::act.id}}" class="form-control" min="0" max="10"
         required="required" ng-model="act.value" step="1" />
     <div class="input-group-append">
         <input type="number" readonly="readonly" class="form-control h-100" min="0" max="10" required="required"
