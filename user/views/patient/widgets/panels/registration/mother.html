@@ -39,7 +39,7 @@
             <div class="form-group row mb-2">
                 <!-- Is Deceased -->
                 <label class="col-md-3 col-sm-12 control-label">
-                    {{ 'ui.model.person.deceasedDate' | i18n }} <hint-popover hint-title="ui.model.person.deceasedDate" />
+                    {{ 'ui.model.person.deceased' | i18n }} <hint-popover hint-title="ui.model.person.deceased" />
                 </label>
 
                 <div class="col-md-8 col-sm-12">
@@ -51,10 +51,14 @@
                     </label>
                 </div>
 
-                <div class="col-md-8 col-sm-12 offset-md-3"
+                <label ng-if="scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" class="col-md-3 col-sm-12 control-label required">
+                    {{ 'ui.model.person.deceasedDate' | i18n }} <hint-popover hint-title="ui.model.person.deceasedDate" />
+                </label>
+
+                <div class="col-md-8 col-sm-12"
                     ng-if="scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
                     <div class="input-group">
-
+                        
                         <input ng-disabled="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                             class="form-control h-100" type="date" name="motherDeceasedDate"
                             ng-model="scopedObject.relationship.Mother[0].targetModel.deceasedDate"
