@@ -10,5 +10,6 @@
     <uuid>441AF8B3-ED36-4F4F-A379-2A9D1AEA374E</uuid>
     <guard>recordTarget.genderConcept === '094941e9-a3db-48b5-862c-bc289bd7f86c' &amp;&amp; recordTarget.dateOfBirth.age() &gt; 12</guard>
     <scope>org.santedb.emr.act.visit.general</scope>
+    <scope>org.santedb.emr.act.visit.anc</scope>
 
 </AppletTemplateDefinition>
