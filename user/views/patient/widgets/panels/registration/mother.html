@@ -168,7 +168,7 @@
                 no-add="true" />
 
             <!-- Telecom -->
-            <div class="form-group row">
+            <div class="form-group row" ng-if="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
                 <div class="col">
                     <telecom-edit owner-form="panel.editForm" name="mothersTelecom"
                         model="scopedObject.relationship.Mother[0].targetModel.telecom" allowed-types="[ 'MobileContact' ]"
@@ -177,7 +177,7 @@
             </div>
 
             <!-- Occupation -->
-            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.occupation'] != 'true'">
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.occupation'] != 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.person.occupation' | i18n }} <hint-popover hint-title="ui.model.person.occupation" />
                 </label>
@@ -192,7 +192,7 @@
             </div>
             
             <!-- VIP Status -->
-            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true'">
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.person.vipStatus' | i18n }} <hint-popover hint-title="ui.model.person.vipStatus" />
                 </label>
@@ -203,7 +203,7 @@
             </div>
 
             <!-- Nationality -->
-            <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.nationality'] != 'true'">
+            <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.nationality'] != 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.person.nationality' | i18n }} <hint-popover hint-title="ui.model.person.nationality" />
                 </label>
@@ -221,7 +221,7 @@
             </div>
 
             <!-- Citizenship -->
-            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.citizenship'] != 'true'">
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.citizenship'] != 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.entity.relationship.Citizen' | i18n }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" />
                 </label>
@@ -239,7 +239,7 @@
             </div>
 
             <!-- Employers -->
-            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true'">
+            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.person.relationship.Employee' | i18n }} <hint-popover hint-title="ui.model.person.relationship.Employee" />
                 </label>
