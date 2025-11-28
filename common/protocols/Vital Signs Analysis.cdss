@@ -8,7 +8,7 @@ define library "Vital Signs Analysis"
 	having oid "1.3.5.1.4.1.52820.5.3.4"
 	having status active
 	with metadata
-		version 3.0.2030
+		version 3.0.2034
 	end metadata
 	as
 	define logic "Analyse Vital Temperature Reading"
