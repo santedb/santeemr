@@ -20,6 +20,18 @@
         <property name="targetModel" behavior="always" />
     </type>
 
+    <type type="EntityRelationship" name="EntityRelationshipTarget" base="noModelProperties.EntityRelationship" all="false">
+        <property name="target" />
+        <property name="targetModel" behavior="always" all="true" />
+    </type>
+
+    <type type="Material" base="noModelProperties.Material" all="true">
+        <property name="relationship" behavior="always" all="true">
+            <property name="UsedEntity" ref="EntityRelationshipTarget" />
+            <property name="Instance" ref="EntityRelationshipTarget" />
+        </property>
+    </type>
+
     <type type="EntityIdentifier" all="true">
         <property name="domainModel" behavior="always" all="true" />
     </type>
