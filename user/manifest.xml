@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
  - Copyright 2021-2025 SanteSuite Contributors (See NOTICE.md for full copyright notices)
  - Portions Copyright (C) 2019 - 2021, Fyfe Software Inc. and the SanteSuite Contributors
@@ -21,30 +21,35 @@
     <icon>/org.santedb.core/img/icon.png</icon>
     <name lang="en">SanteDB EMR Base Package</name>
     <author>SanteSuite Community Partners (see: santesuite.org)</author>
-    <dependency id="org.santedb.core"/>
-    <dependency id="org.santedb.uicore"/>
+    <dependency id="org.santedb.core" />
+    <dependency id="org.santedb.uicore" />
   </info>
 
-  <menuItem context="ui.emr" launch="santedb-emr.dashboard"  asset="/org.santedb.emr/views/dashboard.html" order="-100">
+  <menuItem context="ui.emr" launch="santedb-emr.dashboard"
+    asset="/org.santedb.emr/views/dashboard.html" order="-100">
     <icon>fas fa-tachometer-alt</icon>
     <text lang="en">Dashboard</text>
   </menuItem>
   <menuItem context="ui.emr" order="-100">
     <icon>fas fa-hospital-user</icon>
     <text lang="en">Patients</text>
-    <menuItem context="ui.emr" launch="santedb-emr.patient.dashboard" asset="/org.santedb.emr/views/patient/dashboard.html" order="-100">
+    <menuItem context="ui.emr" launch="santedb-emr.patient.dashboard"
+      asset="/org.santedb.emr/views/patient/dashboard.html" order="-100">
       <icon>fas fa-hospital-user</icon>
       <text lang="en">Patient Administration</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.patient.search" asset="/org.santedb.emr/views/patient/search.html" order="-100">
+    <menuItem context="ui.emr" launch="santedb-emr.patient.search"
+      asset="/org.santedb.emr/views/patient/search.html" order="-100">
       <icon>fas fa-search</icon>
       <text lang="en">Search</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.patient.advSearch" asset="/org.santedb.emr/views/patient/advSearch.html" order="-100">
+    <menuItem context="ui.emr" launch="santedb-emr.patient.advSearch"
+      asset="/org.santedb.emr/views/patient/advSearch.html" order="-100">
       <icon>fas fa-search-plus</icon>
       <text lang="en">Advanced Search</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.patient.register" asset="/org.santedb.emr/views/patient/register.html" order="-100">
+    <menuItem context="ui.emr" launch="santedb-emr.patient.register"
+      asset="/org.santedb.emr/views/patient/register.html" order="-100">
       <icon>fas fa-user-plus</icon>
       <text lang="en">Register</text>
     </menuItem>
@@ -52,53 +57,75 @@
   <menuItem context="ui.emr" order="50">
     <icon>fas fa-fw fa-house-medical-flag</icon>
     <text lang="en">My Clinic</text>
-    <menuItem context="ui.emr" launch="santedb-emr.encounter.dashboard" asset="/org.santedb.emr/views/act/encounter/dashboard.html" order="0">
+    <menuItem context="ui.emr" launch="santedb-emr.encounter.dashboard"
+      asset="/org.santedb.emr/views/act/encounter/dashboard.html" order="0">
       <icon>fas fa-fw fa-person-breastfeeding</icon>
       <text lang="en">Waiting Room</text>
     </menuItem>
-     <menuItem context="ui.emr" launch="santedb-emr.clinic.schedule" asset="/org.santedb.emr/views/clinic/schedule/index.html" order="0">
+    <menuItem context="ui.emr" launch="santedb-emr.clinic.schedule"
+      asset="/org.santedb.emr/views/clinic/schedule/index.html" order="0">
       <icon>fas fa-fw fa-calendar</icon>
       <text lang="en">Schedule</text>
+    </menuItem>
+    <menuItem context="ui.emr" launch="santedb-emr.bi.reports.index"
+      asset="/org.santedb.emr/views/bi/reports/index.html" order="100">
+      <icon>fas fa-chart-simple</icon>
+      <text lang="en">Reports</text>
     </menuItem>
   </menuItem>
   <menuItem context="ui.emr" order="1000">
     <icon>fas fa-tablet</icon>
     <text lang="en">System</text>
-    <menuItem context="ui.emr" launch="santedb-emr.system.info" asset="/org.santedb.emr/views/system/index.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.info"
+      asset="/org.santedb.emr/views/system/index.html">
       <icon>fas fa-tablet</icon>
       <text lang="en">Dashboard</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.logs.index" asset="/org.santedb.emr/views/system/logs/index.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.logs.index"
+      asset="/org.santedb.emr/views/system/logs/index.html">
       <icon>fas fa-tasks</icon>
       <text lang="en">Logs</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.config" asset="/org.santedb.emr/views/system/config.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.config"
+      asset="/org.santedb.emr/views/system/config.html">
       <icon>fas fa-tasks</icon>
       <text lang="en">Configuration</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.jobs" asset="/org.santedb.emr/views/system/jobs.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.jobs"
+      asset="/org.santedb.emr/views/system/jobs.html">
       <icon>fas fa-cogs</icon>
       <text lang="en">Background Jobs</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.probes" asset="/org.santedb.emr/views/system/probes.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.probes"
+      asset="/org.santedb.emr/views/system/probes.html">
       <icon>fas fa-thermometer</icon>
       <text lang="en">Probes</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.users.index" asset="/org.santedb.emr/views/system/users/index.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.users.index"
+      asset="/org.santedb.emr/views/system/users/index.html">
       <icon>fas fa-users</icon>
       <text lang="en">Local Users</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.bug" asset="/org.santedb.emr/views/system/bug.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.bug"
+      asset="/org.santedb.emr/views/system/bug.html">
       <icon>fas fa-bug</icon>
       <text lang="en">Submit Bug</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.backup.index" asset="/org.santedb.emr/views/system/backup/index.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.backup.index"
+      asset="/org.santedb.emr/views/system/backup/index.html">
       <icon>fas fa-cube</icon>
       <text lang="en">Backups</text>
     </menuItem>
-    <menuItem context="ui.emr" launch="santedb-emr.system.audit.index" asset="/org.santedb.emr/views/system/audit/index.html">
+    <menuItem context="ui.emr" launch="santedb-emr.system.audit.index"
+      asset="/org.santedb.emr/views/system/audit/index.html">
       <icon>fas fa-search-plus</icon>
       <text lang="en">Audit Log</text>
+    </menuItem>
+    <menuItem context="ui.emr" launch="santedb-emr.bi.warehouse.index"
+      asset="/org.santedb.emr/views/bi/warehouse/index.html"
+      order="100">
+      <icon>fas fa-boxes</icon>
+      <text lang="en">Data Warehouse</text>
     </menuItem>
   </menuItem>
 
@@ -108,13 +135,14 @@
   </viewModel>
   -->
 
-  <!-- SanteEMR Templates are in the Fyfe Software Community OID (1.3.6.1.4.1.52820.5) in SanteEMR  (.2)  -->
+  <!-- SanteEMR Templates are in the Fyfe Software Community OID (1.3.6.1.4.1.52820.5) in SanteEMR
+  (.2)  -->
 
   <dynamicHtml name="PatientHeaderExtensions.html">
     <include>partials/patient/headerExtensions/.*\.html</include>
-  </dynamicHtml>  
+  </dynamicHtml>
 
-    <viewModel key="emr.facilityPlan">
+  <viewModel key="emr.facilityPlan">
     <definition>/org.santedb.emr/model/facilityPlan.xml</definition>
   </viewModel>
 </AppletManifest>
