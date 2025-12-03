@@ -208,7 +208,7 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
         if (n) {
             try {
                 if (n.relationship) {
-                    var rels = (await SanteDB.resources.concept.findAsync({ "conceptSet.mnemonic": "FamilyMember", "mnemonic": Object.keys(n.relationship) }));
+                    var rels = (await SanteDB.resources.concept.findAsync({ "conceptSet.mnemonic": "FamilyMember", "mnemonic": Object.keys(n.relationship) }));                    
 
                     if (!rels.resource) {
                         rels.resource = [];
@@ -256,16 +256,18 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
                             "target": n.id,
                             "relationshipType.conceptSet.mnemonic": "FamilyMember"
                         };
-                        var reverseRelationships = await SanteDB.resources.entityRelationship.findAsync(filter, "reverseRelationship");
+                        var reverseRelationships = await SanteDB.resources.entityRelationship.findAsync(filter, "reverseRelationship");                        
 
                         if (reverseRelationships.resource) {
-                            for (var i in reverseRelationships.resource) {
+                            for (var i in reverseRelationships.resource) {                                
                                 try {
                                     var rel = reverseRelationships.resource[i];
                                     rel._inverse = true;
 
                                     if (!rel.holderModel) {
                                         rel.targetModel = await SanteDB.resources.entity.getAsync(rel.holder, "full");
+                                    } else {   
+                                        rel.targetModel = rel.holderModel;
                                     }
 
                                     $scope.relationships.push(rel);
