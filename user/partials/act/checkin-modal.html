@@ -51,6 +51,7 @@
                                                 <li ng-repeat="(k, famr) in recordTarget.relationship track by $index"
                                                     ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
                                                     <label ng-repeat="fam in famr track by $index"
+                                                        ng-if="!fam.targetModel.deceasedDate"
                                                         class="checkbox-container">
                                                         <input class="checkbox-control" required="required" type="radio"
                                                             name="informant"
