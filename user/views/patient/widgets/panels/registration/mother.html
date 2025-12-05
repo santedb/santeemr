@@ -190,6 +190,21 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Marital Status -->
+            <div class="form-group row" ng-if="$root.system.config.application.setting['allow.patient.maritalStatus']  != 'false' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.patient.maritalStatus' | i18n }} <hint-popover hint-title="ui.model.patient.maritalStatus" />
+                </label>
+                
+                <div class="col-sm-12 col-md-8">
+                    <concept-select name="maritalStatus"
+                        concept-set="'MaritalStatus'" ng-model="scopedObject.relationship.Mother[0].targetModel.maritalStatus"
+                        add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+
+                </div>
+            </div>
+
             
             <!-- VIP Status -->
             <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true' &amp;&amp; !scopedObject.relationship.Mother[0].targetModel.deceasedIndicator">

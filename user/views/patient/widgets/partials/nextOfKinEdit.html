@@ -117,6 +117,7 @@
             <address-edit is-required="false" control-prefix="'nok' + rel.id" owner-form="panel.editForm"
                 no-add="true" no-type="true" simple-entry="true" model="rel.targetModel.address" />
 
+
             <!-- Occupation -->
             <div ng-if="$root.system.config.application.setting['forbid.person.occupation']  != 'true'" class="form-group row">
                 <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.occupation' | i18n }}</label>
@@ -126,6 +127,21 @@
                         ng-model="rel.targetModel.occupation"
                         concept-set="'OccupationType'"
                         class="form-control" />
+                </div>
+            </div>
+
+            
+            <!-- Marital Status -->
+            <div class="form-group row" ng-if="$root.system.config.application.setting['allow.patient.maritalStatus']  != 'false'">
+                <label class="col-sm-12 col-md-3 control-label">
+                    {{ 'ui.model.patient.maritalStatus' | i18n }} <hint-popover hint-title="ui.model.patient.maritalStatus" />
+                </label>
+                
+                <div class="col-sm-12 col-md-8">
+                    <concept-select name="maritalStatus"
+                        concept-set="'MaritalStatus'" ng-model="rel.targetModel.maritalStatus"
+                        add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+
                 </div>
             </div>
 
