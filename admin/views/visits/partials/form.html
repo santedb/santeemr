@@ -42,7 +42,7 @@
                 {{ 'ui.emr.admin.visitTypes.flowStates' | i18n }}
                 <hint-popover hint-title="ui.emr.admin.visitTypes.flowStates" />
             </label>
-            <label class="col-sm-12 col-md-9">
+            <div class="col-sm-12 col-md-9">
                 <ul class="list-group">
                     <li class="list-group-item d-flex justify-content-between"
                         ng-repeat="flowState in visitType.flowStates track by $index"> 
@@ -62,7 +62,7 @@
                         </button>
                     </li>
                 </ul>
-            </label>
+            </div>
         </div>
     </div>
     <div class="row">
