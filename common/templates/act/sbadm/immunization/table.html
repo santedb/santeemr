@@ -26,7 +26,8 @@
             <td class="text-center align-middle" ng-repeat="adm in dose track by $index">
                 <div class="d-inline-flex" ng-if="adm.doseSequence !== undefined">
                     <label class="checkbox-container">
-                        <input ng-disabled="(adm.actTime &gt; $root.page.minEventTime || 
+                        <input ng-disabled="
+                                    (!canBackEnter &amp;&amp; adm.actTime &gt; $root.page.minEventTime || 
                                     dose[$index - 1] &amp;&amp; dose[$index - 1].statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' || 
                                     !adm.tag.isBackEntry) &amp;&amp;
                                     !dose.$overrideAntigenCheck"
