@@ -1,6 +1,75 @@
 
 angular.module("santedb").controller("HistoricalImmunizationEntryController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
 
+
+    $scope.filterExistingAntigens = function(i) {
+        try {
+            var entityName = SanteDB.display.renderEntityName(i.name, "Assigned");
+            return $scope.table.data[entityName] === undefined;
+        }
+        catch(e) {
+            return false;
+        }
+    }
+
+    $scope.addDoseSequence = function() {
+        $scope.table.cols.push($scope.table.cols.length);
+    }
+
+    $scope.addAntigen = function() {
+        // Add an antigen of the specified type
+        if(!$scope.newAntigen._player) return;
+
+        // Grab the record target from another antigen
+
+        const renderEntityName = SanteDB.display.renderEntityName($scope.newAntigen._player.name, "Assigned");
+        $scope.table.data[renderEntityName] = $scope.table.cols.map(o=>null);
+        $scope.table.data[renderEntityName].$overrideAntigenCheck = true;
+        $scope.table.data[renderEntityName].$antigen = $scope.newAntigen._player;
+        $scope.newAntigen._player = null;
+    }
+
+    $scope.addDoseManual = function(antigen, doseSequence) 
+    {
+        const rct = $scope.acts.map(o=>o.participation?.RecordTarget).filter(o=>o)[0];
+
+        const template = new SubstanceAdministration({
+                    template : "50ac9b2d-e560-4b75-ac77-921bf0eceee8",
+                    moodConcept: "EC74541F-87C4-4327-A4B9-97F325501747",
+                    classConcept: "932A3C7E-AD77-450A-8A1F-030FC2855450",
+                    typeConcept: "0331e13f-f471-4fbd-92dc-66e0a46239d5",
+                    doseSequence: doseSequence,
+                    doseQuantity: 1,
+                    actTime: null, 
+                    statusConcept: StatusKeys.Completed, 
+                    participation: {
+                        Product: [
+                            {
+                                player: antigen.id
+                            }
+                        ],
+                        RecordTarget: [
+                            {
+                                player: rct[0].player,
+                                playerModel: rct[0].playerModel
+                            }
+                        ]
+                    },
+                    tag: {
+                        "isBackEntry" : true
+                    }
+                });
+        const renderEntityName = SanteDB.display.renderEntityName(antigen.name, "Assigned");
+        $scope.table.data[renderEntityName][doseSequence] = template;
+        $scope.acts.push(template);
+
+        // Add back to the scoped object 
+        if($rootScope.getParentVariable($scope, "addHistoryAct")) {
+            $rootScope.getParentVariable($scope, 'addHistoryAct')(template);
+        }
+    }
+
+
     /// Groups the back-entry objects by their date and prepares it as a grid for the entry table
     function initialize() {
 
@@ -12,6 +81,7 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
         var colHeaders = [];
         for (var i = minSeq; i <= maxSeq; i++) colHeaders.push(i);
 
+        
         // Next we want to generate buckets for the antigens
         var displayGrouping = $scope.acts.filter(o => o.participation && o.participation.Product).groupBy(
             o => SanteDB.display.renderEntityName(o.participation.Product[0].playerModel.name, "Assigned"),
