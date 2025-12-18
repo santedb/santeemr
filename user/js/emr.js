@@ -514,7 +514,7 @@ function SanteEMRWrapper() {
             }
 
             // Ensure the appropriate keys are set
-            encounter.startTime = encounter.actTime = new Date();
+            // encounter.startTime = encounter.actTime = new Date();
             encounter.statusConcept = StatusKeys.Active;
             encounter.extension = encounter.extension || {};
             encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL] = [SanteDB.application.encodeReferenceExtension(Concept.name, ENCOUNTER_FLOW.CHECKED_IN)];
