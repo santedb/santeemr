@@ -14,6 +14,9 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
 
     $scope.addDoseSequence = function() {
         $scope.table.cols.push($scope.table.cols.length);
+        for(var k of Object.keys($scope.table.data)) {
+            $scope.table.data[k].push(null);
+        }
     }
 
     $scope.addAntigen = function() {
