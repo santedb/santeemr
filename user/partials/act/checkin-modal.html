@@ -113,6 +113,19 @@
 
                             </div>
                         </div>
+
+                        <div class="container-fluid">
+                            <div class="form-group row">
+                                <label class="col-12 text-bold required">
+                                    {{ 'ui.model.act.actTime.dateTime' | i18n }}
+                                </label>
+
+                                <div class="col-12" ng-if="newAct">
+                                    <input class="form-control" type="datetime-local" required="required" name="startTime" ng-model="newAct.startTime" />
+                                </div>
+                            </div>
+                        </div>
+
                         <ul class="list-group px-3">
                             <li class="list-group-item" ng-if="!newAct._fulfills">
                                 <label class="text-strong d-block w-100 checkbox-container">
