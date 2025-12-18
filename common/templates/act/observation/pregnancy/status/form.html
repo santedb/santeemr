@@ -20,7 +20,7 @@
         initializeView();
 
         function showOrHideComponents(selectedValue) {
-            if (selectedValue && _pregnancyNegativeConcepts.includes(selectedValue)) {
+            if (!selectedValue || selectedValue == EmptyGuid || _pregnancyNegativeConcepts.includes(selectedValue)) {
                 scope.act.relationship?.HasComponent?.forEach(n => n.operation = BatchOperationType.Ignore);
             }
             else {

@@ -1,7 +1,8 @@
 
-angular.module("santedb").controller("HistoricalImmunizationEntryController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
+function __bindImmunizationScopeFunctions($scope, $rootScope) {
 
-
+    $scope.newAntigen = {};
+    
     $scope.filterExistingAntigens = function(i) {
         try {
             var entityName = SanteDB.display.renderEntityName(i.name, "Assigned");
@@ -13,9 +14,15 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
     }
 
     $scope.addDoseSequence = function() {
-        $scope.table.cols.push($scope.table.cols.length);
+        const seq = $scope.table.cols[$scope.table.cols.length - 1] + 1;
+        $scope.table.cols.push(seq);
         for(var k of Object.keys($scope.table.data)) {
-            $scope.table.data[k].push(null);
+            const antigen = $scope.table.data[k].map(o => o?.participation?.Product).find(o => Array.isArray(o))[0];
+
+            $scope.table.data[k].push({
+                _antigen: antigen.playerModel,
+                _sequence: seq
+            });
         }
     }
 
@@ -35,6 +42,7 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
     $scope.addDoseManual = function(antigen, doseSequence) 
     {
         const rct = $scope.acts.map(o=>o.participation?.RecordTarget).filter(o=>o)[0];
+        var doseIdx = $scope.table.cols.indexOf(doseSequence);
 
         const template = new SubstanceAdministration({
                     template : "50ac9b2d-e560-4b75-ac77-921bf0eceee8",
@@ -63,7 +71,9 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
                     }
                 });
         const renderEntityName = SanteDB.display.renderEntityName(antigen.name, "Assigned");
-        $scope.table.data[renderEntityName][doseSequence] = template;
+        const templateId = $scope.table.data[renderEntityName].map(o=>o?.template).find(o=>o);
+        template.template = templateId;
+        $scope.table.data[renderEntityName][doseIdx] = template;
         $scope.acts.push(template);
 
         // Add back to the scoped object 
@@ -73,6 +83,11 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
     }
 
 
+}
+
+angular.module("santedb").controller("HistoricalImmunizationEntryController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
+
+    __bindImmunizationScopeFunctions($scope, $rootScope);
     /// Groups the back-entry objects by their date and prepares it as a grid for the entry table
     function initialize() {
 
@@ -170,6 +185,9 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
 
     initialize();
 }]).controller("HistoricalBoosterImmunizationEntryController", ["$scope", "$rootScope", "$timeout", "$state", function ($scope, $rootScope, $timeout, $state) {
+
+    __bindImmunizationScopeFunctions($scope, $rootScope);
+
     /// Groups the back-entry objects by their date and prepares it as a grid for the entry table
     function initialize() {
 
