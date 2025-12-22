@@ -117,11 +117,19 @@
                         <div class="container-fluid">
                             <div class="form-group row">
                                 <label class="col-12 text-bold required">
-                                    {{ 'ui.model.act.actTime.dateTime' | i18n }}
+                                    {{ 'ui.model.patientEncounter.startTime' | i18n }}
                                 </label>
 
                                 <div class="col-12" ng-if="newAct">
-                                    <input class="form-control" type="datetime-local" required="required" name="startTime" ng-model="newAct.startTime" />
+                                    <input class="form-control" 
+                                        type="datetime-local" 
+                                        required="required" 
+                                        name="startTime" 
+                                        ng-model="newAct.startTime"
+                                        max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm'}}" />
+                                    <div class="text-danger" ng-if="checkinForm.startTime.$error.required">
+                                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n}}
+                                    </div>
                                 </div>
                             </div>
                         </div>

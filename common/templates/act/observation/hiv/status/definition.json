@@ -6,7 +6,7 @@
     "moodConcept" : "ec74541f-87c4-4327-a4b9-97f325501747",
     "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
     "actTime" : "{{ $now }}",
-    "value": "70FE34CE-CAFF-4F46-B6E6-9CD6D8F289D6",
+    "value": null,
     "participation" : {
         "RecordTarget" : [
             {
