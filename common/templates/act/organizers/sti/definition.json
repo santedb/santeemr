@@ -1,0 +1,33 @@
+{
+    "$type": "Act",
+    "template": "6e64e95d-5de0-4664-b42b-5ee346ba892f",
+    "classConcept": "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
+    "typeConcept": "32bd992b-9145-4bbf-ac43-19caa95256ed",
+    "actTime": "{{ $now }}",
+    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+    "participation": {
+        "RecordTarget": [
+            {
+                "player": "{{ $recordTargetId }}"
+            }
+        ],
+        "Authororiginator": [
+            {
+                "player": "{{ $userEntityId }}"
+            }
+        ]
+    },
+    "relationship": {
+        "HasComponent": [
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.organizer.sti.infection"
+                    }
+                }
+            }
+        ]
+    }
+}

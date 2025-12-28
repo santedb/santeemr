@@ -56,5 +56,16 @@ namespace SanteEMR
         /// </summary>
         public static readonly Guid LabourAndDeliveryVisitKey = Guid.Parse("f8932034-43d5-477d-9748-1609099314df");
 
+
+        /// <summary>
+        /// Clinical status of the condition
+        /// </summary>
+        public static readonly Guid ConditionClinicalStatusKey = Guid.Parse("656251ec-21bc-4594-9914-ca971c9defcc");
+
+        /// <summary>
+        /// Date of the condition resolution
+        /// </summary>
+        public static readonly Guid ConditionResolutionDateKey = Guid.Parse("aaf71c41-cca3-4a39-9dc9-3f685fc34c4d");
+
     }
 }
