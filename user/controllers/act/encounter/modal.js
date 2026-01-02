@@ -50,9 +50,10 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
                 $timeout(() => {
                     $scope.recordTarget = new Patient(fetchedData.find(d => d.$type == "Patient"));
+                    console.info(moment().format("YYYY-MM-DDTHH:mm"));
                     var pid = SanteDB.application.newGuid();
                     $scope.newAct = new PatientEncounter({
-                        startTime: new Date(),
+                        startTime: moment().milliseconds(0).seconds(0).toDate(),
                         participation: {
                             Informant: [
                                 

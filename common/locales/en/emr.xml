@@ -553,4 +553,9 @@
       <string name="ui.emr.patient.policy.info">This panel is used to assign or remove consent directives on the patient's record. Note that when a patient has a consent directive applied, records assigned to the patient and the patient demographics will be masked and or require a break the glass condition</string>
       <string name="ui.emr.patient.policy.none">This record has no policies associated</string>
       <string name="ui.emr.patient.policy.warning"><![CDATA[Changing the policies attached to this object may impact users ability to access this record (requiring them to elevate or being denied completely). <strong>Only change these settings if you are sure you want to alter the privacy directives for the object</strong>]]></string>
+
+      <!-- STI Infection / Disease -->
+       <string name="org.santedb.emr.act.sti.infection.disease">STI Infection Identified</string>
+       <string name="org.santedb.emr.act.sti.infection.treatment">Patient is undergoing treatment as of</string>
+       <string name="org.santedb.emr.act.sti.infection.resolved">Infection is resolved as of</string>
 </resources>
