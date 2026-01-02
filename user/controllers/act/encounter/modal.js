@@ -169,7 +169,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
             }
 
-            var encounter = await SanteEMR.startVisitAsync(templateId, pathway, $scope.recordTarget.id, fulfills, fulfillmentTargets, $scope.newAct.participation.Informant[0], $scope.newAct.templateObject);
+            var encounter = await SanteEMR.startVisitAsync(templateId, pathway, $scope.recordTarget.id, fulfills, fulfillmentTargets, $scope.newAct.participation.Informant[0], $scope.newAct.templateObject, null, null, $scope.newAct.startTime);
             toastr.success(SanteDB.locale.getString("ui.emr.encounter.checkin.success"));
             $state.go("santedb-emr.encounter.view", { id: encounter.id });
         }
