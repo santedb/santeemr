@@ -1,0 +1,69 @@
+{
+    "$type": "CodedObservation",
+    "template": "30de09e1-5964-48ac-94e0-28bb8f329b46",
+    "classConcept": "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
+    "typeConcept": "08ce33e6-63b8-41f4-89bb-f4faac45e6a2",
+    "actTime": "{{ $now }}",
+    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+    "participation": {
+        "RecordTarget": [
+            {
+                "player": "{{ $recordTargetId }}"
+            }
+        ],
+        "Authororiginator": [
+            {
+                "player": "{{ $userEntityId }}"
+            }
+        ]
+    },
+    "relationship": {
+        "HasComponent": [
+            {
+                // DATE OF ONSET
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "DateObservation",
+                    "typeConcept": "a61d93db-2020-4b14-b8ce-b131783d631d",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "actTime": "{{ $now }}",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747"
+                }
+            },
+            {
+                // VERIFICATION STATUS
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "typeConcept": "97513cbe-188f-11eb-adc1-0242ac120002",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "actTime": "{{ $now }}",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747"
+                }
+            },
+            {
+                // DATE TREATMENT STARTED
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "CodedObservation",
+                    "typeConcept": "629c2d19-f72a-4821-8a3b-1c0278b30f43",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "actTime": "{{ $now }}",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747"
+                }
+            },
+            {
+                // DATE OF RESOLUTION
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "DateObservation",
+                    "typeConcept": "aaf71c41-cca3-4a39-9dc9-3f685fc34c4d",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "actTime": "{{ $now }}",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747"
+                }
+            }
+        ]
+    }
+}

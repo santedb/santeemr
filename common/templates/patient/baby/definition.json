@@ -37,6 +37,7 @@
     "tag" : {
         "$copy:address.HomeAddress.0.component" : "relationship.Mother.0.targetModel.address.HomeAddress.0.component",
         "$copy:name.OfficialRecord.0.component.Family" : "relationship.Mother.0.targetModel.name.OfficialRecord.0.component.Family",
-        "emr.autoCreated" : true
+        "emr.autoCreated" : true,
+        "$match.skip" : true
     }
 }

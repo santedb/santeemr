@@ -1,7 +1,7 @@
 <ViewModel xmlns="http://santedb.org/model/view"  name="emr.actDetail">
     <include>noModelProperties</include>
 
-    <type type="TemplateDefinition" all="false">
+    <type type="TemplateDefinition" all="true">
         <property name="mnemonic" />
         <property name="name" />
     </type>

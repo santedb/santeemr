@@ -1,6 +1,6 @@
 <span xmlns="http://www.w3.org/1999/xhtml">
-
-    {{ act.valueModel | concept }} -
+    {{ act.typeConceptModel | concept }} -
+    <strong>{{ act.valueModel | concept }}</strong>
     <span ng-repeat="comp in act.relationship.HasComponent track by $index" ng-switch="comp.targetModel.typeConcept">
         <span ng-switch-when="54843f39-8820-4856-951c-1bcd4812bdce" class="mx-2">
             <strong><i class="fas fa-fw fa-clock"></i> LMP:</strong> {{ comp.targetModel.value | extDate:

@@ -109,9 +109,16 @@ namespace SanteEMR.Rules
                 if (subjectAct is CodedObservation cdo && this.m_conceptRepository.IsMember(EmrConstants.EmrConditionTrigger, subjectAct.TypeConceptKey.Value) &&
                     !subjectAct.IsNegated) // The type is not a condition and is a coded observation
                 {
+                    var conditionIsActive = !StatusKeys.InactiveStates.Contains(cdo.StatusConceptKey.Value) || // The ACT is no longer active state
+                        !cdo.LoadProperty(o => o.Relationships).Any(r => r.RelationshipTypeKey == ActRelationshipTypeKeys.HasComponent
+                            &&
+                                (r.LoadProperty(o => o.TargetAct, referenceData: data.Item)?.TypeConceptKey == EmrConstants.ConditionResolutionDateKey || // Resolution date 
+                                r.TargetAct.TypeConceptKey == EmrConstants.ConditionClinicalStatusKey && StatusKeys.ActiveStates.Contains((r.TargetAct as CodedObservation).ValueKey.GetValueOrDefault()) // Resolved Clinical Status
+                            ) && r.TargetAct.StatusConceptKey == StatusKeys.Completed);
+
                     var activeCondition = this.m_conditionRepository.Find(o => o.Participations.Where(p => p.ParticipationRoleKey == ActParticipationKeys.RecordTarget).Any(p => p.PlayerEntityKey == rct.PlayerEntityKey) && o.TypeConceptKey == ObservationTypeKeys.Condition && o.ValueKey == cdo.TypeConceptKey && o.ObsoletionTime == null && o.StatusConceptKey == StatusKeys.Active).FirstOrDefault();
                     if (cdo.ValueKey.HasValue && !this.m_conceptRepository.IsMember(EmrConstants.PatientIndicatorNegatedObservation, cdo.ValueKey.Value)
-                        && !StatusKeys.InactiveStates.Contains(cdo.StatusConceptKey.Value))
+                        && conditionIsActive)
                     {
                         activeCondition = activeCondition ?? new CodedObservation()
                         {
