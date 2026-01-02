@@ -5,6 +5,11 @@
             <th class="text-center" ng-repeat="i in table.cols track by $index">
                 {{i}}
             </th>
+            <th>
+                <button type="button" ng-click="addDoseSequence()" class="btn btn-success">
+                    <i class="fas fa-fw fa-plus-circle"></i>
+                </button>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -12,48 +17,81 @@
             <!-- Antigen Name -->
             <th class="align-middle">
                 {{ag}}
+                <button ng-if="!dose.$overrideAntigenCheck" class="btn btn-link" type="button"
+                    ng-click="dose.$overrideAntigenCheck = true">
+                    {{ 'ui.action.override' | i18n }}
+                </button>
             </th>
 
             <td class="text-center align-middle" ng-repeat="adm in dose track by $index">
                 <div class="d-inline-flex" ng-if="adm.doseSequence !== undefined">
                     <label class="checkbox-container">
-                        <input ng-disabled="adm.actTime &gt; $root.page.minEventTime || 
+                        <input ng-disabled="
+                                    (!canBackEnter &amp;&amp; adm.actTime &gt; $root.page.minEventTime || 
                                     dose[$index - 1] &amp;&amp; dose[$index - 1].statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' || 
-                                    !adm.tag.isBackEntry" name="vacc-history-{{ ag }}-{{ dose.doseSequence }}-enabled"
+                                    !adm.tag.isBackEntry) &amp;&amp;
+                                    !dose.$overrideAntigenCheck"
+                            name="vacc-history-{{ ag }}-{{ dose.doseSequence }}-enabled"
                             ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'" ng-model="adm.statusConcept"
                             class="checkbox-control" ng-false-value="null" type="checkbox" />
                         <span></span>
                     </label>
+
                     <input ng-change="dateSelectedUpdateColumn(adm)" class="form-control"
                         name="vacc-history-{{ ag }}-{{ adm.doseSequence }}"
                         ng-disabled="adm.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" ng-model="adm.actTime"
                         type="date" ng-required="adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'"
-                        min="{{ (adm.startTime || adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime) | date: 'yyyy-MM-dd'}}"
-                        max="{{ adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' ? ($root.page.today) : null | date: 'yyyy-MM-dd' }}" />
+                        min="{{ dose.$overrideAntigenCheck ? adm.participation.RecordTarget[0].playerModel.dateOfBirth : (adm.startTime || adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime) | date: 'yyyy-MM-dd'}}"
+                        max="{{ dose.$overrideAntigenCheck ? $root.page.today : adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' ? (adm.stopTime || $root.page.today) : null | date: 'yyyy-MM-dd' }}" />
+
+                    <div
+                        ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + dose.doseSequence + '-enabled'].$viewValue == true">
+                        <div class="text-danger"
+                            ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.required">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                        </div>
+
+                        <div class="text-danger"
+                            ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.min">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min:
+                            getFormattedDate((adm.startTime ||
+                            adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index -
+                            1].actTime))
+                            } }}
+                        </div>
+
+                        <div class="text-danger"
+                            ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.max">
+                            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { max:
+                            getFormattedDate((adm.startTime ||
+                            adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index -
+                            1].actTime))
+                            } }}
+                        </div>
+                    </div>
+                </div>
+                <div ng-if="!adm.doseSequence &amp;&amp; (dose.$antigen || adm._antigen)">
+                    <button type="button" class="btn btn-link" ng-click="addDoseManual(dose.$antigen || adm._antigen, adm._sequence || $index)">
+                        <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n }} {{ ag }} # {{ adm._sequence || $index}}
+                    </button>
                 </div>
 
-                <div
-                    ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + dose.doseSequence + '-enabled'].$viewValue == true">
-                    <div class="text-danger"
-                        ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.required">
-                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
-                    </div>
-
-                    <div class="text-danger"
-                        ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.min">
-                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min:
-                        getFormattedDate((adm.startTime ||
-                        adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime))
-                        } }}
-                    </div>
-
-                    <div class="text-danger"
-                        ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + adm.doseSequence].$error.max">
-                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxValue' | i18n: { max:
-                        getFormattedDate((adm.startTime ||
-                        adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime))
-                        } }}
-                    </div>
+            </td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>
+                <div class="input-group">
+                    <!-- Allow the user to select a product definition type that belongs in this facility -->
+                    <entity-select ng-model="newAntigen._player" entity-type="'Material'" filter="{
+                                            'determinerConcept' : 'AD28A7AC-A66B-42C4-91B4-DE40A2B11980',
+                                            'classConcept' : 'd39073be-0f8f-440e-b8c8-7034cc138a95',
+                                            'typeConcept.conceptSet' : 'ab16722f-dcf5-4f5a-9957-8f87dbb390d5'
+                                        }" display="item.name.Assigned[0].component.$other[0]" class="form-control"
+                        js-filter="filterExistingAntigens" return-object="true" />
+                    <button type="button" ng-click="addAntigen()" class="btn btn-success">
+                        <i class="fas fa-fw fa-plus-circle"></i>
+                    </button>
                 </div>
             </td>
         </tr>

@@ -1,7 +1,7 @@
 <ViewModel xmlns="http://santedb.org/model/view"  name="emr.actDetail">
     <include>noModelProperties</include>
 
-    <type type="TemplateDefinition" all="false">
+    <type type="TemplateDefinition" all="true">
         <property name="mnemonic" />
         <property name="name" />
     </type>
@@ -18,6 +18,18 @@
 
     <type type="ActRelationship" name="ActRelationshipTarget" base="noModelProperties.ActRelationship">
         <property name="targetModel" behavior="always" />
+    </type>
+
+    <type type="EntityRelationship" name="EntityRelationshipTarget" base="noModelProperties.EntityRelationship" all="false">
+        <property name="target" />
+        <property name="targetModel" behavior="always" all="true" />
+    </type>
+
+    <type type="Material" base="noModelProperties.Material" all="true">
+        <property name="relationship" behavior="always" all="true">
+            <property name="UsedEntity" ref="EntityRelationshipTarget" />
+            <property name="Instance" ref="EntityRelationshipTarget" />
+        </property>
     </type>
 
     <type type="EntityIdentifier" all="true">

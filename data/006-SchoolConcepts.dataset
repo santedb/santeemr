@@ -116,6 +116,7 @@
 
     <update insertIfNotExists="true">
         <ConceptSetComposition xmlns="http://santedb.org/model">
+            <id>65adb87b-0515-42b8-92ba-6f268aa1b748</id>
             <source>485bc177-3e84-4a5a-9f25-466ba30e987e</source>
             <instruction>include</instruction>
             <target>a7474e08-4b3a-4f69-8928-b4e352d7c1d3</target>

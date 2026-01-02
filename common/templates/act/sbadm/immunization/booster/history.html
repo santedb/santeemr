@@ -19,7 +19,7 @@
    <div
       oc-lazy-load="{ name: 'HistoricalBoosterImmunizationEntryController', files: ['/org.santedb.emr.common/controllers/templates/act/sbadm/immunization.js'] }">
       <div ng-controller="HistoricalBoosterImmunizationEntryController" class="overflow-auto">
-         <div ng-if="table">
+         <div ng-if="table" ng-init="canBackEnter = true">
             <h5>{{ 'ui.emr.immunization.backEntry.knownSequence' | i18n }}</h5>
             <!-- #include virtual="~/templates/act/sbadm/immunization/table.html"-->
          </div>

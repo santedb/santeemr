@@ -1,0 +1,17 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="false">~/controllers/reports/view.js</sdb:script>
+    <sdb:state name="santedb-emr.bi.reports.view" abstract="false">
+        <sdb:url>/view?{:id}</sdb:url>
+        <sdb:view>
+            <sdb:controller>ReportViewController</sdb:controller>
+            <sdb:title lang="en">View Report</sdb:title>
+        </sdb:view>
+    </sdb:state>
+
+    <div ng-if="report">
+        <h2><i class="fas fa-fw fa-chart-area"></i> {{ report.name }}</h2>
+        <p ng-if="report.meta.doc"><i class="fas fa-fw fa-info-circle"></i> <span
+                ng-bind-html="report.meta.doc.doc"></span></p>
+        <report report="report" type="inline" />
+    </div>
+</div>

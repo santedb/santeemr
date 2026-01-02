@@ -51,6 +51,7 @@
                                                 <li ng-repeat="(k, famr) in recordTarget.relationship track by $index"
                                                     ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
                                                     <label ng-repeat="fam in famr track by $index"
+                                                        ng-if="!fam.targetModel.deceasedDate"
                                                         class="checkbox-container">
                                                         <input class="checkbox-control" required="required" type="radio"
                                                             name="informant"
@@ -112,6 +113,27 @@
 
                             </div>
                         </div>
+
+                        <div class="container-fluid">
+                            <div class="form-group row">
+                                <label class="col-12 text-bold required">
+                                    {{ 'ui.model.patientEncounter.startTime' | i18n }}
+                                </label>
+
+                                <div class="col-12" ng-if="newAct">
+                                    <input class="form-control" 
+                                        type="datetime-local" 
+                                        required="required" 
+                                        name="startTime" 
+                                        ng-model="newAct.startTime"
+                                        max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm'}}" />
+                                    <div class="text-danger" ng-if="checkinForm.startTime.$error.required">
+                                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n}}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <ul class="list-group px-3">
                             <li class="list-group-item" ng-if="!newAct._fulfills">
                                 <label class="text-strong d-block w-100 checkbox-container">

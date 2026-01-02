@@ -1,0 +1,17 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script static="false">~/controllers/reports/index.js</sdb:script>
+    <sdb:state name="santedb-emr.bi.reports.index" abstract="false">
+        <sdb:url>/</sdb:url>
+        <sdb:view>
+            <sdb:controller>ReportCenterController</sdb:controller>
+            <sdb:title lang="en">Report Centre</sdb:title>
+        </sdb:view>
+    </sdb:state>
+
+    <entity-table id="biReportTable" type="BiReportDefinition" properties="[ 'name', 'description', 'author' ]"
+        render="{ 'description': 'renderDescription', 'author': 'renderAuthor' }" search-field="name"
+        default-query="{ 'meta.public' : 'true' }" i18n-prefix="'ui.bi.reports.'" item-actions="[ 
+            { name: 'view', sref: 'santedb-emr.bi.reports.view', icon: 'fas fa-play', className: 'btn btn-primary' } 
+        ]" />
+
+</div>

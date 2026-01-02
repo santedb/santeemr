@@ -3,8 +3,12 @@
         <label class="col-md-3 col-sm-12 control-label">{{ 'ui.emr.patient.hivStatus' | i18n }}</label>
 
         <div class="col-md-8 col-sm-12">
-            <concept-select class="form-control" ng-change="!act.version ? act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3' : null"
-                concept-set="'HIVStatus'" ng-model="act.value" shortest-name="true" />
+            <concept-select required="required" ng-required="true" is-required="true" class="form-control" ng-change="!act.version ? act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3' : null"
+                concept-set="'HIVStatus'" ng-model="act.value" shortest-name="true" name="hivStatus"/>
+                <div class="text-danger" ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).hivStatus.$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
         </div>
+
     </div>
 </div>

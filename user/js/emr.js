@@ -473,7 +473,7 @@ function SanteEMRWrapper() {
      * @param {PatientEncounter} templateData Data which should be copied / pushed to the template
      * @returns {PatientEncounter} The constructed and saved {@link:PatientEncounter}
      */
-    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt, templateData, refersToEncounterId, templateParameters) {
+    this.startVisitAsync = async function (templateId, carePathway, recordTargetId, fulfills, fulfillmentComponents, informantPtcpt, templateData, refersToEncounterId, templateParameters, startTime) {
         try {
 
             var submission = new Bundle({ resource: [] });
@@ -514,7 +514,7 @@ function SanteEMRWrapper() {
             }
 
             // Ensure the appropriate keys are set
-            encounter.startTime = encounter.actTime = new Date();
+            encounter.startTime = encounter.actTime = (encounter.startTime || new Date());
             encounter.statusConcept = StatusKeys.Active;
             encounter.extension = encounter.extension || {};
             encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL] = [SanteDB.application.encodeReferenceExtension(Concept.name, ENCOUNTER_FLOW.CHECKED_IN)];

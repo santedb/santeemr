@@ -252,6 +252,14 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         $window.history.back();
     }
 
+    $scope.addHistoryAct = function(act) {
+        $scope.entity.participation = $scope.entity.participation || {};
+        $scope.entity.participation.RecordTarget = $scope.entity.participation.RecordTarget || [];
+        $scope.entity.participation.RecordTarget.push(new ActParticipation({
+            actModel: act
+        }));
+    }
+
     // Register the patient
     $scope.registerPatient = async function (registrationForm) {
 
@@ -729,7 +737,6 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     }]).controller("EmrPatientRegisterClinicalHistoryController", ["$scope", "$rootScope", "$timeout", function ($scope, $rootScope, $timeout) {
 
         $scope.entryActs = {};
-
 
         $scope.$watch("scopedObject.participation.RecordTarget", function (n, o) {
             if (n) {
