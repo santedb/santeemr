@@ -5,7 +5,7 @@
     "typeConcept": "32bd992b-9145-4bbf-ac43-19caa95256ed",
     "actTime": "{{ $now }}",
     "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
-    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
     "participation": {
         "RecordTarget": [
             {
@@ -22,9 +22,10 @@
         "HasComponent": [
             {
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "operation": 5,
                 "targetModel" : {
                     "templateModel" : {
-                        "mnemonic" : "org.santedb.emr.organizer.sti.infection"
+                        "mnemonic" : "org.santedb.emr.act.sti.infection"
                     }
                 }
             }

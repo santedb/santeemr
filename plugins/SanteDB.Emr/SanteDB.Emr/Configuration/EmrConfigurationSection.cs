@@ -25,6 +25,7 @@ namespace SanteEMR.Configuration
         /// </summary>
         [XmlElement("vipPolicy"), JsonProperty("vipPolicy")]
         public String AutoApplyVipPolicy { get; set; }
+
     }
 
     /// <summary>

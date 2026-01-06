@@ -558,4 +558,5 @@
        <string name="org.santedb.emr.act.sti.infection.disease">STI Infection Identified</string>
        <string name="org.santedb.emr.act.sti.infection.treatment">Patient is undergoing treatment as of</string>
        <string name="org.santedb.emr.act.sti.infection.resolved">Infection is resolved as of</string>
+       <string name="org.santedb.emr.act.sti.infection.duplicateConfirm">The patient already has an active infection of this type - are you trying to update it? (resolve or change it?)</string>
 </resources>
