@@ -1,15 +1,32 @@
 <span xmlns="http://www.w3.org/1999/xhtml">
-    <strong>{{ act.valueModel | concept }}</strong> 
+    <strong>{{ ::act.valueModel | concept }}</strong> 
     <span class="mx-2" ng-repeat="comp in act.relationship.HasComponent track by $index" ng-switch="comp.targetModel.typeConcept">
         <!-- Onset -->
         <span ng-switch-when="99e13c67-0987-4f19-a9a3-e64e61ce1642">
-            <i class="fas fa-fw fa-calendar"></i> <strong>{{ comp.targetModel.typeConceptModel | concept }} </strong>
-            {{ comp.targetModel.value | humanDate: 'D' }}
+            <i class="fas fa-fw fa-calendar"></i> <strong>{{ ::comp.targetModel.typeConceptModel | concept }} </strong>
+            {{ ::comp.targetModel.value | humanDate: 'D' }}
         </span>
+        <!-- Treatment -->
+         <span ng-switch-when="629c2d19-f72a-4821-8a3b-1c0278b30f43" class="badge" ng-class="{ 'badge-success' : !comp.targetModel.isNegated, 'badge-warning' : comp.targetModel.isNegated }">
+            <i class="fas fa-fw" ng-class="{ 'fa-info-circle' : !comp.targetModel.isNegated, 'fa-exclamation-circle' : comp.targetModel.isNegated }"></i>
+            <span ng-if="::comp.targetModel.isNegated">
+                {{ 'org.santedb.emr.act.sti.infection.info.untreated' | i18n }}
+            </span>
+            <span ng-if="::!comp.targetModel.isNegated">
+                {{ 'org.santedb.emr.act.sti.infection.info.treated' | i18n }}
+                {{ comp.targetModel.value | humanDate: 'D'}}
+            </span>
+         </span>
         <!-- Resolution -->
-        <span ng-switch-when="aaf71c41-cca3-4a39-9dc9-3f685fc34c4d" class="badge badge-success">
-            <i class="fas fa-fw fa-check-circle"></i> {{ comp.targetMOdel.typeConceptModel | concept }}
-            {{ comp.targetModel.value | humanDate: 'D'}}
+        <span ng-switch-when="aaf71c41-cca3-4a39-9dc9-3f685fc34c4d" class="badge" ng-class="{ 'badge-success' : !comp.targetModel.isNegated, 'badge-danger' : comp.targetModel.isNegated }">
+            <i class="fas fa-fw" ng-class="{ 'fa-check-circle' : !comp.targetModel.isNegated, 'fa-exclamation-circle' : comp.targetModel.isNegated }"></i> 
+            <span ng-if="::comp.targetModel.isNegated">
+                {{ 'org.santedb.emr.act.sti.infection.info.unresolved' | i18n }}
+            </span>
+            <span ng-if="::!comp.targetModel.isNegated">
+                {{ 'org.santedb.emr.act.sti.infection.info.resolved' | i18n }}
+                {{ comp.targetModel.value | humanDate: 'D'}}
+            </span>
         </span>
     </span>
 </span>
