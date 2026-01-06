@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Pregnancy Findings v3.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Pregnancy Findings v3.01"
   xmlns="http://santedb.org/data">
   <update skipIfError="false" insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
@@ -214,5 +214,21 @@
       <concept>9301d554-1522-447c-aef9-4694c5b84a8e</concept>
       <concept>f7b4522f-99ab-4dae-bb29-d1868ce4c068</concept>
     </ConceptSet>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>27d1225b-85f2-4420-8a5e-3b2000797d4f</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyFinding-Ultrasound</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>aa88af90-eb45-11f0-9783-2798b7b47de0</id>
+        <source>27d1225b-85f2-4420-8a5e-3b2000797d4f</source>
+        <language>en</language>
+        <value>Ultrasound</value>
+      </name>
+      <conceptSet>82fca516-8831-11f0-8e04-4b7b340ffd27</conceptSet>
+    </Concept>
   </update>
 </dataset>
