@@ -59,8 +59,7 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                 // If the user has indicated somehow the data is not complete ignore it and furthermore
                 // delete the previous observation
                 var amendment = newObservations[i];
-                amendment.tag = amendment.tag || {};
-                amendment.tag["emr.processed"] = ["false"];
+                
                 amendment.operation = BatchOperationType.Update;
                 if(
                     amendment.statusConcept == StatusKeys.Completed || 
@@ -80,6 +79,13 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                 }
                 bundleRelatedObjects(amendment, null, submissionBundle);
             }
+
+            // Reset the emr processing
+            submissionBundle.resource.forEach(amendment => {
+                amendment.tag = amendment.tag || {};
+                amendment.tag["emr.processed"] = ["false"];
+            });
+            
             const result = await SanteDB.resources.bundle.insertAsync(submissionBundle, undefined, undefined, true);
             toastr.success(SanteDB.locale.getString("ui.emr.patient.status.update.success"));
             $state.reload();

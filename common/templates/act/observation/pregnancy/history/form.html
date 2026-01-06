@@ -15,14 +15,14 @@
                     <input type="radio" ng-model="act.statusConcept" ng-value="'afc33800-8225-4061-b168-bacc09cdbae3'"
                         name="pregnancyHistory" class="checkbox-control" />
                     <span></span>
-                    Yes
+                    {{ 'ui.true' | i18n }}
                 </label>
 
                 <label class="checkbox-container font-weight-bold">
                     <input type="radio" ng-model="act.statusConcept" ng-value="null" name="pregnancyHistory"
                         class="checkbox-control" />
                     <span></span>
-                    No
+                    {{ 'ui.false' | i18n }}
                 </label>
             </div>
         </div>

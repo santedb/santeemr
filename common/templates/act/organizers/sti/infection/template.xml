@@ -1,5 +1,5 @@
 <AppletTemplateDefinition xmlns="http://santedb.org/applet"
-  mnemonic="org.santedb.emr.organizer.sti.infection" public="true">
+  mnemonic="org.santedb.emr.act.sti.infection" public="true">
     <definition>definition.json</definition>
     <form>form.html</form>
     <view>view.html</view>

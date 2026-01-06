@@ -22,6 +22,11 @@ namespace SanteEMR
         public static readonly Guid PatientIndicatorNegatedObservation = Guid.Parse("8e848f0e-890b-11f0-ae3f-9f37087e0822");
 
         /// <summary>
+        /// Multi conditions
+        /// </summary>
+        public static readonly Guid EmrMultiConditions = Guid.Parse("fb3e26bc-5766-4e84-afac-a522edc2e7e3");
+
+        /// <summary>
         /// Patient has an active condition
         /// </summary>
         public const string PatientHasConditionsTagKey = "$hasConditions";

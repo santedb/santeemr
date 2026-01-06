@@ -1,3 +1,115 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid"
+    oc-lazy-load="{ name: 'StiStatusPanelController', files: [ '/org.santedb.emr.common/controllers/templates/act/sti.js' ] }">
+
+    <div ng-controller="StiStatusPanelController">
+
+        <div class="form-group row">
+            <label class="col-xs-12 col-md-3 control-label required">
+                {{ 'org.santedb.emr.act.sti.infection.disease' | i18n }}
+            </label>
+            <div class="col-xs-12 col-md-9">
+                <concept-select concept-set="'SexuallyTransmittedInfectiousDisease'" ng-model="act.value"
+                    required="required" class="form-control" name="stiDisease" ng-model-options="{ updateOn: 'blur' }" />
+                <div class="text-danger"
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiDisease.$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+                <div class="text-danger"
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiDisease.$error.duplicate">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" ng-repeat="comp in act.relationship.HasComponent track by $index"
+            ng-switch="comp.targetModel.typeConcept">
+            <!-- Onset -->
+            <label class="col-xs-12 col-md-3 control-label required"
+                ng-switch-when-start="99e13c67-0987-4f19-a9a3-e64e61ce1642">
+                {{ comp.targetModel.typeConceptModel | concept }}
+            </label>
+            <div class="col-xs-12 col-md-9" ng-switch-when-end="99e13c67-0987-4f19-a9a3-e64e61ce1642">
+                <input type="date" ng-model="comp.targetModel.value"
+                    min="{{ act.participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
+                    max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" name="stiOnset" required="required"
+                    class="form-control" />
+                <div class="text-danger" ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiOnset.$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
+            <!-- Verification Status -->
+            <label class="col-xs-12 col-md-3 control-label required"
+                ng-switch-when-start="97513cbe-188f-11eb-adc1-0242ac120002">
+                {{ comp.targetModel.typeConceptModel | concept }}
+            </label>
+            <div class="col-xs-12 col-md-9" ng-switch-when-end="97513cbe-188f-11eb-adc1-0242ac120002">
+                <concept-select ng-model="comp.targetModel.value" required="required" name="stiVerificationStatus"
+                    concept-set="'ObservationVerificationState'"
+                    add-concept="[ '21b0ffc8-ca4e-408d-a104-41fc924d3a39', '70fe34ce-caff-4f46-b6e6-9cd6d8f289d6' ]"
+                    class="form-control"></concept-select>
+                <div class="text-danger"
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiVerificationStatus.$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i>
+                    {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
+            <!-- Undergoing Treatment -->
+            <label class="col-xs-12 col-md-3 control-label" ng-class="{ 'required' : !comp.targetModel.isNegated }"
+                ng-switch-when-start="629c2d19-f72a-4821-8a3b-1c0278b30f43">
+                {{ comp.targetModel.typeConceptModel | concept }}
+            </label>
+            <div class="col-xs-12 col-md-9" ng-switch-when-end="629c2d19-f72a-4821-8a3b-1c0278b30f43">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text">
+                            <span class="checkbox-container">
+                                <input type="checkbox" ng-model="comp.targetModel.isNegated" ng-true-value="false"
+                                    ng-false-value="true" class="checkbox-control" />
+                                <span></span>
+                            </span>
+                            {{ 'org.santedb.emr.act.sti.infection.treatment' | i18n }}
+                        </label>
+                    </div>
+                    <input type="date" ng-required="!comp.targetModel.isNegated"
+                        ng-disabled="comp.targetModel.isNegated" ng-model="comp.targetModel.value"
+                        class="form-control h-100" name="stiTreatmentStart"
+                        min="{{ comp.targetModel.isNegated ? null : act.relationship.HasComponent.ngFind('targetModel.typeConcept', '99e13c67-0987-4f19-a9a3-e64e61ce1642').targetModel.value | date: 'yyyy-MM-dd' }}"
+                        max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" />
+                </div>
+                <div class="text-danger"
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiTreatmentStart.$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i>
+                    {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
+            <!-- Resolution Date -->
+            <label class="col-xs-12 col-md-3 control-label" ng-class="{ 'required' : !comp.targetModel.isNegated }"
+                ng-switch-when-start="aaf71c41-cca3-4a39-9dc9-3f685fc34c4d">
+                {{ comp.targetModel.typeConceptModel | concept }}
+            </label>
+            <div class="col-xs-12 col-md-9" ng-switch-when-end="aaf71c41-cca3-4a39-9dc9-3f685fc34c4d">
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <label class="input-group-text">
+                            <span class="checkbox-container">
+                                <input type="checkbox" ng-model="comp.targetModel.isNegated" ng-true-value="false"
+                                    ng-false-value="true" class="checkbox-control" />
+                                <span></span>
+                            </span>
+                            {{ 'org.santedb.emr.act.sti.infection.resolved' | i18n }}
+                        </label>
+                    </div>
+                    <input type="date" ng-required="!comp.targetModel.isNegated"
+                        ng-disabled="comp.targetModel.isNegated" ng-model="comp.targetModel.value"
+                        class="form-control h-100" name="stiTreatmentResolved"
+                        min="{{ comp.targetModel.isNegated ? null : act.relationship.HasComponent.ngFind('targetModel.typeConcept', '99e13c67-0987-4f19-a9a3-e64e61ce1642').targetModel.value | date: 'yyyy-MM-dd' }}"
+                        max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" />
+                </div>
+                <div class="text-danger"
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiTreatmentResolved.$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i>
+                    {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
