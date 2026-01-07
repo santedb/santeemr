@@ -1,86 +1,40 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
+<div xmlns="http://www.w3.org/1999/xhtml"
+    oc-lazy-load="{ name: 'PregnancyStatusController', files: [ '/org.santedb.emr.common/controllers/templates/act/pregnancy.js' ] }">
 
-    <script type="text/javascript" nonce="{{ $csp_nonce }}">
-        /// <![CDATA[
-
-        // When the selected value is in the "Non-Indicator" concept set - we tell the HDSI to ignore the components
-        // TODO: Clean this up - move to a controller file ----------------------------------
-        var scope = angular.element('#pregnancyStatusInput').scope();
-        var _pregnancyNegativeConcepts = [];
-        async function initializeView() {
-            try {
-                var conceptSetExpansion = await SanteDB.resources.conceptSet.findAssociatedAsync('8e848f0e-890b-11f0-ae3f-9f37087e0822', "Concept", null, "min");
-                _pregnancyNegativeConcepts = conceptSetExpansion.resource.map(o => o.id);
-            }
-            catch (e) {
-                console.error(e);
-            }
-        }
-
-        initializeView();
-
-        function showOrHideComponents(selectedValue) {
-            if (!selectedValue || selectedValue == EmptyGuid || _pregnancyNegativeConcepts.includes(selectedValue)) {
-                scope.act.relationship?.HasComponent?.forEach(n => n.operation = BatchOperationType.Ignore);
-            }
-            else {
-                scope.act.relationship?.HasComponent?.forEach(n => n.operation = BatchOperationType.InsertOrUpdate);
-            }
-        }
-
-        scope.resolveTemplate = function (templateId) {
-            var templateValue = SanteDB.application.resolveTemplateForm(templateId);
-            if (templateValue == null) {
-                return "/org.santedb.uicore/partials/act/noTemplate.html"
-            }
-            return templateValue;
-        }
-
-
-        scope.$watch("act.value", function (n, o) {
-            showOrHideComponents(n);
-        });
-
-        showOrHideComponents(scope.act.value);
-
-        angular.module("santedb").controller("PregnancyStatusComponentController", function () {
-
-        });
-        /// ]]>
-    </script>
-
-    <div id="pregnancyStatusInput" class="container-fluid">
-        <div class="row" ng-if="!act.relationship.HasComponent">
-            <div class="col-12">
-                <div class="alert alert-info">
-                    <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.emr.patient.pregnancy.readonly' | i18n }}
+    <div ng-controller="PregnancyStatusController">
+        <div id="pregnancyStatusInput" class="container-fluid">
+            <div class="row" ng-if="!act.relationship.HasComponent">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.emr.patient.pregnancy.readonly' | i18n }}
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-10 offset-1">
-                <label class="control-label required">
-                    {{ act.typeConceptModel | concept }}
-                </label>
+            <div class="row">
+                <div class="col-10 offset-1">
+                    <label class="control-label required">
+                        {{ act.typeConceptModel | concept }}
+                    </label>
 
-                <concept-select ng-disabled="!act.relationship.HasComponent" required="required" class="form-control"
-                    name="pregnancyStatus" concept-set="'PregnancyStatusCodes'" ng-model="act.value"
-                    add-concept="['21b0ffc8-ca4e-408d-a104-41fc924d3a39']"
-                    ng-change="act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3'" />
-                <div class="text-danger"
-                    ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['pregnancyStatus'].$error['required']">
-                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    <concept-select ng-disabled="!act.relationship.HasComponent" required="required"
+                        class="form-control" name="pregnancyStatus" concept-set="'PregnancyStatusCodes'"
+                        ng-model="act.value" add-concept="['21b0ffc8-ca4e-408d-a104-41fc924d3a39']"
+                        ng-change="act.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3'" />
+                    <div class="text-danger"
+                        ng-if="($parent.$parent.$parent.panel || $parent.$parent.panel || $parent.panel || panel).editForm['pregnancyStatus'].$error['required']">
+                        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="row" ng-if="act.value">
-            <div class="col-10 offset-1 container-fluid">
-                <div class="row">
-                    <div class="col-sm-12 col-md-6" ng-if="comp.operation == 'InsertOrUpdate'"
-                        ng-repeat="comp in act.relationship.HasComponent track by $index">
-                        <div ng-init="act = comp.targetModel">
-                            <ng-include src="::resolveTemplate(comp.targetModel.templateModel.mnemonic)" />
+            <div class="row" ng-if="act.value">
+                <div class="col-10 offset-1 container-fluid">
+                    <div class="row">
+                        <div ng-class="{ 'col-sm-12 col-md-6' : comp.targetModel.typeConcept !== 'c2cb8755-1961-4cc2-a4ba-814f068dfa48', 'col-12' : comp.targetModel.typeConcept == 'c2cb8755-1961-4cc2-a4ba-814f068dfa48' }" ng-if="comp.operation == 'InsertOrUpdate'"
+                            ng-repeat="comp in act.relationship.HasComponent track by $index">
+                            <div ng-init="act = comp.targetModel">
+                                <ng-include src="::resolveTemplate(comp.targetModel.templateModel.mnemonic)" />
+                            </div>
                         </div>
                     </div>
                 </div>

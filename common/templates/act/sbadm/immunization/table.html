@@ -42,8 +42,11 @@
                         ng-disabled="adm.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'" ng-model="adm.actTime"
                         type="date" ng-required="adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'"
                         min="{{ dose.$overrideAntigenCheck ? adm.participation.RecordTarget[0].playerModel.dateOfBirth : (adm.startTime || adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime) | date: 'yyyy-MM-dd'}}"
-                        max="{{ dose.$overrideAntigenCheck ? $root.page.today : adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' ? (adm.stopTime || $root.page.today) : null | date: 'yyyy-MM-dd' }}" />
-
+                        max="{{ dose.$overrideAntigenCheck ? $root.page.today : adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' ? (adm.stopTime || $root.page.today) : null | date: 'yyyy-MM-dd' }}" 
+                        ng-min="dose.$overrideAntigenCheck ? adm.participation.RecordTarget[0].playerModel.dateOfBirth : (adm.startTime || adm.participation.RecordTarget[0].playerModel.dateOfBirth).greaterOf(dose[$index - 1].actTime) "
+                        ng-max="dose.$overrideAntigenCheck ? $root.page.today : adm.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' ? (adm.stopTime || $root.page.today) : null"
+                        />
+                        
                     <div
                         ng-if="(ownerForm || $parent.ownerForm || $parent.$parent.ownerForm)['vacc-history-' + ag + '-' + dose.doseSequence + '-enabled'].$viewValue == true">
                         <div class="text-danger"

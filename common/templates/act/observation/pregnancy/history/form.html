@@ -1,6 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid"
     oc-lazy-load="{ name: 'PregnancyHistoryController', files: [ '/org.santedb.emr.common/controllers/templates/act/pregnancy.js' ] }">
-    
     <div ng-controller="PregnancyHistoryController">
         <!-- Does Patient Have Pregnancy History -->
         <div class="row" ng-if="!act.version">
@@ -48,22 +47,25 @@
                     {{ comp.targetModel.typeConceptModel | concept }}
                 </label>
 
-                <div class="row">
-                    <div class="col-12 ml-3"
-                        ng-repeat="complication in comp.targetModel.relationship.HasComponent track by $index">
-                        <label class="checkbox-container">
-                            <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
-                            <input type="checkbox" ng-model="complication.targetModel.isNegated" ng-true-value="false"
-                                ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'  &amp;&amp; !act.version"
-                                ng-false-value="true" class="checkbox-control" />
-                            <span></span>
-                            {{ ::complication.targetModel.valueModel | concept }}
-                        </label>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-12 col-xl-6 pl-3"
+                            ng-repeat="complication in comp.targetModel.relationship.HasComponent track by $index">
+                            <label class="checkbox-container">
+                                <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
+                                <input type="checkbox" ng-model="complication.targetModel.isNegated"
+                                    ng-true-value="false"
+                                    ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'  &amp;&amp; !act.version"
+                                    ng-false-value="true" class="checkbox-control" />
+                                <span></span>
+                                {{ ::complication.targetModel.valueModel | concept }}
+                            </label>
 
-                        <concept-select class="form-control" ng-if="complication.targetModel.tag['$cdss.valueSet']"
-                            concept-set="complication.targetModel.tag['$cdss.valueSet'][0]"
-                            ng-disabled="complication.targetModel.isNegated"
-                            ng-model="complication.targetModel.value" />
+                            <concept-select class="form-control" ng-if="complication.targetModel.tag['$cdss.valueSet']"
+                                concept-set="complication.targetModel.tag['$cdss.valueSet'][0]"
+                                ng-disabled="complication.targetModel.isNegated"
+                                ng-model="complication.targetModel.value" />
+                        </div>
                     </div>
                 </div>
             </div>

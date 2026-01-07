@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Pregnancy Complications v3.02" xmlns="http://santedb.org/data">
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Pregnancy Complications v3.03" xmlns="http://santedb.org/data">
   <update skipIfError="false" insertIfNotExists="true">
     <ConceptSet xmlns="http://santedb.org/model">
       <id>6f4e6608-8912-11f0-9a93-f764d51fde6c</id>
@@ -275,6 +275,41 @@
         <language>en</language>
         <value>Pregnancy Complication</value>
       </name>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>c3679abc-57a7-48b1-b3af-b6a48fbaa115</id>
+      <mnemonic>1335934009</mnemonic>
+      <codeSystem>b3030751-d4db-420b-b765-e837607820cd</codeSystem>
+      <name>
+        <id>d5c90f8c-eb4b-11f0-a289-577b1e659ab2</id>
+        <language>en</language>
+        <value>Caesarean scar pregnancy</value>
+        <source>c3679abc-57a7-48b1-b3af-b6a48fbaa115</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>74fba2db-4370-4d6d-be1a-68702c1f83be</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>PregnancyComplication-CaesareanScarPregnancy</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <referenceTerm>
+        <id>d5cc661e-eb4b-11f0-a28b-af77818d2349</id>
+        <source>74fba2db-4370-4d6d-be1a-68702c1f83be</source>
+        <term>c3679abc-57a7-48b1-b3af-b6a48fbaa115</term>
+        <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+      </referenceTerm>
+      <name>
+        <id>d5cb7772-eb4b-11f0-a28a-d7f58c197429</id>
+        <source>74fba2db-4370-4d6d-be1a-68702c1f83be</source>
+        <language>en</language>
+        <value>Caesarean scar pregnancy</value>
+      </name>
+      <conceptSet>6f4e6608-8912-11f0-9a93-f764d51fde6c</conceptSet>
     </Concept>
   </update>
 </dataset>

@@ -9,13 +9,13 @@
             </label>
             <div class="col-xs-12 col-md-9">
                 <concept-select concept-set="'SexuallyTransmittedInfectiousDisease'" ng-model="act.value"
-                    required="required" class="form-control" name="stiDisease" ng-model-options="{ updateOn: 'blur' }" />
+                    required="required" class="form-control" name="stiDisease{{act.id}}" ng-model-options="{ updateOn: 'blur' }" />
                 <div class="text-danger"
-                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiDisease.$error.required">
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ])['stiDisease' + act.id].$error.required">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
                 <div class="text-danger"
-                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiDisease.$error.duplicate">
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ])['stiDisease' + act.id].$error.duplicate">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
                 </div>
             </div>
@@ -30,9 +30,11 @@
             <div class="col-xs-12 col-md-9" ng-switch-when-end="99e13c67-0987-4f19-a9a3-e64e61ce1642">
                 <input type="date" ng-model="comp.targetModel.value"
                     min="{{ act.participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
-                    max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" name="stiOnset" required="required"
+                    max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" name="stiOnset{{act.id}}" required="required"
+                    ng-min="comp.targetModel.isNegated ? null : act.relationship.HasComponent.ngFind('targetModel.typeConcept', '99e13c67-0987-4f19-a9a3-e64e61ce1642').targetModel.value"
+                    ng-max="$root.page.maxEventTime"
                     class="form-control" />
-                <div class="text-danger" ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiOnset.$error.required">
+                <div class="text-danger" ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ])['stiOnset' + act.id].$error.required">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
             </div>
@@ -42,12 +44,12 @@
                 {{ comp.targetModel.typeConceptModel | concept }}
             </label>
             <div class="col-xs-12 col-md-9" ng-switch-when-end="97513cbe-188f-11eb-adc1-0242ac120002">
-                <concept-select ng-model="comp.targetModel.value" required="required" name="stiVerificationStatus"
+                <concept-select ng-model="comp.targetModel.value" required="required" name="stiVerificationStatus{{act.id}}"
                     concept-set="'ObservationVerificationState'"
                     add-concept="[ '21b0ffc8-ca4e-408d-a104-41fc924d3a39', '70fe34ce-caff-4f46-b6e6-9cd6d8f289d6' ]"
                     class="form-control"></concept-select>
                 <div class="text-danger"
-                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiVerificationStatus.$error.required">
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ])['stiVerificationStatus' + act.id].$error.required">
                     <i class="fas fa-fw fa-exclamation-triangle"></i>
                     {{ 'ui.error.required' | i18n }}
                 </div>
@@ -71,12 +73,15 @@
                     </div>
                     <input type="date" ng-required="!comp.targetModel.isNegated"
                         ng-disabled="comp.targetModel.isNegated" ng-model="comp.targetModel.value"
-                        class="form-control h-100" name="stiTreatmentStart"
+                        class="form-control h-100" name="stiTreatmentStart{{act.id}}"
                         min="{{ comp.targetModel.isNegated ? null : act.relationship.HasComponent.ngFind('targetModel.typeConcept', '99e13c67-0987-4f19-a9a3-e64e61ce1642').targetModel.value | date: 'yyyy-MM-dd' }}"
-                        max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" />
+                        max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}"
+                        ng-min="comp.targetModel.isNegated ? null : act.relationship.HasComponent.ngFind('targetModel.typeConcept', '99e13c67-0987-4f19-a9a3-e64e61ce1642').targetModel.value"
+                        ng-max="$root.page.maxEventTime"
+                         />
                 </div>
                 <div class="text-danger"
-                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiTreatmentStart.$error.required">
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ])['stiTreatmentStart' + act.id].$error.required">
                     <i class="fas fa-fw fa-exclamation-triangle"></i>
                     {{ 'ui.error.required' | i18n }}
                 </div>
@@ -100,12 +105,15 @@
                     </div>
                     <input type="date" ng-required="!comp.targetModel.isNegated"
                         ng-disabled="comp.targetModel.isNegated" ng-model="comp.targetModel.value"
-                        class="form-control h-100" name="stiTreatmentResolved"
+                        class="form-control h-100" name="stiTreatmentResolved{{act.id}}"
                         min="{{ comp.targetModel.isNegated ? null : act.relationship.HasComponent.ngFind('targetModel.typeConcept', '99e13c67-0987-4f19-a9a3-e64e61ce1642').targetModel.value | date: 'yyyy-MM-dd' }}"
-                        max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" />
+                        max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}"
+                        ng-min="comp.targetModel.isNegated ? null : act.relationship.HasComponent.ngFind('targetModel.typeConcept', '99e13c67-0987-4f19-a9a3-e64e61ce1642').targetModel.value"
+                        ng-max="$root.page.maxEventTime"
+                         />
                 </div>
                 <div class="text-danger"
-                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ]).stiTreatmentResolved.$error.required">
+                    ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm' ])['stiTreatmentResolved' + act.id].$error.required">
                     <i class="fas fa-fw fa-exclamation-triangle"></i>
                     {{ 'ui.error.required' | i18n }}
                 </div>

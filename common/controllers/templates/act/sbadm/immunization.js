@@ -17,7 +17,7 @@ function __bindImmunizationScopeFunctions($scope, $rootScope) {
         const seq = $scope.table.cols[$scope.table.cols.length - 1] + 1;
         $scope.table.cols.push(seq);
         for(var k of Object.keys($scope.table.data)) {
-            const antigen = $scope.table.data[k].map(o => o?.participation?.Product).find(o => Array.isArray(o))[0];
+            const antigen = $scope.table.data[k].map(o => o?.participation?.Product || [o._antigen]).find(o => Array.isArray(o))[0];
 
             $scope.table.data[k].push({
                 _antigen: antigen.playerModel,
@@ -33,7 +33,10 @@ function __bindImmunizationScopeFunctions($scope, $rootScope) {
         // Grab the record target from another antigen
 
         const renderEntityName = SanteDB.display.renderEntityName($scope.newAntigen._player.name, "Assigned");
-        $scope.table.data[renderEntityName] = $scope.table.cols.map(o=>null);
+        $scope.table.data[renderEntityName] = $scope.table.cols.map(o=> ({
+            _antigen: $scope.newAntigen._player, 
+            _sequence: o
+        }));
         $scope.table.data[renderEntityName].$overrideAntigenCheck = true;
         $scope.table.data[renderEntityName].$antigen = $scope.newAntigen._player;
         $scope.newAntigen._player = null;
