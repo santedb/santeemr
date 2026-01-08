@@ -61,7 +61,7 @@ namespace SanteEMR.Rules
             foreach (var act in data.Item.OfType<Act>().Where(o =>
                 o.BatchOperation != SanteDB.Core.Model.DataTypes.BatchOperationType.Ignore &&
                 o.TypeConceptKey != null &&
-                (o.StatusConceptKey == StatusKeys.Completed || StatusKeys.InactiveStates.Contains(o.StatusConceptKey.Value)) &&
+                (o.StatusConceptKey == StatusKeys.Completed || StatusKeys.InactiveStates.Contains(o.StatusConceptKey.GetValueOrDefault())) &&
                 o.MoodConceptKey == ActMoodKeys.Eventoccurrence &&
                 o.Tags?.Any(t => t.TagKey == EmrConstants.IgnoreEmrTriggersTagName && Boolean.Parse(t.Value)) != true
                 ).ToArray()

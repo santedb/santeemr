@@ -8,7 +8,7 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text p-0">
                         <label class="checkbox-container">
-                            <input type="checkbox" ng-model="act.isNegated" ng-true-value="false" ng-false-value="true"
+                            <input type="checkbox" ng-model="act.isNegated" ng-true-value="false" ng-false-value="true"  disabled="disabled" readonly="readonly"
                                 class="checkbox-control" />
                             <span></span>
                         </label>
@@ -20,10 +20,10 @@
                         {{ 'ui.model.act.reasonConcept' | i18n }}
                     </span>
                 </div>
-                <concept-select ng-if="act.isNegated" required="required" name="notPerforming{{$index}}Reason"
+                <concept-select ng-if="act.isNegated" required="required" disabled="disabled" readonly="readonly" name="notPerforming{{$index}}Reason"
                     class="form-control min-height-fit" concept-set="'ProtocolViolationReason'"
                     ng-model="act.reasonConcept" />
-                <entity-select required="required" ng-if="!act.isNegated" is-required="true"
+                <entity-select disabled="disabled" readonly="readonly" required="required" ng-if="!act.isNegated" is-required="true"
                     class="form-control min-height-fit" name="lotNumber{{ $index }}"
                     ng-model="act.participation.Consumable[0].player" auto-select-singles="true"
                     entity-type="'ManufacturedMaterial'" filter="{
@@ -50,7 +50,7 @@
             {{ used.targetModel.name | name: 'Assigned' }}
         </label>
         <div class="col-sm-12 col-md-9 mb-2" ng-repeat-end="">
-            <entity-select required="required" is-required="true" class="form-control" name="{{ act.id }}{{$index}}lot"
+            <entity-select disabled="disabled" readonly="readonly" required="required" is-required="true" class="form-control" name="{{ act.id }}{{$index}}lot"
                 ng-model="act.participation.Consumable[$index + 1].player" auto-select-singles="true"
                 entity-type="'ManufacturedMaterial'" filter="{
                         'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
