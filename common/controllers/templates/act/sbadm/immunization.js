@@ -99,11 +99,19 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
         var maxSeq = $scope.acts.map(d => d.doseSequence || 0).reduce((a, b) => a > b ? a : b);
         var minSeq = $scope.acts.map(d => d.doseSequence || 0).reduce((a, b) => a < b ? a : b);
 
+        if(minSeq > 1) {
+            minSeq = 1
+        };
         var colHeaders = [];
         for (var i = minSeq; i <= maxSeq; i++) colHeaders.push(i);
 
         
         // Next we want to generate buckets for the antigens
+        const refNames = $scope.acts.filter(o => o.participation && o.participation.Product).groupBy(
+            o => SanteDB.display.renderEntityName(o.participation.Product[0].playerModel.name, "Assigned"),
+            o => o.participation.Product[0].playerModel
+        );
+
         var displayGrouping = $scope.acts.filter(o => o.participation && o.participation.Product).groupBy(
             o => SanteDB.display.renderEntityName(o.participation.Product[0].playerModel.name, "Assigned"),
             o => {
@@ -116,12 +124,14 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
 
         var displayTable = {};
         Object.keys(displayGrouping).sort((a, b) => a > b ? 1 : -1).forEach(antigenKey => {
-            var now = false;
             displayTable[antigenKey] = [];
             var recommendations = displayGrouping[antigenKey];
             for (var i = minSeq; i <= maxSeq; i++) {
                 var doseSequence = recommendations.find(o => (o.doseSequence || 0) == i);
-                displayTable[antigenKey].push(doseSequence);
+                displayTable[antigenKey].push(doseSequence || {
+                    _antigen: refNames[antigenKey][0],
+                    _sequence: i
+                });
             }
         });
 

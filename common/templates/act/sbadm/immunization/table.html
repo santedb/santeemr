@@ -27,7 +27,7 @@
                 <div class="d-inline-flex" ng-if="adm.doseSequence !== undefined">
                     <label class="checkbox-container">
                         <input ng-disabled="
-                                    (!canBackEnter &amp;&amp; adm.actTime &gt; $root.page.minEventTime || 
+                                    (!canBackEnter &amp;&amp; adm.actTime &gt; $root.page.maxEventTime || 
                                     dose[$index - 1] &amp;&amp; dose[$index - 1].statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' || 
                                     !adm.tag.isBackEntry) &amp;&amp;
                                     !dose.$overrideAntigenCheck"
