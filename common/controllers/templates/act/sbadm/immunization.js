@@ -129,7 +129,7 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
             for (var i = minSeq; i <= maxSeq; i++) {
                 var doseSequence = recommendations.find(o => (o.doseSequence || 0) == i);
                 displayTable[antigenKey].push(doseSequence || {
-                    _antigen: refNames[antigenKey][0],
+                    _antigen: i > 0 ? refNames[antigenKey][0] : null,
                     _sequence: i
                 });
             }
