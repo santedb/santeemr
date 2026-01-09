@@ -8,7 +8,7 @@
             <div class="input-group mb-0">
                 <input type="number" step="1" ng-model="act.relationship.HasComponent[0].targetModel.value"
                     required="required" class="form-control" name="valueSystolic{{$index}}" cdss-interactive="act.relationship.HasComponent[0].targetModel"
-                    placeholder="{{ act.relationship.HasComponent[0].targetModel.typeConceptModel | concept }}" />
+                    placeholder="{{ act.relationship.HasComponent[0].targetModel.typeConceptModel | concept }}" min="0" />
                 <div class="input-group-append">
                     <span class="input-group-text p-0 px-2">
                         / 
@@ -16,7 +16,7 @@
                 </div>
                 <input type="number" step="1" ng-model="act.relationship.HasComponent[1].targetModel.value"
                     required="required" class="form-control" name="valueDiastolic{{$index}}" cdss-interactive="act.relationship.HasComponent[1].targetModel"
-                    placeholder="{{ act.relationship.HasComponent[1].targetModel.typeConceptModel | concept }}" />
+                    placeholder="{{ act.relationship.HasComponent[1].targetModel.typeConceptModel | concept }}"  min="0"/>
                 <div class="input-group-append">
                     <span class="input-group-text p-0 px-2">
                         {{ act.relationship.HasComponent[0].targetModel.unitOfMeasureModel | concept: 'zxx' }}
@@ -56,6 +56,10 @@
             <div class="text-danger"
                 ng-if="($root.getParentVariable($parent, 'ownerForm'))['valueSystolic' + $index].$error.required || ($root.getParentVariable($parent, 'ownerForm'))['valueDiastolic' + $index].$error.required">
                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+            </div>
+            <div class="text-danger"
+                ng-if="($root.getParentVariable($parent, 'ownerForm'))['valueSystolic' + $index].$error.min || ($root.getParentVariable($parent, 'ownerForm'))['valueDiastolic' + $index].$error.min">
+                <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.min' | i18n }}
             </div>
         </div>
     </div>
