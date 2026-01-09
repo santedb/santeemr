@@ -34,11 +34,11 @@ function __bindImmunizationScopeFunctions($scope, $rootScope) {
 
         const renderEntityName = SanteDB.display.renderEntityName($scope.newAntigen._player.name, "Assigned");
         $scope.table.data[renderEntityName] = $scope.table.cols.map(o=> ({
-            _antigen: $scope.newAntigen._player, 
+            _antigen: o > 0 ? $scope.newAntigen._player : null, 
             _sequence: o
         }));
         $scope.table.data[renderEntityName].$overrideAntigenCheck = true;
-        $scope.table.data[renderEntityName].$antigen = $scope.newAntigen._player;
+        // $scope.table.data[renderEntityName].$antigen = $scope.newAntigen._player;
         $scope.newAntigen._player = null;
     }
 
@@ -84,7 +84,6 @@ function __bindImmunizationScopeFunctions($scope, $rootScope) {
             $rootScope.getParentVariable($scope, 'addHistoryAct')(template);
         }
     }
-
 
 }
 
