@@ -2,21 +2,21 @@
 function __bindImmunizationScopeFunctions($scope, $rootScope) {
 
     $scope.newAntigen = {};
-    
-    $scope.filterExistingAntigens = function(i) {
+
+    $scope.filterExistingAntigens = function (i) {
         try {
             var entityName = SanteDB.display.renderEntityName(i.name, "Assigned");
             return $scope.table.data[entityName] === undefined;
         }
-        catch(e) {
+        catch (e) {
             return false;
         }
     }
 
-    $scope.addDoseSequence = function() {
+    $scope.addDoseSequence = function () {
         const seq = $scope.table.cols[$scope.table.cols.length - 1] + 1;
         $scope.table.cols.push(seq);
-        for(var k of Object.keys($scope.table.data)) {
+        for (var k of Object.keys($scope.table.data)) {
             const antigen = $scope.table.data[k].map(o => o?.participation?.Product || [o._antigen]).find(o => Array.isArray(o))[0];
 
             $scope.table.data[k].push({
@@ -26,15 +26,15 @@ function __bindImmunizationScopeFunctions($scope, $rootScope) {
         }
     }
 
-    $scope.addAntigen = function() {
+    $scope.addAntigen = function () {
         // Add an antigen of the specified type
-        if(!$scope.newAntigen._player) return;
+        if (!$scope.newAntigen._player) return;
 
         // Grab the record target from another antigen
 
         const renderEntityName = SanteDB.display.renderEntityName($scope.newAntigen._player.name, "Assigned");
-        $scope.table.data[renderEntityName] = $scope.table.cols.map(o=> ({
-            _antigen: o > 0 ? $scope.newAntigen._player : null, 
+        $scope.table.data[renderEntityName] = $scope.table.cols.map(o => ({
+            _antigen: o > 0 ? $scope.newAntigen._player : null,
             _sequence: o
         }));
         $scope.table.data[renderEntityName].$overrideAntigenCheck = true;
@@ -42,45 +42,44 @@ function __bindImmunizationScopeFunctions($scope, $rootScope) {
         $scope.newAntigen._player = null;
     }
 
-    $scope.addDoseManual = function(antigen, doseSequence) 
-    {
-        const rct = $scope.acts.map(o=>o.participation?.RecordTarget).filter(o=>o)[0];
+    $scope.addDoseManual = function (antigen, doseSequence) {
+        const rct = $scope.acts.map(o => o.participation?.RecordTarget).filter(o => o)[0];
         var doseIdx = $scope.table.cols.indexOf(doseSequence);
 
         const template = new SubstanceAdministration({
-                    template : "50ac9b2d-e560-4b75-ac77-921bf0eceee8",
-                    moodConcept: "EC74541F-87C4-4327-A4B9-97F325501747",
-                    classConcept: "932A3C7E-AD77-450A-8A1F-030FC2855450",
-                    typeConcept: "0331e13f-f471-4fbd-92dc-66e0a46239d5",
-                    doseSequence: doseSequence,
-                    doseQuantity: 1,
-                    actTime: null, 
-                    statusConcept: StatusKeys.Completed, 
-                    participation: {
-                        Product: [
-                            {
-                                player: antigen.id
-                            }
-                        ],
-                        RecordTarget: [
-                            {
-                                player: rct[0].player,
-                                playerModel: rct[0].playerModel
-                            }
-                        ]
-                    },
-                    tag: {
-                        "isBackEntry" : true
+            template: "50ac9b2d-e560-4b75-ac77-921bf0eceee8",
+            moodConcept: "EC74541F-87C4-4327-A4B9-97F325501747",
+            classConcept: "932A3C7E-AD77-450A-8A1F-030FC2855450",
+            typeConcept: "0331e13f-f471-4fbd-92dc-66e0a46239d5",
+            doseSequence: doseSequence,
+            doseQuantity: 1,
+            actTime: null,
+            statusConcept: StatusKeys.Completed,
+            participation: {
+                Product: [
+                    {
+                        player: antigen.id
                     }
-                });
+                ],
+                RecordTarget: [
+                    {
+                        player: rct[0].player,
+                        playerModel: rct[0].playerModel
+                    }
+                ]
+            },
+            tag: {
+                "isBackEntry": true
+            }
+        });
         const renderEntityName = SanteDB.display.renderEntityName(antigen.name, "Assigned");
-        const templateId = $scope.table.data[renderEntityName].map(o=>o?.template).find(o=>o);
+        const templateId = $scope.table.data[renderEntityName].map(o => o?.template).find(o => o);
         template.template = templateId;
         $scope.table.data[renderEntityName][doseIdx] = template;
         $scope.acts.push(template);
 
         // Add back to the scoped object 
-        if($rootScope.getParentVariable($scope, "addHistoryAct")) {
+        if ($rootScope.getParentVariable($scope, "addHistoryAct")) {
             $rootScope.getParentVariable($scope, 'addHistoryAct')(template);
         }
     }
@@ -98,13 +97,13 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
         var maxSeq = $scope.acts.map(d => d.doseSequence || 0).reduce((a, b) => a > b ? a : b);
         var minSeq = $scope.acts.map(d => d.doseSequence || 0).reduce((a, b) => a < b ? a : b);
 
-        if(minSeq > 1) {
+        if (minSeq > 1) {
             minSeq = 1
         };
         var colHeaders = [];
         for (var i = minSeq; i <= maxSeq; i++) colHeaders.push(i);
 
-        
+
         // Next we want to generate buckets for the antigens
         const refNames = $scope.acts.filter(o => o.participation && o.participation.Product).groupBy(
             o => SanteDB.display.renderEntityName(o.participation.Product[0].playerModel.name, "Assigned"),
@@ -247,4 +246,32 @@ angular.module("santedb").controller("HistoricalImmunizationEntryController", ["
     }
 
     initialize();
-}])
+}]).controller("EmrImmunizationTemplateController", ["$scope", "$timeout", function ($scope, $timeout) {
+
+    $scope.$watch("act.participation.Product[0].player", async function (n, o) {
+        try {
+            if (n && n != o) {
+                const adms = await SanteDB.resources.substanceAdministration.findAsync({
+                    "participation[RecordTarget].player": $scope.act.participation.RecordTarget[0].player,
+                    "participation[Product].player": n,
+                    "statusConcept": StatusKeys.Completed,
+                    "isNegated": false,
+                    _includeTotal: false
+                }, "min");
+
+                $timeout(() => {
+                    if (adms.resource) {
+                        $scope.act.doseSequence = adms.resource.map(o=>o.doseSequence).sort((a,b) => a > b ? -1 : 1)[0] + 1;
+                    }
+                    else {
+                        $scope.act.doseSequence = 1;
+                    }
+                });
+
+            }
+        }
+        catch(e) {
+            console.warn(e);
+        }
+    });
+}]);
