@@ -60,6 +60,11 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                 // delete the previous observation
                 var amendment = newObservations[i];
                 
+                // JIMS-1115:  If the data is masked - don't update it
+                if(amendment.tag && amendment.tag['$pep.masked']) {
+                    continue;
+                }
+                
                 amendment.operation = BatchOperationType.Update;
                 if(
                     amendment.statusConcept == StatusKeys.Completed || 
