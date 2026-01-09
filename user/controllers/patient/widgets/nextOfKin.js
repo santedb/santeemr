@@ -176,13 +176,8 @@ angular.module('santedb').controller('EmrPatientNextOfKinController', ["$scope",
             while (pscope.$parent.scopedObject)
                 pscope = pscope.$parent;
             var updatedPatient = await SanteDB.resources.patient.getAsync($scope.scopedObject.id, "full"); // re-fetch the patient
-
-            $timeout(() => {
-                pscope.scopedObject = updatedPatient;
-                pscope.editObject = angular.copy(pscope.scopedObject);
-                toastr.success(SanteDB.locale.getString("ui.model.patient.saveSuccess"));
-                form.$valid = true;
-            });
+            toastr.success(SanteDB.locale.getString("ui.model.patient.saveSuccess"));
+            $state.reload();
         }
         catch (e) {
             $rootScope.errorHandler(e);

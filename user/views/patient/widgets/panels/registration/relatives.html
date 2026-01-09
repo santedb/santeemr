@@ -31,7 +31,7 @@
             </label>
 
             <div class="col-sm-12 col-md-8">
-                <concept-select ng-if="!scopedObject.age || scopedObject.age &lt; 18" name="nokRelationshipType"
+                <concept-select ng-if="!scopedObject.age || scopedObject.age &lt; 16" name="nokRelationshipType"
                     ng-required="scopedObject.relationship.Mother[0].operation == 'Delete' || scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                     concept-set="'ChildFamilyMember'" class="form-control"
                     exclude-concepts="[ '29ff64e5-b564-411a-92c7-6818c02a9e48' ]"
