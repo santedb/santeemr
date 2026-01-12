@@ -44,7 +44,12 @@
             <property name="Product" ref="ActParticipationNested" />
             <property name="Baby" ref="ActParticipationNested" />
             <property name="Informant" ref="ActParticipationNested" />
-            <property name="Consumable" ref="ActParticipationNested" />
+            <property name="Consumable" behavior="always">
+                <property name="player" />
+                <property name="playerModel"  behavior="always" >
+                    <property name="lotNumber"  />
+                </property>
+            </property>
             <property name="SecondaryPerformer" ref="ActParticipationNested" />
             <property name="*" all="false">
                 <property name="player" />
