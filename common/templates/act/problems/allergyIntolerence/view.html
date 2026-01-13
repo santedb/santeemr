@@ -1,3 +1,56 @@
-<div xmlns="http://www.w3.org/1999/xhtml">
-    
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
+    <div class="form-group row">
+        <label class="col-xs-12 col-md-3 col-xl-2 required control-label">
+            {{ 'org.santedb.emr.problem.allergyIntolerance.type' | i18n }}
+        </label>
+        <div class="col-xs-12 col-md-9 col-xl-4">
+            <concept-select readonly="readonly" disabled="disabled" ng-model="act.typeConcept" class="form-control"
+                concept-set="'AllergyIntoleranceCode'" />
+        </div>
+        <label class="col-xs-12 col-md-3 col-xl-2 required control-label">
+            {{ 'org.santedb.emr.problem.allergyIntolerance.allergen' | i18n }}
+        </label>
+        <div class="col-xs-12 col-md-9 col-xl-4">
+            <div class="input-group">
+                <entity-search class="form-control" ng-model="act.value" type="'ConceptSet'" child-resource="'_members'"
+                    child-resource-scope="[ '86b79688-2440-419f-9776-e088b380b7a2','0124fde0-7857-4815-b257-74acaa0dd92d','62fc0be4-f75f-460b-ab98-4215f4573748' ].includes(act.typeConcept) ? 
+                    '95adad16-ee63-11f0-b880-473a6773217a' : '0b47d71e-ee68-11f0-8ed8-3be493caedb2'" readonly="readonly"
+                    disabled="disabled"></entity-search>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-12 col-md-3 col-xl-2 mb-2 control-label">
+                {{ act.relationship.HasManifestation[0].targetModel.typeConceptModel | concept }}
+            </label>
+            <div class="col-xs-12 col-md-9 col-xl-4 mb-2">
+                <concept-select concept-set="'ReactionObservation'" disabled="disabled" readonly="readonly"
+                    ng-model="act.relationship.HasManifestation[0].targetModel.value" class="form-control"
+                    add-concept="[ '6052712a-340e-4480-ad6b-409ba320db4f' ]" />
+            </div>
+
+            <label class="col-xs-12 col-md-3 col-xl-2 control-label mb-2"
+                ng-repeat-start="comp in act.relationship.HasComponent track by $index">
+                {{ comp.targetModel.typeConceptModel | concept }}
+            </label>
+            <div ng-repeat-end="" class="col-xs-12 col-md-3 col-xl-4 mb-2" ng-switch="comp.targetModel.typeConcept">
+                <concept-select readonly="readonly" disabled="disabled" ng-model="comp.targetModel.value"
+                    ng-switch-when="05012084-3351-4045-8390-fbcbd7ec1d19" concept-set="'SeverityObservation'"
+                    class="form-control" name="allergy{{act.id}}comp{{$index}}" />
+                <input readonly="readonly" disabled="disabled" type="date" ng-model="comp.targetModel.value"
+                    ng-switch-when="99e13c67-0987-4f19-a9a3-e64e61ce1642" class="form-control" />
+                <concept-select readonly="readonly" disabled="disabled" ng-model="comp.targetModel.value"
+                    ng-switch-when="97513cbe-188f-11eb-adc1-0242ac120002" concept-set="'ObservationVerificationState'"
+                    class="form-control"
+                    add-concept="[ '21b0ffc8-ca4e-408d-a104-41fc924d3a39', '70fe34ce-caff-4f46-b6e6-9cd6d8f289d6' ]" />
+                <concept-select readonly="readonly" disabled="disabled" ng-model="comp.targetModel.value"
+                    ng-switch-when="656251ec-21bc-4594-9914-ca971c9defcc" concept-set="'ObservationClinicalStatus'"
+                    class="form-control" />
+                <div ng-switch-when="37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe">
+                    <textarea disabled="disabled" readonly="readonly" ng-model="comp.targetModel.value"
+                        class="form-control">
+                        </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

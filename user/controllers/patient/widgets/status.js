@@ -10,7 +10,7 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                 "participation[RecordTarget].player": $scope.scopedObject.id,
                 "typeConcept.conceptSet": "b73e6dbc-890a-11f0-8959-c764088c39f9", // Is a condition
                 "statusConcept": StatusKeys.Completed, // Is not obsolete
-                "moodConcept" : ActMoodKeys.Eventoccurrence
+                "moodConcept": ActMoodKeys.Eventoccurrence
             }, "emr.actSummaryView");
 
             // Any observation in the 
@@ -36,7 +36,7 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
     $scope.getTemplateName = function (templateId) {
         return SanteDB.application.getTemplateMetadata(templateId)?.name || templateId;
     }
-    
+
     // When the user clicks edit - we want to create an amendment observation for ecah of the observations
     $scope.$watch("panel.view", function (n, o) {
         if (n == "Edit") {
@@ -48,26 +48,26 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
     });
 
     // Save the status observations 
-    $scope.updateStatusObservations = async function(form) {
-        if(form.$invalid) {
+    $scope.updateStatusObservations = async function (form) {
+        if (form.$invalid) {
             return;
         }
         try {
             var submissionBundle = new Bundle({ resource: [] });
             var newObservations = angular.copy($scope.amendmentObservations);
-            for(var i in newObservations) {
+            for (var i in newObservations) {
                 // If the user has indicated somehow the data is not complete ignore it and furthermore
                 // delete the previous observation
                 var amendment = newObservations[i];
-                
+
                 // JIMS-1115:  If the data is masked - don't update it
-                if(amendment.tag && amendment.tag['$pep.masked']) {
+                if (amendment.tag && amendment.tag['$pep.masked']) {
                     continue;
                 }
-                
+
                 amendment.operation = BatchOperationType.Update;
-                if(
-                    amendment.statusConcept == StatusKeys.Completed || 
+                if (
+                    amendment.statusConcept == StatusKeys.Completed ||
                     amendment.statusConcept == StatusKeys.Active
                 ) // Completed the observation - so we update the data
                 {
@@ -88,14 +88,17 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
             // Reset the emr processing
             submissionBundle.resource.forEach(amendment => {
                 amendment.tag = amendment.tag || {};
-                amendment.tag["emr.processed"] = ["false"];
+                if (amendment.tag && amendment.tag["emr.processed"]) {
+                    amendment.tag["emr.processed"] = ["false"];
+                }
+                amendment.actTime = amendment.actTime || new Date();
             });
-            
+
             const result = await SanteDB.resources.bundle.insertAsync(submissionBundle, undefined, undefined, true);
             toastr.success(SanteDB.locale.getString("ui.emr.patient.status.update.success"));
             $state.reload();
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
     }

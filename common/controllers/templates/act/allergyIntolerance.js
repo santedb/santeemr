@@ -170,7 +170,7 @@ angular.module("santedb").controller("EmrAllergyController", ["$scope", "$rootSc
         }
     }
 
-    $scope.addAllergyToPanel = function (comp) {
+    $scope.removeAllergyFromPanel = function (comp) {
         if (comp.targetModel.version) { // already saved so we remove
             comp.targetModel.statusConcept = 'bdef5f90-5497-4f26-956c-8f818cce2bd2';
             comp.operation = 4;
@@ -184,7 +184,7 @@ angular.module("santedb").controller("EmrAllergyController", ["$scope", "$rootSc
         }
     }
 
-    $scope.addAllergyToPanel = function (comp) {
+    $scope.undoRemoveAllergyFromPanel = function (comp) {
         comp.targetModel.statusConcept = 'afc33800-8225-4061-b168-bacc09cdbae3';
         comp.operation = 2;
     }

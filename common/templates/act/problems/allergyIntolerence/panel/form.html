@@ -31,7 +31,7 @@
             <div class="col-12">
                 <ul class="list-group" ng-if="act.relationship.HasComponent[0].operation != 5">
                     <li class="list-group-item" ng-repeat="comp in act.relationship.HasComponent track by $index" 
-                        ng-if="comp.operation != 5 &amp;&amp; comp.targetModel">
+                        ng-if="comp.operation != 5 &amp;&amp; comp.targetModel &amp;&amp; [ 'afc33800-8225-4061-b168-bacc09cdbae3', 'c8064cbd-fa06-4530-b430-1a52f1530c27' ].includes(comp.targetModel.statusConcept)">
                         <div class="d-flex flex-column" 
                             ng-class="{ 'actEntryComponentRemoved' : comp.targetModel.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2' }"
                             ng-init="act = comp.targetModel">
@@ -51,7 +51,7 @@
                     </li>
                     <li class="list-group-item">
                         <div class="float-right btn-group">
-                            <button type="button" class="btn btn-primary" ng-click="addAllergyFromPanel()" id="btnAddAllergy">
+                            <button type="button" class="btn btn-primary" ng-click="addAllergyToPanel()" id="btnAddAllergy">
                                 <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n }}
                             </button>
                         </div>
