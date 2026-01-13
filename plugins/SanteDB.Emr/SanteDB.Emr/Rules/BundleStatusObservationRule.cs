@@ -71,7 +71,8 @@ namespace SanteEMR.Rules
                 act.AddTag(EmrConstants.IgnoreEmrTriggersTagName, "true");
                 var rct = act.LoadProperty(o => o.Participations, referenceData: data.Item).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget);
                 // Determine if the patient already has this observation type which indicates a status - then update the status observation
-                if (act.BatchOperation != BatchOperationType.Update && this.m_conceptRepository.IsMember(EmrConstants.PatientStatusObservation, act.TypeConceptKey.Value))
+                if (act.BatchOperation != BatchOperationType.Update && 
+                    this.m_conceptRepository.IsMember(EmrConstants.PatientStatusObservation, act.TypeConceptKey.Value))
                 {
                     if (rct?.PlayerEntityKey != null)
                     {
@@ -116,7 +117,7 @@ namespace SanteEMR.Rules
                             &&
                                 r.LoadProperty(o => o.TargetAct, referenceData: data.Item) != null &&
                                 (r.LoadProperty(o => o.TargetAct, referenceData: data.Item)?.TypeConceptKey == EmrConstants.ConditionResolutionDateKey || // Resolution date 
-                                r.TargetAct.TypeConceptKey == EmrConstants.ConditionClinicalStatusKey && StatusKeys.ActiveStates.Contains((r.TargetAct as CodedObservation).ValueKey.GetValueOrDefault()) // Resolved Clinical Status
+                                r.TargetAct.TypeConceptKey == EmrConstants.ConditionClinicalStatusKey && StatusKeys.InactiveStates.Contains((r.TargetAct as CodedObservation).ValueKey.GetValueOrDefault()) // Resolved Clinical Status
                             ) && r.TargetAct.StatusConceptKey == StatusKeys.Completed && !r.TargetAct.IsNegated);
 
                     using (AuthenticationContext.EnterSystemContext())

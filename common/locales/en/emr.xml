@@ -564,4 +564,15 @@
        <string name="org.santedb.emr.act.sti.infection.info.unresolved">UNRESOLVED / ACTIVE</string>
        <string name="org.santedb.emr.act.sti.infection.info.resolved">RESOLVED / INACTIVE AS OF </string>
        <string name="org.santedb.emr.act.sti.infection.duplicateConfirm">The patient already has an active infection of this type - are you trying to update it? (resolve or change it?)</string>
+
+
+       <!-- Allergies -->
+        <string name="org.santedb.emr.problem.allergyIntolerance.type">Allergy Type</string>
+        <string name="org.santedb.emr.problem.allergyIntolerance.type.hint">Select the classification of the allergy</string>
+        <string name="org.santedb.emr.problem.allergyIntolerance.allergen">Allergen/Substance</string>
+        <string name="org.santedb.emr.problem.allergyIntolerance.allergen.hint">Select the substance, or material to which the patient is allergic or has an intolerence</string>
+        <string name="org.santedb.emr.problem.allergyIntolerance.material">Search Antigens/Products</string>
+
+        <!-- AEFI / Derived Allergies -->
+         <string name="org.santedb.emr.condition.allergy.derived">Derived From Reportable Event</string>
 </resources>

@@ -1,0 +1,63 @@
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid" 
+        oc-lazy-load="{ name: 'EmrAllergyController', files: ['/org.santedb.emr.common/controllers/templates/act/allergyIntolerance.js'] }">
+
+
+    <div ng-controller="EmrAllergyController">
+        <div class="row" ng-if="!act.version &amp;&amp; !act.tag.$userAdded" >
+            <div class="col-12">
+                <label class="p-0 font-weight-bold control-label required">
+                    {{ ::act.typeConceptModel | concept }}
+                </label>
+            </div>
+
+            <div class="col-12">
+                <label class="checkbox-container font-weight-bold mr-2">
+                    <input type="radio" ng-model="act.relationship.HasComponent[0].operation" ng-value="1"
+                        name="stiStatus" class="checkbox-control" />
+                    <span></span>
+                    {{ 'ui.true' | i18n }}
+                </label>
+
+                <label class="checkbox-container font-weight-bold">
+                    <input type="radio" ng-model="act.relationship.HasComponent[0].operation" ng-value="5" name="stiStatus"
+                        class="checkbox-control" />
+                    <span></span>
+                    {{ 'ui.false' | i18n }}
+                </label>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <ul class="list-group" ng-if="act.relationship.HasComponent[0].operation != 5">
+                    <li class="list-group-item" ng-repeat="comp in act.relationship.HasComponent track by $index" 
+                        ng-if="comp.operation != 5 &amp;&amp; comp.targetModel &amp;&amp; [ 'afc33800-8225-4061-b168-bacc09cdbae3', 'c8064cbd-fa06-4530-b430-1a52f1530c27' ].includes(comp.targetModel.statusConcept)">
+                        <div class="d-flex flex-column" 
+                            ng-class="{ 'actEntryComponentRemoved' : comp.targetModel.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2' }"
+                            ng-init="act = comp.targetModel">
+                            <ng-include
+                                src="::$root.getParentVariable($parent, 'resolveTemplateForm')(comp.targetModel.templateModel.mnemonic)" />
+                            <div class="btn-group float-right" ng-if="$index &gt; 0 || act.version">
+                                <button type="button" class="btn btn-danger" ng-click="removeAllergyFromPanel(comp)"
+                                    ng-if="comp.targetModel.statusConcept != 'bdef5f90-5497-4f26-956c-8f818cce2bd2'">
+                                    <i class="fas fa-fw fa-times-circle"></i> {{ 'ui.action.remove' | i18n }}
+                                </button>
+                                <button type="button" class="btn btn-success" ng-click="undoRemoveAllergyFromPanel(comp)"
+                                    ng-if="comp.targetModel.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'">
+                                    <i class="fas fa-fw fa-undo"></i> {{ 'ui.action.undo' | i18n }}
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <div class="float-right btn-group">
+                            <button type="button" class="btn btn-primary" ng-click="addAllergyToPanel()" id="btnAddAllergy">
+                                <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n }}
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

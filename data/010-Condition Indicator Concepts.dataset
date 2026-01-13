@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Condition Observation Types v3.04"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Condition Observation Types v3.05"
   xmlns="http://santedb.org/data">
   <!-- Instructs the plugin that the patient may have multiple conditions with this type -->
   <update skipIfError="false" insertIfNotExists="true">

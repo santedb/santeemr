@@ -1,0 +1,9 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <h5>{{ ::act.typeConceptModel | concept }}</h5>
+    <ul>
+        <li ng-repeat="comp in act.relationship.HasComponent track by $index" ng-init="act = comp.targetModel"
+            ng-class="{ 'strikethrough' : ![ 'afc33800-8225-4061-b168-bacc09cdbae3', 'c8064cbd-fa06-4530-b430-1a52f1530c27' ].includes(comp.targetModel.statusConcept) }">
+            <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)"></ng-include>
+        </li>
+    </ul>
+</div>
