@@ -53,7 +53,6 @@ angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootSco
 
     // Submit the bug report
     $scope.submitBug = async function(form) {
-
         if(!form.$valid) return;
 
         try{
@@ -89,6 +88,10 @@ angular.module('santedb').controller('SubmitBugController', ["$scope", "$rootSco
             }                
             var result = await SanteDB.application.submitBugReportAsync(submission);
             toastr.info(`${SanteDB.locale.getString("ui.emr.bug.success")} #${result.ticketId}`, null, { preventDuplicates: true });
+            
+            $scope.report.reproduction = "";
+            $scope.report.description = "";
+            
             $state.go("santedb-admin.dashboard");
         }
         catch(e) {
