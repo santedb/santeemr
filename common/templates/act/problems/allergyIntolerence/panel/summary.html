@@ -1,0 +1,8 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <h5>{{ ::act.typeConceptModel | concept }}</h5>
+    <ul>
+        <li ng-repeat="comp in act.relationship.HasComponent track by $index" ng-init="act = comp.targetModel">
+            <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)"></ng-include>
+        </li>
+    </ul>
+</div>

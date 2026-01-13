@@ -1,0 +1,34 @@
+{
+    "$type": "Act",
+    "template": "a18674f4-38bf-40aa-a2ba-252d894dc64b",
+    "classConcept": "d38091b5-9065-4721-8a1f-bfbb3b4bf447",
+    "typeConcept": "05209d66-1500-488a-a32f-c4b0ce2e3051",
+    "actTime": "{{ $now }}",
+    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+    "statusConcept" : "afc33800-8225-4061-b168-bacc09cdbae3",
+    "participation": {
+        "RecordTarget": [
+            {
+                "player": "{{ $recordTargetId }}"
+            }
+        ],
+        "Authororiginator": [
+            {
+                "player": "{{ $userEntityId }}"
+            }
+        ]
+    },
+    "relationship": {
+        "HasComponent": [
+            {
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "operation": 5,
+                "targetModel" : {
+                    "templateModel" : {
+                        "mnemonic" : "org.santedb.emr.problem.allergyIntolerance"
+                    }
+                }
+            }
+        ]
+    }
+}

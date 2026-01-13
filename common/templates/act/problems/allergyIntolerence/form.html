@@ -1,25 +1,114 @@
-<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
-    <div class="form-group row">
-        <label class="col-xs-12 col-md-3 col-xl-2">
-            {{ 'org.santedb.emr.problem.allergyIntolerance.type' | i18n }}
-            <hint-popover hint-title="org.santedb.emr.problem.allergyIntolerance.type" />
-        </label>
-        <div class="col-xs-12 col-md-9 col-xl-4">
+<div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid"
+    oc-lazy-load="{ name: 'EmrAllergyController', files: ['/org.santedb.emr.common/controllers/templates/act/allergyIntolerance.js'] }">
+    <div ng-controller="EmrAllergyController">
+        <div class="form-group row">
+            <label class="col-xs-12 col-md-3 col-xl-2 required control-label">
+                {{ 'org.santedb.emr.problem.allergyIntolerance.type' | i18n }}
+                <hint-popover hint-title="org.santedb.emr.problem.allergyIntolerance.type" />
+            </label>
+            <div class="col-xs-12 col-md-9 col-xl-4">
+                <concept-select ng-model="act.typeConcept" required="required" name="allergy{{act.id}}Type"
+                    class="form-control" concept-set="'AllergyIntoleranceCode'" />
+                <div ng-if="$root.getParentVariable($parent, ['ownerForm', 'editForm'])['allergy' + act.id + 'Type'].$error.required"
+                    class="text-danger">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+                
+            </div>
+            <label class="col-xs-12 col-md-3 col-xl-2 required control-label">
+                {{ 'org.santedb.emr.problem.allergyIntolerance.allergen' | i18n }}
+                <hint-popover hint-title="org.santedb.emr.problem.allergyIntolerance.allergen" />
+            </label>
+            <div class="col-xs-12 col-md-9 col-xl-4">
+                <div class="input-group">
+                    <div class="input-group-prepend"
+                        ng-if="['86b79688-2440-419f-9776-e088b380b7a2', '0124fde0-7857-4815-b257-74acaa0dd92d', '62fc0be4-f75f-460b-ab98-4215f4573748'].includes(act.typeConcept)">
+                        <label class="checkbox-container input-group-text">
+                            <input type="checkbox" ng-model="act.tag['allergen.isMaterial']" class="checkbox-control" />
+                            <span></span>
+                            {{ 'org.santedb.emr.problem.allergyIntolerance.material' | i18n }}
+                        </label>
+                    </div>
+                    <entity-search ng-if="act.tag['allergen.isMaterial']" type="'Material'" ng-model="act.value"
+                        search-field="'name.component.value'" filter="{ 
+                            'statusConcept': 'c8064cbd-fa06-4530-b430-1a52f1530c27',
+                            'typeConcept.conceptSet' : [ 'd9e73f44-330f-11ef-9f7d-a344f6cb283f', 'ab16722f-dcf5-4f5a-9957-8f87dbb390d5' ],
+                            'classConcept' : 'd39073be-0f8f-440e-b8c8-7034cc138a95'
+                        }" value-selector="'typeConcept'" required="required" class="form-control w-100"
+                        name="allergy{{act.id}}Value"></entity-search>
+                    <entity-search ng-if="!act.tag['allergen.isMaterial']" name="allergy{{act.id}}Value"
+                        class="form-control" ng-model="act.value" type="'ConceptSet'" child-resource="'_members'"
+                        child-resource-scope="act._conceptSet || '0b47d71e-ee68-11f0-8ed8-3be493caedb2'"
+                        search-field="'name.value||mnemonic'" filter="{
+                        }" required="reuqired"></entity-search>
+                </div>
+                <div class="text-danger"
+                    ng-if="$root.getParentVariable($parent, ['ownerForm', 'editForm'])['allergy' + act.id + 'Value'].$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+                <div class="text-danger"
+                    ng-if="$root.getParentVariable($parent, ['ownerForm', 'editForm'])['allergy' + act.id + 'Value'].$error.duplicate">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.duplicate' | i18n }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-xs-12 col-md-3 col-xl-2 mb-2 control-label">
+                {{ act.relationship.HasManifestation[0].targetModel.typeConceptModel | concept }}
+            </label>
+            <div class="col-xs-12 col-md-9 col-xl-4 mb-2">
+                <concept-select concept-set="'ReactionObservation'"
+                    ng-model="act.relationship.HasManifestation[0].targetModel.value" class="form-control"
+                    add-concept="[ '6052712a-340e-4480-ad6b-409ba320db4f' ]"
+                    ng-change="act.relationship.HasManifestation[0].operation = act.relationship.HasManifestation[0].targetModel.value ? 1 : 5"
+                    name="allergy{{act.id}}Reaction" />
+                <div class="text-danger"
+                    ng-if="$root.getParentVariable($parent, ['ownerForm', 'editForm'])['allergy' + act.id + 'Reaction'].$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
 
+            <label class="col-xs-12 col-md-3 col-xl-2 control-label mb-2"
+                ng-repeat-start="comp in act.relationship.HasComponent track by $index">
+                {{ comp.targetModel.typeConceptModel | concept }}
+            </label>
+            <div ng-repeat-end="" class="col-xs-12 col-md-3 col-xl-4 mb-2" ng-switch="comp.targetModel.typeConcept">
+                <concept-select ng-model="comp.targetModel.value" ng-switch-when="05012084-3351-4045-8390-fbcbd7ec1d19"
+                    concept-set="'SeverityObservation'" class="form-control" name="allergy{{act.id}}comp{{$index}}"
+                    required="required" />
+                <input type="date" ng-model="comp.targetModel.value"
+                    ng-switch-when="99e13c67-0987-4f19-a9a3-e64e61ce1642"
+                    min="{{ act.participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd' }}"
+                    max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}"
+                    ng-min="act.participation.RecordTarget[0].playerModel.dateOfBirth" 
+                    ng-max="$root.page.maxEventTime"
+                    class="form-control"
+                    required="required" name="allergy{{act.id}}comp{{$index}}" />
+                <concept-select ng-model="comp.targetModel.value" ng-switch-when="97513cbe-188f-11eb-adc1-0242ac120002"
+                    concept-set="'ObservationVerificationState'"
+                    class="form-control"
+                    add-concept="[ '21b0ffc8-ca4e-408d-a104-41fc924d3a39', '70fe34ce-caff-4f46-b6e6-9cd6d8f289d6' ]"
+                    name="allergy{{act.id}}comp{{$index}}" required="required" />
+                <concept-select ng-model="comp.targetModel.value" ng-switch-when="656251ec-21bc-4594-9914-ca971c9defcc"
+                    concept-set="'ObservationClinicalStatus'" name="allergy{{act.id}}comp{{$index}}"
+                    class="form-control"
+                    required="required" />
+                <div ng-switch-when="37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe">
+                    <textarea
+                        ng-model="comp.targetModel.value"
+                        maxlength="4096" class="form-control"
+                        ng-class="{ 'bg-light' : comp.operation == 5 }"
+                        ng-change="comp.targetModel.value.length > 0 ? comp.operation = 1 : comp.operation = 5">
+                        </textarea>
+                    <span class="float-right">{{ 4096 -
+                        comp.targetModel.value.length
+                        }}
+                        {{ 'ui.common.charsRemain' | i18n }}</span>
+                </div>
+                <div class="text-danger" ng-if="$root.getParentVariable($parent, ['ownerForm', 'editForm'])['allergy' + act.id + 'comp'  + $index].$error.required">
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
         </div>
-        <label class="col-xs-12 col-md-3 col-xl-2">
-            {{ 'org.santedb.emr.problem.allergyIntolerance.allergen' | i18n }}
-            <hint-popover hint-title="org.santedb.emr.problem.allergyIntolerance.allergen" />
-        </label>
-        <div class="col-xs-12 col-md-9 col-xl-4">
-            TODO: Input to "lookup by antigen / material option" when it is a DALG or DINT
-        </div>
-    </div>
-    <div class="form-group row">
-        TODO :
-        Severity
-        Manifestation
-        Validation Status
-        Clinical Status
     </div>
 </div>

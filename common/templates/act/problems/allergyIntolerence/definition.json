@@ -3,10 +3,10 @@
     "classConcept": "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
     "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
-    "typeConcept": "0124fde0-7857-4815-b257-74acaa0dd92d",
+    "typeConcept": "d001f69c-118c-4080-a675-51be0ec51f86",
     "template": "69fdfea7-f0d4-4f79-8682-f9f5567e5b45",
     "actTime": "{{ $now }}",
-    "value": "70fe34ce-caff-4f46-b6e6-9cd6d8f289d6",
+    "value": "6052712a-340e-4480-ad6b-409ba320db4f",
     "participation": {
         "Authororiginator": {
             "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
@@ -28,6 +28,7 @@
         "HasManifestation": [
             { // Where we record the manifestation of the allergy
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "operation": 5,
                 "targetModel": {
                     "$type": "CodedObservation",
                     "classConcept": "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
@@ -46,7 +47,19 @@
                     "classConcept": "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
                     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
                     "typeConcept": "05012084-3351-4045-8390-fbcbd7ec1d19",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
                     "value": null
+                }
+            },
+            {
+                // DATE OF ONSET
+                "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+                "targetModel": {
+                    "$type": "DateObservation",
+                    "typeConcept": "99e13c67-0987-4f19-a9a3-e64e61ce1642",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+                    "actTime": "{{ $now }}",
+                    "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747"
                 }
             },
             {
@@ -77,6 +90,7 @@
                     "$type": "TextObservation",
                     "classConcept": "28d022c6-8a8b-47c4-9e6a-2bc67308739e",
                     "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+                    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
                     "typeConcept": "37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe",
                     "value": null
                 }

@@ -1,3 +1,16 @@
 <span xmlns="http://www.w3.org/1999/xhtml">
-    
+    {{ ::act.typeConceptModel | concept }} <strong>{{ ::act.valueModel | concept }}</strong>
+    <span class="mx-2" ng-repeat="comp in act.relationship.HasComponent track by $index"
+        ng-switch="comp.targetModel.typeConcept">
+        <span ng-switch-when="05012084-3351-4045-8390-fbcbd7ec1d19" class="badge badge-dark text-uppercase">
+            <i class="fas fa-fw fa-info-circle"></i>
+            {{ ::comp.targetModel.valueModel | concept}}
+        </span>
+        <!-- Resolution -->
+        <span ng-switch-when="656251ec-21bc-4594-9914-ca971c9defcc" class="badge text-uppercase"
+            ng-class="{ 'badge-danger' : comp.targetModel.value == 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'badge-info' : comp.targetModel.value != 'c8064cbd-fa06-4530-b430-1a52f1530c27' }">
+            <i class="fas fa-fw fa-info-circle"></i>
+            {{ ::comp.targetModel.valueModel | concept}}
+        </span>
+    </span>
 </span>

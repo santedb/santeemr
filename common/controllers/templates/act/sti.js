@@ -13,6 +13,7 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
                     },
                     "min"
                 );
+                var isNew = !panel.resource;
 
                 if (stiPanel.resource) {
                     stiPanel = { id: stiPanel.resource[0].id };
@@ -20,7 +21,7 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
                 else {
                     // Otherwise grab the STI template and create it for the record target
                     stiPanel = await SanteDB.application.getTemplateContentAsync("org.santedb.emr.organizer.sti.panel", {
-                        recordTarget: rct,
+                        recordTargetId: rct,
                         userEntityId: await SanteDB.authentication.getCurrentUserEntityId()
                     }, "min");
                     delete (stiPanel.relationship.HasComponent); // delete the default has component
@@ -28,10 +29,12 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
 
                 $scope.act.relationship = $scope.act.relationship || {};
                 $scope.act.relationship.HasComponent = $scope.act.relationship.HasComponent || [];
-                $scope.act.relationship.HasComponent.push(new ActRelationship({
+                $scope.act.relationship.HasComponent.push({
                     source: stiPanel.id,
-                    sourceModel: stiPanel
-                }));
+                    sourceModel: isNew ? panel : false,
+                    $insertFirst: true
+
+                });
 
             }
             catch (e) {
@@ -55,7 +58,7 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
                         }, "min");
 
                         $timeout(() => {
-                            $rootScope.getParentVariable($scope, [ 'ownerForm', 'editForm', 'panel.editForm'])['stiDisease' + $scope.act.id]?.$setValidity("duplicate", !(existing.resource && existing.resource[0].id != $scope.act.id));
+                            $rootScope.getParentVariable($scope, ['ownerForm', 'editForm', 'panel.editForm'])['stiDisease' + $scope.act.id]?.$setValidity("duplicate", !(existing.resource && existing.resource[0].id != $scope.act.id));
                         });
                     }
                     catch (e) {
@@ -107,14 +110,14 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
         }
 
         $scope.removeStiFromPanel = function (comp) {
-            if(comp.targetModel.version) { // already saved so we remove
+            if (comp.targetModel.version) { // already saved so we remove
                 comp.targetModel.statusConcept = 'bdef5f90-5497-4f26-956c-8f818cce2bd2';
                 comp.operation = 4;
             }
             else // not saved so we splice
             {
                 var idx = $scope.act.relationship.HasComponent.findIndex(r => r.targetModel.id == comp.targetModel.id || r.target == comp.target);
-                if(idx >= 0) {
+                if (idx >= 0) {
                     $scope.act.relationship.HasComponent.splice(idx, 1);
                 }
             }
