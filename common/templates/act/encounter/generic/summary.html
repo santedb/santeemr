@@ -18,6 +18,7 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="container-fluid">
     
     <div class="row" ng-if="act.relationship.HasComponent">
+        <!-- {{ act.relationship.HasComponent }} -->
         <label class="control-label col-sm-12 col-md-3">
             {{ 'ui.model.patientEncounter.relationship.HasComponent' | i18n }}
         </label>
@@ -29,7 +30,7 @@
                         'actEntryComponentRemoved' : comp.targetModel.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5'
                     }"
                 >
-                    <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(comp.targetModel.templateModel.mnemonic)"></ng-include>
+                    <ng-include src="$root.getParentVariable($parent, 'resolveSummary')(act.templateModel.mnemonic)"></ng-include>
                 </li>
             </ul>
         </div>

@@ -27,10 +27,12 @@
                 <div class="d-inline-flex" ng-if="adm.doseSequence !== undefined">
                     <label class="checkbox-container">
                         <input ng-disabled="
-                                    (!canBackEnter &amp;&amp; adm.actTime &gt; $root.page.maxEventTime || 
-                                    dose[$index - 1] &amp;&amp; dose[$index - 1].statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' || 
-                                    !adm.tag.isBackEntry) &amp;&amp;
-                                    !dose.$overrideAntigenCheck"
+                            !canBackEnter &amp;&amp; 
+                            (adm.actTime &gt; $root.page.maxEventTime || 
+                            dose[$index - 1].id &amp;&amp; dose[$index - 1].statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' || 
+                            !adm.tag.isBackEntry) &amp;&amp;
+                            !dose.$overrideAntigenCheck
+                            "
                             name="vacc-history-{{ ag }}-{{ dose.doseSequence }}-enabled"
                             ng-true-value="'afc33800-8225-4061-b168-bacc09cdbae3'" ng-model="adm.statusConcept"
                             class="checkbox-control" ng-false-value="null" type="checkbox" />
@@ -73,9 +75,9 @@
                         </div>
                     </div>
                 </div>
-                <div ng-if="!adm.doseSequence &amp;&amp; (dose.$antigen || adm._antigen)">
+                <div ng-if="!adm.doseSequence &amp;&amp; adm._antigen">
                     <button type="button" class="btn btn-link" ng-click="addDoseManual(dose.$antigen || adm._antigen, adm._sequence || $index)">
-                        <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.add' | i18n }} {{ ag }} # {{ adm._sequence || $index}}
+                        <i class="fas fa-fw fa-plus-circle"></i> {{ 'ui.action.addDose' | i18n }} # {{ adm._sequence || $index}}
                     </button>
                 </div>
 
