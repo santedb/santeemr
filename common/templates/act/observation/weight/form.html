@@ -24,8 +24,8 @@
 
         <div class="col-8">
             <div class="input-group mb-0">
-                <input type="number" min="0.1" name="weightValue" ng-model="act.value" required="required"
-                    cdss-interactive="act" class="form-control h-auto col-md-3" />
+                <input type="number" min="0" name="weightValue" ng-model="act.value" required="required"
+                    cdss-interactive="act" step="0.1" class="form-control h-auto col-md-3" />
 
                 <div class="input-group-append">
                     <label class="required input-group-text">
@@ -77,7 +77,7 @@
 
             <div class="text-danger"
                 ng-if="$parent.$parent.ownerForm.weightValue.$error.min || $parent.$parent.ownerForm.weightUnit.$error.min">
-                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: 0.1 } }}
+                    <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minValue' | i18n: { min: 0 } }}
             </div>
 
             <ul class="list-unstyled" ng-if="$parent.$parent.ownerForm.weightValue.$cdss">
