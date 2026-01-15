@@ -599,15 +599,7 @@ function SanteEMRWrapper() {
                 delete o.targetModel.statusConceptModel;
             });
 
-            if (informantPtcpt) {
-                encounter.participation = encounter.participation || {};
-                encounter.participation.Informant = encounter.participation.Informant || [];
-                encounter.participation.Informant.push(informantPtcpt);
-                if (informantPtcpt.playerModel && informantPtcpt.player != informantPtcpt.playerModel.id) {
-                    delete informantPtcpt.playerModel;
-                }
-            }
-
+           
             encounter = await prepareActForSubmission(encounter);
             submission = bundleRelatedObjects(encounter, ["Informant", "RecordTarget", "Location", "Authororiginator"]);
 
