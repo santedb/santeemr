@@ -24,7 +24,8 @@
         <div ng-if="statusObservations">
             <ul ng-if="panel.view != 'Edit'" class="list-group">
                 <li ng-repeat="cond in statusObservations track by $index" class="list-group-item d-flex"
-                    ng-init="act = cond" ng-class="{ 'list-group-item-warning' : act.tag.$isCondition }">
+                    ng-init="act = cond" ng-class="{ 'list-group-item-warning' : act.tag.$isCondition }"
+                    ng-if="cond.template">
                     <i class="fas fa-fw m-1" ng-class="resolveTemplateIcon(act.templateModel.mnemonic)"></i>
                     <div class="flex-grow-1">
                         <ng-include class="d-inline" src="::resolveSummaryTemplate(act.templateModel.mnemonic)" />
@@ -33,7 +34,8 @@
             </ul>
             <form ng-submit="updateStatusObservations(panel.editForm)" name="panel.editForm" novalidate="novalidate">
                 <ul class="list-group" ng-init="ownerForm = panel.editForm"> <!-- Maintain Compatibility with the act-edit -->
-                    <li ng-repeat="cond in amendmentObservations track by $index" class="list-group-item" ng-init="act = cond">
+                    <li ng-repeat="cond in amendmentObservations track by $index" class="list-group-item" ng-init="act = cond"
+                        ng-if="cond.template">
                         <h5><i class="fas fa-fw"
                                 ng-class="::resolveTemplateIcon(act.templateModel.mnemonic)"></i>
                             {{ ::getTemplateName(act.templateModel.mnemonic) }}</h5>
