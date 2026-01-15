@@ -9,7 +9,7 @@ define library "HIV Status Collection Protocols"
 	having oid "1.3.5.1.4.1.52820.5.3.3.0"
 	having status active
 	with metadata
-		version 3.0.2032
+		version 3.0.2043
 	end metadata
 	as
 	define logic "HIV Status Collection - Patient - Common"
@@ -90,7 +90,6 @@ define library "HIV Status Collection Protocols"
 				propose  having model "Collect Patient HIV Status"
 				as
 					assign csharp($$DateTimeOffset.Now$$) to actTime overwrite
-					assign csharp($$((CodedObservation)actf("Patient Current Observed HIV Status"))?.ValueKey ?? Guid.Parse("70FE34CE-CAFF-4F46-B6E6-9CD6D8F289D6")$$) to value overwrite
 				end propose
 		end protocol
 	end logic
