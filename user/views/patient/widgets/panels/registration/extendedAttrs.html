@@ -281,12 +281,12 @@
         </div>
 
         <div class="form-group row"
-            ng-if="$root.system.config.application.setting['forbid.person.school'] != 'true' &amp;&amp; scopedObject.age &gt; 4">
+            ng-if="$root.system.config.application.setting['forbid.person.school'] != 'true'">
             <label class="col-sm-12 col-md-3 control-label">{{ 'ui.model.person.relationship.Student' | i18n
                 }} <hint-popover hint-title="ui.model.person.relationship.Student" /></label>
             <div class="col-sm-12 col-md-8">
                 <entity-search type="'Organization'" ng-model="scopedObject.relationship.Student"
-                    ng-required="$root.system.config.application.setting['required.person.school'] == 'true' || scopedObject.age &gt;= 2 &amp;&amp; scopedObject.age &lt;= 17"
+                    ng-required="$root.system.config.application.setting['required.person.school'] == 'true' &amp;&amp; scopedObject.age &gt;= $root.system.config.application.setting['required.person.school.minAge'] &amp;&amp; scopedObject.age &lt;= $root.system.config.application.setting['required.person.school.maxAge']"
                     name="student" multiple="multiple" search-field="'name.component.value'"
                     data-quality-id="student" value-property="'target'" 
                     filter="{ 'typeConcept.conceptSet' : 'a7474e08-4b3a-4f69-8928-b4e352d7c1d3' }"
