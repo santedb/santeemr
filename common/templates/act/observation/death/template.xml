@@ -6,6 +6,8 @@
     <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
     <scope>org.santedb.emr.act.visit.neonatal</scope>
     <scope>org.santedb.emr.act.visit.general</scope>
+    <scope>org.santedb.emr.act.visit.anc</scope>
+    <scope>org.santedb.emr.act.visit.lds</scope>
     <form>form.html</form>
     <icon>fas fa-file-medical</icon>
     <view>view.html</view>

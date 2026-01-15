@@ -37,8 +37,11 @@
         <widget-panels scoped-object="entity" context-name="'org.santedb.emr.patient.register'" edit-form="editForm" />
         <div class="form-group row">
             <div class="col-12" ng-if="!editForm.$valid">
-                <span class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i>
+                <span ng-click="showErrorCount = showErrorCount ? showErrorCount + 1 : 1" class="text-danger float-right"><i class="fas fa-exclamation-triangle"></i>
                     {{ 'ui.emr.patient.register.requiredFieldMissing' | i18n }}</span>
+                    <div ng-if="showErrorCount &gt; 10">
+                        {{ editForm.$error }}
+                    </div>
             </div>
             <div class="col-12" ng-if="editForm.dataQualityIssues">
                 <div class="card mt-1">

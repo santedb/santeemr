@@ -24,6 +24,11 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
         }
 
         var baby = $scope.act.participation.Baby[0].playerModel;
+        // JIMS-1026 - Is the baby player model not present
+        if(!baby) {
+            var baby = await SanteDB.resources.person.getAsync($scope.act.participation.Baby[0].player);
+        }
+        
         // Ensure the baby is updated 
         baby.operation = BatchOperationType.InsertOrUpdate;
 
