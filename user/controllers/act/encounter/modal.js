@@ -274,7 +274,10 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
             ) {
                 var careplan = await SanteEMR.getCarePlanFromEncounter($scope.encounter.relationship.Fulfills[0].target);
 
-                if(careplan?.pathway) {
+                var eligibleCarePathways = await SanteEMR.validateCarepaths($scope.encounter.participation.RecordTarget[0].player);
+                if(careplan?.pathway && 
+                    eligibleCarePathways.find(o => o.id == careplan?.pathway && !o._ineligible)
+                ) {
                     careplan = await SanteDB.resources.patient.invokeOperationAsync($scope.encounter.participation.RecordTarget[0].player, "carepath-recompute", {
                          pathway: careplan.pathway
                      });
