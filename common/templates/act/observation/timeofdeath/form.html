@@ -10,8 +10,12 @@
                 </label>
             </div>
             <input ng-if="act.valuePrecision === 3" ng-init="act.value = act.value.trunc()" type="date" class="form-control" ng-model="act.value"
+                min="{{ act.participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-dd'}}"
+                ng-min="act.participation.RecordTarget[0].playerModel.dateOfBirth"
                 max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}" required="required" name="timeOfDeath"/>
             <input ng-if="act.valuePrecision === 5" type="datetime-local" class="form-control" ng-model="act.value"
+                min="{{ act.participation.RecordTarget[0].playerModel.dateOfBirth | date: 'yyyy-MM-ddT00:00:00'}}"
+                ng-min="act.participation.RecordTarget[0].playerModel.dateOfBirth"
                 max="{{ $root.page.maxEventTime | date: 'yyyy-MM-ddTHH:mm:ss.000' }}" step="60" required="required" name="timeOfDeath"/>
             <div class="text-danger" ng-if="$root.getParentVariable($parent, 'ownerForm').timeOfDeath.$error.required">
                 <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}

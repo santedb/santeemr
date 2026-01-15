@@ -1,10 +1,12 @@
-﻿using SanteDB;
+﻿
+using SanteDB;
 using SanteDB.Core.Diagnostics;
 using SanteDB.Core.Interop;
 using SanteDB.Core.Model.Acts;
 using SanteDB.Core.Model.Collection;
 using SanteDB.Core.Model.Constants;
 using SanteDB.Core.Model.DataTypes;
+using SanteDB.Core.Model.Entities;
 using SanteDB.Core.Model.Roles;
 using SanteDB.Core.Security;
 using SanteDB.Core.Services;
@@ -185,7 +187,8 @@ namespace SanteEMR.Rules
         /// </summary>
         private void AddDeathRecords(Bundle bundleToAdd, ActParticipation recordTarget, DateTime dateOfDeath)
         {
-            var player = recordTarget.LoadProperty(o => o.PlayerEntity, referenceData: bundleToAdd.Item) as Patient;
+            var player = bundleToAdd.Item.OfType<Person>().FirstOrDefault(o=>o.Key == recordTarget.PlayerEntityKey) ??
+                recordTarget.LoadProperty(o => o.PlayerEntity, referenceData: bundleToAdd.Item) as Patient;
             if (player == null || player.DeceasedDate.HasValue == true && player.DeceasedDate > dateOfDeath) // updated information 
             {
                 return;
