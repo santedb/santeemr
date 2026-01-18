@@ -599,15 +599,7 @@ function SanteEMRWrapper() {
                 delete o.targetModel.statusConceptModel;
             });
 
-            if (informantPtcpt) {
-                encounter.participation = encounter.participation || {};
-                encounter.participation.Informant = encounter.participation.Informant || [];
-                encounter.participation.Informant.push(informantPtcpt);
-                if (informantPtcpt.playerModel && informantPtcpt.player != informantPtcpt.playerModel.id) {
-                    delete informantPtcpt.playerModel;
-                }
-            }
-
+           
             encounter = await prepareActForSubmission(encounter);
             submission = bundleRelatedObjects(encounter, ["Informant", "RecordTarget", "Location", "Authororiginator"]);
 
@@ -659,6 +651,43 @@ function SanteEMRWrapper() {
             throw new Exception("EmrException", "Failed to fetch careplan", null, e);
         }
     }
+
+    /**
+     * @summary Validates that the patient is still eligible for their carepathways
+     * @param {string} patientId The identity of the patient
+     */
+    this.validateCarepaths = async function(patientId) {
+        try {
+            var carePathways = await SanteDB.resources.patient.invokeOperationAsync(patientId, "carepath-eligibilty");
+            var enrolledCarePathways = await SanteDB.resources.patient.findAssociatedAsync(patientId, "carepaths");
+
+            carePathways.forEach(cp => {
+                if (enrolledCarePathways.resource && enrolledCarePathways.resource.find(o => o.id == cp.id || o.pathway == cp.id)) {
+                    cp._enrolled = true;
+                }
+            });
+
+            // Are there any care pathways the patient is enrolled in that they are ineligible to be enrolled in?
+            var nonEligibleCarePathways = enrolledCarePathways.resource?.filter(cp => !carePathways.find(el => el.id == cp.id));
+            if(nonEligibleCarePathways?.length > 0 && confirm(SanteDB.locale.getString("ui.emr.patient.carepath.unenrolAuto", { pathway: nonEligibleCarePathways.map(o=>o.name).join(",") }))) {
+                nonEligibleCarePathways.forEach(cp => SanteDB.resources.patient.invokeOperationAsync(patientId, "carepath-unenroll", {
+                    pathway: cp.id
+                }));
+            }
+            else {
+                nonEligibleCarePathways?.forEach(cp => {
+                    cp._enrolled = true;
+                    cp._ineligible = true;
+                    carePathways.push(cp);
+                })
+            }
+
+            return carePathways;
+        }
+        catch (e) {
+            throw new Exception("EmrException", "Failed to validate care pathways", null, e);
+        }
+    } 
 
 }
 

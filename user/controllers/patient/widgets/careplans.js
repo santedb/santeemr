@@ -21,30 +21,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
 
     async function initializeView(patientId) {
         try {
-            var carePathways = await SanteDB.resources.patient.invokeOperationAsync(patientId, "carepath-eligibilty");
-            var enrolledCarePathways = await SanteDB.resources.patient.findAssociatedAsync(patientId, "carepaths");
-
-            carePathways.forEach(cp => {
-                if (enrolledCarePathways.resource && enrolledCarePathways.resource.find(o => o.id == cp.id || o.pathway == cp.id)) {
-                    cp._enrolled = true;
-                }
-            });
-
-            // Are there any care pathways the patient is enrolled in that they are ineligible to be enrolled in?
-            var nonEligibleCarePathways = enrolledCarePathways.resource?.filter(cp => !carePathways.find(el => el.id == cp.id));
-            if(nonEligibleCarePathways?.length > 0 && confirm(SanteDB.locale.getString("ui.emr.patient.carepath.unenrolAuto", { pathway: nonEligibleCarePathways.map(o=>o.name).join(",") }))) {
-                nonEligibleCarePathways.forEach(cp => SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-unenroll", {
-                    pathway: cp.id
-                }));
-            }
-            else {
-                nonEligibleCarePathways?.forEach(cp => {
-                    cp._enrolled = true;
-                    cp._ineligible = true;
-                    carePathways.push(cp);
-                })
-            }
-
+            var carePathways = await SanteEMR.validateCarepaths(patientId);
             $timeout(() => {
                 $scope.carePathways = carePathways;
             });
@@ -62,10 +39,10 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
             else {
 
                 var filter = {
-                    moodConcept: [ ActMoodKeys.Propose, ActMoodKeys.Eventoccurrence ],
+                    moodConcept: [ActMoodKeys.Propose, ActMoodKeys.Eventoccurrence],
                     'relationship[HasComponent].source@CarePlan.pathway||relationship[Fulfills].target.relationship[HasComponent].source@CarePlan.pathway': path.id,
                     'participation[RecordTarget].player': $scope.scopedObject.id,
-                    'statusConcept': [ StatusKeys.New, StatusKeys.Active ],
+                    'statusConcept': [StatusKeys.New, StatusKeys.Active],
                     'actTime': `>${moment().add(-monthLimit || 2, 'month').format("YYYY-MM-DD")}`,
                     _orderBy: 'actTime:asc',
                     _count: 4,
@@ -74,13 +51,13 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
 
                 var encounters = await SanteDB.resources.patientEncounter.findAsync(filter, "emr.actSummaryView");
                 var proposed = [], event = [];
-                if(encounters.resource) {
+                if (encounters.resource) {
                     proposed = encounters.resource.filter(r => r.moodConcept == ActMoodKeys.Propose);
                     event = encounters.resource.find(r => r.moodConcept == ActMoodKeys.Eventoccurrence);
 
-                    if(event && event.relationship && event.relationship.Fulfills) {
+                    if (event && event.relationship && event.relationship.Fulfills) {
                         var fulfilled = proposed.find(p => p.id == event.relationship.Fulfills[0].target);
-                        if(fulfilled) {
+                        if (fulfilled) {
                             fulfilled.relationship = fulfilled.relationship || {};
                             fulfilled.relationship.Fulfills = fulfilled.relationship.Fulfills || [];
                             fulfilled.relationship.Fulfills.push(new EntityRelationship({
@@ -89,21 +66,20 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                             }));
 
                             // Block starting all encounters - i.e. one encounter is already started - so we want to not allow starting encounters
-                            proposed.forEach(p=>{
+                            proposed.forEach(p => {
                                 p.tag = p.tag || {};
                                 p.tag["$nostart"] = [true];
                             });
                         }
                     }
                 }
-                
+
                 var now = new Date().trunc();
-                proposed.filter(enc=>!(enc.tag && enc.tag.$nostart)).forEach(enc => {
+                proposed.filter(enc => !(enc.tag && enc.tag.$nostart)).forEach(enc => {
                     if (
                         (enc.startTime || enc.actTime).trunc() <= now && (enc.stopTime || enc.actTime).trunc() >= now || // start and stop time are in bound
                         enc.actTime.isoWeek() == now.isoWeek() && enc.actTime.getFullYear() == now.getFullYear() // Encounter was scheduled to start this week
-                    )
-                    {
+                    ) {
                         enc.tag = enc.tag || {};
                         enc.tag["$canstart"] = [true];
                     }
@@ -135,7 +111,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                     pathway: pathway.id
                 });
                 $(`#carePathway${idx}`).collapse("hide");
-                $timeout(() =>{
+                $timeout(() => {
                     pathway._enrolled = false;
                     pathway.encounters = null;
                 });
@@ -171,8 +147,8 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
         }
     }
     async function recompute(pathway, idx) {
-        
-        if(confirm(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.confirm", { pathway: pathway.name }))) {
+
+        if (confirm(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.confirm", { pathway: pathway.name }))) {
             try {
                 SanteDB.display.buttonWait(`#btnRecompute${idx}`, true);
                 var carePlan = await SanteDB.resources.patient.invokeOperationAsync($scope.scopedObject.id, "carepath-recompute", {
@@ -181,7 +157,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 toastr.success(SanteDB.locale.getString("ui.emr.patient.carePaths.recompute.success"));
                 $state.reload();
             }
-            catch(e) {
+            catch (e) {
                 $rootScope.errorHandler(e);
             }
             finally {
@@ -213,7 +189,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
             // $state.go("santedb-emr.encounter.view", { id: encounter.id });
             SanteEMR.showCheckin($scope.scopedObject.id, encounter.id);
         }
-        catch(e) {
+        catch (e) {
             $rootScope.errorHandler(e);
         }
         finally {
@@ -225,7 +201,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
     $scope.enroll = enroll;
     $scope.unenroll = unenroll;
     $scope.recompute = recompute;
-    $scope.startVisit = startVisit; 
+    $scope.startVisit = startVisit;
     $scope.fetchNextEncounters = fetchNextEncounters;
     initializeView($scope.scopedObject.id);
 }]);

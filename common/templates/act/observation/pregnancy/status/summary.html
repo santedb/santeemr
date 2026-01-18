@@ -3,22 +3,22 @@
     <strong>{{ act.valueModel | concept }}</strong>
     
     <span ng-repeat="comp in act.relationship.HasComponent track by $index" ng-switch="comp.targetModel.typeConcept">
-        <div ng-switch-when="54843f39-8820-4856-951c-1bcd4812bdce" class="mx-2">
+        <span ng-switch-when="54843f39-8820-4856-951c-1bcd4812bdce" class="mx-2">
             <strong><i class="fas fa-fw fa-clock"></i> LMP:</strong> {{ comp.targetModel.value | extDate:
             comp.targetModel.valuePrecision }}
             <strong class="ml-2"><i class="fas fa-fw fa-arrow-right"></i> G/A: </strong> {{
             comp.targetModel.value.age("week") }} wk
-        </div>
+        </span>
 
-        <div ng-switch-when="673ac0e2-8468-43ca-9e54-cadf413dfede" class="mx-2">
+        <span ng-switch-when="673ac0e2-8468-43ca-9e54-cadf413dfede" class="mx-2">
             <strong><i class="fas fa-fw fa-baby"></i> EDD:</strong> {{ comp.targetModel.value | extDate:
             comp.targetModel.valuePrecision }}
-        </div>
+        </span>
 
-        <div ng-switch-when="afdefced-8468-43ca-9e54-cadf413dfede" class="mx-2">
+        <span ng-switch-when="afdefced-8468-43ca-9e54-cadf413dfede" class="mx-2">
             <strong><i class="fas fa-fw fa-baby"></i> EDD (C/E):</strong> {{ comp.targetModel.value | extDate:
             comp.targetModel.valuePrecision }}
-        </div>
+        </span>
     </span>
 
     <span ng-repeat="comp in act.relationship.HasComponent track by $index" ng-switch="comp.targetModel.typeConcept">
