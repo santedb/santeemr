@@ -627,6 +627,30 @@ function SanteEMRWrapper() {
     }
 
     /**
+     * @sumary Get CDSS alerts for a patient
+     * @param {string} patientId The patient Id
+     * @returns The issues
+     */
+    this.getPatientCdssAlerts = async function (patientId) {
+        try {
+            var issues = await SanteDB.resources.patient.invokeOperationAsync(patientId, "analyze", { _excludePropose: true, _excludeSubmitted: true });
+            var issueTypes = {};
+            issues.issue.forEach(o => issueTypes[o.type] = null);
+            await Promise.all(
+                Object.keys(issueTypes).map(async (f) => {
+                    var concept = await SanteDB.resources.concept.getAsync(f === EmptyGuid ? '1a4ff986-f54f-11e8-8eb2-f2801f1b9fd1' : f);
+                    issues.issue.filter(i => i.type === f).forEach(i => i.typeModel = concept);
+                    return concept;
+                })
+            );
+
+            return issues.issue.filter(i => i.id !== "error.cdss.exception");
+        }
+        catch (e) {
+            $rootScope.errorHandler(e);
+        }
+    }
+    /**
      * @summary Attempt to get the care plan from the encounter id
      * @param {string} proposedEncounterId The proposed encounter identifier from which the care plan should be fetched
      * @returns {CarePlan} The care plan that the proposed encounter id belongs

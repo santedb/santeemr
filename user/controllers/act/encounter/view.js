@@ -20,12 +20,13 @@
  */
 angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$rootScope", "$timeout", "$state", "$stateParams", function ($scope, $rootScope, $timeout, $state, $stateParams) {
 
+    
     async function initializeView(encounterId) {
         try {
             var encounter = await SanteDB.resources.patientEncounter.getAsync(encounterId, "emr.actDetail", null, null, null, {
                 "X-SanteDB-EmitPrivacyError": "Redact,Nullify,Hash,Hide",
-                "Pragma" : "no-cache",
-                "Cache-Control" : $rootScope.system?.config?.integration?.mode == 'synchronize' ? null : "no-cache"
+                "Pragma": "no-cache",
+                "Cache-Control": $rootScope.system?.config?.integration?.mode == 'synchronize' ? null : "no-cache"
             });
 
             encounter.relationship = encounter.relationship || {};
@@ -82,6 +83,25 @@ angular.module('santedb').controller('EmrEncounterViewController', ["$scope", "$
                 return state;
             });
 
+            var issues = await SanteEMR.getPatientCdssAlerts(encounter.participation.RecordTarget[0].player);
+            $timeout(() => {
+                $scope.cdssAlerts = {
+                    priority: issues.sort((a, b) => {
+                        switch (a.priority) {
+                            case "Information": a.priorityVal = 1; break;
+                            case "Warning": a.priorityVal = 2; break;
+                            case "Error": a.priorityVal = 3; break;
+                        }
+                        switch (b.priority) {
+                            case "Information": b.priorityVal = 1; break;
+                            case "Warning": b.priorityVal = 2; break;
+                            case "Error": b.priorityVal = 3; break;
+                        }
+                        return a.priorityVal > b.priorityVal ? -1 : 1;
+                    })[0]?.priority,
+                    issues: issues
+                };
+            })
         }
         catch (e) {
             // TODO: HANDLE ELEVATION CASE

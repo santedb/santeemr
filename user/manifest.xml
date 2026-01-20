@@ -142,6 +142,10 @@
     <include>partials/patient/headerExtensions/.*\.html</include>
   </dynamicHtml>
 
+  <dynamicHtml name="EncounterHeaderExtensions.html">
+    <include>partials/act/headerExtensions/.*\.html</include>
+  </dynamicHtml>
+
   <viewModel key="emr.facilityPlan">
     <definition>/org.santedb.emr/model/facilityPlan.xml</definition>
   </viewModel>
