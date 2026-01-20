@@ -548,9 +548,20 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                             var relative = $scope.scopedObject.relationship[relativeType][0].targetModel;
                             if (relative._populatedViaMatch) // We previously set this from a match
                             {
+                                delete(relative._populatedViaMatch);
                                 $timeout(() => {
                                     $scope.scopedObject.relationship[relativeType][0].targetModel = originalRelationshipData[relativeType];
                                     $scope.scopedObject.relationship[relativeType][0].targetModel.identifier = identifierList;
+                                    $scope.scopedObject.relationship[relativeType][0].targetModel.name = {
+                                        OfficialRecord: [
+                                            new EntityName({
+                                                component: {
+                                                    Given: [],
+                                                    Family: []
+                                                }
+                                            })
+                                        ]
+                                    }
                                 });
                             }
                             break;
@@ -639,7 +650,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                         case 0: // No matches
                                             break;
                                         case 1: // Exactly one 
-                                            if (duplicates.resource[0].$type == "Person") // The duplicate is a person - so we'll be linking them
+                                            if (duplicates.resource[0].$type == "Person"
+                                                && confirm(SanteDB.locale.getString("ui.emr.patient.register.upgrade.verify"))
+                                            ) // The duplicate is a person - so we'll be linking them
                                             {
                                                 toastr.info(SanteDB.locale.getString("ui.emr.patient.register.upgradePerson"));
                                                 var dup = duplicates.resource[0];

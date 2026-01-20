@@ -83,6 +83,10 @@
                 create-mode="true"
                 container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
 
+            <div ng-if="scopedObject.relationship.Mother[0].targetModel._populatedViaMatch" class="alert alert-info">
+                <i class="fas fa-fw fa-info"></i> {{ 'ui.emr.patient.register.relative.fromMatch' | i18n }}
+            </div>
+            
             <!-- Name -->
             <name-edit is-required="!scopedObject.relationship.Mother[0].targetModel.deceasedIndicator" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
                 name="mothersName" model="scopedObject.relationship.Mother[0].targetModel.name" />

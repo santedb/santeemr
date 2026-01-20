@@ -16,8 +16,8 @@
  - the License.
  -->
 <div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet" class="container">
-    <sdb:widget order="200" name="org.santedb.emr.widget.patient.register.relatives" headerClass="alert-info" size="Large"
-        type="Panel" context="org.santedb.emr.patient.register">
+    <sdb:widget order="200" name="org.santedb.emr.widget.patient.register.relatives" headerClass="alert-info"
+        size="Large" type="Panel" context="org.santedb.emr.patient.register">
         <sdb:icon>fas fa-people-arrows</sdb:icon>
         <sdb:description lang="en">Patient Next of Kin Entry</sdb:description>
     </sdb:widget>
@@ -27,7 +27,8 @@
         <div class="form-group row">
             <label class="col-md-3 col-sm-12 control-label"
                 ng-class="{ 'required' : scopedObject.relationship.Mother[0].operation == 'Delete' &amp;&amp; scopedObject.age &lt; 16 }">
-                    {{ 'ui.model.entity.relationship.relationshipType' | i18n }} <hint-popover hint-title="ui.model.entity.relationship.relationshipType" />
+                {{ 'ui.model.entity.relationship.relationshipType' | i18n }} <hint-popover
+                    hint-title="ui.model.entity.relationship.relationshipType" />
             </label>
 
             <div class="col-sm-12 col-md-8">
@@ -37,18 +38,22 @@
                     exclude-concepts="[ '29ff64e5-b564-411a-92c7-6818c02a9e48' ]"
                     ng-model="scopedObject.relationship.$other[0].relationshipType" data-quality-id="nok" />
 
-                <concept-select ng-if="scopedObject.age &gt;= 16" name="nokRelationshipType" ng-required="scopedObject.age &lt; 18 || scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
+                <concept-select ng-if="scopedObject.age &gt;= 16" name="nokRelationshipType"
+                    ng-required="scopedObject.age &lt; 18 || scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                     concept-set="'FamilyMember'" class="form-control" data-quality-id="nok"
                     ng-model="scopedObject.relationship.$other[0].relationshipType" />
 
                 <div class="text-danger" ng-if="panel.editForm.nokRelationshipType.$error['required']">
                     <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                 </div>
-                
-                <div
-                    ng-if="panel.editForm['nokRelationshipType'].$error['dq'] || panel.editForm.dataQualityIssues['nok']" 
+
+                <div ng-if="panel.editForm['nokRelationshipType'].$error['dq'] || panel.editForm.dataQualityIssues['nok']"
                     ng-class="{ 'text-primary': panel.editForm.dataQualityIssues['nok'].priority == 'Information', 'text-warning': panel.editForm.dataQualityIssues['nok'].priority == 'Warning', 'text-danger' :  panel.editForm.dataQualityIssues['nok'].priority == 'Error'}">
-                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text: panel.editForm.dataQualityIssues['nok'].text } }} <button type="button" class="btn btn-link btn-sm d-inline" ng-click="panel.editForm.dataQualityIssues['nok'].dismiss()">{{ 'ui.action.dismiss' | i18n }}</button>
+                    <i class="fas fa-info-circle"></i> {{ 'ui.error.dataQuality' | i18n: { text:
+                    panel.editForm.dataQualityIssues['nok'].text } }} <button type="button"
+                        class="btn btn-link btn-sm d-inline"
+                        ng-click="panel.editForm.dataQualityIssues['nok'].dismiss()">{{ 'ui.action.dismiss' | i18n
+                        }}</button>
                 </div>
             </div>
         </div>
@@ -56,9 +61,12 @@
         <div ng-if="scopedObject.relationship.$other[0].relationshipType">
             <!-- Identifiers -->
             <identifier-list-edit owner-form="panel.editForm" name="nokIdentifier"
-                model="scopedObject.relationship.$other[0].targetModel.identifier"
-                create-mode="true"
+                model="scopedObject.relationship.$other[0].targetModel.identifier" create-mode="true"
                 container-class="'9de2a846-ddf2-4ebc-902e-84508c5089ea'" />
+
+            <div ng-if="scopedObject.relationship.$other[0].targetModel._populatedViaMatch" class="alert alert-info">
+                <i class="fas fa-fw fa-info"></i> {{ 'ui.emr.patient.register.relative.fromMatch' | i18n }}
+            </div>
 
             <!-- Name -->
             <name-edit is-required="true" no-add="true" owner-form="editForm" simple-entry="true" no-type="true"
@@ -67,7 +75,8 @@
             <!-- Date of Birth -->
             <div class="form-group row">
                 <label class="col-sm-12 col-md-3 control-label required">
-                    {{ scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision == 1 ? 'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}
+                    {{ scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision == 1 ?
+                    'ui.model.patient.dateOfBirth.age' : 'ui.model.patient.dateOfBirth' | i18n }}
                     <hint-popover hint-title="ui.model.patient.dateOfBirth" />
                 </label>
 
@@ -77,7 +86,8 @@
                             <div class="input-group-prepend">
                                 <label class="input-group-text p-0 px-2">
                                     <div class="checkbox-container position-absolute" style="top: 0; left: 5px;">
-                                        <input type="checkbox" ng-model="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision"
+                                        <input type="checkbox"
+                                            ng-model="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision"
                                             ng-true-value="1" ng-false-value="3" class="checkbox-control" />
                                         <span></span>
                                     </div>
@@ -101,14 +111,18 @@
                                 min="1900-01-01" max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}"
                                 class="form-control" />
 
-                            <div class="input-group-append" ng-if="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision == 1">
+                            <div class="input-group-append"
+                                ng-if="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision == 1">
                                 <span class="input-group-text p-0 px-2">{{ 'ui.emr.patient.ageInYears' | i18n }}</span>
                                 <span class="input-group-text p-0 px-2">
-                                    {{ 'ui.model.patient.dateOfBirth.approx' | i18n }} {{ scopedObject.relationship.$other[0].targetModel.dateOfBirth | extDate: scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision }}
+                                    {{ 'ui.model.patient.dateOfBirth.approx' | i18n }} {{
+                                    scopedObject.relationship.$other[0].targetModel.dateOfBirth | extDate:
+                                    scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision }}
                                 </span>
                             </div>
 
-                            <div class="input-group-append" ng-if="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision == 3">
+                            <div class="input-group-append"
+                                ng-if="scopedObject.relationship.$other[0].targetModel.dateOfBirthPrecision == 3">
                                 <span class="input-group-text p-0 px-2">
                                     {{ scopedObject.relationship.$other[0].targetModel.dateOfBirth | age}}
                                 </span>
@@ -116,7 +130,8 @@
                         </div>
                     </div>
 
-                    <div class="text-danger d-none d-sm-block" ng-if="panel.editForm['nokDob'].$invalid || panel.editForm['nokAge'].$invalid">
+                    <div class="text-danger d-none d-sm-block"
+                        ng-if="panel.editForm['nokDob'].$invalid || panel.editForm['nokAge'].$invalid">
                         <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                     </div>
                 </div>
@@ -143,18 +158,19 @@
             <div class="form-group row">
                 <label class="col-md-3 col-sm-12 control-label">
                     {{ 'ui.model.entity.address.HomeAddress' | i18n }} <hint-popover
-                    hint-title="ui.model.entity.address.HomeAddress" />
+                        hint-title="ui.model.entity.address.HomeAddress" />
                 </label>
                 <label class="col-md-9 col-sm-12 checkbox-container mt-2">
                     <input type="checkbox" class="checkbox-control"
-                    ng-model="scopedObject.relationship.$other[0].targetModel.address.HomeAddress[0]._differentThanPatient" />
+                        ng-model="scopedObject.relationship.$other[0].targetModel.address.HomeAddress[0]._differentThanPatient" />
                     <span></span>
                     {{ 'ui.emr.patient.$other.differsFromPatient' | i18n }}
                 </label>
             </div>
-            
+
             <!-- Addresses -->
-            <address-edit ng-if="scopedObject.relationship.$other[0].targetModel.address.HomeAddress[0]._differentThanPatient"
+            <address-edit
+                ng-if="scopedObject.relationship.$other[0].targetModel.address.HomeAddress[0]._differentThanPatient"
                 is-required="true" model="scopedObject.relationship.$other[0].targetModel.address.HomeAddress"
                 name="nokAddress" no-type="true" owner-form="editForm" no-add="true" simple-entry="true" />
 
@@ -164,54 +180,64 @@
                 required-types="[ 'MobileContact' ]" />
 
             <!-- Occupation -->
-            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.occupation'] != 'true'">
+            <div class="form-group row"
+                ng-if="$root.system.config.application.setting['forbid.person.occupation'] != 'true'">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.person.occupation' | i18n }} <hint-popover hint-title="ui.model.person.occupation" />
                 </label>
 
                 <div class="col-sm-12 col-md-8">
-                    <concept-select name="nokOccupation" ng-required="$root.system.config.application.setting['forbid.person.occupation'] == 'required'" concept-set="'OccupationType'" ng-model="scopedObject.relationship.$other[0].targetModel.occupation" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
-                    
+                    <concept-select name="nokOccupation"
+                        ng-required="$root.system.config.application.setting['forbid.person.occupation'] == 'required'"
+                        concept-set="'OccupationType'"
+                        ng-model="scopedObject.relationship.$other[0].targetModel.occupation"
+                        add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+
                     <div class="text-danger" ng-if="panel.editForm.nokOccupation.$error['required']">
                         <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                     </div>
                 </div>
             </div>
-            
-            
+
+
             <!-- Marital Status -->
-            <div class="form-group row" ng-if="$root.system.config.application.setting['allow.patient.maritalStatus']  != 'false'">
+            <div class="form-group row"
+                ng-if="$root.system.config.application.setting['allow.patient.maritalStatus']  != 'false'">
                 <label class="col-sm-12 col-md-3 control-label">
-                    {{ 'ui.model.patient.maritalStatus' | i18n }} <hint-popover hint-title="ui.model.patient.maritalStatus" />
+                    {{ 'ui.model.patient.maritalStatus' | i18n }} <hint-popover
+                        hint-title="ui.model.patient.maritalStatus" />
                 </label>
-                
+
                 <div class="col-sm-12 col-md-8">
-                    <concept-select name="maritalStatus"
-                        concept-set="'MaritalStatus'" ng-model="scopedObject.relationship.$other[0].targetModel.maritalStatus"
+                    <concept-select name="maritalStatus" concept-set="'MaritalStatus'"
+                        ng-model="scopedObject.relationship.$other[0].targetModel.maritalStatus"
                         add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
 
                 </div>
             </div>
             <!-- VIP Status -->
-            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true'">
+            <div class="form-group row"
+                ng-if="$root.system.config.application.setting['forbid.person.vipStatus']  != 'true'">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.person.vipStatus' | i18n }} <hint-popover hint-title="ui.model.person.vipStatus" />
                 </label>
 
                 <div class="col-sm-12 col-md-8">
-                    <concept-select name="nokVipStatus" concept-set="'VeryImportantPersonStatus'" ng-model="scopedObject.relationship.$other[0].targetModel.vipStatus" add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
+                    <concept-select name="nokVipStatus" concept-set="'VeryImportantPersonStatus'"
+                        ng-model="scopedObject.relationship.$other[0].targetModel.vipStatus"
+                        add-concept="['6052712a-340e-4480-ad6b-409ba320db4f']" class="form-control" />
                 </div>
             </div>
 
             <!-- Nationality -->
-            <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.nationality'] != true">
+            <div class="form-group row"
+                ng-if="!$root.system.config.application.setting['forbid.person.nationality'] != true">
                 <label class="col-sm-12 col-md-3 control-label">
                     {{ 'ui.model.person.nationality' | i18n }} <hint-popover hint-title="ui.model.person.nationality" />
                 </label>
 
                 <div class="col-sm-12 col-md-8">
-                    <entity-search type="'Concept'"
-                        name="nokNationality"
+                    <entity-search type="'Concept'" name="nokNationality"
                         ng-model="scopedObject.relationship.$other[0].targetModel.nationality"
                         ng-required="$root.system.config.application.setting['forbid.person.nationality'] == 'required'"
                         search-field="'name.value'" filter="{ 'conceptSet': '7f4e7366-a0e6-4a5e-b2b1-82187447e792' }" />
@@ -223,15 +249,18 @@
             </div>
 
             <!-- Citizenship -->
-            <div class="form-group row" ng-if="!$root.system.config.application.setting['forbid.person.citizenship'] != true">
+            <div class="form-group row"
+                ng-if="!$root.system.config.application.setting['forbid.person.citizenship'] != true">
                 <label class="col-sm-12 col-md-3 control-label">
-                    {{ 'ui.model.entity.relationship.Citizen' | i18n }} <hint-popover hint-title="ui.model.entity.relationship.Citizen" />
+                    {{ 'ui.model.entity.relationship.Citizen' | i18n }} <hint-popover
+                        hint-title="ui.model.entity.relationship.Citizen" />
                 </label>
 
                 <div class="col-sm-12 col-md-8">
-                    <entity-search type="'Place'" ng-model="scopedObject.relationship.$other[0].targetModel.relationship.Citizen"
-                        name="nokCitizen"
-                        multiple="multiple" search-field="'name.component.value'" value-property="'target'"
+                    <entity-search type="'Place'"
+                        ng-model="scopedObject.relationship.$other[0].targetModel.relationship.Citizen"
+                        name="nokCitizen" multiple="multiple" search-field="'name.component.value'"
+                        value-property="'target'"
                         ng-required="$root.system.config.application.setting['forbid.person.citizenship'] == 'required'"
                         filter="{ 'classConcept': '48b2ffb3-07db-47ba-ad73-fc8fb8502471' }" />
 
@@ -242,17 +271,20 @@
             </div>
 
             <!-- Employment -->
-            <div class="form-group row" ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true'">
+            <div class="form-group row"
+                ng-if="$root.system.config.application.setting['forbid.person.employee'] != 'true'">
                 <label class="col-sm-12 col-md-3 control-label">
-                    {{ 'ui.model.person.relationship.Employee' | i18n }} <hint-popover hint-title="ui.model.person.relationship.Employee" />
+                    {{ 'ui.model.person.relationship.Employee' | i18n }} <hint-popover
+                        hint-title="ui.model.person.relationship.Employee" />
                 </label>
 
                 <div class="col-sm-12 col-md-8">
-                    <entity-search type="'Organization'" ng-model="scopedObject.relationship.$other[0].targetModel.relationship.Employee"
+                    <entity-search type="'Organization'"
+                        ng-model="scopedObject.relationship.$other[0].targetModel.relationship.Employee"
                         multiple="multiple" search-field="'name.component.value'" value-property="'target'"
-                        name="nokEmployee" 
+                        name="nokEmployee"
                         ng-required="$root.system.config.application.setting['required.person.employee'] == 'true'" />
-                    
+
                     <div class="text-danger" ng-if="panel.editForm.nokEmployee.$error['required']">
                         <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                     </div>
