@@ -168,7 +168,7 @@ define library "SanteDB Core CDSS Fact Library"
 		define fact "Patient is Adult"
 			having type bool
 		as
-			csharp($$realf("Patient Age In Years") > 18$$)
+			csharp($$realf("Patient Age In Years") > 16$$)
 		end fact
 		define fact "Patient Is Female of Childbearing Age"
 			having type bool

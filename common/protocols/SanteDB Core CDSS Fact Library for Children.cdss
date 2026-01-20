@@ -46,7 +46,7 @@ define library "SanteDB Core CDSS Fact Library for Children"
 					"Patient Is a Child"
 				)
 ,
-				hdsi($$dateOfBirth=:(age)<P20Y$$)
+				hdsi($$dateOfBirth=:(age)<P16Y$$)
 			)
 
 		end fact
