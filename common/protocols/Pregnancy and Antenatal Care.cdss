@@ -12,7 +12,7 @@ define library "Pregnancy and Antenatal Care"
 	end metadata
 	as
 	define logic "Common Pregnancy Patient Facts"
-		having context Patient when "Patient Is Female of Childbearing Age"
+		having context Patient 
 		as
 		define fact "Most Recent Pregnancy History"
 		as
@@ -120,8 +120,11 @@ define library "Pregnancy and Antenatal Care"
 		define fact "Patient Last Menstrual Period Current Pregnancy"
 			having type date
 		as
-			hdsi($$$self@Act.relationship[target.typeConcept%3d54843f39-8820-4856-951c-1bcd4812bdce].target@DateObservation.vale$$ scoped-to fact "Patient Current Pregnancy Status")
+			hdsi($$$self@Act.relationship[target.typeConcept%3d54843f39-8820-4856-951c-1bcd4812bdce].target@DateObservation.value$$ scoped-to fact "Patient Current Pregnancy Status")
 		end fact
+		define fact "Age of Fetus Current Pregnancy" having type int as 
+		    csharp($$ boolf("Patient Is Currently Pregnant") == true ? DateTime.Now.Subtract(datef("Patient Last Menstrual Period Current Pregnancy")).TotalDays / 7 : 0 $$)
+		end fact 
 	end logic
 	define logic "Routine Collection of Pregnancy Status Patient"
 		having context Patient when all(

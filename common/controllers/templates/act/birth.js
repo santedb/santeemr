@@ -26,11 +26,11 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
         var baby = $scope.act.participation.Baby[0].playerModel;
         // JIMS-1026 - Is the baby player model not present
         if(!baby) {
-            var baby = await SanteDB.resources.person.getAsync($scope.act.participation.Baby[0].player);
+            baby = await SanteDB.resources.person.getAsync($scope.act.participation.Baby[0].player);
         }
         
         // Ensure the baby is updated 
-        baby.operation = BatchOperationType.InsertOrUpdate;
+        baby.operation = baby.version ? BatchOperationType.Update : BatchOperationType.Insert;
 
         // Check if baby has a neonatal encounter
         var neonate = await SanteDB.resources.patientEncounter.findAsync({
@@ -184,8 +184,9 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
             $timeout(() => {
                
                 $scope.act.relationship.HasComponent = $scope.act.relationship.HasComponent.filter(o => !o._shouldDeleteOnSb);
-                $scope.act.participation.Baby[0].operation = $scope.act.participation.Baby[0].playerModel.operation = BatchOperationType.InsertOrUpdate;
-                updateBabyObservationsOperation(BatchOperationType.InsertOrUpdate);
+                var operation = $scope.act.participation.Baby[0].playerModel.version ? BatchOperationType.Update : BatchOperationType.InsertOrUpdate;
+                $scope.act.participation.Baby[0].operation = $scope.act.participation.Baby[0].playerModel.operation = operation;
+                updateBabyObservationsOperation(operation);
             });
         }
     });

@@ -647,7 +647,7 @@ function SanteEMRWrapper() {
             return issues.issue.filter(i => i.id !== "error.cdss.exception");
         }
         catch (e) {
-            $rootScope.errorHandler(e);
+            throw new Exception("EmrException", e.message, null, e);
         }
     }
     /**
