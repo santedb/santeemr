@@ -504,8 +504,8 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             toastr.success(SanteDB.locale.getString("ui.emr.patient.register.success"));
 
             if ($scope.entity.$then == "another") {
-                await initializeView();
-                $("input")[0].focus();
+                $state.reload();
+                return;
             }
             else {
                 SanteDB.application.getResourceViewer("Patient")[0]($state, { id: patient.id }); // Nav to the patient view screen
