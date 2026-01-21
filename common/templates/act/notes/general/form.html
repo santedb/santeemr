@@ -1,0 +1,23 @@
+<div xmlns="http://www.w3.org/1999/xhtml">
+    <h6 class="required">{{ ::act.typeConceptModel | concept }}</h6>
+    <textarea ng-model="act.value" name="note{{act.id}}Text" 
+        ng-readonly="act.participation.Authororiginator[0].player !== $root.session.entity.id" required="required" maxlength="8192" 
+        minlength="20" class="form-control">
+    </textarea>
+    <div class="alert alert-info" ng-if="act.participation.Authororiginator[0].player !== $root.session.entity.id">
+        <i class="fas fa-user"></i> {{ 'ui.emr.visit.note.readonly' | i18n }}
+    </div>
+    <div class="text-bold" ng-if="!(act.participation.Authororiginator[0].player !== $root.session.entity.id)">{{ 8192 - act.value.length }} {{ 'ui.common.charsRemain' | i18n }}
+    </div>
+    <div class="text-danger" ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm'])['note' + act.id + 'Text'].$error.required">
+        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+    </div>
+    <div class="text-danger" ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm'])['note' + act.id + 'Text'].$error.minlength">
+        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.minLength' | i18n: { length: 20 } }}
+    </div>
+    <div class="text-danger" ng-if="$root.getParentVariable($parent, [ 'ownerForm', 'editForm'])['note' + act.id + 'Text'].$error.maxlength">
+        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.maxLength' | i18n: { length: 8192 } }}
+    </div>
+
+
+</div>

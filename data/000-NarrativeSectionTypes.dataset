@@ -1,25 +1,27 @@
-<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Narrative Section Types v3.0" xmlns="http://santedb.org/data">
-  <update skipIfError="false" insertIfNotExists="true">
+<dataset xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="Narrative Section Types v3.01" xmlns="http://santedb.org/data">
+<update skipIfError="false" insertIfNotExists="true">
     <ConceptSet xmlns="http://santedb.org/model">
       <id>a306f24e-9a56-11f0-9612-4f9a1a3b712e</id>
       <name>Narrative Note Types</name>
       <mnemonic>NarrativeNoteTypes</mnemonic>
       <oid>1.3.6.1.4.1.33349.3.1.5.9.3.115</oid>
       <url>http://santedb.org/conceptset/narrative-note-types</url>
+      <concept>37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe</concept>
+      <concept>7db6155d-62cc-445a-bf41-bf748ddf223f</concept>
     </ConceptSet>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
     <Concept xmlns="http://santedb.org/model">
-      <id>37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe</id>
+      <id>02d3d730-e9b1-4705-b46a-1b4577f59ea1</id>
       <sequence xsi:nil="true" />
-      <mnemonic>NarrativeType-AllergyPlanOfCareNote</mnemonic>
+      <mnemonic>NarrativeType-AdvanceDirective</mnemonic>
       <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
       <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
       <name>
-        <id>77173e6e-9a56-11f0-a8ef-2723895df088</id>
-        <source>37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe</source>
+        <id>ea25b678-f713-11f0-b25f-07f17a2bc5c9</id>
+        <source>02d3d730-e9b1-4705-b46a-1b4577f59ea1</source>
         <language>en</language>
-        <value>Allergy Plan of Care Note</value>
+        <value>Advance Directive</value>
       </name>
       <conceptSet>a306f24e-9a56-11f0-9612-4f9a1a3b712e</conceptSet>
     </Concept>
@@ -41,10 +43,58 @@
     </Concept>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>9e7f709d-a40f-4f25-bc5c-876189095adf</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>NarrativeType-ReferralNote</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>f4e6988e-f713-11f0-9ced-ebaafc27b950</id>
+        <source>9e7f709d-a40f-4f25-bc5c-876189095adf</source>
+        <language>en</language>
+        <value>Referral Note</value>
+      </name>
+      <conceptSet>a306f24e-9a56-11f0-9612-4f9a1a3b712e</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>NarrativeType-AllergyPlanOfCareNote</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>77173e6e-9a56-11f0-a8ef-2723895df088</id>
+        <source>37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe</source>
+        <language>en</language>
+        <value>Allergy Plan of Care Note</value>
+      </name>
+      <conceptSet>a306f24e-9a56-11f0-9612-4f9a1a3b712e</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <Concept xmlns="http://santedb.org/model">
+      <id>59bda6ff-485a-4753-9acd-5ab1f4e36c38</id>
+      <sequence xsi:nil="true" />
+      <mnemonic>NarrativeType-SummaryOfEpisode</mnemonic>
+      <statusConcept>c8064cbd-fa06-4530-b430-1a52f1530c27</statusConcept>
+      <conceptClass>0d6b3439-c9be-4480-af39-eeb457c052d0</conceptClass>
+      <name>
+        <id>01978e4e-f714-11f0-b5fb-cf362eb80771</id>
+        <source>59bda6ff-485a-4753-9acd-5ab1f4e36c38</source>
+        <language>en</language>
+        <value>Summary of Episode Note</value>
+      </name>
+      <conceptSet>a306f24e-9a56-11f0-9612-4f9a1a3b712e</conceptSet>
+    </Concept>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
     <ConceptReferenceTerm xmlns="http://santedb.org/model">
-      <id>771898ea-9a56-11f0-a8f0-d7a8770ee466</id>
-      <source>37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe</source>
-      <term>2773ab14-9904-493e-9c6f-eea5d66d9db4</term>
+      <id>ea28c6ce-f713-11f0-b260-d3333fe7cdd5</id>
+      <source>02d3d730-e9b1-4705-b46a-1b4577f59ea1</source>
+      <term>3e6092d8-b862-42d5-8b19-34bc383486f6</term>
       <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
     </ConceptReferenceTerm>
   </update>
@@ -57,15 +107,39 @@
     </ConceptReferenceTerm>
   </update>
   <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>771898ea-9a56-11f0-a8f0-d7a8770ee466</id>
+      <source>37331b6d-bd8e-4ab1-9f59-d66d93d5b2fe</source>
+      <term>2773ab14-9904-493e-9c6f-eea5d66d9db4</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>f4e718a4-f713-11f0-9cee-93525ebc876a</id>
+      <source>9e7f709d-a40f-4f25-bc5c-876189095adf</source>
+      <term>ac5a12ca-f65e-4742-a41c-e8bdbfcfb62a</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ConceptReferenceTerm xmlns="http://santedb.org/model">
+      <id>0197e498-f714-11f0-b5fc-778f10c89b59</id>
+      <source>59bda6ff-485a-4753-9acd-5ab1f4e36c38</source>
+      <term>c7c55174-abe6-4650-9484-89365561c7d2</term>
+      <relationshipType>2c4dafc2-566a-41ae-9ebc-3097d7d22f4a</relationshipType>
+    </ConceptReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
     <ReferenceTerm xmlns="http://santedb.org/model">
-      <id>2773ab14-9904-493e-9c6f-eea5d66d9db4</id>
-      <mnemonic>95759-7</mnemonic>
+      <id>3e6092d8-b862-42d5-8b19-34bc383486f6</id>
+      <mnemonic>75320-2</mnemonic>
       <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
       <name>
-        <id>77112510-9a56-11f0-a8ee-bf3a57341865</id>
+        <id>ea197002-f713-11f0-b25e-1f2580de4ef2</id>
         <language>en</language>
-        <value>Allergy Plan of Care Note</value>
-        <source>2773ab14-9904-493e-9c6f-eea5d66d9db4</source>
+        <value>Advance Directive</value>
+        <source>3e6092d8-b862-42d5-8b19-34bc383486f6</source>
       </name>
     </ReferenceTerm>
   </update>
@@ -79,6 +153,45 @@
         <language>en</language>
         <value>Plan of care note</value>
         <source>77f1cca3-6040-47cd-9468-efe325226b77</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>ac5a12ca-f65e-4742-a41c-e8bdbfcfb62a</id>
+      <mnemonic>57133-1</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>f4e3c21c-f713-11f0-9cec-6fe0f4f0db62</id>
+        <language>en</language>
+        <value>Referral Note</value>
+        <source>ac5a12ca-f65e-4742-a41c-e8bdbfcfb62a</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>c7c55174-abe6-4650-9484-89365561c7d2</id>
+      <mnemonic>34133-9</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>019438de-f714-11f0-b5fa-1f172bd8487f</id>
+        <language>en</language>
+        <value>Summary of Episode Note</value>
+        <source>c7c55174-abe6-4650-9484-89365561c7d2</source>
+      </name>
+    </ReferenceTerm>
+  </update>
+  <update skipIfError="false" insertIfNotExists="true">
+    <ReferenceTerm xmlns="http://santedb.org/model">
+      <id>2773ab14-9904-493e-9c6f-eea5d66d9db4</id>
+      <mnemonic>95759-7</mnemonic>
+      <codeSystem>08c59397-706b-456a-aeb1-9e7d5a2adc94</codeSystem>
+      <name>
+        <id>77112510-9a56-11f0-a8ee-bf3a57341865</id>
+        <language>en</language>
+        <value>Allergy Plan of Care Note</value>
+        <source>2773ab14-9904-493e-9c6f-eea5d66d9db4</source>
       </name>
     </ReferenceTerm>
   </update>

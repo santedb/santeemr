@@ -41,6 +41,11 @@
             <property name="Location" ref="ActParticipationNested" />
             <property name="Authororiginator" ref="ActParticipationNested" />
             <property name="Performer" ref="ActParticipationNested" />
+            <property name="DataEnterer" ref="ActParticipationNested" />
+            <property name="Verifier" ref="ActParticipationNested" />
+            <property name="SecondaryPerformer" ref="ActParticipationNested" />
+            <property name="Discharger" ref="ActParticipationNested" />
+            <property name="Admitter" ref="ActParticipationNested" />
             <property name="Product" ref="ActParticipationNested" />
             <property name="Baby" ref="ActParticipationNested" />
             <property name="Informant" ref="ActParticipationNested" />

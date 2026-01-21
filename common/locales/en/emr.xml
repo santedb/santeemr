@@ -576,5 +576,7 @@
         <!-- AEFI / Derived Allergies -->
          <string name="org.santedb.emr.condition.allergy.derived">Derived From Reportable Event</string>
 
+         <!-- Note is readonly -->
+          <string name="ui.emr.visit.note.readonly">This note was authored by a different user. If you would like to make a note on this visit, please add your own note via the &lt;strong&gt;Add&lt;/strong&gt; option</string>
 
 </resources>

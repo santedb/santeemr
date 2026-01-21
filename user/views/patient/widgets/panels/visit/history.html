@@ -35,31 +35,37 @@
             <div class="card-header d-flex justify-content-between"
                 ng-class="{ 'alert-success' : act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' , 'alert-info' : act.statusConcept == 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'alert-danger' : act.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5' || act.statusConcept == '3efd3b6e-02d5-4cc9-9088-ef8f31e321c5', 'alert-dark' : act.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2' }">
                 <a class="m-0 p-0 btn btn-link" ui-sref="santedb-emr.encounter.view({ id: act.id })">
-                                    <h5 class="card-title">
-                    
-                    <i ng-class="templateIcon[act.templateModel.mnemonic] || 'fas fa-file-medical'"></i>
-                    {{ act.templateModel.mnemonic | i18n }} <span class="badge badge-primary">{{ act.typeConceptModel | concept }}</span></h5>
+                    <h5 class="card-title">
+
+                        <i ng-class="templateIcon[act.templateModel.mnemonic] || 'fas fa-file-medical'"></i>
+                        {{ act.templateModel.mnemonic | i18n }} <span class="badge badge-primary">{{
+                            act.typeConceptModel | concept }}</span>
+                    </h5>
                 </a>
                 <h5 class="card-title">
                     <i class="fas fa-clock"></i> {{ act.stopTime || act.creationTime | humanDate: 'M' }}
-                    <span class="badge badge-info" ng-if="act.stopTime"><i class="fas fa-fw fa-clock"></i> {{ act.startTime | dateDiff: { other: act.stopTime } }}</span>
+                    <span class="badge badge-info" ng-if="act.stopTime"><i class="fas fa-fw fa-clock"></i> {{
+                        act.startTime | dateDiff: { other: act.stopTime } }}</span>
                 </h5>
             </div>
             <div class="card-body" ng-if="act.templateModel">
                 <ng-include src="::resolveSummary(act.templateModel.mnemonic)"></ng-include>
             </div>
             <div class="card-footer bg-light text-right text-dark d-flex justify-content-between">
-                <span class="badge" ng-class="{ 'badge-success' : act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' , 'badge-info' : act.statusConcept == 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'badge-danger' : act.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5' || act.statusConcept == '3efd3b6e-02d5-4cc9-9088-ef8f31e321c5', 'badge-dark' : act.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2' }">
+                <span class="badge"
+                    ng-class="{ 'badge-success' : act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3' , 'badge-info' : act.statusConcept == 'c8064cbd-fa06-4530-b430-1a52f1530c27', 'badge-danger' : act.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5' || act.statusConcept == '3efd3b6e-02d5-4cc9-9088-ef8f31e321c5', 'badge-dark' : act.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2' }">
                     {{ act.statusConceptModel | concept }}
                 </span>
-                <span ng-if="act.participation.Authororiginator">
-                    <i class="fas fa-user"></i> {{ act.participation.Authororiginator[0].playerModel.name | name }}
+                <span ng-repeat="(pt, ptcpt) in act.participation"
+                    ng-if="[ 'Authororiginator', 'Admitter', 'Discharger', 'Performer', 'SecondaryPerformer'].includes(pt)">
+                    <span ng-repeat="p in ptcpt track by $index">
+                        <i class="fas fa-user"></i> {{ p.playerModel.name | name }} <span class="text-muted">({{ pt }})</span>
+                    </span>
                 </span>
                 <span ng-if="act.participation.Location">
-                 <i
-                    class="fas fa-hospital"></i> {{ act.participation.Location[0].playerModel.name | name }} 
+                    <i class="fas fa-hospital"></i> {{ act.participation.Location[0].playerModel.name | name }}
                 </span>
-                
+
             </div>
         </div>
     </div>

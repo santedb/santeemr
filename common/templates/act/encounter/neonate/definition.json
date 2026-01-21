@@ -11,7 +11,7 @@
         "Location": [{
             "player": "{{ $facilityId }}"
         }],
-        "Authororiginator": [{
+        "Admitter": [{
             "player": "{{ $userEntityId }}"
         }],
         "RecordTarget": [{
