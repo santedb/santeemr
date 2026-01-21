@@ -5,7 +5,6 @@
     <scope>18E92034-43D5-477D-9748-1609099314DF</scope>
     <scope>org.santedb.ims.pediatric.routineVacc</scope>
     <scope>org.santedb.emr.act.visit.general</scope>
-    <scope>org.santedb.emr.act.visit.neonatal</scope>
 
     <form>form.html</form>
     <view>view.html</view>
