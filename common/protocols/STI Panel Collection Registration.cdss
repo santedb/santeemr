@@ -9,7 +9,7 @@ define library "Sexually Transmitted Infection Status Collection Protocols"
 	having oid "1.3.5.1.4.1.52820.5.3.4.0"
 	having status active
 	with metadata
-		version 3.0.2038
+		version 3.0.2045
 	end metadata
 	as
 	define logic "STI Status Collection - Patient - Adult"
