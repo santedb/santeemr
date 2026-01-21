@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "username": "fujiman",
+      "password": "@Mohawk123",
+      "url": "http://127.0.0.1:64005/auth/oauth2_token",
+      "app": "iis"
+    },
+    {
+      "username": "administrator",
+      "password": "Mohawk123",
+      "url": "http://127.0.0.1:64005/auth/oauth2_token",
+      "app": "iis"
+    },
+    {
+      "username": "fujiman",
+      "password": "@Mohawk123",
+      "url": "http://127.0.0.1:64000/auth/oauth2_token",
+      "app": "admin"
+    },
+    {
+      "username": "administrator",
+      "password": "Mohawk123",
+      "url": "http://127.0.0.1:64000/auth/oauth2_token",
+      "app": "admin"
+    }
+  ]
+}
