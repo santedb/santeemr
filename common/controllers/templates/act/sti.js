@@ -13,7 +13,7 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
                     },
                     "min"
                 );
-                var isNew = !panel.resource;
+                var isNew = !stiPanel.resource;
 
                 if (stiPanel.resource) {
                     stiPanel = { id: stiPanel.resource[0].id };
@@ -31,7 +31,7 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
                 $scope.act.relationship.HasComponent = $scope.act.relationship.HasComponent || [];
                 $scope.act.relationship.HasComponent.push({
                     source: stiPanel.id,
-                    sourceModel: isNew ? panel : false,
+                    sourceModel: isNew ? stiPanel : false,
                     $insertFirst: true
 
                 });
