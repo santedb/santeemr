@@ -665,7 +665,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                                     $scope.scopedObject.classConcept = EntityClassKeys.Patient;
                                                     $scope.scopedObject.id = SanteDB.application.newGuid();
                                                     $scope.scopedObject.age = dateToAge($scope.scopedObject.dateOfBirth);
-
+                                                    $scope.scopedObject._populatedViaMatch = true;
                                                     $scope.scopedObject.$otherData = [];
                                                     $scope.scopedObject.$otherData.push(
                                                         new EntityRelationship(

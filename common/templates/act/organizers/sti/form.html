@@ -11,14 +11,14 @@
 
             <div class="col-12">
                 <label class="checkbox-container font-weight-bold mr-2">
-                    <input type="radio" ng-model="act.relationship.HasComponent[0].operation" ng-value="1"
+                    <input type="radio" ng-model="act.statusConcept" value="afc33800-8225-4061-b168-bacc09cdbae3"
                         name="stiStatus" class="checkbox-control" />
                     <span></span>
                     {{ 'ui.true' | i18n }}
                 </label>
 
                 <label class="checkbox-container font-weight-bold">
-                    <input type="radio" ng-model="act.relationship.HasComponent[0].operation" ng-value="5" name="stiStatus"
+                    <input type="radio" ng-model="act.statusConcept" ng-value="null" name="stiStatus"
                         class="checkbox-control" />
                     <span></span>
                     {{ 'ui.false' | i18n }}
@@ -28,7 +28,7 @@
 
         <div class="row">
             <div class="col-12">
-                <ul class="list-group" ng-if="act.relationship.HasComponent[0].operation != 5">
+                <ul class="list-group" ng-if="act.tag.$userAdded || act.statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'">
                     <li class="list-group-item" ng-repeat="comp in act.relationship.HasComponent track by $index" 
                         ng-if="comp.operation != 5 &amp;&amp; comp.targetModel">
                         <div class="d-flex flex-column" 
