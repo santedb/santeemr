@@ -1,17 +1,35 @@
 <div xmlns="http://www.w3.org/1999/xhtml" class="container"
     oc-lazy-load="{ name: 'PregnancyHistoryController', files: [ '/org.santedb.emr.common/controllers/templates/act/pregnancy.js' ] }">
     <div ng-controller="PregnancyHistoryController">
+        {{ act.relationship.RefersTo[0].target }}
         <div class="form-group row">
-            <label class="control-label col-sm-12 col-md-3 required">
+            <label class="control-label col-sm-12 col-md-3 col-xl-3 required">
                 {{ ::act.typeConceptModel | concept }}
             </label>
-            <div class="col-sm-12 col-md-9" ng-if-end="ng-if-end">
+            <div class="col-sm-12 col-md-8 col-xl-3" ng-if-end="ng-if-end">
                 <concept-select concept-set="'PregnancyOutcomes'" ng-model="act.value" class="form-control"
                     add-concept="['70fe34ce-caff-4f46-b6e6-9cd6d8f289d6']" required="required"
                     name="pregnancyOutcome" />
                 <div class="text-danger"
                     ng-if="$root.getParentVariable($parent, 'ownerForm').pregnancyOutcome.$error.required">
                     <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                </div>
+            </div>
+            <label class="control-label col-sm-12 col-md-3 col-xl-3 required">
+                {{ 'ui.model.act.actTime' | i18n }}
+                <hint-popover hint-title="ui.model.actTime" />
+            </label>
+            <div class="col-sm-12 col-md-8 col-xl-3">
+                <input type="date" name="pregnancyTerminationTime" required="required" ng-min="act._minTime"
+                    min="{{ act.minTime | date: 'yyyy-MM-dd' }}"
+                    max="{{ $root.page.maxEventTime | date: 'yyyy-MM-dd' }}"
+                    ng-max="$root.page.maxEventTime"
+                    ng-model="act.actTime" class="form-control" />
+                <div class="text-danger" ng-if="$root.getParentVariable($parent, ['ownerForm', 'editForm']).pregnancyTerminationTime.$error.required">
+                    {{ 'ui.error.required' | i18n }}
+                </div>
+                <div class="text-danger" ng-if="$root.getParentVariable($parent, ['ownerForm', 'editForm']).pregnancyTerminationTime.$error.min">
+                    {{ 'ui.error.min' | i18n }}
                 </div>
             </div>
         </div>

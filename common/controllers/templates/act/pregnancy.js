@@ -26,8 +26,8 @@ angular.module('santedb').controller("PregnancyHistoryController", ["$scope", "$
             }
 
             // Populate the episode link if needed
-            if (act.relationship?.RefersTo &&
-                !$scope.$eval("act.relationship?.RefersTo[0].target")
+            if (!act.relationship?.RefersTo ||
+                !act.relationship?.RefersTo[0].target
             ) {
                 SanteDB.resources.act.findAsync({
                     "typeConcept": "7bb3403e-d8ee-4b91-8a77-64da4f459415",
@@ -39,21 +39,27 @@ angular.module('santedb').controller("PregnancyHistoryController", ["$scope", "$
                     "_includeTotal": false
                 }, "min").then((status) => {
                     if (status.resource) {
-                        act.relationship.RefersTo = [new ActRelationship({ target: status.resource[0].id })] // refers to this pregnancy if present
+                        act.relationship.RefersTo = [
+                            new ActRelationship({ target: status.resource[0].id })
+                        ] // refers to this pregnancy if present
                     }
                 });
             }
             // Determine if the current act has a delivery outcome and use that as our delivery outcome
             if (act.typeConcept == '983152a6-be28-4fc0-9c60-63e7178060f7' && $stateParams.id && !act.value) {
-                SanteDB.resources.codedObservation.findAsync({
-                    "typeConcept": "dddf18e4-1868-11eb-adc1-0242ac120002",
-                    "relationship[HasComponent].source.relationship[HasComponent].source.relationship[HasComponent].source": $stateParams.id,
+                SanteDB.resources.observation.findAsync({
+                    "typeConcept": ["dddf18e4-1868-11eb-adc1-0242ac120002", "409538df-26e0-4ffa-b9fc-11a244eae0e5" ],
+                    "relationship[HasComponent].source.relationship[HasComponent].source": $stateParams.id,
                     "statusConcept": StatusKeys.Completed,
-                    "_count": 1,
+                    "_count": 4,
                     "_includeTotal": false
                 }, "min").then((obs) => {
-                    $timeout(() => act.value = obs.value)
+                    $timeout(() => {
+                        act.value = obs.resource?.find(o=>o.typeConcept == "dddf18e4-1868-11eb-adc1-0242ac120002")?.value;
+                        act.actTime = obs.resource?.find(o=>o.typeConcept == "409538df-26e0-4ffa-b9fc-11a244eae0e5")?.value;
+                    })
                 });
+                
             }
 
             historyAct.statusConcept = StatusKeys.Completed;
