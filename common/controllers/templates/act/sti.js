@@ -13,7 +13,7 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
                     },
                     "min"
                 );
-                var isNew = !panel.resource;
+                var isNew = !stiPanel.resource;
 
                 if (stiPanel.resource) {
                     stiPanel = { id: stiPanel.resource[0].id };
@@ -31,7 +31,7 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
                 $scope.act.relationship.HasComponent = $scope.act.relationship.HasComponent || [];
                 $scope.act.relationship.HasComponent.push({
                     source: stiPanel.id,
-                    sourceModel: isNew ? panel : false,
+                    sourceModel: isNew ? stiPanel : false,
                     $insertFirst: true
 
                 });
@@ -73,7 +73,7 @@ angular.module("santedb").controller("StiStatusPanelController", ["$scope", "$ro
             {
                 switch ($scope.act.template) {
                     case "6e64e95d-5de0-4664-b42b-5ee346ba892f": // STI Panel
-                        $scope.act.statusConcept = StatusKeys.Completed;
+                        // $scope.act.statusConcept = StatusKeys.Completed;
                         break;
                     case "30de09e1-5964-48ac-94e0-28bb8f329b46": // Infection - we need to make sure this is part of a panel
                         var rct = $scope.act.participation?.RecordTarget[0]?.player;

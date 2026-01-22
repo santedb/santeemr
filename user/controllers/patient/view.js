@@ -20,25 +20,7 @@
  */
 angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$rootScope", "$state", "$stateParams", "$timeout", function ($scope, $rootScope, $state, $stateParams, $timeout) {
 
-    async function getCdsAlerts(patientId) {
-        try {
-            var issues = await SanteDB.resources.patient.invokeOperationAsync(patientId, "analyze", { _excludePropose: true, _excludeSubmitted: true });
-            var issueTypes = {};
-            issues.issue.forEach(o => issueTypes[o.type] = null);
-            await Promise.all(
-                Object.keys(issueTypes).map(async (f) => {
-                    var concept = await SanteDB.resources.concept.getAsync(f === EmptyGuid ? '1a4ff986-f54f-11e8-8eb2-f2801f1b9fd1' : f);
-                    issues.issue.filter(i => i.type === f).forEach(i => i.typeModel = concept);
-                    return concept;
-                })
-            );
-
-            return issues.issue.filter(i => i.id !== "error.cdss.exception");
-        }
-        catch (e) {
-            $rootScope.errorHandler(e);
-        }
-    }
+    
 
     // Loads the specified patient
     async function loadPatient(id) {
@@ -82,7 +64,7 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                 }
 
                 // Detect any alerts from the CDSS 
-                var issues = await getCdsAlerts(id);
+                var issues = await SanteEMR.getPatientCdssAlerts(id);
                 $timeout(() => {
                     $scope.cdssAlerts = {
                         priority: issues.sort((a, b) => {

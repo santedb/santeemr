@@ -504,8 +504,8 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
             toastr.success(SanteDB.locale.getString("ui.emr.patient.register.success"));
 
             if ($scope.entity.$then == "another") {
-                await initializeView();
-                $("input")[0].focus();
+                $state.reload();
+                return;
             }
             else {
                 SanteDB.application.getResourceViewer("Patient")[0]($state, { id: patient.id }); // Nav to the patient view screen
@@ -548,9 +548,20 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                             var relative = $scope.scopedObject.relationship[relativeType][0].targetModel;
                             if (relative._populatedViaMatch) // We previously set this from a match
                             {
+                                delete(relative._populatedViaMatch);
                                 $timeout(() => {
                                     $scope.scopedObject.relationship[relativeType][0].targetModel = originalRelationshipData[relativeType];
                                     $scope.scopedObject.relationship[relativeType][0].targetModel.identifier = identifierList;
+                                    $scope.scopedObject.relationship[relativeType][0].targetModel.name = {
+                                        OfficialRecord: [
+                                            new EntityName({
+                                                component: {
+                                                    Given: [],
+                                                    Family: []
+                                                }
+                                            })
+                                        ]
+                                    }
                                 });
                             }
                             break;
@@ -639,7 +650,9 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                         case 0: // No matches
                                             break;
                                         case 1: // Exactly one 
-                                            if (duplicates.resource[0].$type == "Person") // The duplicate is a person - so we'll be linking them
+                                            if (duplicates.resource[0].$type == "Person"
+                                                && confirm(SanteDB.locale.getString("ui.emr.patient.register.upgrade.verify"))
+                                            ) // The duplicate is a person - so we'll be linking them
                                             {
                                                 toastr.info(SanteDB.locale.getString("ui.emr.patient.register.upgradePerson"));
                                                 var dup = duplicates.resource[0];
@@ -652,7 +665,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                                     $scope.scopedObject.classConcept = EntityClassKeys.Patient;
                                                     $scope.scopedObject.id = SanteDB.application.newGuid();
                                                     $scope.scopedObject.age = dateToAge($scope.scopedObject.dateOfBirth);
-
+                                                    $scope.scopedObject._populatedViaMatch = true;
                                                     $scope.scopedObject.$otherData = [];
                                                     $scope.scopedObject.$otherData.push(
                                                         new EntityRelationship(

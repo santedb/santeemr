@@ -83,6 +83,7 @@ function SanteEMRWrapper() {
         "site"
     ];
 
+
     const _LOAD_CODE_TYPES = [
         Act.name,
         SubstanceAdministration.name,
@@ -115,6 +116,11 @@ function SanteEMRWrapper() {
 
         // For each entry which is being updated set the performer
         submissionBundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1 && act.statusConcept == StatusKeys.Completed).forEach(act => {
+            
+            if(act.typeConceptModel?.mnemonic?.indexOf("NarrativeType-") > -1) { // narratives should not be marked with their performer or secondary performer
+                return;
+            }
+
             act.participation = act.participation || {};
 
             var participationType = "Performer";
@@ -626,6 +632,30 @@ function SanteEMRWrapper() {
         }
     }
 
+    /**
+     * @sumary Get CDSS alerts for a patient
+     * @param {string} patientId The patient Id
+     * @returns The issues
+     */
+    this.getPatientCdssAlerts = async function (patientId) {
+        try {
+            var issues = await SanteDB.resources.patient.invokeOperationAsync(patientId, "analyze", { _excludePropose: true, _excludeSubmitted: true });
+            var issueTypes = {};
+            issues.issue.forEach(o => issueTypes[o.type] = null);
+            await Promise.all(
+                Object.keys(issueTypes).map(async (f) => {
+                    var concept = await SanteDB.resources.concept.getAsync(f === EmptyGuid ? '1a4ff986-f54f-11e8-8eb2-f2801f1b9fd1' : f);
+                    issues.issue.filter(i => i.type === f).forEach(i => i.typeModel = concept);
+                    return concept;
+                })
+            );
+
+            return issues.issue.filter(i => i.id !== "error.cdss.exception");
+        }
+        catch (e) {
+            throw new Exception("EmrException", e.message, null, e);
+        }
+    }
     /**
      * @summary Attempt to get the care plan from the encounter id
      * @param {string} proposedEncounterId The proposed encounter identifier from which the care plan should be fetched

@@ -2,7 +2,7 @@
     oc-lazy-load="{ name: 'PregnancyHistoryController', files: [ '/org.santedb.emr.common/controllers/templates/act/pregnancy.js' ] }">
     <div ng-controller="PregnancyHistoryController">
         <!-- Does Patient Have Pregnancy History -->
-        <div class="row" ng-if="!act.version">
+        <div class="row" ng-if="!act.version &amp;&amp; !act.tag.$userAdded">
             <div class="col-12">
                 <label class="p-0 font-weight-bold control-label required">
                     {{ ::act.typeConceptModel | concept }}
@@ -11,7 +11,7 @@
 
             <div class="col-12">
                 <label class="checkbox-container font-weight-bold mr-2">
-                    <input type="radio" ng-model="act.statusConcept" ng-value="'afc33800-8225-4061-b168-bacc09cdbae3'"
+                    <input type="radio" ng-model="act.statusConcept" value="afc33800-8225-4061-b168-bacc09cdbae3"
                         name="pregnancyHistory" class="checkbox-control" />
                     <span></span>
                     {{ 'ui.true' | i18n }}
@@ -33,7 +33,7 @@
                     {{ comp.targetModel.typeConceptModel | concept }}
                 </label>
 
-                <input ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3' &amp;&amp; !act.version"
+                <input ng-disabled="(!act.tag.$userAdded &amp;&amp; act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3') &amp;&amp; !act.version"
                     min="{{ comp.targetModel.typeConceptModel.id == 'a2ab26a4-1887-11eb-adc1-0242ac120002' ? 1 : 0 }}"
                     name="pregnancyHistoryComponent{{ $index }}" ng-model="comp.targetModel.value" class="form-control"
                     type="number" max="50" />
@@ -55,13 +55,13 @@
                                 <!-- Batch Operation = 2 is INSERT OR UPDATE and 5 is IGNORE (from BatchOperationType enum)-->
                                 <input type="checkbox" ng-model="complication.targetModel.isNegated"
                                     ng-true-value="false"
-                                    ng-disabled="act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3'  &amp;&amp; !act.version"
+                                    ng-disabled="(!act.tag.$userAdded &amp;&amp; act.statusConcept != 'afc33800-8225-4061-b168-bacc09cdbae3')  &amp;&amp; !act.version"
                                     ng-false-value="true" class="checkbox-control" />
                                 <span></span>
                                 {{ ::complication.targetModel.valueModel | concept }}
                             </label>
 
-                            <concept-select class="form-control" ng-if="complication.targetModel.tag['$cdss.valueSet']"
+                            <concept-select class="form-control" ng-if="complication.targetModel.tag['$valueSet']"
                                 concept-set="complication.targetModel.tag['$cdss.valueSet'][0]"
                                 ng-disabled="complication.targetModel.isNegated"
                                 ng-model="complication.targetModel.value" />

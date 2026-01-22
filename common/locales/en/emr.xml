@@ -70,6 +70,7 @@
         <li><strong>Change</strong> - Modify any data that was entered in the registration form</li>
         <li><strong>Register</strong> - Ignore the duplicate and register your new patient</li>
         </ul>]]></string>
+    <string name="ui.emr.patient.register.upgrade.verify">The identifier you entered currently belongs to another record. This can occur when a relative (Mother, Father, Guardian, etc.) is being registered. Would you like to copy the information (names, relatives, etc.) to this new registration?</string>
     <string name="ui.emr.patient.register.duplicates.verification">Patient is not a duplicate</string>
     <string name="ui.emr.patient.register.duplicates.confidence">Confidence</string>
     <string name="ui.emr.patient.register.duplicates.confidence.0">Non-Match</string>
@@ -80,7 +81,7 @@
     <string name="ui.emr.patient.register.requiredFieldMissing">Required Fields Missing</string>
     <string name="ui.emr.patient.register.success">Patient has been successfully registered</string>
     <string name="ui.emr.patient.downloading">Downloading patient data from central</string>
-
+    <string name="ui.emr.patient.register.relative.fromMatch">This data was populated by matching the information with existing data (i.e. the person with this identifier already exists). You can change the identifier above if you intended to create a new person or mistyped the identifier above.</string>
     <string name="ui.emr.patient.register">Register Patient</string>
     <string name="ui.emr.patient.registered">Submitted Data</string>
     <string name="ui.emr.patient.registered.none">No Patients Registered</string>
@@ -575,5 +576,7 @@
         <!-- AEFI / Derived Allergies -->
          <string name="org.santedb.emr.condition.allergy.derived">Derived From Reportable Event</string>
 
+         <!-- Note is readonly -->
+          <string name="ui.emr.visit.note.readonly">This note was authored by a different user. If you would like to make a note on this visit, please add your own note via the &lt;strong&gt;Add&lt;/strong&gt; option</string>
 
 </resources>
