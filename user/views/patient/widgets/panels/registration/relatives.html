@@ -32,14 +32,13 @@
             </label>
 
             <div class="col-sm-12 col-md-8">
-                <concept-select ng-if="!scopedObject.age || scopedObject.age &lt; 16" name="nokRelationshipType"
+                <concept-select ng-if="!scopedObject.age || scopedObject.age &lt; 18" name="nokRelationshipType"
                     ng-required="scopedObject.relationship.Mother[0].operation == 'Delete' || scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
                     concept-set="'ChildFamilyMember'" class="form-control"
                     exclude-concepts="[ '29ff64e5-b564-411a-92c7-6818c02a9e48' ]"
                     ng-model="scopedObject.relationship.$other[0].relationshipType" data-quality-id="nok" />
 
-                <concept-select ng-if="scopedObject.age &gt;= 16" name="nokRelationshipType"
-                    ng-required="scopedObject.age &lt; 18 || scopedObject.relationship.Mother[0].targetModel.deceasedIndicator"
+                <concept-select ng-if="scopedObject.age &gt;= 18" name="nokRelationshipType"
                     concept-set="'FamilyMember'" class="form-control" data-quality-id="nok"
                     ng-model="scopedObject.relationship.$other[0].relationshipType" />
 

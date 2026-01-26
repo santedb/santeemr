@@ -13,6 +13,21 @@
       "text": ""
     }
   ],
+  "relationship": {
+    "HasComponent": [
+      { // CLINICAL STATUS
+        "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
+        "targetModel": {
+          "$type": "CodedObservation",
+          "typeConcept": "656251ec-21bc-4594-9914-ca971c9defcc",
+          "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+          "moodConcept": "ec74541f-87c4-4327-a4b9-97f325501747",
+          "value": "c8064cbd-fa06-4530-b430-1a52f1530c27", // ACTIVE,
+          "actTime" : "{{ $now }}"
+        }
+      }
+    ]
+  },
   "participation": {
     "Location": [
       {
