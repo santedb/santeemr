@@ -17,7 +17,7 @@
     </type>
 
     <type type="ActRelationship" name="ActRelationshipTarget" base="noModelProperties.ActRelationship">
-        <property name="targetModel" behavior="always" />
+        <property name="targetModel" behavior="always"  />
     </type>
 
     <type type="EntityRelationship" name="EntityRelationshipTarget" base="noModelProperties.EntityRelationship" all="false">
@@ -58,7 +58,6 @@
         <property name="name" behavior="always" all="true" />
         <property name="address" behavior="always" all="true" />
         <property name="policy" behavior="always" />
-
         <property name="relationship" behavior="always" all="true" >
             <property name="Citizen" all="false">
                 <property name="target" />
@@ -108,6 +107,9 @@
             <property name="Location" ref="ActParticipationNested" />
             <property name="Authororiginator" ref="ActParticipationNested" />
             <property name="Performer" ref="ActParticipationNested" />
+            <property name="SecondaryPerformer" ref="ActParticipationNested" />
+            <property name="DataEnterer" ref="ActParticipationNested" />
+            <property name="Verifier" ref="ActParticipationNested" />
             <property name="Admitter" ref="ActParticipationNested" />
             <property name="Discharger" ref="ActParticipationNested" />
             <property name="Product" ref="ActParticipationNested" />
@@ -121,6 +123,7 @@
         </property>
         <property name="relationship" behavior="always">
             <property name="Fulfills" all="true">
+                <property name="target" />
                 <property name="targetModel" ref="ActFulfillment" all="true" />
             </property>
             <property name="RefersTo" all="true" ref="ActRelationshipTarget" />

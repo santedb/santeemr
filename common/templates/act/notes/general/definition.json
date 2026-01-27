@@ -1,0 +1,29 @@
+{
+    "$type" : "TextObservation",
+    "template" : "a97df51e-615e-41a4-8a13-f51349b268d8",
+    "moodConcept": "EC74541F-87C4-4327-A4B9-97F325501747",
+    "statusConcept": "afc33800-8225-4061-b168-bacc09cdbae3",
+    "typeConcept" : "59bda6ff-485a-4753-9acd-5ab1f4e36c38",
+    "actTime": "{{ $now }}",
+    "participation" : {
+        "Location": [
+            {
+                "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+                "player": "{{ $facilityId }}"
+            }
+        ],
+        "Authororiginator": [
+            {
+                "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+                "player": "{{ $userEntityId }}"
+            }
+        ],
+        "RecordTarget": [
+            {
+                "classConcept": "F51DFDCD-039B-4E1F-90BE-3CF56AEF8DA4",
+                "player": "{{ $recordTargetId }}"
+            }
+        ]
+    },
+    "value" : null
+}

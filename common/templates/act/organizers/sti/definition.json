@@ -22,7 +22,6 @@
         "HasComponent": [
             {
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
-                "operation": 5,
                 "targetModel" : {
                     "templateModel" : {
                         "mnemonic" : "org.santedb.emr.act.sti.infection"

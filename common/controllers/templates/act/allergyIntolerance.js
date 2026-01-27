@@ -134,7 +134,7 @@ angular.module("santedb").controller("EmrAllergyController", ["$scope", "$rootSc
         {
             switch ($scope.act.template) {
                 case "a18674f4-38bf-40aa-a2ba-252d894dc64b": // Panel
-                    $scope.act.statusConcept = StatusKeys.Completed;
+                    // $scope.act.statusConcept = StatusKeys.Completed;
                     break;
                 case "908674f4-38bf-40aa-a2ba-252d894dc64b": // Infection - we need to make sure this is part of a panel
                     var rct = $scope.act.participation?.RecordTarget[0]?.player;

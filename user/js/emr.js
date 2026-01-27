@@ -83,6 +83,7 @@ function SanteEMRWrapper() {
         "site"
     ];
 
+
     const _LOAD_CODE_TYPES = [
         Act.name,
         SubstanceAdministration.name,
@@ -115,6 +116,11 @@ function SanteEMRWrapper() {
 
         // For each entry which is being updated set the performer
         submissionBundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1 && act.statusConcept == StatusKeys.Completed).forEach(act => {
+            
+            if(act.typeConceptModel?.mnemonic?.indexOf("NarrativeType-") > -1) { // narratives should not be marked with their performer or secondary performer
+                return;
+            }
+
             act.participation = act.participation || {};
 
             var participationType = "Performer";
@@ -514,7 +520,7 @@ function SanteEMRWrapper() {
             }
 
             // Ensure the appropriate keys are set
-            encounter.startTime = encounter.actTime = (encounter.startTime || new Date());
+            encounter.startTime = encounter.actTime = (startTime || new Date());
             encounter.statusConcept = StatusKeys.Active;
             encounter.extension = encounter.extension || {};
             encounter.extension[ENCOUNTER_FLOW.EXTENSION_URL] = [SanteDB.application.encodeReferenceExtension(Concept.name, ENCOUNTER_FLOW.CHECKED_IN)];
