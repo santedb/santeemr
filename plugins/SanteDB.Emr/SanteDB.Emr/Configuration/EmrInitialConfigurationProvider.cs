@@ -50,7 +50,8 @@ namespace SanteEMR.Configuration
                                 ConceptSet = Guid.Parse("5bd5e5b7-6a4f-4362-b34a-52e07f396bf6"),
                                 PolicyOid = DataPolicyIdentifiers.RestrictedInformation // Restricted Information
                             }
-                        }
+                        },
+                    AutoApplyVipPolicy = DataPolicyIdentifiers.RestrictedInformation
                 });
             }
 
