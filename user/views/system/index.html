@@ -38,8 +38,8 @@
             </h2>
         </div>
         <div class="collapse show" id="localCoreProps">
-            <div class="card-body">
-                <div class="container-fluid">
+            <div class="card-body d-flex align-items-start">
+                <div class="container-fluid flex-grow-1">
                     <div class="row">
                         <div class="col-12">
                             <h2><img src="/org.santedb.core/img/icon.png" />
@@ -81,8 +81,11 @@
                             <label class="control-label">{{ 'ui.emr.system.info.uptime' | i18n }}: </label>
                             {{ info.appInfo.uptime }}
                         </div>
-                       
                     </div>
+                </div>
+                <div ng-if="$root.system.config.integration.mode === 'synchronize'">
+                    <div class="text-center">JOIN dCDR</div>
+                    <img src="/app/ConfigQr" width="150px" height="150px" alt="Configuration QR Code" class="m-auto p-2" />
                 </div>
             </div>
         </div>
