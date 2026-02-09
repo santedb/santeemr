@@ -25,18 +25,22 @@
             <sdb:controller>EmrBackupIndexController</sdb:controller>
         </sdb:view>
     </sdb:state>
-
-    <entity-table id="SystemBackupTable" type="Backup" sub-resource-holder="backupMedia" sub-resource="Descriptor"
-        search-field="label" key-property="'label'" i18n-prefix="'ui.model.backup.'" no-deleted="true"
-        button-bar="'#backupMediaDiv'" stateless="true"
-        sort="{ label: 'label', timestamp: 'timestamp',size:'size',createdBy:'createdBy'}"
-        render="{ 'timestamp' : renderTimestamp, 'encrypted': renderEncrypted,  'size': renderSize }" item-actions="[
+    <div ng-if="$root.system.config.integration.mode !== 'synchronize'" class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i> {{ 'ui.emr.directDisable' | i18n }}
+    </div>
+    <div ng-if="$root.system.config.integration.mode === 'synchronize'">
+        <entity-table id="SystemBackupTable" type="Backup" sub-resource-holder="backupMedia" sub-resource="Descriptor"
+            search-field="label" key-property="'label'" i18n-prefix="'ui.model.backup.'" no-deleted="true"
+            button-bar="'#backupMediaDiv'" stateless="true"
+            sort="{ label: 'label', timestamp: 'timestamp',size:'size',createdBy:'createdBy'}"
+            render="{ 'timestamp' : renderTimestamp, 'encrypted': renderEncrypted,  'size': renderSize }" item-actions="[
             { name: 'view', sref: 'santedb-emr.system.backup.view', className: 'btn-primary', icon: 'fas fa-eye' },
             { name: 'delete', action: 'deleteBackup', className: 'btn-danger', icon: 'fas fa-trash' },
             { name: 'restore', action: 'showRestoreControl', className: 'btn-warning', icon: 'fas fa-undo' },
         ]" properties="[ 'label', 'timestamp', 'size', 'encrypted', 'createdBy' ]">
 
-    </entity-table>
+        </entity-table>
+    </div>
 
     <div id="backupMediaDiv">
         <div class="input-group">
@@ -57,7 +61,7 @@
     </div>
 
 
-    
+
     <div class="modal" id="restoreModal" tabindex="-1" role="dialog" aria-labelledby="restoreModalTitle"
         aria-hidden="true" data-backdrop="static">
         <div class="modal-dialog" role="document">
@@ -82,7 +86,8 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-3 col-sm-12 control-label">
-                                    {{ 'ui.model.backup.password' | i18n }} <hint-popover hint-title="ui.model.backup.password"/>
+                                    {{ 'ui.model.backup.password' | i18n }} <hint-popover
+                                        hint-title="ui.model.backup.password" />
                                 </label>
                                 <div class="col-md-9 col-sm-12">
                                     <input type="password" name="txtPassword" ng-required="true"
@@ -91,13 +96,14 @@
                                         <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                                     </span>
                                 </div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">
                             <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
-                        <button type="submit" class="btn btn-primary" id="btnDoRestore" ng-disabled="restoreForm.$invalid">
+                        <button type="submit" class="btn btn-primary" id="btnDoRestore"
+                            ng-disabled="restoreForm.$invalid">
                             <i class="fa fa-check"></i> {{ 'ui.action.restore' | i18n }}</button>
                     </div>
                 </form>
@@ -128,8 +134,9 @@
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="col-md-3 col-sm-12 control-label required">{{'ui.model.backup.media' | i18n
-                                    }} <hint-popover hint-title="ui.model.backup.media"/></label>
+                                <label class="col-md-3 col-sm-12 control-label required">{{'ui.model.backup.media' |
+                                    i18n
+                                    }} <hint-popover hint-title="ui.model.backup.media" /></label>
                                 <div class="col-md-9 col-sm-12">
                                     <select class="form-control my-1" ng-model="newBackup.media">
                                         <option value="Private">Private</option>
@@ -140,12 +147,14 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-md-9 offset-md-3 col-sm-12">
-                                    <input type="checkbox" ng-model="newBackup.encrypt" ng-change="newBackup.password = ''" />
+                                    <input type="checkbox" ng-model="newBackup.encrypt"
+                                        ng-change="newBackup.password = ''" />
                                     {{ 'ui.model.backup.encrypt' | i18n }}</label>
                             </div>
                             <div class="form-group row" ng-if="newBackup.encrypt">
                                 <label class="col-md-3 col-sm-12 control-label required">
-                                    {{ 'ui.model.backup.password' | i18n }} <hint-popover hint-title="ui.model.backup.password"/>
+                                    {{ 'ui.model.backup.password' | i18n }} <hint-popover
+                                        hint-title="ui.model.backup.password" />
                                 </label>
                                 <div class="col-md-9 col-sm-12">
                                     <input type="password" name="txtPassword" ng-required="newBackup.encrypt"
@@ -154,7 +163,7 @@
                                         <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
                                     </span>
                                 </div>
-                        </div>
+                            </div>
                             <!-- #include virtual="/org.santedb.uicore/partials/security/password.strength.html" -->
 
                             <div class="form-group row">
@@ -169,7 +178,8 @@
                     <div class="modal-footer">
                         <button class="btn btn-secondary" type="button" data-dismiss="modal">
                             <i class="fa fa-times"></i> {{ 'ui.action.cancel' | i18n }}</button>
-                        <button type="submit" class="btn btn-primary" id="btnDoBackup" ng-disabled="backupForm.$invalid || (newBackup.encrypt &amp;&amp; strength &lt; 4) ">
+                        <button type="submit" class="btn btn-primary" id="btnDoBackup"
+                            ng-disabled="backupForm.$invalid || (newBackup.encrypt &amp;&amp; strength &lt; 4) ">
                             <i class="fa fa-check"></i> {{ 'ui.action.backup' | i18n }}</button>
                     </div>
                 </form>

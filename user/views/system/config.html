@@ -33,56 +33,61 @@
     </div>
 
     <div ng-if="config">
-        <form class="form" novalidate="novalidate" name="configurationForm" autocomplete="off"
-            ng-submit="save(configurationForm)" ng-if="config.realm.joined">
+        <div ng-if="$root.system.config.integration.mode !== 'synchronize'" class="alert alert-danger">
+            <i class="fas fa-exclamation-circle"></i> {{ 'ui.emr.directDisable' | i18n }}
+        </div>
+        <div ng-if="$root.system.config.integration.mode === 'synchronize'">
+            <form class="form" novalidate="novalidate" name="configurationForm" autocomplete="off"
+                ng-submit="save(configurationForm)" ng-if="config.realm.joined">
 
-            <div id="configAccordion" class="accordion">
-                <div id="{{widget.htmlId}}Card" class="card" ng-repeat="widget in widgets track by $index">
-                    <div class="card-header">
-                        <h5 class="card-title my-0">
-                            <button type="button" class="collapse-indicator btn btn-link p-0" data-toggle="collapse"
-                                data-target="#Config{{$index}}Collapse" aria-expanded="false">
-                                <i class="{{widget.icon}}"></i><strong>{{ widget.name | i18n }}</strong>
-                                <i class="fa fa-chevron-right"></i>
-                            </button>
-                        </h5>
+                <div id="configAccordion" class="accordion">
+                    <div id="{{widget.htmlId}}Card" class="card" ng-repeat="widget in widgets track by $index">
+                        <div class="card-header">
+                            <h5 class="card-title my-0">
+                                <button type="button" class="collapse-indicator btn btn-link p-0" data-toggle="collapse"
+                                    data-target="#Config{{$index}}Collapse" aria-expanded="false">
+                                    <i class="{{widget.icon}}"></i><strong>{{ widget.name | i18n }}</strong>
+                                    <i class="fa fa-chevron-right"></i>
+                                </button>
+                            </h5>
+                        </div>
+                        <div class="collapse" id="Config{{$index}}Collapse" data-parent="#configAccordion">
+                            <div class="card-body">
+                                <p>{{ widget.description[0].value | i18n }}</p>
+                                <ng-include src="'/app/Widgets/' + widget.name"></ng-include>
+                            </div>
+                        </div>
                     </div>
-                    <div class="collapse" id="Config{{$index}}Collapse" data-parent="#configAccordion">
-                        <div class="card-body">
-                            <p>{{ widget.description[0].value | i18n }}</p>
-                            <ng-include src="'/app/Widgets/' + widget.name"></ng-include>
+
+                </div>
+
+            </form>
+            <div class="btn-group float-right">
+                <button demand="1.3.6.1.4.1.33349.3.1.5.9.2.10" class="btn btn-lg btn-success" id="finishButton"
+                    type="button" ng-click="save()">{{ 'ui.action.save' | i18n }}
+                    <i class="fa fa-check"></i>
+                </button>
+            </div>
+            <div class="modal" id="completeModal" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <h5>
+                                <i class="fa fa-exclamation-circle"></i> {{ 'ui.config.complete' | i18n }}
+                            </h5>
                         </div>
                     </div>
                 </div>
-
             </div>
-
-        </form>
-        <div class="btn-group float-right">
-            <button demand="1.3.6.1.4.1.33349.3.1.5.9.2.10" class="btn btn-lg btn-success" id="finishButton"
-                type="button" ng-click="save()">{{ 'ui.action.save' | i18n }}
-                <i class="fa fa-check"></i>
-            </button>
-        </div>
-        <div class="modal" id="completeModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body text-center">
-                        <h5>
-                            <i class="fa fa-exclamation-circle"></i> {{ 'ui.config.complete' | i18n }}
-                        </h5>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal" id="countdownModal" tabindex="-1" data-backdrop="static">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-body text-center">
-                        <h5>
-                            <i class="fa fa-exclamation-circle"></i> {{ 'ui.config.appliedRestart' | i18n: { time:
-                            restartTimer } }}
-                        </h5>
+            <div class="modal" id="countdownModal" tabindex="-1" data-backdrop="static">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <h5>
+                                <i class="fa fa-exclamation-circle"></i> {{ 'ui.config.appliedRestart' | i18n: { time:
+                                restartTimer } }}
+                            </h5>
+                        </div>
                     </div>
                 </div>
             </div>
