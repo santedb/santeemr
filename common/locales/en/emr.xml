@@ -87,6 +87,7 @@
     <string name="ui.emr.patient.registered.none">No Patients Registered</string>
     <string name="ui.emr.directDisable.localUser">This service is connected directly to the remote
         server. Local user functions are disabled</string>
+    <string name="ui.emr.directDisable">This SanteEMR interface is connected directly to the integrated CDR (iCDR) and local functions are disabled on this interface. Use the administrative panel to manage this function</string>        
     <!-- Patient Dashboard-->
     <string name="org.santedb.emr.patient.dashboard.title">Patient Administration</string>
     <string name="org.santedb.emr.patient.dashboard.recentPatients">Recent Patients</string>

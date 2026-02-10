@@ -8,19 +8,17 @@
             <sdb:title lang="en">Data Marts</sdb:title>
         </sdb:view>
     </sdb:state>
-
-    <entity-table id="dataMartTable"
-        type="BiDatamartDefinition"
-        render="{ 'description': renderDescription, 'author': renderAuthor, 'registration' : renderRegistrationControl  }"
-        search-field="name" 
-        default-query="{ 'meta.public' : 'true' }"
-        i18n-prefix="'ui.bi.marts.'"
-        no-buttons="true"
-        item-supplement="[ fetchMartState ]"
-        item-actions="[ 
+    <div ng-if="$root.system.config.integration.mode !== 'synchronize'" class="alert alert-danger">
+        <i class="fas fa-exclamation-circle"></i> {{ 'ui.emr.directDisable' | i18n }}
+    </div>
+    <div ng-if="$root.system.config.integration.mode === 'synchronize'">
+        <entity-table id="dataMartTable" type="BiDatamartDefinition"
+            render="{ 'description': renderDescription, 'author': renderAuthor, 'registration' : renderRegistrationControl  }"
+            search-field="name" default-query="{ 'meta.public' : 'true' }" i18n-prefix="'ui.bi.marts.'"
+            no-buttons="true" item-supplement="[ fetchMartState ]" item-actions="[ 
             { name: 'view', sref: 'santedb-admin.bi.warehouse.view', icon: 'fas fa-eye', className: 'btn btn-primary', when: 'r.deployed' }, 
             { name: 'register', action: 'register', icon: 'fas fa-arrow-up', className: 'btn btn-success', when: '!r.deployed' } , 
             { name: 'unregister', action: 'unregister', icon: 'fas fa-arrow-down', className: 'btn btn-warning', when: 'r.deployed'} 
-        ]"
-        properties="[ 'name', 'description', 'registration', 'author' ]" />
+        ]" properties="[ 'name', 'description', 'registration', 'author' ]" />
+    </div>
 </div>
