@@ -27,17 +27,27 @@
     "dateOfBirth": "{{ $today }}",
     "dateOfBirthPrecision": 3,
     "relationship" : {
-        "Birthplace" : {
+        "Birthplace" : [
+            {
             "target" : "{{ $facilityId }}"
-        },
-        "Mother" : {
-            "target" : "{{ $recordTargetId }}"
         }
+        ],
+        "Mother" : [{
+            "target" : "{{ $recordTargetId }}"
+        }],
+        "ServiceDeliveryLocation" : [{
+            "target" : "{{ $facilityId }}"
+        }],
+        "DedicatedServiceDeliveryLocation" : [
+            {
+                
+            }
+        ]
     },
     "tag" : {
-        "$copy:address.HomeAddress.0.component" : "relationship.Mother.0.targetModel.address.HomeAddress.0.component",
-        "$copy:name.OfficialRecord.0.component.Family" : "relationship.Mother.0.targetModel.name.OfficialRecord.0.component.Family",
-        "emr.autoCreated" : true,
-        "$match.skip" : true
+        "$copy:address.HomeAddress.0.component" : [ "relationship.Mother.0.targetModel.address.HomeAddress.0.component" ],
+        "$copy:name.OfficialRecord.0.component.Family" : [ "relationship.Mother.0.targetModel.name.OfficialRecord.0.component.Family" ],
+        "emr.autoCreated" : [ true ],
+        "$match.skip" : [ true ]
     }
 }
