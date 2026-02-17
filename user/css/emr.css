@@ -224,3 +224,10 @@ table {
 .min-height-fit {
   min-height: -webkit-fill-available;
 }
+
+
+.emr-privacy-float {
+  position: absolute;
+  right: 0px;
+  z-index: 10 !important;
+}

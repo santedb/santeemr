@@ -94,14 +94,20 @@
     <type type="Act" name="ActFulfillment" base="noModelProperties.Act" all="false" >
         <property name="moodConcept" />
     </type>
-
+    
+    <type type="SecurityPolicyInstance" all="true">
+        <property name="policyModel" behavior="always" />
+    </type>
+    
     <type type="Act" base="noModelProperties.Act" all="true">
         <property name="templateModel" behavior="always" />
         <property name="protocol" behavior="always" ref="ActProtocol" />
         <property name="typeConceptModel" behavior="always" />
         <property name="reasonConceptModel" behavior="always" />
         <property name="statusConceptModel" behavior="always" /> 
-        <property name="policy" behavior="always" />
+        <property name="policy" behavior="always" all="true">
+            <property name="policyModel" behavior="always" />
+        </property>
         <property name="participation" behavior="always">
             <property name="RecordTarget" ref="ActParticipationNested" />
             <property name="Location" ref="ActParticipationNested" />

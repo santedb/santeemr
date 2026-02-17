@@ -12,6 +12,7 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
                 "statusConcept": StatusKeys.Completed, // Is not obsolete
                 "moodConcept": ActMoodKeys.Eventoccurrence
             }, "emr.actSummaryView");
+            const policies = await SanteDB.resources.securityPolicy.findAsync({ isPublic: true, _includeTotal: false });
 
             // Any observation in the 
             results.resource?.filter(obs => conditionCodes.resource.map(o => o.id).includes(obs.typeConcept)).forEach(obs => {
@@ -21,6 +22,7 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
 
             $timeout(() => {
                 $scope.statusObservations = results.resource;
+                $scope.availablePolicies = policies?.resource;
             })
         }
         catch (e) {
@@ -35,6 +37,27 @@ angular.module('santedb').controller('EmrPatientStatusWidgetController', ['$scop
     $scope.resolveTemplateIcon = SanteEMR.resolveTemplateIcon;
     $scope.getTemplateName = function (templateId) {
         return SanteDB.application.getTemplateMetadata(templateId)?.name || templateId;
+    }
+
+    function lookupPolicy(key) {
+        return $scope.availablePolicies.find(o => o.id == key)?.oid;
+    }
+
+    $scope.setPolicy = async function (act, policy) {
+        if (confirm(policy ? SanteDB.locale.getString("ui.action.seal.confirm") : SanteDB.locale.getString("ui.action.unseal.confirm"))) {
+            try {
+                if (policy) {
+                    await SanteEMR.setPolicies(act, [policy.oid], []);
+                }
+                else {
+                    await SanteEMR.setPolicies(act, [], act.policy.map(o => o.policyModel || lookupPolicy(o.policy)));
+                }
+                $state.reload();
+            }
+            catch (e) {
+                $rootScope.errorHandler(e);
+            }
+        }
     }
 
     // When the user clicks edit - we want to create an amendment observation for ecah of the observations

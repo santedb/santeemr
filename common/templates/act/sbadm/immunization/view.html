@@ -27,89 +27,83 @@
         </span>
     </label>
 
-    <div ng-if="act.tag.isBackEntry" class="container-fluid">
-        <div class="row">
-            <label class="control-label col-sm-12 col-md-3">
-                {{ 'ui.model.act.actTime.date' | i18n }}
-                <hint-popover hint-title="ui.model.act.actTime.date" />
-            </label>
+    <h5 ng-if="act.isNegated" class="text-danger">
+        <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.model.act.isNegated' | i18n }} - {{
+        act.reasonConceptModel | concept }}
+        </h5>
+    <div ng-if="!act.isNegated">
+        <div ng-if="act.tag.isBackEntry" class="container-fluid">
+            <div class="row">
+                <label class="control-label col-sm-12 col-md-3">
+                    {{ 'ui.model.act.actTime.date' | i18n }}
+                    <hint-popover hint-title="ui.model.act.actTime.date" />
+                </label>
 
-            <div class="col-sm-12 col-md-8">
-                <div class="input-group">
-                    <input 
-                        readonly="readonly"
-                        disabled="disabled"
-                        ng-model="act.actTime"
-                        type="date" />
+                <div class="col-sm-12 col-md-8">
+                    <div class="input-group">
+                        <input readonly="readonly" disabled="disabled" ng-model="act.actTime" type="date" />
 
-                    <div class="input-group-append">
-                        <span class="input-group-text">
-                            <strong class="mr-1">{{ 'ui.model.act.relationship.Fulfills.target.actTime' | i18n }}
-                            </strong>
+                        <div class="input-group-append">
+                            <span class="input-group-text">
+                                <strong class="mr-1">{{ 'ui.model.act.relationship.Fulfills.target.actTime' | i18n }}
+                                </strong>
 
-                            {{ ::act.tag.$originalDate[0] || act.relationship.Fulfills[0].targetModel.startTime ||
-                            act.startTime | humanDate: 'D' }}
-                        </span>
+                                {{ ::act.tag.$originalDate[0] || act.relationship.Fulfills[0].targetModel.startTime ||
+                                act.startTime | humanDate: 'D' }}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div ng-if="!act.tag.isBackEntry" class="container-fluid">
-        <div class="row  form-group">
-            <label class="control-label col-sm-12 col-md-4 required">
-                {{ 'ui.model.substanceAdministration.Consumable.lotNumber' | i18n }}
-            </label>
+        <div ng-if="!act.tag.isBackEntry" class="container-fluid">
+            <div class="row  form-group">
+                <label class="control-label col-sm-12 col-md-4 required">
+                    {{ 'ui.model.substanceAdministration.Consumable.lotNumber' | i18n }}
+                </label>
 
-            <div class="col-sm-12 col-md-7">
-                <entity-select 
-                    readonly="readonly"
-                    disabled="disabled"
-                    class="form-control"
-                    ng-model="act.participation.Consumable[0].player"
-                    entity-type="'ManufacturedMaterial'" filter="{
+                <div class="col-sm-12 col-md-7">
+                    <entity-select readonly="readonly" disabled="disabled" class="form-control"
+                        ng-model="act.participation.Consumable[0].player" entity-type="'ManufacturedMaterial'" filter="{
                         'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
                         'statusConcept' : 'C8064CBD-FA06-4530-B430-1A52F1530C27',
                         'relationship[HeldEntity].source.participation[Tracker].act.relationship[HasComponent].target' : $root.getParentVariable($parent, 'getEncounter')().id,
                         'relationship[Instance].source.relationship[HasGeneralization].target' : act.participation.Product[0].player
                     }" display="item.lotNumber">
-                </entity-select>
+                    </entity-select>
+                </div>
             </div>
-        </div>
 
-        <!-- Used Entities -->
-        <div class="form-group row" ng-if="act.participation.Product[0].playerModel.relationship.UsedEntity">
-            <label class="control-label col-sm-12 col-md-4 required mb-2"
-                ng-repeat-start="used in act.participation.Product[0].playerModel.relationship.UsedEntity track by $index">
-                {{ used.targetModel.name | name: 'Assigned' }}
-            </label>
+            <!-- Used Entities -->
+            <div class="form-group row" ng-if="act.participation.Product[0].playerModel.relationship.UsedEntity">
+                <label class="control-label col-sm-12 col-md-4 required mb-2"
+                    ng-repeat-start="used in act.participation.Product[0].playerModel.relationship.UsedEntity track by $index">
+                    {{ used.targetModel.name | name: 'Assigned' }}
+                </label>
 
-            <div ng-repeat-end="" class="col-sm-12 col-md-7 mb-2">
-                <entity-select
-                    readonly="readonly"
-                    disabled="disabled" 
-                    class="form-control"
-                    ng-model="act.participation.Consumable[$index + 1].player"
-                    auto-select-singles="true" entity-type="'ManufacturedMaterial'" filter="{
+                <div ng-repeat-end="" class="col-sm-12 col-md-7 mb-2">
+                    <entity-select readonly="readonly" disabled="disabled" class="form-control"
+                        ng-model="act.participation.Consumable[$index + 1].player" auto-select-singles="true"
+                        entity-type="'ManufacturedMaterial'" filter="{
                         'determinerConcept' : 'F29F08DE-78A7-4A5E-AEAF-7B545BA19A09',
                         'statusConcept' : 'C8064CBD-FA06-4530-B430-1A52F1530C27',
                         'relationship[HeldEntity].source.participation[Tracker].act.relationship[HasComponent].target' : $root.getParentVariable($parent, 'getEncounter')().id,
                         'relationship[Instance].source.relationship[HasGeneralization].target' : used.target
                     }" display="item.lotNumber">
-                </entity-select>
+                    </entity-select>
+                </div>
             </div>
-        </div>
 
-        <!-- Administration Site -->
-        <div class="form-group row">
-            <label class="control-label col-sm-12 col-md-4 required">
-                {{ 'ui.model.substanceAdministration.site' | i18n }}
-            </label>
+            <!-- Administration Site -->
+            <div class="form-group row">
+                <label class="control-label col-sm-12 col-md-4 required">
+                    {{ 'ui.model.substanceAdministration.site' | i18n }}
+                </label>
 
-            <div class="control-label col-sm-12 col-md-7">
-                <concept-select readonly="readonly" disabled="disabled" 
-                    ng-model="act.site"
-                    concept-set="'AdministrationSite'" class="form-control"></concept-select>
+                <div class="control-label col-sm-12 col-md-7">
+                    <concept-select readonly="readonly" disabled="disabled" ng-model="act.site"
+                        concept-set="'AdministrationSite'" class="form-control"></concept-select>
+                </div>
             </div>
         </div>
     </div>
