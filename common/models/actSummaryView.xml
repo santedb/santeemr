@@ -20,22 +20,31 @@
         <property name="name" behavior="always" all="true" />
     </type>
 
-    <type type="ActRelationship" name="ActRelationshipTarget" base="noModelProperties.ActRelationship" all="true">
+    <type type="ActRelationship" name="ActRelationshipTarget"
+        base="noModelProperties.ActRelationship" all="true">
         <property name="targetModel" behavior="always" />
     </type>
 
-    <type type="ActParticipation" name="ActParticipationNested" base="noModelProperties.ActParticipation" all="false">
+    <type type="ActParticipation" name="ActParticipationNested"
+        base="noModelProperties.ActParticipation" all="false">
         <property name="player" />
-        <property name="playerModel" behavior="always"/>
+        <property name="playerModel" behavior="always" />
         <property name="classification" />
     </type>
 
+    <type type="SecurityPolicyInstance" all="true">
+        <property name="policyModel" behavior="always" />
+    </type>
+    
     <type type="Act" base="noModelProperties.Act" all="true">
         <property name="templateModel" behavior="always" />
         <property name="protocol" behavior="always" ref="ActProtocol" />
         <property name="typeConceptModel" behavior="always" />
         <property name="reasonConceptModel" behavior="always" />
-        <property name="statusConceptModel" behavior="always" /> 
+        <property name="statusConceptModel" behavior="always" />
+        <property name="policy" behavior="always" all="true">
+            <property name="policyModel" behavior="always" all="true" />
+        </property>
         <property name="participation" behavior="always">
             <property name="RecordTarget" ref="ActParticipationNested" />
             <property name="Location" ref="ActParticipationNested" />
@@ -51,8 +60,8 @@
             <property name="Informant" ref="ActParticipationNested" />
             <property name="Consumable" behavior="always">
                 <property name="player" />
-                <property name="playerModel"  behavior="always" >
-                    <property name="lotNumber"  />
+                <property name="playerModel" behavior="always">
+                    <property name="lotNumber" />
                 </property>
             </property>
             <property name="SecondaryPerformer" ref="ActParticipationNested" />
@@ -73,7 +82,7 @@
 
     </type>
     <type type="PatientEncounter" base="emr.actSummaryView.Act" all="true">
-        <property name="dischargeDispositionModel" behavior="always"/>
+        <property name="dischargeDispositionModel" behavior="always" />
     </type>
 
     <type type="Observation" base="emr.actSummaryView.Act" all="true">
@@ -82,11 +91,11 @@
     </type>
 
     <type type="CodedObservation" base="emr.actSummaryView.Observation" all="true">
-        <property name="valueModel" behavior="always"/>
+        <property name="valueModel" behavior="always" />
     </type>
 
     <type type="QuantityObservation" base="emr.actSummaryView.Observation" all="true">
-        <property name="unitOfMeasureModel" behavior="always"/>
+        <property name="unitOfMeasureModel" behavior="always" />
     </type>
 
     <type type="TextObservation" base="emr.actSummaryView.Observation" all="true">
@@ -101,7 +110,7 @@
         <property name="site" />
         <property name="siteModel" behavior="always" />
         <property name="doseUnit" />
-        <property name="doseUnitModel" behavior="always"/>
+        <property name="doseUnitModel" behavior="always" />
     </type>
 
     <type type="Procedure" base="emr.actSummaryView.Act" all="true">

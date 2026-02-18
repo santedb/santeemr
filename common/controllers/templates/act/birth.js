@@ -24,6 +24,8 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
         }
 
         var baby = $scope.act.participation.Baby[0].playerModel;
+        var mother = $scope.act.participation.RecordTarget[0].playerModel;
+
         // JIMS-1026 - Is the baby player model not present
         if(!baby) {
             baby = await SanteDB.resources.person.getAsync($scope.act.participation.Baby[0].player);
@@ -45,6 +47,15 @@ angular.module('santedb').controller('BirthRegistrationController', ["$scope", "
             if (neonate.resource) {
                 $scope.neoNatalEncounterId = neonate.resource[0].id;
             }
+
+            // Assign the neonate the mother's DSDL 
+            baby.relationship = baby.relationship || {};
+            baby.relationship.DedicatedServiceDeliveryLocation = [];
+            baby.relationship.DedicatedServiceDeliveryLocation.push(
+                new EntityRelationship({
+                    target: mother.relationship?.DedicatedServiceDeliveryLocation[0].target
+                })
+            );
 
             // Each record target which is the baby
             $scope.act.relationship.HasComponent.forEach(cmp => {

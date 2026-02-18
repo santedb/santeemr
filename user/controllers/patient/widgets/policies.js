@@ -2,26 +2,14 @@ angular.module("santedb").controller("EmrPatientPolicyController", ["$scope", "$
 
 
     const existingElevator = SanteDB.authentication.getElevator();
-    $scope.changePatientPolicies = function(form) {
+    $scope.changePatientPolicies = async function(form) {
         if(form.$invalid) return;
-        var elevator = new SanteDBElevator(changePolicies, true);
-        elevator.setCloseCallback(() => SanteDB.authentication.setElevator(existingElevator));
-        SanteDB.authentication.setElevator(null);
-        SanteDB.authentication.setElevator(elevator);
-        changePolicies();
-    }
-
-    // change policies logic
-    async function changePolicies() {
         try {
-            await SanteDB.resources.entity.invokeOperationAsync($scope.scopedObject.id, "alter-policy", {
-                cascadePolicies: true,
-                add: $scope.scopedObject.policy.filter(p=>p.operation != BatchOperationType.Delete).map(o=>o.policyModel.oid),
-                remove: $scope.scopedObject.policy.filter(p=>p.operation == BatchOperationType.Delete).map(o=>o.policyModel.oid)
-            }, null, null, null, "application/json");
-            SanteDB.authentication.setElevator(null);
-            SanteDB.authentication.setElevator(existingElevator);
-
+            await SanteEMR.setPolicies(
+                $scope.scopedObject, 
+                $scope.scopedObject.policy.filter(p=>p.operation != BatchOperationType.Delete).map(o=>o.policyModel.oid),
+                $scope.scopedObject.policy.filter(p=>p.operation == BatchOperationType.Delete).map(o=>o.policyModel.oid)
+            );
             $state.reload();
         }
         catch(e) {

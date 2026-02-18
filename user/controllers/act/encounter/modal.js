@@ -260,8 +260,13 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
 
             // Set the status of all items in the encounter
             $scope.encounter.relationship.HasComponent?.forEach(comp => {
-                if (comp.targetModel.statusConcept !== StatusKeys.Completed) {
+                if (comp.targetModel.statusConcept !== StatusKeys.Completed && 
+                    (!comp.targetModel.tag || !comp.targetModel.tag['$pep.masked'])
+                ) {
                     comp.targetModel.operation = BatchOperationType.Delete;
+                }
+                else {
+                    comp.targetModel.operation = BatchOperationType.Update;
                 }
             });
 

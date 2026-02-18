@@ -11,13 +11,14 @@
                 <div class="alert alert-dark">
                     <i class="fas fa-fw fa-info-circle"></i> {{ 'ui.emr.patient.birth.neonateDeceased' | i18n }}
                 </div>
-            </div> 
+            </div>
             <div class="col-xs-12 col-xl-6 my-1" ng-repeat="comp in act.relationship.HasComponent"
                 ng-if="comp.operation !== 'Delete'" ng-init="act = comp.targetModel" id="infantActions{{$index}}">
                 <ng-include src="::$root.getParentVariable($parent, 'resolveTemplate')(act.templateModel.mnemonic)" />
             </div>
 
-            <div class="col-12" ng-if="act.participation.Baby &amp;&amp; act.participation.Baby[0].playerModel.operation !== 'Delete'">
+            <div class="col-12"
+                ng-if="act.participation.Baby &amp;&amp; act.participation.Baby[0].playerModel.operation !== 'Delete'">
                 <hr />
 
                 <h6>
@@ -35,6 +36,27 @@
                                 no-type="true" name="patientName"
                                 model="act.participation.Baby[0].playerModel.name.OfficialRecord" />
 
+                            <div class="form-group row">
+                                <label class="col-sm-12 col-md-3 control-label required">
+                                    {{ 'ui.model.patient.relationship.DedicatedServiceDeliveryLocation' | i18n }}
+                                    <hint-popover
+                                        hint-title="ui.model.patient.relationship.DedicatedServiceDeliveryLocation" />
+                                </label>
+
+                                <div class="col-sm-12 col-md-8">
+                                    <entity-search type="'Place'" search-field="'name.component.value'"
+                                        default-results="{ 'relationship[CommunityServiceDeliveryLocation].source||relationship[CommunityServiceDeliveryLocation].source.relationship[Parent].source' : act.participation.Baby[0].playerModel.address.HomeAddress[0].component.PlaceRef[0], 'relationship[CommunityServiceDeliveryLocation].source.address.component[City].value': act.participation.Baby[0].playerModel.address.HomeAddress[0].component.City[0] }"
+                                        group-by="['address.PhysicalVisit[0].component.County[0]','address.Direct[0].component.County[0]']"
+                                        filter="{ 'classConcept' : 'ff34dfa7-c6d3-4f8b-bc9f-14bcdc13ba6c' }"
+                                        required="required" name="DedicatedServiceDeliveryLocation{{act.participation.Baby[0].player}}"
+                                        ng-model="act.participation.Baby[0].playerModel.relationship.DedicatedServiceDeliveryLocation[0].target" />
+
+                                    <div class="text-danger"
+                                        ng-if="$root.getParentVariable($parent, 'ownerForm')['DedicatedServiceDeliveryLocation' + act.participation.Baby[0].player].$error['required']">
+                                        <i class="fas fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+                                    </div>
+                                </div>
+                            </div>
                             <div class="text-center" ng-if="act.participation.Baby[0].playerModel.version">
                                 <div>
                                     <img ng-src="/hdsi/Patient/{{act.participation.Baby[0].playerModel.id}}/_code?_format=code128&amp;_domain={{$root.system.config.application.setting['aa.preferred']}}"
@@ -60,12 +82,13 @@
                                         {{ 'ui.model.patient.multipleBirthOrder' | i18n }}
                                     </label>
 
-                                    <div class="col-xs-12 col-md-9" ng-init="act.participation.Baby[0].playerModel.multipleBirthIndicator = act.participation.Baby[0].playerModel.multipleBirthOrder != null">
+                                    <div class="col-xs-12 col-md-9"
+                                        ng-init="act.participation.Baby[0].playerModel.multipleBirthIndicator = act.participation.Baby[0].playerModel.multipleBirthOrder != null">
                                         <div class="input-group m-0">
                                             <div class="input-group-prepend">
                                                 <label class="input-group-text">
                                                     <input type="checkbox"
-                                                    ng-change="act.participation.Baby[0].playerModel.multipleBirthOrder = null"
+                                                        ng-change="act.participation.Baby[0].playerModel.multipleBirthOrder = null"
                                                         ng-model="act.participation.Baby[0].playerModel.multipleBirthIndicator" />
                                                 </label>
                                             </div>
@@ -73,17 +96,21 @@
                                             <select class="form-control" name="birthOrder"
                                                 ng-required="act.participation.Baby[0].playerModel.multipleBirthIndicator"
                                                 ng-model="act.participation.Baby[0].playerModel.multipleBirthOrder"
-                                                ng-disabled="!act.participation.Baby[0].playerModel.multipleBirthIndicator"
-                                                >
-                                                <option ng-value="1">{{ 'ui.model.patient.multipleBirthOrder.1' | i18n }}
+                                                ng-disabled="!act.participation.Baby[0].playerModel.multipleBirthIndicator">
+                                                <option ng-value="1">{{ 'ui.model.patient.multipleBirthOrder.1' | i18n
+                                                    }}
                                                 </option>
-                                                <option ng-value="2">{{ 'ui.model.patient.multipleBirthOrder.2' | i18n }}
+                                                <option ng-value="2">{{ 'ui.model.patient.multipleBirthOrder.2' | i18n
+                                                    }}
                                                 </option>
-                                                <option ng-value="3">{{ 'ui.model.patient.multipleBirthOrder.3' | i18n }}
+                                                <option ng-value="3">{{ 'ui.model.patient.multipleBirthOrder.3' | i18n
+                                                    }}
                                                 </option>
-                                                <option ng-value="4">{{ 'ui.model.patient.multipleBirthOrder.4' | i18n }}
+                                                <option ng-value="4">{{ 'ui.model.patient.multipleBirthOrder.4' | i18n
+                                                    }}
                                                 </option>
-                                                <option ng-value="5">{{ 'ui.model.patient.multipleBirthOrder.5' | i18n }}
+                                                <option ng-value="5">{{ 'ui.model.patient.multipleBirthOrder.5' | i18n
+                                                    }}
                                                 </option>
                                             </select>
                                         </div>
@@ -122,22 +149,29 @@
                                 </div>
 
                                 <!-- Start a Visit -->
-                                 <div class="form-group row" ng-if="act.participation.Baby[0].playerModel.version">
+                                <div class="form-group row" ng-if="act.participation.Baby[0].playerModel.version">
                                     <div class="col-12">
                                         <div class="btn-group">
-                                            <button type="button" ng-disabled="$root.getParentVariable($parent, 'getEncounter')().statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'" id="btnStartNeonateVisit" ng-if="!neoNatalEncounterId &amp;&amp; !act.participation.Baby[0].playerModel.deceasedDate" class="btn btn-primary"
-                                                ng-click="startNeonatalEncounter()">
-                                                <i class="fas fa-fw fa-baby"></i> {{ 'ui.action.check-in.neonate' | i18n }}
+                                            <button type="button"
+                                                ng-disabled="$root.getParentVariable($parent, 'getEncounter')().statusConcept == 'afc33800-8225-4061-b168-bacc09cdbae3'"
+                                                id="btnStartNeonateVisit"
+                                                ng-if="!neoNatalEncounterId &amp;&amp; !act.participation.Baby[0].playerModel.deceasedDate"
+                                                class="btn btn-primary" ng-click="startNeonatalEncounter()">
+                                                <i class="fas fa-fw fa-baby"></i> {{ 'ui.action.check-in.neonate' | i18n
+                                                }}
                                             </button>
-                                            <a ng-if="neoNatalEncounterId &amp;&amp; !act.participation.Baby[0].playerModel.deceasedDate" class="btn btn-primary" ui-sref=".({id: neoNatalEncounterId})">
-                                                <i class="fas fa-fw fa-arrow-right"></i> {{ 'ui.action.view.neonate' | i18n }}
+                                            <a ng-if="neoNatalEncounterId &amp;&amp; !act.participation.Baby[0].playerModel.deceasedDate"
+                                                class="btn btn-primary" ui-sref=".({id: neoNatalEncounterId})">
+                                                <i class="fas fa-fw fa-arrow-right"></i> {{ 'ui.action.view.neonate' |
+                                                i18n }}
                                             </a>
-                                             <a class="btn btn-info" ui-sref="santedb-emr.patient.view({id: act.participation.Baby[0].playerModel.id})">
+                                            <a class="btn btn-info"
+                                                ui-sref="santedb-emr.patient.view({id: act.participation.Baby[0].playerModel.id})">
                                                 <i class="fas fa-fw fa-baby"></i> {{ 'ui.action.view' | i18n }}
                                             </a>
                                         </div>
                                     </div>
-                                 </div>
+                                </div>
                             </div>
                         </div>
                     </div>

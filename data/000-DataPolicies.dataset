@@ -23,7 +23,7 @@
   <update insertIfNotExists="true">
     <SecurityPolicy xmlns="http://santedb.org/model">
       <id>04F3BC34-E001-479A-9780-7E0440B3094E</id>
-      <name>Emergency Personnel Only</name>
+      <name>Emergency Use Only</name>
       <oid>2.25.70100936533247523356621147216786164046</oid>
       <isPublic>true</isPublic>
       <canOverride>false</canOverride>
