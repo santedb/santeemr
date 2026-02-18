@@ -2,21 +2,25 @@
     <div class="input-group-prepend">
         <span class="input-group-text">{{ act.typeConceptModel | concept }}</span>
     </div>
-    <input type="range" cdss-interactive="act" name="apgar5Minute{{::act.id}}" class="form-control" min="0" max="10"
-        required="required" ng-model="act.value" step="1" />
-    <div class="input-group-append">
-        <input type="number" readonly="readonly" class="form-control h-100" min="0" max="10" required="required"
-            ng-model="act.value" step="1" />
+    <!-- <input type="range" cdss-interactive="act" name="apgar5Minute{{::act.id}}" class="form-control" min="0" max="10"
+        required="required" ng-model="act.value" step="1" /> -->
+    <input type="number" name="apgar5Minute{{::act.id}}" cdss-interactive="act" class="form-control" min="0"
+        ng-class="{ 'border-danger' : $root.getParentVariable($parent, [ 'ownerForm', 'editForm' ])['apgar5Minute' + act.id].$error.required }"
+        max="10" required="required" ng-model="act.value" step="1" />
+    <div class="input-group-append" ng-if="!act.value">
+        <span class="input-group-text text-danger">
+            <i class="fas fa-fw fa-exclamation-triangle"></i> {{ 'ui.error.required' | i18n }}
+        </span>
     </div>
-    <div class="input-group-append">
+    <div class="input-group-append" ng-if="act.value">
         <span ng-switch="act.interpretationConcept" class="input-group-text">
-            
-                    <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d">
-                        <i class="fas fa-fw fa-check"></i>
-                        <span class="d-none d-md-inline">
-                            {{ 'ui.model.observation.interpretationConcept.normal' | i18n }}
-                        </span>
-                    </span>
+
+            <span class="badge badge-success" ng-switch-when="41d42abf-17ad-4144-bf97-ec3fd907f57d">
+                <i class="fas fa-fw fa-check"></i>
+                <span class="d-none d-md-inline">
+                    {{ 'ui.model.observation.interpretationConcept.normal' | i18n }}
+                </span>
+            </span>
             <span class="badge badge-warning" ng-switch-when="6188f821-261f-420c-9520-0de240a05661">
                 <i class="fas fa-fw fa-chevron-down"></i>
                 <span class="d-none d-md-inline">

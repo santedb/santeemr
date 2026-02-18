@@ -116,8 +116,8 @@ function SanteEMRWrapper() {
 
         // For each entry which is being updated set the performer
         submissionBundle.resource.filter(act => _IGNORE_RELATIONSHIPS.indexOf(act.operation) == -1 && act.statusConcept == StatusKeys.Completed).forEach(act => {
-            
-            if(act.typeConceptModel?.mnemonic?.indexOf("NarrativeType-") > -1) { // narratives should not be marked with their performer or secondary performer
+
+            if (act.typeConceptModel?.mnemonic?.indexOf("NarrativeType-") > -1) { // narratives should not be marked with their performer or secondary performer
                 return;
             }
 
@@ -183,7 +183,8 @@ function SanteEMRWrapper() {
         encounter = await prepareActForSubmission(encounter);
         /** @type {Bundle} */
         var bundle = bundleRelatedObjects(encounter, ["Informant", "RecordTarget", "Location", "Performer", "Authororiginator", "_HasComponent", "Fulfills"]);
-        bundle.resource = bundle.resource?.filter(o => !o.tag || !o.tag['$pep.masked'] );
+        bundle.resource.filter(o => o.tag && o.tag['$pep.masked'] || o.reasonConcept == NullReasonKeys.Masked).forEach(o => o.operation = BatchOperationType.Ignore);
+
         encounter = bundle.resource.find(o => o.$type == PatientEncounter.name);
         // remove components which have a deleted target
         if (encounter.relationship && encounter.relationship.HasComponent) {
@@ -196,6 +197,44 @@ function SanteEMRWrapper() {
         bundle.resource.filter(a => !a.startTime && !a.stopTime && !a.actTime).forEach(a => a.actTime = a.actTime || encounter.actTime); // Copy the act time over
         bundle.correlationId = encounter.id;
         return bundle;
+    }
+
+    /**
+     * @summary Set policies on the objects
+     * @method 
+     * @param {*} object The object to be tagged
+     * @param {Array} addPolicies The polices which should be added to the object
+     * @param {Array} removePolicies The policies which should be removed from the object
+     */
+    this.setPolicies = function (object, addPolicies, removePolicies) {
+        return new Promise(function (fulfill, reject) {
+            const existingElevator = SanteDB.authentication.getElevator();
+            // change policies logic
+            async function changePolicies() {
+                try {
+                    await SanteDB.resources.act.invokeOperationAsync(object.id || object, "alter-policy", {
+                        cascadePolicies: true,
+                        add: addPolicies,
+                        remove: removePolicies
+                    }, null, null, null, "application/json");
+
+                    SanteDB.authentication.setElevator(null);
+                    SanteDB.authentication.setElevator(existingElevator);
+                    fulfill();
+                }
+                catch (e) {
+                    reject(Exception("EmrException", "Error setting policies on object", null, e));
+                }
+            }
+
+            // Setup the policy elevator
+            var elevator = new SanteDBElevator(changePolicies, true);
+            elevator.setCloseCallback(() => SanteDB.authentication.setElevator(existingElevator));
+            SanteDB.authentication.setElevator(null);
+            SanteDB.authentication.setElevator(elevator);
+            changePolicies();
+        });
+
     }
 
     /**
@@ -214,7 +253,7 @@ function SanteEMRWrapper() {
                 _excludePropose: true,
                 _excludeSubmitted: true
             });
-            result.issue = result.issue.filter(o=>o.id !== "error.cdss.exception");
+            result.issue = result.issue.filter(o => o.id !== "error.cdss.exception");
             return result;
         }
         catch (e) {
@@ -245,35 +284,33 @@ function SanteEMRWrapper() {
      * @memberof SanteEMRWrapper
      * @summary Loads all concept models that have changed or are missing 
      */
-    this.loadConceptModels = async function(act) {
+    this.loadConceptModels = async function (act) {
         try {
-            if(!_LOAD_CODE_TYPES.includes(act.$type)) {
+            if (!_LOAD_CODE_TYPES.includes(act.$type)) {
                 return;
             }
 
-            for(const key of Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id)) {
-                try 
-                {
-                    if(!(act[key] instanceof Date || typeof act[key] === 'number')) {
+            for (const key of Object.keys(act).filter(o => _LOAD_CODE_PROPS.includes(o) && act[o] && act[o] !== EmptyGuid && act[o] !== act[`${o}Model`]?.id)) {
+                try {
+                    if (!(act[key] instanceof Date || typeof act[key] === 'number')) {
                         act[`${key}Model`] = _loadedConceptDetails[act[key]] || await SanteDB.resources.concept.getAsync(act[key], "min");
-                        if(!_loadedConceptDetails[act[key]]) {
+                        if (!_loadedConceptDetails[act[key]]) {
                             _loadedConceptDetails[act[key]] = act[`${key}Model`];
                         }
                     }
                 }
-                catch
-                {
+                catch {
 
                 }
             };
 
-            if(act.relationship) {
-                for(const a of Object.keys(act.relationship).map(o=>act.relationship[o]).flat().filter(o=>o.targetModel).map(o=>o.targetModel)) {
+            if (act.relationship) {
+                for (const a of Object.keys(act.relationship).map(o => act.relationship[o]).flat().filter(o => o.targetModel).map(o => o.targetModel)) {
                     await SanteEMR.loadConceptModels(a);
                 }
             }
         }
-        catch(e) {
+        catch (e) {
             console.error(e);
         }
     }
@@ -296,7 +333,7 @@ function SanteEMRWrapper() {
         try {
 
             // We want to load all types (ensure that the encounter is fresh)
-            if(!encounter.$preventReloadConcepts) {
+            if (!encounter.$preventReloadConcepts) {
                 await SanteEMR.loadConceptModels(encounter);
             }
             var scope = dischargeModal.scope();
@@ -321,13 +358,13 @@ function SanteEMRWrapper() {
                     scope.encounter = null;
                 });
             }
-            
+
             $timeout(() => {
                 scope.encounter = enc;
                 $("#dischargeModal").modal('show');
                 $("#dischargeModal").data('after-action', afterAction);
             });
-            
+
             var analyzeResult = await SanteEMR.analyzeVisit(encounter);
             $timeout(() => {
                 scope.issues = analyzeResult.issue;
@@ -500,7 +537,7 @@ function SanteEMRWrapper() {
                 Object.keys(templateData.relationship).forEach(relationshipType => {
                     var tplValue = templateData.relationship[relationshipType];
                     var currentRelationship = encounter.relationship[relationshipType];
-                    if(currentRelationship) {
+                    if (currentRelationship) {
                         tplValue.forEach(tv => currentRelationship.push(tv));
                     }
                     else {
@@ -514,7 +551,7 @@ function SanteEMRWrapper() {
             encounter.relationship.HasComponent = encounter.relationship.HasComponent || [];
             encounter.relationship.Fulfills = fulfills;
 
-            if(refersToEncounterId) {
+            if (refersToEncounterId) {
                 encounter.relationship.RefersTo = encounter.relationship.RefersTo || [];
                 encounter.relationship.RefersTo.push(new ActRelationship({ target: refersToEncounterId }))
             }
@@ -605,7 +642,7 @@ function SanteEMRWrapper() {
                 delete o.targetModel.statusConceptModel;
             });
 
-           
+
             encounter = await prepareActForSubmission(encounter);
             submission = bundleRelatedObjects(encounter, ["Informant", "RecordTarget", "Location", "Authororiginator"]);
 
@@ -686,7 +723,7 @@ function SanteEMRWrapper() {
      * @summary Validates that the patient is still eligible for their carepathways
      * @param {string} patientId The identity of the patient
      */
-    this.validateCarepaths = async function(patientId) {
+    this.validateCarepaths = async function (patientId) {
         try {
             var carePathways = await SanteDB.resources.patient.invokeOperationAsync(patientId, "carepath-eligibilty");
             var enrolledCarePathways = await SanteDB.resources.patient.findAssociatedAsync(patientId, "carepaths");
@@ -699,7 +736,7 @@ function SanteEMRWrapper() {
 
             // Are there any care pathways the patient is enrolled in that they are ineligible to be enrolled in?
             var nonEligibleCarePathways = enrolledCarePathways.resource?.filter(cp => !carePathways.find(el => el.id == cp.id));
-            if(nonEligibleCarePathways?.length > 0 && confirm(SanteDB.locale.getString("ui.emr.patient.carepath.unenrolAuto", { pathway: nonEligibleCarePathways.map(o=>o.name).join(",") }))) {
+            if (nonEligibleCarePathways?.length > 0 && confirm(SanteDB.locale.getString("ui.emr.patient.carepath.unenrolAuto", { pathway: nonEligibleCarePathways.map(o => o.name).join(",") }))) {
                 nonEligibleCarePathways.forEach(cp => SanteDB.resources.patient.invokeOperationAsync(patientId, "carepath-unenroll", {
                     pathway: cp.id
                 }));
@@ -717,7 +754,7 @@ function SanteEMRWrapper() {
         catch (e) {
             throw new Exception("EmrException", "Failed to validate care pathways", null, e);
         }
-    } 
+    }
 
 }
 

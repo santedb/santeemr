@@ -33,11 +33,40 @@
                 </li>
             </ul>
             <form ng-submit="updateStatusObservations(panel.editForm)" name="panel.editForm" novalidate="novalidate">
-                <ul class="list-group" ng-init="ownerForm = panel.editForm"> <!-- Maintain Compatibility with the act-edit -->
-                    <li ng-repeat="cond in amendmentObservations track by $index" class="list-group-item" ng-init="act = cond"
-                        ng-if="cond.template">
-                        <h5><i class="fas fa-fw"
-                                ng-class="::resolveTemplateIcon(act.templateModel.mnemonic)"></i>
+                <ul class="list-group" ng-init="ownerForm = panel.editForm">
+                    <!-- Maintain Compatibility with the act-edit -->
+                    <li ng-repeat="cond in amendmentObservations track by $index" class="list-group-item"
+                        ng-init="act = cond" ng-if="cond.template">
+                        <div class="emr-privacy-float">
+                            <!-- Action Toolbar for the object-->
+                            <div class="mx-2 btn-group">
+                                <div class="btn-group dropleft" ng-if="!act.policy.length">
+                                    <button class="btn btn-dark btn-sm" type="button" title="Seal Record"
+                                        data-toggle="dropdown" aria-haspopup="true">
+                                        <i class="mr-2 my-1 fas fa-caret-left"></i>
+                                        <span class="fa-stack">
+                                            <i class="fas fa-shield fa-stack-1x"></i>
+                                            <i class="fas fa-plus fa-stack-1x" style="color:green"></i>
+                                        </span>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <button class="dropdown-item" type="button" ng-click="setPolicy(act, pol)"
+                                            ng-repeat="pol in availablePolicies track by $index">
+                                            <i class="fas fa-fw fa-shield"></i> {{ pol.name | i18n }}
+                                        </button>
+                                    </div>
+                                </div>
+                                <button class="btn btn-sm btn-danger" type="button" ng-disabled="act.tag['$pep.masked']"
+                                    ng-click="setPolicy(act, null)" title="Unseal Record" ng-if="act.policy.length">
+                                    <span class="fa-stack">
+                                            <i class="fas fa-shield fa-stack-1x"></i>
+                                            <i class="fas fa-times fa-stack-1x" style="color:red"></i>
+                                        </span>
+                                </button>
+
+                            </div>
+                        </div>
+                        <h5><i class="fas fa-fw" ng-class="::resolveTemplateIcon(act.templateModel.mnemonic)"></i>
                             {{ ::getTemplateName(act.templateModel.mnemonic) }}</h5>
                         <ng-include src="::resolveTemplateForm(act.templateModel.mnemonic);" />
                     </li>
