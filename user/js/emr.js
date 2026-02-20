@@ -212,8 +212,9 @@ function SanteEMRWrapper() {
             // change policies logic
             async function changePolicies() {
                 try {
-                    await SanteDB.resources.act.invokeOperationAsync(object.id || object, "alter-policy", {
-                        cascadePolicies: true,
+                    var resource = object.$type === 'Patient' ? 'entity' : 'act';
+                    await SanteDB.resources[resource].invokeOperationAsync(object.id || object, "alter-policy", {
+                        cascadePolicies: object.$type !== 'Patient',
                         add: addPolicies,
                         remove: removePolicies
                     }, null, null, null, "application/json");
@@ -223,7 +224,7 @@ function SanteEMRWrapper() {
                     fulfill();
                 }
                 catch (e) {
-                    reject(Exception("EmrException", "Error setting policies on object", null, e));
+                    reject(new Exception("EmrException", "Error setting policies on object", null, e));
                 }
             }
 

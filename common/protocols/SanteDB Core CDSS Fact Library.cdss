@@ -7,7 +7,7 @@ define library "SanteDB Core CDSS Fact Library"
 	having status active
 	with metadata
 		author SanteSuite Inc. and the SanteSuite Contributors
-		version 3.0.2051
+		version 3.0.2056
 		doc This library contains core logic to extract common facts related to objects in SanteDB. It defines
 		doc no rules, protocols, or models, rather is intended to provide common facts about data to allow
 		doc users to more easily derive their own rules
