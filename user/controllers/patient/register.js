@@ -25,8 +25,8 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     // that by allowing only a "current" to be processing and queueing any changes if current is
     // processing into the next property
     const cdssProcessBacklog = {
-        current: false,
-        next: false
+        lastDob: null,
+        lastGender: null
     };
 
 
@@ -36,9 +36,14 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         if (!n || n == o || !$scope.entity.genderConcept || !$scope.entity.dateOfBirth) {
             return;
         }
-        else if (cdssProcessBacklog.current) {
-            cdssProcessBacklog.next = true;
+        else if (cdssProcessBacklog.lastDob == $scope.entity.dateOfBirth &&
+            cdssProcessBacklog.lastGender == $scope.entity.genderConcept
+        ) {
             return;
+        }
+        else {
+            cdssProcessBacklog.lastDob = $scope.entity.dateOfBirth;
+            cdssProcessBacklog.lastGender = $scope.entity.genderConcept;
         }
 
         try {
@@ -50,7 +55,6 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                 $scope.preventSubmit = true;
             });
 
-            cdssProcessBacklog.current = true;
             const cdssResult = await SanteDB.resources.patient.invokeOperationAsync(null, "generate-careplan", {
                 targetPatient: $scope.entity,
                 encounter: "org.santedb.emr.patient.registration",
@@ -92,14 +96,6 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         }
         catch (e) {
             console.error(e);
-        }
-        finally {
-            cdssProcessBacklog.current = false;
-            if (cdssProcessBacklog.next) // There is a pending change
-            {
-                cdssProcessBacklog.next = false;
-                computeNeededHistoryActs(n, o);
-            }
         }
     }
     $scope.$watch("entity.dateOfBirth", computeNeededHistoryActs);
