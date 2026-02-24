@@ -245,10 +245,12 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
     }
 
     $scope.cancelEdit = () => {
-        $window.history.back();
+        if (confirm(SanteDB.locale.getString("ui.action.abandon.confirm"))) {
+            $window.history.back();
+        }
     }
 
-    $scope.addHistoryAct = function(act) {
+    $scope.addHistoryAct = function (act) {
         $scope.entity.participation = $scope.entity.participation || {};
         $scope.entity.participation.RecordTarget = $scope.entity.participation.RecordTarget || [];
         $scope.entity.participation.RecordTarget.push(new ActParticipation({
@@ -431,7 +433,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                     rct.actModel.note?.forEach(n => n.author = userId);
                     rct.actModel.moodConcept = ActMoodKeys.Eventoccurrence;
                     // Cascade the batch operation
-                    if(rct.operation) {
+                    if (rct.operation) {
                         rct.actModel.operation = rct.operation > 0 ? rct.operation : rct.actModel.operation;
                     }
                     submissionBundle = bundleRelatedObjects(rct.actModel, null, submissionBundle);
@@ -544,7 +546,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                             var relative = $scope.scopedObject.relationship[relativeType][0].targetModel;
                             if (relative._populatedViaMatch) // We previously set this from a match
                             {
-                                delete(relative._populatedViaMatch);
+                                delete (relative._populatedViaMatch);
                                 $timeout(() => {
                                     $scope.scopedObject.relationship[relativeType][0].targetModel = originalRelationshipData[relativeType];
                                     $scope.scopedObject.relationship[relativeType][0].targetModel.identifier = identifierList;
@@ -680,18 +682,19 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                                             }));
                                                         });
                                                     });
+                                                    
+                                                    dup.operation = BatchOperationType.Update;
+                                                    dup.statusConcept = StatusKeys.Obsolete;
+
                                                     $scope.scopedObject.$otherData.push(
-                                                        new Person({
-                                                            id: dup.id,
-                                                            statusConcept: StatusKeys.Obsolete
-                                                        })
+                                                        new Person(dup)
                                                     );
 
                                                     // Copy any relationships
                                                     if (dup.relationship) {
                                                         Object.keys(dup.relationship).forEach(rel => {
                                                             var dupRel = dup.relationship[rel];
-                                                            scopedObject.relationship[rel] = dupRel.map(drel =>
+                                                            $scope.scopedObject.relationship[rel] = dupRel.map(drel =>
                                                                 new EntityRelationship({
                                                                     target: drel.target,
                                                                     targetModel: drel.targetModel,
@@ -707,13 +710,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
                                                     // Redirect any further references 
                                                     if (reverseReferences.resource) {
                                                         reverseReferences.resource.forEach(res => {
-                                                            // Delete the old relationship
-                                                            $scope.scopedObject.$otherData.push(new EntityRelationship({
-                                                                id: res.id,
-                                                                operation: BatchOperationType.DeleteInt
-                                                            }));
                                                             // Add a new relationship between the old data and the new data
                                                             $scope.scopedObject.$otherData.push(new EntityRelationship({
+                                                                id: res.id,
+                                                                operation: BatchOperationType.UpdateInt,
                                                                 source: res.source,
                                                                 holder: res.holder,
                                                                 target: $scope.scopedObject.id,
@@ -754,7 +754,7 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
         $scope.$watch("scopedObject.participation.RecordTarget", function (n, o) {
             if (n) {
                 $scope.entryActs = n.filter(a => a.actModel.tag && a.actModel.tag.isBackEntry && a.actModel.tag.isBackEntry[0] == 'True')
-                    .sort((a,b) => a.actModel.templateModel.mnemonic < b.actModel.templateModel.mnemonic ? 1 : -1)
+                    .sort((a, b) => a.actModel.templateModel.mnemonic < b.actModel.templateModel.mnemonic ? 1 : -1)
                     .groupBy(
                         o => o.actModel.templateModel.mnemonic,
                         o => o.actModel
@@ -781,10 +781,10 @@ angular.module('santedb').controller('EmrPatientRegisterController', ["$scope", 
 
         $scope.checkTabComponentErrors = function (form, targetDiv) {
             var inputNodes = document.querySelectorAll(`${targetDiv} select[name], ${targetDiv} input[name]`);
-            for(var i = 0; i < inputNodes.length; i++) {
-                if(form[inputNodes[i].name]?.$invalid) {
+            for (var i = 0; i < inputNodes.length; i++) {
+                if (form[inputNodes[i].name]?.$invalid) {
                     return true;
-                }                
+                }
             }
             return false;
         }
