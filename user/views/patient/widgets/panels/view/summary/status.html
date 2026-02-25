@@ -42,7 +42,7 @@
                             <div class="mx-2 btn-group">
                                 <div class="btn-group dropleft" ng-if="!act.policy.length">
                                     <button class="btn btn-dark btn-sm" type="button" title="Seal Record"
-                                        data-toggle="dropdown" aria-haspopup="true">
+                                        data-toggle="dropdown" aria-haspopup="true" ng-disabled="!$root.system.serviceState.hdsi">
                                         <i class="mr-2 my-1 fas fa-caret-left"></i>
                                         <span class="fa-stack">
                                             <i class="fas fa-shield fa-stack-1x"></i>
@@ -51,7 +51,7 @@
                                     </button>
                                     <div class="dropdown-menu">
                                         <button class="dropdown-item" type="button" ng-click="setPolicy(act, pol)"
-                                            ng-repeat="pol in availablePolicies track by $index">
+                                            ng-repeat="pol in availablePolicies track by $index" >
                                             <i class="fas fa-fw fa-shield"></i> {{ pol.name | i18n }}
                                         </button>
                                     </div>
