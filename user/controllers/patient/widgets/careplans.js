@@ -44,7 +44,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                     'participation[RecordTarget].player': $scope.scopedObject.id,
                     'statusConcept': [StatusKeys.New, StatusKeys.Active],
                     'actTime': `>${moment().add(-monthLimit || 2, 'month').format("YYYY-MM-DD")}`,
-                    _orderBy: 'actTime:asc',
+                    _orderBy: 'startTime:asc',
                     _count: 4,
                     _includeTotal: false
                 };
@@ -78,7 +78,7 @@ angular.module('santedb').controller('EmrPatientCarePlanController', ['$scope', 
                 proposed.filter(enc => !(enc.tag && enc.tag.$nostart)).forEach(enc => {
                     if (
                         (enc.startTime || enc.actTime).trunc() <= now && (enc.stopTime || enc.actTime).trunc() >= now || // start and stop time are in bound
-                        enc.actTime.isoWeek() == now.isoWeek() && enc.actTime.getFullYear() == now.getFullYear() // Encounter was scheduled to start this week
+                        (enc.startTime || enc.actTime).isoWeek() == now.isoWeek() && (enc.startTime || enc.actTime).getFullYear() == now.getFullYear() // Encounter was scheduled to start this week
                     ) {
                         enc.tag = enc.tag || {};
                         enc.tag["$canstart"] = [true];
