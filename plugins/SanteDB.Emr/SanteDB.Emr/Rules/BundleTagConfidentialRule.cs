@@ -100,7 +100,7 @@ namespace SanteEMR.Rules
                 }
 
                 // Hide / Tag Confidential for VIPs
-                var rct = act.LoadProperty(o => o.Participations, referenceData: data.Item).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget)?.LoadProperty(o => o.PlayerEntity) as Person;
+                var rct = act.LoadProperty(o => o.Participations, referenceData: data.Item).FirstOrDefault(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget)?.LoadProperty(o => o.PlayerEntity, referenceData: data.Item) as Person;
                 if (rct?.VipStatusKey != null && this.m_vipPolicy != null && !act.Policies.Any(p => p.PolicyKey == this.m_vipPolicy.Key))
                 {
                     act.Policies.Add(new SanteDB.Core.Model.Security.SecurityPolicyInstance()
