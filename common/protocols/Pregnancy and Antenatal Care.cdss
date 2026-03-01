@@ -110,7 +110,7 @@ define library "Pregnancy and Antenatal Care"
 		define fact "Patient Is Currently Pregnant"
 			having type bool
 		as
-			hdsi($$$self@CodedObservation.value.conceptSet=!8e848f0e-890b-11f0-ae3f-9f37087e0822$$ scoped-to fact "Patient Current Pregnancy Status")
+			hdsi($$$self@CodedObservation.value=!68fe916c-c656-44b6-88e8-ecc6ac4c3d00$$ scoped-to fact "Patient Current Pregnancy Status")
 		end fact
 		define fact "Patient Current Pregnancy Delivery Date"
 			having type date

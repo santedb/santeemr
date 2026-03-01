@@ -14,7 +14,10 @@ define library "Labour and Delivery"
 	end metadata
 	as
 	define logic "Propose Standard Birth Measurements"
-		having context Patient when "Patient Is Not Deceased"
+		having context Patient when all( 
+		        "Patient Is Not Deceased",
+		        hdsi($$ relationship[Mother].target=!null $$)
+		   )
 		import model "Propose Gestational Age At Birth Observation" from <org.santedb.emr.observation.gestationalAgeAtBirth>
 		as
 		define fact "Patient's Mother"
