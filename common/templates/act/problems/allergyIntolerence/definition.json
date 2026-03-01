@@ -84,7 +84,6 @@
                 }
             },
             {
-                "operation": 5, // IGNORE
                 "classification": "b23a00bb-34b0-4704-ac5b-53330a8852b3",
                 "targetModel": { // Treatment / Notes
                     "$type": "TextObservation",
