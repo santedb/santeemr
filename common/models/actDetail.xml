@@ -17,6 +17,8 @@
     </type>
 
     <type type="ActRelationship" name="ActRelationshipTarget" base="noModelProperties.ActRelationship">
+        <property name="source" />
+        <property name="target" />
         <property name="targetModel" behavior="always"  />
     </type>
 
@@ -42,6 +44,7 @@
     </type>
 
     <type type="EntityRelationship" base="noModelProperties.EntityRelationship" name="PatientFamilyMemberRelationship" all="false">
+        <proeprty name="source" />
         <property name="target" />
         <property name="targetModel" behavior="always" all="true">
             <property name="name" behavior="always" all="true" />

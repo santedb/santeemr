@@ -266,7 +266,7 @@ angular.module('santedb').controller('EmrCheckinEncounterController', ["$scope",
                     comp.targetModel.operation = BatchOperationType.Delete;
                 }
                 else {
-                    comp.targetModel.operation = BatchOperationType.Update;
+                    comp.targetModel.operation = comp.targetModel.version ? BatchOperationType.Update : BatchOperationType.InsertOrUpdate;
                 }
             });
 
