@@ -99,23 +99,19 @@
     </div>
 
     <!-- Address -->
-    <div class="row" ng-if="rel.targetModel.address.length > 0">
+    <div class="row" ng-if="rel.targetModel.address">
         <label class="col-md-3 col-sm-12 control-label">
             {{ 'ui.model.entity.address' | i18n }}
         </label>
 
         <div class="col-md-9 col-sm-12 my-auto">
-            <div ng-if="rel.targetModel.address">
-                <ul class="list-group">
-                    <li class="d-flex align-items-center" ng-repeat="(n, address) in rel.targetModel.address">
+            <ul class="list-group">
+                <li class="d-flex align-items-center" ng-repeat="(k, addresses) in rel.targetModel.address" ng-if="addresses.length > 0">
+                    <span ng-repeat="address in addresses">
                         {{ address | address }} <span class="badge badge-light">{{ address.useModel | concept }}</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div ng-if="!rel.targetModel.address">
-                {{ 'ui.unknown' | i18n }}
-            </div>
+                    </span>
+                </li>
+            </ul>
         </div>
     </div>
 
