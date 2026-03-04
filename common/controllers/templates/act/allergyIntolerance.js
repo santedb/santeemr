@@ -64,6 +64,7 @@ angular.module("santedb").controller("EmrAllergyController", ["$scope", "$rootSc
             $scope.act.relationship = $scope.act.relationship || {};
             $scope.act.relationship.HasComponent = $scope.act.relationship.HasComponent || [];
             $scope.act.relationship.HasComponent.push({
+                id: SanteDB.application.newGuid(),
                 source: panel.id,
                 sourceModel: isNew ? panel : false,
                 $insertFirst: true

@@ -1,0 +1,148 @@
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:sdb="http://santedb.org/applet">
+    <sdb:script>~/controllers/patient/widgets/replaced.js</sdb:script>
+    <sdb:widget order="1400" name="org.santedb.emr.widget.patient.replaced" headerClass="alert-primary" size="Large"
+        type="Tab" context="org.santedb.emr.patient.view">
+        <sdb:icon>fas fa-clone</sdb:icon>
+        <sdb:description lang="en">Records that have been replaced by this record - use this panel to see medical
+            history attached to that patient</sdb:description>
+        <sdb:guard>scopedObject.relationship.Replaces</sdb:guard>
+    </sdb:widget>
+
+    <div class="accordion" id="historyAccordion" ng-controller="EmrPatientReplacedController">
+        <div class="card" ng-repeat="rplc in scopedObject.relationship.Replaces track by rplc.target">
+            <div class="card-header bg-info text-white p-0" style="min-height: 0px">
+                <h5 class="card-title">
+                    <button type="button" class="collapse-indicator btn btn-link text-white m-0 px-1 py-2"
+                        ng-click="fetchHistory(rplc)" data-toggle="collapse" data-target="#replaced{{$index}}Collapse"
+                        aria-expanded="false">
+                        <i class="fa-user"
+                            ng-class="{ 'far' : rplc.targetModel.classConcept === '9de2a846-ddf2-4ebc-902e-84508c5089ea', 'fas' : rplc.targetModel.classConcept === 'bacd9c6f-3fa9-481e-9636-37457962804d'}"></i>
+                        {{ rplc.targetModel.name | name }} / {{ rplc.targetModel.dateOfBirth | extDate:
+                        rplc.targetModel.dateOfBirthPrecision }} / {{ rplc.targetModel.genderConceptModel | concept }}
+                        <i class="ml-2 fa fa-chevron-right"></i>
+                    </button>
+                </h5>
+            </div>
+            <div class="collapse" id="replaced{{$index}}Collapse">
+                <div class="card-body container-fluid">
+                    <div class="form-group row" ng-if="!rplc._loaded">
+                        <div class="col-12 text-center">
+                            <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-if="rplc._loaded">
+                        <label class="col-xs-12 col-md-3 control-label">
+                            {{ 'ui.model.entity.replacedBy' | i18n}}
+                        </label>
+                        <div class="col-xs-12 col-md-9 mt-1">
+                            <provenance provenance-id="rplc.targetModel.createdBy"
+                                provenance-time="rplc.targetModel.creationTime" no-hint="true" />
+                        </div>
+                        <label class="col-xs-12 col-md-3 control-label">
+                            {{ 'ui.model.entity.identifier' | i18n }}
+                        </label>
+                        <div class="col-xs-12 col-md-9 mt-1">
+                            <ul class="list-unstyled">
+                                <li ng-repeat="(k,id) in rplc.targetModel.identifier track by k">
+                                    <div ng-repeat="i in id track by $index">
+                                        {{ i.value }} <span class="badge badge-info">
+                                            {{ i.domainModel.name || k }}
+                                        </span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <label class="col-xs-12 col-md-3 control-label">
+                            {{ 'ui.model.entity.name' | i18n }}
+                        </label>
+                        <div class="col-xs-12 col-md-9 mt-1">
+                            <ul class="list-unstyled">
+                                <li ng-repeat="(k, name) in rplc.targetModel.name track by k">
+                                    <div ng-repeat="n in name track by $index">
+                                        {{ n | name }}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                         <label class="col-xs-12 col-md-3 control-label">
+                            {{ 'ui.model.entity.address' | i18n }}
+                        </label>
+                        <div class="col-xs-12 col-md-9 mt-1">
+                            <ul class="list-unstyled">
+                                <li ng-repeat="(k, addr) in rplc.targetModel.address track by k">
+                                    <div ng-repeat="a in addr track by $index">
+                                        {{ a | address }}
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-12" ng-if="rplc.targetModel.participation.RecordTarget">
+                            <fieldset>
+                                <legend>{{ 'ui.emr.replaced.clinicalHistory' | i18n }}</legend>
+                            </fieldset>
+                            <div>
+                                <table id="history{{rplc.target}}" class="table table-responsive table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>
+                                                <label class="checkbox-container">
+                                                    <input type="checkbox" ng-model="rplc._mergeAll"
+                                                        ng-change="toggleSelectAll(rplc)" class="checkbox-control"
+                                                        name="mergeAll" />
+                                                    <span></span>
+                                                </label>
+                                            </th>
+                                            <th>
+                                                {{ 'ui.model.act.typeConcept' | i18n }}
+                                            </th>
+                                            <th>
+                                                {{ 'ui.model.act.actTime.date' | i18n }}
+                                            </th>
+                                            <th>
+                                                {{ 'ui.emr.replaced.clinicalHistory.summary' | i18n }}
+                                            </th>
+                                            <th><button id="btn{{rplc.id}}" type="button" class="btn btn-primary" ng-click="mergeItem(rplc, rplc.target)"
+                                                    title="Merge All Selected Clinical Objects" ng-disabled="!rplc.targetModel.participation.RecordTarget.ngFind('_merge', true)">
+                                                    <i class="fas fa-check-double"></i> {{ 'ui.action.mergeSelected' |
+                                                    i18n }}
+                                                </button></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr
+                                            ng-repeat="hist in rplc.targetModel.participation.RecordTarget track by $index">
+                                            <td>
+                                                <label class="checkbox-container">
+                                                    <input type="checkbox" ng-model="hist._merge"  ng-disabled="hist.actModel.tag['$pep.masked']"
+                                                        name="merge{{hist.act}}" class="checkbox-control" />
+                                                    <span></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                {{ act.typeConceptModel | concept }}
+                                                <br/>
+                                                <small class="text-muted">{{ act.$type }}</small>
+                                            </td>
+                                            <td>
+                                                {{ act.actTime | extDate: 'D'}}
+                                            </td>
+                                            <td ng-init="act = hist.actModel">
+                                                <ng-include src="::resolveSummaryTemplate(act, rplc.target)" />
+                                            </td>
+                                            <th>
+                                                <button ng-disabled="hist.actModel.tag['$pep.masked']" id="btn{{hist.id}}" type="button" class="btn btn-primary m-auto"
+                                                    ng-click="mergeItem(hist)" title="Merge Clinical Object">
+                                                    <i class="fas fa-code-merge"></i> {{ 'ui.action.merge' | i18n }}
+                                                </button>
+                                            </th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

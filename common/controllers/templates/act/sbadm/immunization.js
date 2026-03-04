@@ -74,7 +74,7 @@ function __bindImmunizationScopeFunctions($scope, $rootScope) {
         });
         const renderEntityName = SanteDB.display.renderEntityName(antigen.name, "Assigned");
         const templateId = $scope.table.data[renderEntityName].map(o => o?.template).find(o => o);
-        template.template = templateId;
+        template.template = templateId || "50ac9b2d-e560-4b75-ac77-921bf0eceee8";
         $scope.table.data[renderEntityName][doseIdx] = template;
         $scope.acts.push(template);
 

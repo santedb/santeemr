@@ -1,5 +1,6 @@
 {
   "$type": "QuantityObservation",
+  "template" : "e052a85e-b7fb-4808-aa5c-14147abd5fe8",
   "templateModel": {
     "mnemonic": "org.santedb.emr.observation.height"
   },

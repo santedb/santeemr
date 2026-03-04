@@ -65,7 +65,7 @@ namespace SanteEMR.Rules
                 o.TypeConceptKey != null &&
                 (o.StatusConceptKey == StatusKeys.Completed || StatusKeys.InactiveStates.Contains(o.StatusConceptKey.GetValueOrDefault())) &&
                 o.MoodConceptKey == ActMoodKeys.Eventoccurrence &&
-                o.Tags?.Any(t => t.TagKey == EmrConstants.IgnoreEmrTriggersTagName && Boolean.Parse(t.Value)) != true
+                (o.BatchOperation == BatchOperationType.Update || o.Tags?.Any(t => t.TagKey == EmrConstants.IgnoreEmrTriggersTagName && Boolean.Parse(t.Value)) != true)
                 ).ToArray()
             )
             {
