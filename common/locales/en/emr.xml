@@ -17,6 +17,7 @@
  -->
 <resources>
     <string name="ui.action.addDose">Add Dose</string>
+    <string name="ui.action.mergeSelected">Merge Selected</string>
     <string name="ui.title">SanteEMR</string>
     <string name="ui.directConnect">Direct Connect to Server</string>
     <string name="ui.emr.brand.title"><![CDATA[<img src="/org.santedb.core/img/icon.png" height="24px"/> SanteDB EMR]]></string>
@@ -580,4 +581,10 @@
          <!-- Note is readonly -->
           <string name="ui.emr.visit.note.readonly">This note was authored by a different user. If you would like to make a note on this visit, please add your own note via the &lt;strong&gt;Add&lt;/strong&gt; option</string>
 
+          <!-- Replaced Panels -->
+           <string name="org.santedb.emr.widget.patient.replaced">Merged / Resolved Duplications</string>
+           <string name="ui.emr.replaced.clinicalHistory">Duplicate's Clinical History</string>
+           <string name="ui.emr.replaced.clinicalHistory.summary">Summary of Data</string>
+           <string name="ui.emr.replaced.clinicalHistory.mergeConfirm">Are you sure you want to move {nItems} items from the duplicate patient to {patient}? (NOTE: This action cannot be undone - the data will no longer appear on the merged record)</string>
+           <string name="ui.emr.replaced.clinicalHistory.mergeSuccess">Merging items to new target was successful</string>
 </resources>

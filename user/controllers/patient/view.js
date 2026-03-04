@@ -60,7 +60,6 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                         };
                     });
 
-
                 }
 
                 // Detect any alerts from the CDSS 

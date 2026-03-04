@@ -1,5 +1,6 @@
 {
   "$type": "CodedObservation",
+  "template" : "740bd62b-54bf-4bba-8546-954cdb5bb63a",
   "templateModel": {
     "mnemonic": "org.santedb.emr.observation.death"
   },
