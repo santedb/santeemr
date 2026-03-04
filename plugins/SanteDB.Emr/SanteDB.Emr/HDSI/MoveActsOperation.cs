@@ -4,6 +4,7 @@ using SanteDB;
 using SanteDB.Core.Diagnostics;
 using SanteDB.Core.i18n;
 using SanteDB.Core.Interop;
+using SanteDB.Core.Model;
 using SanteDB.Core.Model.Acts;
 using SanteDB.Core.Model.Collection;
 using SanteDB.Core.Model.Constants;
@@ -13,6 +14,7 @@ using SanteDB.Core.Security;
 using SanteDB.Core.Services;
 using SanteDB.Rest.Common;
 using SanteDB.Rest.Common.Attributes;
+using SixLabors.ImageSharp.Processing.Processors.Binarization;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -33,6 +35,8 @@ namespace SanteEMR.HDSI
         private readonly IDataPersistenceService<ActRelationship> m_actRelationshipPersistence;
         private readonly IRepositoryService<Bundle> m_bundleRepositoryService;
         private readonly IDataPersistenceService<Patient> m_patientPersistenceService;
+        private readonly IDataPersistenceService<Act> m_actPersistenceService;
+        private readonly Guid?[] m_statusObservationTypes;
 
         /// <summary>
         /// Patient parameter
@@ -50,12 +54,17 @@ namespace SanteEMR.HDSI
             IDataPersistenceService<ActParticipation> actParticipationPersistence,
             IDataPersistenceService<ActRelationship> actRelationshipPersistence,
             IDataPersistenceService<Patient> patientPersistenceService,
-            IRepositoryService<Bundle> bundleRepositoryService)
+            IDataPersistenceService<Act> actPersistenceService,
+            IRepositoryService<Bundle> bundleRepositoryService,
+            IConceptRepositoryService conceptRepository)
         {
             this.m_actParticipationService = actParticipationPersistence;
             this.m_actRelationshipPersistence = actRelationshipPersistence;
             this.m_bundleRepositoryService = bundleRepositoryService;
             this.m_patientPersistenceService = patientPersistenceService;
+            this.m_actPersistenceService = actPersistenceService;
+            this.m_statusObservationTypes = conceptRepository.ExpandConceptSet(EmrConstants.PatientStatusObservation).Select(o => o.Key).Union(
+                conceptRepository.ExpandConceptSet(EmrConstants.EmrConditionTrigger).Select(o => o.Key)).ToArray();
         }
         /// <inheritdoc/>
         public string Name => "emr-change-rct";
@@ -75,7 +84,7 @@ namespace SanteEMR.HDSI
             {
                 throw new ArgumentOutOfRangeException(PARAMETER_NAME_TO_PATIENT);
             }
-            else if(this.m_patientPersistenceService.Get(patientId, null, AuthenticationContext.SystemPrincipal) == null)
+            else if (this.m_patientPersistenceService.Get(patientId, null, AuthenticationContext.SystemPrincipal) == null)
             {
                 throw new KeyNotFoundException(String.Format(ErrorMessages.OBJECT_NOT_FOUND, patientId));
             }
@@ -100,15 +109,15 @@ namespace SanteEMR.HDSI
                 }
 
                 // Fetch the acts to be moved 
-
                 var oldParticipations = actIdGuids
                     .Select(o => this.m_actParticipationService.Query(c => c.ActKey == o && c.ParticipationRoleKey == ActParticipationKeys.RecordTarget, AuthenticationContext.SystemPrincipal).FirstOrDefault())
                     .OfType<ActParticipation>()
-                    .Select(o => {
+                    .Select(o =>
+                    {
                         o.BatchOperation = SanteDB.Core.Model.DataTypes.BatchOperationType.Delete;
                         return o;
                     })
-                    .ToArray();
+                    .ToList();
                 var newParticipations = oldParticipations.Select(o => new ActParticipation()
                 {
                     ActKey = o.ActKey,
@@ -118,9 +127,32 @@ namespace SanteEMR.HDSI
                     ParticipationRoleKey = o.ParticipationRoleKey,
                     PlayerEntityKey = patientId,
                     Quantity = o.Quantity
-                }).ToArray();
+                }).ToList();
 
-                var batch = new Bundle(oldParticipations.Union(newParticipations));
+                // Fetch any status observations and ensure that we load those so the BRE can interface with those
+                var conditionActs = (
+                    this.m_actPersistenceService.Query(o => this.m_statusObservationTypes.Contains(o.TypeConceptKey) &&
+                            actIdGuids.Contains(o.Key.Value), AuthenticationContext.SystemPrincipal)
+                        .ToArray()
+                        .Select(act =>
+                        {
+                            act.LoadProperty(o => o.Participations).RemoveAll(o => o.ParticipationRoleKey == ActParticipationKeys.RecordTarget); // Ignore any participations since we want to preserve them
+                            act.Relationships = null; // Ignore any relationships since we want to preserve them
+                            act.Participations.Add(new ActParticipation()
+                            {
+                                PlayerEntityKey = patientId,
+                                ParticipationRoleKey = ActParticipationKeys.RecordTarget
+                            });
+                            newParticipations.RemoveAll(o => o.ActKey == act.Key);
+                            oldParticipations.RemoveAll(o => o.ActKey == act.Key);
+                            act.BatchOperation = SanteDB.Core.Model.DataTypes.BatchOperationType.InsertOrUpdate;
+                            act.RemoveTag(EmrConstants.IgnoreEmrTriggersTagName);
+                            return act;
+                        })
+                ).ToList();
+
+                // Fetch any status observations and ensure that we load those so the BRE can interface with those
+                var batch = new Bundle(oldParticipations.OfType<IdentifiedData>().Union(newParticipations).Union(conditionActs));
                 this.m_tracer.TraceInfo("Will migrate '{0}' to patient '{1}' - inserting {2} items in batch", String.Join(",", oldParticipations.Select(o => o.Key), patientId, batch.Item.Count));
                 this.m_bundleRepositoryService.Insert(batch);
                 return null;
