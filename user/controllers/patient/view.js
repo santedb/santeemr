@@ -29,12 +29,19 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                 "X-SanteDB-EmitPrivacyError" : "Redact,Nullify,Hash,Hide"
             });
 
+            if(StatusKeys.InactiveStates.includes(patient.statusConcept)) {
+                var replacedBy = await SanteDB.resources.entityRelationship.findAsync({ "relationshipType" : EntityRelationshipTypeKeys.Replaces, "target" : patient.id, _count: 1 }, "noModelProperties");
+                patient.relationship = patient.relationship || {};
+                patient.relationship.Replaces = patient.relationship.Replaces || [];
+                replacedBy.resource?.forEach(rs => patient.relationship.Replaces.push(rs));
+            }
+
             // Post the patient to the AngularJS scope and then load the patient encounter
             $timeout(() => {
                 $scope.patient = new Patient(patient);
             });
 
-            if (!patient.deceasedDate) {
+            if (!patient.deceasedDate ) {
                 // Attempt to get any current encounter
                 var encounter = await SanteDB.resources.patientEncounter.findAsync({
                     "participation[RecordTarget].player": id,
@@ -53,13 +60,11 @@ angular.module('santedb').controller('EmrPatientViewController', ["$scope", "$ro
                     });
                 }
                 else {
-
                     $timeout(() => {
                         $scope.startVisit = function () {
                             SanteEMR.showCheckin($stateParams.id);
                         };
                     });
-
                 }
 
                 // Detect any alerts from the CDSS 

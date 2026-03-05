@@ -34,9 +34,12 @@
                         <label class="col-xs-12 col-md-3 control-label">
                             {{ 'ui.model.entity.replacedBy' | i18n}}
                         </label>
-                        <div class="col-xs-12 col-md-9 mt-1">
+                        <div class="col-xs-12 col-md-9 mt-1 d-flex align-items-start">
                             <provenance provenance-id="rplc.targetModel.createdBy"
                                 provenance-time="rplc.targetModel.creationTime" no-hint="true" />
+                            <a ui-sref="navto({ type: 'Patient', id: rplc.target })" class="ml-2">
+                                {{ 'ui.action.view' | i18n }} <i class="fas fa-fw fa-arrow-up-right-from-square"></i>
+                            </a>
                         </div>
                         <label class="col-xs-12 col-md-3 control-label">
                             {{ 'ui.model.entity.identifier' | i18n }}
@@ -80,13 +83,14 @@
                             <fieldset>
                                 <legend>{{ 'ui.emr.replaced.clinicalHistory' | i18n }}</legend>
                             </fieldset>
-                            <div>
-                                <table id="history{{rplc.target}}" class="table table-responsive table-striped">
+                            <div style="overflow-x: auto;">
+                                <table id="history{{rplc.target}}" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>
                                                 <label class="checkbox-container">
                                                     <input type="checkbox" ng-model="rplc._mergeAll"
+                                                        ng-disabled="scopedObject._readonly"
                                                         ng-change="toggleSelectAll(rplc)" class="checkbox-control"
                                                         name="mergeAll" />
                                                     <span></span>
@@ -113,7 +117,7 @@
                                             ng-repeat="hist in rplc.targetModel.participation.RecordTarget track by $index">
                                             <td>
                                                 <label class="checkbox-container">
-                                                    <input type="checkbox" ng-model="hist._merge"  ng-disabled="hist.actModel.tag['$pep.masked']"
+                                                    <input type="checkbox" ng-model="hist._merge"  ng-disabled="scopedObject._readonly || hist.actModel.tag['$pep.masked']"
                                                         name="merge{{hist.act}}" class="checkbox-control" />
                                                     <span></span>
                                                 </label>
@@ -130,7 +134,7 @@
                                                 <ng-include src="::resolveSummaryTemplate(act, rplc.target)" />
                                             </td>
                                             <th>
-                                                <button ng-disabled="hist.actModel.tag['$pep.masked']" id="btn{{hist.id}}" type="button" class="btn btn-primary m-auto"
+                                                <button ng-disabled="scopedObject._readonly || hist.actModel.tag['$pep.masked']" id="btn{{hist.id}}" type="button" class="btn btn-primary m-auto"
                                                     ng-click="mergeItem(hist)" title="Merge Clinical Object">
                                                     <i class="fas fa-code-merge"></i> {{ 'ui.action.merge' | i18n }}
                                                 </button>

@@ -1,0 +1,10 @@
+<div ng-if="patient.relationship.Replaces[0].target == patient.id"
+ng-init="patient._readonly=true" xmlns="http://www.w3.org/1999/xhtml">
+<div class="m-0 alert alert-info">
+    <i class="fas fa-clone"></i>
+    {{ 'ui.view.replaced' | i18n }}
+    <a ui-sref="navto({ type: 'Patient', id: patient.relationship.Replaces[0].source })" class="btn btn-info btn-sm ml-2">
+        {{ 'ui.view.replaced.nav' | i18n }} <i class="fas fa-fw fa-chevron-right"></i>
+    </a>
+</div>
+</div>
