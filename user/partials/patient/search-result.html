@@ -142,12 +142,16 @@
     </div>
 
     <!-- Relationships -->
-    <div class="col-12 mt-2">
-        <h6 class="mb-1">
+    <div class="col-12 mt-2" ng-switch="(item.obsoletionTime || item.statusConcept == '0bbec253-21a1-49cb-b376-7fe4d0592cda' || item.statusConcept == 'cd4aa3c4-02d5-4cc9-9088-ef8f31e321c5' || item.statusConcept == 'bdef5f90-5497-4f26-956c-8f818cce2bd2')">
+        <div class="alert alert-dark" ng-switch-when="true">
+                <i class="fas fa-trash"></i>
+                {{ 'ui.view.deletedRecord' | i18n }}
+        </div>
+        <h6 class="mb-1" ng-switch-when-start="false">
             {{ 'org.santedb.emr.widget.patient.nok' | i18n }}
         </h6>
         
-        <div id="relatives-container" class="border border-secondary rounded p-2">
+        <div id="relatives-container" class="border border-secondary rounded p-2" ng-switch-when-end="false">
             <div ng-repeat="(k, rel) in item.relationship track by $index" ng-if="$root.refValues.FamilyMember.indexOf(k) &gt; -1">
                 <div ng-repeat="r in rel track by $index">
                     <div class="search-card-relative row">

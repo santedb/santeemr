@@ -17,7 +17,7 @@ angular.module('santedb').controller('EmrPatientReplacedController', ['$scope', 
     };
 
     $scope.toggleSelectAll = function(replace) {
-        replace.targetModel.participation?.RecordTarget.forEach(rt => rt._merge = replace._mergeAll);
+        replace.targetModel.participation?.RecordTarget.filter(o => !o.actModel.tag || !o.actModel.tag['$pep.masked']).forEach(rt => rt._merge = replace._mergeAll);
     }
 
     $scope.mergeItem = async function(target, hostId) {
