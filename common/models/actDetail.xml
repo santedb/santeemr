@@ -186,4 +186,6 @@
 
     <type type="ControlAct" base="emr.actDetail.Act" all="true">
     </type>
+
+    <type type="Narrative" base="emr.actDetail.Act" all="true"></type>
 </ViewModel>
