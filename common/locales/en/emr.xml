@@ -587,4 +587,7 @@
            <string name="ui.emr.replaced.clinicalHistory.summary">Summary of Data</string>
            <string name="ui.emr.replaced.clinicalHistory.mergeConfirm">Are you sure you want to move {nItems} items from the duplicate patient to {patient}? (NOTE: This action cannot be undone - the data will no longer appear on the merged record)</string>
            <string name="ui.emr.replaced.clinicalHistory.mergeSuccess">Merging items to new target was successful</string>
+
+           <!-- Facilities -->
+           <string name="org.santedb.emr.widget.patient.facilities">Patient Facilities</string>
 </resources>
