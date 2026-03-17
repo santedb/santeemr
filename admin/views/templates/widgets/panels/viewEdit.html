@@ -63,7 +63,7 @@
             </div>
         </div>
         <form name="panel.editForm" ng-submit="saveTemplateDefinition(panel.editForm)" ng-if="panel.view === 'Edit'"
-            novalidate="novalidate">
+            novalidate="novalidate" autocomplete="off">
             <ul class="nav nav-tabs" role="tablist" id="formViews">
                 <li class="nav-item" role="presentation" ng-repeat="view in editObject.views track by $index">
                     <a class="nav-link btn-link " id="viewTab{{view.type}}"

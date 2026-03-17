@@ -32,7 +32,7 @@
                     </div>
                 </li>
             </ul>
-            <form ng-submit="updateStatusObservations(panel.editForm)" name="panel.editForm" novalidate="novalidate">
+            <form ng-submit="updateStatusObservations(panel.editForm)" name="panel.editForm" novalidate="novalidate" autocomplete="off">
                 <ul class="list-group" ng-init="ownerForm = panel.editForm">
                     <!-- Maintain Compatibility with the act-edit -->
                     <li ng-repeat="cond in amendmentObservations track by $index" class="list-group-item"
