@@ -618,4 +618,6 @@
 
     <!-- Alerts for the Clinic -->
     <string name="org.santedb.emr.dashboard.deviceMail">System-Wide Alerts &amp; Messages</string>
+    <!-- Facilities -->
+    <string name="org.santedb.emr.widget.patient.facilities">Patient Facilities</string>
 </resources>

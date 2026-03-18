@@ -25,7 +25,7 @@
             </li>
         </ul>
         <form ng-if="panel.view == 'Edit'" name="panel.editForm"
-            ng-submit="changePatientPolicies(panel.editForm)" novalidate="novalidate">
+            ng-submit="changePatientPolicies(panel.editForm)" novalidate="novalidate" autocomplete="off">
             <li class="list-group-item-warning list-group-item">
                 <i class="fas fa-fw fa-exclamation-circle"></i> {{ 'ui.emr.patient.policy.warning' | i18n }}
             </li>

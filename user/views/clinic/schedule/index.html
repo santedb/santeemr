@@ -12,7 +12,7 @@
 
     <h2>{{ calendarData.facility.name | name }}</h2>
     <div style="max-height:75vh" id="facilityCalendar"></div>
-    <form name="searchForm" class="d-none m-0 p-0" ng-submit="filterCalendar(searchForm)" novalidate="novalidate"
+    <form name="searchForm" class="d-none m-0 p-0" ng-submit="filterCalendar(searchForm)" novalidate="novalidate" autocomplete="off"
         id="calendarSearchBar">
         <div class="input-group my-0">
             <input class="form-control h-auto" type="text"
