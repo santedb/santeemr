@@ -31,7 +31,7 @@
                         </span>
                     </button>
                 </div>
-                <form name="checkinForm" ng-submit="saveCheckin(checkinForm)" novalidate="novalidate">
+                <form name="checkinForm" ng-submit="saveCheckin(checkinForm)" novalidate="novalidate" autocomplete="off">
                     <div class="modal-body">
                         <div ng-if="!recordTarget">
                             <i class="fas fa-fw fa-circle-notch fa-spin"></i> {{ 'ui.wait' | i18n }}

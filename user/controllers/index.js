@@ -34,7 +34,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             var familialRelationships = await SanteDB.resources.conceptSet.invokeOperationAsync(null, "expand", { "_mnemonic": "FamilyMember" });
             var myFacilityId = await SanteDB.authentication.getCurrentFacilityId();
             var myFacility = myFacilityId == EmptyGuid ? null : await SanteDB.resources.place.getAsync(myFacilityId, "min");
-            
+
             $timeout(() => {
                 $rootScope.refValues.FamilyMember = familialRelationships.resource?.map(o => o.mnemonic);
                 $rootScope.refValues.templates = templates;
@@ -47,19 +47,36 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         }
     }
 
+    var _oldNewAlerts = 0;
+
     // Check for new mail
     async function checkMail() {
-
         try {
-            var mailMessages = await SanteDB.resources.mail.findAssociatedAsync("Inbox", "Message", { flags: 0 });
-            await Promise.all(mailMessages.resource.map(async function (mb) {
-                mb.targetModel = await SanteDB.resources.mail.getAssociatedAsync("Inbox", "Message", mb.target);
-            }));
-            $timeout(() => $scope.mailbox = mailMessages.resource);
+            var mailboxes = await SanteDB.resources.mail.findAsync({}, "noModelProperties");
+            var inbox = mailboxes.resource.find(o => o.name == "Inbox");
+            var mailMessages = await SanteDB.resources.mail.findAssociatedAsync(inbox.id, "MailMessage", { flags: 0, _count: 5, _orderBy: "time:desc" }, "mail");
+            $timeout(() => {
+                $rootScope.mail = {
+                    inbox: inbox.id,
+                    mailboxes: mailboxes.resource
+                };
+                $scope.mail = {
+                    newAlerts: mailMessages.resource
+                };
+
+                if (mailMessages.resource?.length > _oldNewAlerts) {
+                    toastr.info(SanteDB.locale.getString("ui.mail.new.alert"), null, {
+                        preventDuplicates: true,
+                        onclick: () => {
+                            $state.go("santedb-emr.user.mail", { mbx: inbox.id, mid: null });
+                        }
+                    });
+                }
+                _oldNewAlerts = mailMessages.resource?.length || 0;
+            });
         }
         catch (e) {
-//            toastr.warning(SanteDB.locale.getString("ui.emr.mailError"));
-            console.error(e);
+            toastr.warning(SanteDB.locale.getString("ui.emr.mailError"));
         }
     };
 
@@ -174,7 +191,7 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             //console.info(d, e);
             if (d.swipeRight) {
                 railLogicFn(e);
-            } else if(d.swipeLeft && $(e.target).hasClass("navbar-peek")) {
+            } else if (d.swipeLeft && $(e.target).hasClass("navbar-peek")) {
                 $(".navbar-peek").removeClass("navbar-peek");
                 $("body").addClass("sidenav-toggled");
             }
@@ -259,9 +276,15 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
             checkTickles();
             checkConflicts();
         }
-    }, 60000);
+    }, 30000);
 
-    var mailInterval = $interval(checkMail, 600000);
+    var mailInterval = $interval(checkMail, 120000);
+
+    $rootScope.$watch("system.online", function (n, o) {
+        if (n && !o) {
+            checkMail();
+        }
+    })
 
     $scope.$on('$destroy', function () {
         if (refreshInterval) {
@@ -304,11 +327,11 @@ angular.module('santedb').controller('EmrLayoutController', ["$scope", "$rootSco
         }
     });
 
-    $scope.dropElevatedSession = async function() {
+    $scope.dropElevatedSession = async function () {
         try {
             SanteDB.display.buttonWait("#btnEndElevation", true);
             var session = SanteDB.authentication.getElevator()?.getSession();
-            if(session?.id_token) {
+            if (session?.id_token) {
                 await SanteDB.authentication.logoutAsync(session.id_token);
             }
         }
